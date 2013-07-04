@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "Feedly notifier",
+  "description": "Extension for Feedly news",
+  "version": "0.1",
+
+  "permissions": [
+	"webRequest",
+    "http://cloud.feedly.com/"
+  ],
+  "browser_action": {
+    "default_icon": "icon.png"
+  }
+}
