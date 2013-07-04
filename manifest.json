@@ -6,10 +6,14 @@
   "version": "0.1",
 
   "permissions": [
-	"webRequest",
+	"storage",
+	"tabs",
     "http://cloud.feedly.com/"
   ],
   "browser_action": {
     "default_icon": "icon.png"
+  },
+  "background": {
+    "page": "default.html"
   }
 }

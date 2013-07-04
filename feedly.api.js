@@ -9,7 +9,7 @@ var FeedlyApiClient = function (accessToken) {
         }
         var methodUrl = apiUrl + methodName;
         var queryString;
-        if (parameters !== undefined) {
+        if (parameters !== null) {
             queryString = "?";
             for (parameterName in parameters) {
                 queryString += parameterName + "=" + parameters[parameterName] + "&";
@@ -17,7 +17,7 @@ var FeedlyApiClient = function (accessToken) {
             queryString = queryString.replace(/&$/, "");
         }
 
-        if (queryString.length > 0) {
+        if (queryString !== undefined) {
             methodUrl += queryString;
         }
 
@@ -25,19 +25,25 @@ var FeedlyApiClient = function (accessToken) {
     };
 
 	
-    this.get = function (methodName, parameters) {
+    this.get = function (methodName, parameters, callback) {
         var methodUrl = getMethodUrl(methodName, parameters);
-        //Create chrome.webRequest
-        //Add access token to headers
-        //Get data & parse JSON to object
-        return methodUrl;
+		createRequest("GET", methodUrl, callback);
     }
 
-    this.post = function (methodName, parameters) {
+    this.post = function (methodName, parameters, callback) {
         var methodUrl = getMethodUrl(methodName, parameters);
-        //Create chrome.webRequest
-        //Add access token to headers        
-        //Post data & parse JSON to object
-        return methodUrl;
+		createRequest("POST", methodUrl, callback);
     }
+	
+	var createRequest = function(verb, url, callback){
+		var request = new XMLHttpRequest();	
+		request.open(verb, url, true);
+		if(accessToken !== undefined){
+			request.setRequestHeader("Authorization", "OAuth " + accessToken);
+		}		
+		request.onload = function(e){
+			callback(e.target.response);
+		};
+		request.send();
+	}
 };
