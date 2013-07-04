@@ -28,12 +28,12 @@ var FeedlyApiClient = function (accessToken) {
     this.get = function (methodName, parameters, callback) {
         var methodUrl = getMethodUrl(methodName, parameters);
 		createRequest("GET", methodUrl, callback);
-    }
+    };
 
     this.post = function (methodName, parameters, callback) {
         var methodUrl = getMethodUrl(methodName, parameters);
 		createRequest("POST", methodUrl, callback);
-    }
+    };
 	
 	var createRequest = function(verb, url, callback){
 		var request = new XMLHttpRequest();	
@@ -42,7 +42,17 @@ var FeedlyApiClient = function (accessToken) {
 			request.setRequestHeader("Authorization", "OAuth " + accessToken);
 		}		
 		request.onload = function(e){
-			callback(e.target.response);
+
+            var json;
+            try{
+                json = JSON.parse(e.target.response);
+            }catch(exception) {
+                json = {
+                    Error : exception.message,
+                    errorCode : 500
+                }
+            }
+			callback(json);
 		};
 		request.send();
 	}

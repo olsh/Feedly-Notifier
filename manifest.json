@@ -11,9 +11,14 @@
     "http://cloud.feedly.com/"
   ],
   "browser_action": {
-    "default_icon": "icon.png"
+    "default_icon": "/images/icon.png"
   },
   "background": {
     "page": "default.html"
+  },
+  "icons": {
+      "16": "/images/icon16.png",
+      "48": "/images/icon48.png",
+      "128": "/images/icon128.png"
   }
 }
