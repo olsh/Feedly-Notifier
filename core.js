@@ -21,10 +21,12 @@ chrome.storage.sync.get(null, function(items){
 });
 
 chrome.storage.onChanged.addListener(function(changes, areaName) {
-    var accessTokenChange = changes[accessToken];
-    feedlyApiClient.accessToken = accessTokenChange.newValue;
-    updateNews();
-    appGlobal.intervalId = setInterval(updateNews, appGlobal.intervalPeriod);
+    var accessTokenChange = changes.accessToken;
+	if(accessTokenChange !== undefined && accessTokenChange.newValue !== undefined){
+		appGlobal.feedlyApiClient.accessToken = accessTokenChange.newValue;
+		updateNews();
+		appGlobal.intervalId = setInterval(updateNews, appGlobal.intervalPeriod);
+	}
 });
 
 function updateNews(){
@@ -52,7 +54,7 @@ function updateToken(){
         chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             //Execute code in feedly page context
             chrome.tabs.executeScript(tabId, { code : "localStorage.getItem('session@cloud')"}, function(results){
-                if(results === undefined && results.length !== 1){
+                if(results === undefined || results.length !== 1){
                     return;
                 }
                 var accessToken = JSON.parse(results[0])['feedlyToken'];
