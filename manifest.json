@@ -9,6 +9,7 @@
   "permissions": [
 	"storage",
 	"tabs",
+	"alarms",
     "http://cloud.feedly.com/"
   ],
   "browser_action": {
@@ -16,6 +17,7 @@
 	"default_title": "Feedly Notifier",
 	"default_popup": "popup.html"
   },
+  "options_page": "options.html",
   "background": {
     "page": "default.html"
   },

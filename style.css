@@ -1,6 +1,6 @@
 #login,
 #feed {
-	display: none;
+	display: block;
 }
 #feed{
 width: 300px;

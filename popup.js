@@ -7,6 +7,7 @@ $(function(){
 	
 	if (items != null) {
 		console.log("output items");
+		console.log(items);
 		$('#entryTemplate').tmpl(items).appendTo('#feed');
 	}
 });

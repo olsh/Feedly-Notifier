@@ -4,8 +4,9 @@ var appGlobal = {
         default: "/images/icon.png",
         inactive: "/images/icon_inactive.png"
     },
-    intervalId: 0,
-    intervalPeriod: 60000,
+    defaultValues: {
+		updateInterval : 1
+	},
 	unreadItems: [{
 			title: 'Test blog 1',
 			url: 'http://ya.ru',
@@ -13,27 +14,42 @@ var appGlobal = {
 		}]
 };
 
-chrome.storage.sync.get(null, function(items){
+//Event handlers
+chrome.runtime.onInstalled.addListener(function(details) {
+    chrome.storage.sync.set({ updateInterval: appGlobal.defaultValues.updateInterval }, function () { });
+    intialize();
+});
 
-    appGlobal.feedlyApiClient = new FeedlyApiClient(items.accessToken);
+chrome.storage.onChanged.addListener(function (changes, areaName) {
+    intialize();
+});
 
-    chrome.browserAction.onClicked.addListener(function() {
-	    updateToken();
-    });
-
+chrome.alarms.onAlarm.addListener(function (alarm) {
     checkUnread();
-    appGlobal.intervalId = setInterval(checkUnread, appGlobal.intervalPeriod);
 });
 
-chrome.storage.onChanged.addListener(function(changes, areaName) {
-    var accessTokenChange = changes.accessToken;
-	if(accessTokenChange !== undefined && accessTokenChange.newValue !== undefined){
-		appGlobal.feedlyApiClient.accessToken = accessTokenChange.newValue;
-		console.log("check unread");
-		checkUnread();
-		appGlobal.intervalId = setInterval(checkUnread, appGlobal.intervalPeriod);
-	}
+chrome.runtime.onStartup.addListener(function () {
+    intialize();
 });
+
+//Initialization all parameters and run news check
+function intialize() {    
+    chrome.storage.sync.get(null, function(items){
+        appGlobal.feedlyApiClient = new FeedlyApiClient(items.accessToken);
+        startSchedule(items.updateInterval);
+    });
+}
+
+function startSchedule(updateInterval) {    
+    chrome.alarms.create("checkUnread", {
+        when: Date.now(),
+        periodInMinutes: updateInterval === undefined ? appGlobal.defaultValues.updateInterval : +updateInterval
+    });
+}
+
+function stopSchedule() {
+    chrome.alarms.clearAll();
+}
 
 function checkUnread(){
     appGlobal.feedlyApiClient.get("markers/counts", null, function(response){
@@ -52,10 +68,10 @@ function checkUnread(){
         }else{
             chrome.browserAction.setBadgeText({ text : String("")});
             chrome.browserAction.setIcon({ path : appGlobal.icons.inactive }, function (){});
-            clearInterval(appGlobal.intervalId);
+            stopSchedule();
         }
     });
-};
+}
 
 function fetchEntries(){
 	var items = [
@@ -90,4 +106,4 @@ function updateToken(){
             });
         });
     });
-};
+}
