@@ -5,7 +5,12 @@ var appGlobal = {
         inactive: "/images/icon_inactive.png"
     },
     intervalId: 0,
-    intervalPeriod: 60000
+    intervalPeriod: 60000,
+	unreadItems: [{
+			title: 'Test blog 1',
+			url: 'http://ya.ru',
+			blog: '.NET blog'
+		}]
 };
 
 chrome.storage.sync.get(null, function(items){
@@ -16,20 +21,21 @@ chrome.storage.sync.get(null, function(items){
 	    updateToken();
     });
 
-    updateNews();
-    appGlobal.intervalId = setInterval(updateNews, appGlobal.intervalPeriod);
+    checkUnread();
+    appGlobal.intervalId = setInterval(checkUnread, appGlobal.intervalPeriod);
 });
 
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     var accessTokenChange = changes.accessToken;
 	if(accessTokenChange !== undefined && accessTokenChange.newValue !== undefined){
 		appGlobal.feedlyApiClient.accessToken = accessTokenChange.newValue;
-		updateNews();
-		appGlobal.intervalId = setInterval(updateNews, appGlobal.intervalPeriod);
+		console.log("check unread");
+		checkUnread();
+		appGlobal.intervalId = setInterval(checkUnread, appGlobal.intervalPeriod);
 	}
 });
 
-function updateNews(){
+function checkUnread(){
     appGlobal.feedlyApiClient.get("markers/counts", null, function(response){
         var unreadCounts = response.unreadcounts;
         if(response.errorCode === undefined){
@@ -41,6 +47,8 @@ function updateNews(){
             }
             chrome.browserAction.setBadgeText({ text : String(max > 0 ? max : "")});
             chrome.browserAction.setIcon({ path : appGlobal.icons.default }, function (){});
+			console.log("get items");
+			fetchEntries();
         }else{
             chrome.browserAction.setBadgeText({ text : String("")});
             chrome.browserAction.setIcon({ path : appGlobal.icons.inactive }, function (){});
@@ -48,6 +56,24 @@ function updateNews(){
         }
     });
 };
+
+function fetchEntries(){
+	var items = [
+		{
+			title: 'Test blog 1',
+			url: 'http://ya.ru',
+			blog: '.NET blog'
+		},
+		{
+			title: 'Test blog 2',
+			url: 'http://google.com',
+			blog: 'PHP blog'
+		}
+	];
+	
+	appGlobal.unreadItems = items;
+	console.log(appGlobal.unreadItems.length);
+}
 
 function updateToken(){
     chrome.tabs.create( {url: "http://cloud.feedly.com" }, function (feedlytab){

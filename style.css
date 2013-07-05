@@ -1,0 +1,11 @@
+#login,
+#feed {
+	display: none;
+}
+#feed{
+width: 300px;
+}
+.blog-title{
+	font-size: small;
+	color: gray;
+}
