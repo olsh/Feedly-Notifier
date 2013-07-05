@@ -1,9 +1,8 @@
-#login,
-#feed {
+#login, #feed {
 	display: block;
 }
 #feed{
-width: 300px;
+    width: 300px;
 }
 .blog-title{
 	font-size: small;
