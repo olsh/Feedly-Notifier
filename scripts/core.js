@@ -7,7 +7,8 @@ var appGlobal = {
     options: {
         updateInterval: 1,
         markReadOnClick: true,
-        accessToken: ""
+        accessToken: "",
+        compactPopupMode: true
     },
     unreadItems: [],
     isLoggedIn: false
@@ -91,7 +92,8 @@ function fetchEntries(categoryId) {
                     title: item.title,
                     blog: item.origin.title,
                     id: item.id,
-                    url: item.alternate[0].href
+                    url: item.alternate[0].href,
+                    content: item.summary.content === undefined ? "" : item.summary.content
                 };
             });
         }
