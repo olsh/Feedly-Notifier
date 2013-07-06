@@ -88,12 +88,19 @@ function fetchEntries(categoryId) {
     }, function (response) {
         if (response.errorCode === undefined) {
             appGlobal.unreadItems = response.items.map(function (item) {
+                var blogUrl;
+                try{
+                    blogUrl = item.origin.htmlUrl.match(/http:\/\/[^/]+/i).pop();
+                }catch(exception) {
+                    blogUrl = "#";
+                }
                 return {
                     title: item.title,
-                    blog: item.origin.title,
+                    url: item.alternate === undefined || item.alternate[0] === undefined ? "" : item.alternate[0].href,
+                    blog: item.origin === undefined ? "" : item.origin.title,
+                    blogUrl: blogUrl,
                     id: item.id,
-                    url: item.alternate[0].href,
-                    content: item.summary.content === undefined || appGlobal.options.compactPopupMode ? "" : item.summary.content
+                    content: item.summary === undefined || appGlobal.options.compactPopupMode ? "" : item.summary.content
                 };
             });
         }
