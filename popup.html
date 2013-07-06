@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
 <div id="login">
-	<button id="login-btn">Login here</button>
+    <button id="login-btn">Login here</button>
 </div>
 <div id="feed"></div>
+<div id="feed-empty">All read</div>
 </body>
 
 <script src="scripts/jquery-1.8.3.min.js"></script>
 <script src="scripts/jquery.tmpl.min.js"></script>
 <script id="entryTemplate" type="text/x-jquery-tmpl">
-<div class="item" data-id="${id}">
-	<a href="${url}" class="title">${title}</a>
-	<div class="blog-title">${blog}</div>
-    <input class="mark-read" type="button" value="Mark as read" />
-</div>
+    <div class="item" data-id="${id}">
+        <a href="${url}" class="title">${title}</a>
+        <div class="blog-title">${blog}</div>
+        <input class="mark-read" type="button" value="Mark as read"/>
+    </div>
 </script>
 <script src="scripts/popup.js"></script>
 </html>

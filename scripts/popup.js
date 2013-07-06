@@ -1,27 +1,35 @@
 var backgroundPage = chrome.extension.getBackgroundPage();
 
-$(function(){
-	$("#login").click(function(){
-        backgroundPage.updateToken();
-	});
-
-	var items = backgroundPage.appGlobal.unreadItems;
-    console.log(items);
-	if (items != null) {
-		$('#entryTemplate').tmpl(items).appendTo('#feed');
-	}
+$(function () {
+    var items = backgroundPage.appGlobal.unreadItems;
+    if (backgroundPage.appGlobal.isLoggedIn === false) {
+        $("body").children("div").hide();
+        $("#login").show();
+    } else if (items.length === 0) {
+        $("body").children("div").hide();
+        $("#feed-empty").show();
+    } else {
+        $("body").children("div").hide();
+        $("#feed").show();
+        $('#entryTemplate').tmpl(items).appendTo('#feed');
+    }
 });
 
-$("#feed").on("click", "a.title", function(event){
+$("#login").click(function () {
+    backgroundPage.updateToken();
+});
+
+$("#feed").on("click", "a.title", function (event) {
     var feedLink = $(this);
-    chrome.tabs.create( {url: feedLink.attr("href") }, function (feedTab){
-        if(backgroundPage.appGlobal.options.markReadOnClick === true){
+    chrome.tabs.create({url: feedLink.attr("href") }, function (feedTab) {
+        if (backgroundPage.appGlobal.options.markReadOnClick === true) {
             backgroundPage.markAsRead(feedLink.closest(".item").data("id"));
         }
     });
 });
 
-$("#feed").on("click", "input.mark-read", function(event){
-    var feedLink = $(this);
-    backgroundPage.markAsRead(feedLink.closest(".item").data("id"));
+$("#feed").on("click", "input.mark-read", function (event) {
+    var feed = $(this).closest(".item");
+    backgroundPage.markAsRead(feed.data("id"));
+    feed.fadeOut();
 });
