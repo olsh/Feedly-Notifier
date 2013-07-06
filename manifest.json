@@ -13,7 +13,7 @@
     "http://cloud.feedly.com/"
   ],
   "browser_action": {
-    "default_icon": "/images/icon.png",
+    "default_icon": "/images/icon_inactive.png",
 	"default_title": "Feedly Notifier",
 	"default_popup": "popup.html"
   },

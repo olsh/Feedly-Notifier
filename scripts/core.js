@@ -14,7 +14,11 @@ var appGlobal = {
 
 // #Event handlers
 chrome.runtime.onInstalled.addListener(function(details) {
-    setDefaultOptions(initialize);
+    //Trying read old options (mostly access token) if possible
+    readOptions(function(){
+        //Write all options in chrome storage and initialize application
+        writeOptions(initialize);
+    });
 });
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
@@ -134,8 +138,8 @@ function updateToken(){
     });
 }
 
-/* Writes default options in chrome storage and runs callback after it */
-function setDefaultOptions(callback){
+/* Writes all application options in chrome storage and runs callback after it */
+function writeOptions(callback){
     var options = {};
     for(var option in appGlobal.options)  {
         options[option] = appGlobal.options[option];
@@ -158,7 +162,6 @@ function readOptions(callback){
             }else{
                 appGlobal.options[optionName] = options[optionName];
             }
-
         }
         if(typeof callback === "function"){
             callback();
