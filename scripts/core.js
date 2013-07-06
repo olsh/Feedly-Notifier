@@ -4,20 +4,21 @@ var appGlobal = {
         default: "/images/icon.png",
         inactive: "/images/icon_inactive.png"
     },
-    defaultValues: {
-		updateInterval : 1
+    options: {
+		updateInterval : 1,
+        markReadOnClick : true,
+        accessToken : ""
 	},
-	unreadItems: null
+	unreadItems: []
 };
 
-//Event handlers
+// #Event handlers
 chrome.runtime.onInstalled.addListener(function(details) {
-    chrome.storage.sync.set({ updateInterval: appGlobal.defaultValues.updateInterval }, function () { });
-    initialize();
+    setDefaultOptions(initialize);
 });
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
-    initialize();
+    readOptions(initialize);
 });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
@@ -25,21 +26,19 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
 });
 
 chrome.runtime.onStartup.addListener(function () {
-    initialize();
+    readOptions(initialize);
 });
 
-//Initialization all parameters and run news check
+/* Initialization all parameters and run news check */
 function initialize() {
-    chrome.storage.sync.get(null, function(items){
-        appGlobal.feedlyApiClient.accessToken = items.accessToken;
-        startSchedule(items.updateInterval);
-    });
+    appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
+    startSchedule(appGlobal.options.updateInterval);
 }
 
 function startSchedule(updateInterval) {    
     chrome.alarms.create("checkUnread", {
         when: Date.now(),
-        periodInMinutes: updateInterval === undefined ? appGlobal.defaultValues.updateInterval : +updateInterval
+        periodInMinutes: updateInterval
     });
 }
 
@@ -62,11 +61,11 @@ function checkUnread(){
                 }
 
             }
-            chrome.browserAction.setBadgeText({ text : String(max > 0 ? max : "")});
+            setFeedsCounter(max);
             chrome.browserAction.setIcon({ path : appGlobal.icons.default }, function (){});
 			fetchEntries(categoryForFetching);
         }else{
-            chrome.browserAction.setBadgeText({ text : String("")});
+            setFeedsCounter(0);
             chrome.browserAction.setIcon({ path : appGlobal.icons.inactive }, function (){});
             stopSchedule();
         }
@@ -99,7 +98,24 @@ function markAsRead(feedId){
         entryIds : [feedId]
     },function(response){
         if(response.errorCode !== undefined) {
-            //TODO: Refresh token
+            var indexFeedForRemove;
+            for(var i = 0; i < appGlobal.unreadItems.length; i++){
+                if(appGlobal.unreadItems[i].id === feedId){
+                    indexFeedForRemove = i;
+                    break;
+                }
+            }
+
+            //Remove feed from unreadItems and update badge
+            if (indexFeedForRemove !== undefined){
+                appGlobal.unreadItems.splice(indexFeedForRemove, 1);
+                chrome.browserAction.getBadgeText({}, function(feedsCount){
+                    feedsCount = +feedsCount;
+                    if(feedsCount > 0){
+                        setFeedsCounter(--feedsCount);
+                    }
+                });
+            }
         }
     });
 }
@@ -108,12 +124,49 @@ function updateToken(){
     chrome.tabs.create( {url: "http://cloud.feedly.com" }, function (feedlytab){
         chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             //Execute code in feedly page context
-            chrome.tabs.executeScript(tabId, { code : "JSON.parse(localStorage.getItem('session@cloud'))['feedlyToken']"}, function(results){
-                if(results === undefined){
+            chrome.tabs.executeScript(tabId, { code : "JSON.parse(localStorage.getItem('session@cloud'))['feedlyToken']"}, function(result){
+                if(result === undefined){
                     return;
                 }
-                chrome.storage.sync.set( { accessToken : results}, function(){});
+                chrome.storage.sync.set( { accessToken : result}, function(){});
             });
         });
     });
+}
+
+/* Writes default options in chrome storage and runs callback after it */
+function setDefaultOptions(callback){
+    var options = {};
+    for(var option in appGlobal.options)  {
+        options[option] = appGlobal.options[option];
+    }
+    chrome.storage.sync.set(options, function () {
+        if(typeof callback === "function"){
+            callback();
+        }
+    });
+}
+
+/* Reads all options from chrome storage and runs callback after it */
+function readOptions(callback){
+    chrome.storage.sync.get(null, function(options){
+        for(var optionName in options){
+            if(typeof appGlobal.options[optionName] === "boolean"){
+                appGlobal.options[optionName] = Boolean(options[optionName]);
+            }else if(typeof appGlobal.options[optionName] === "number"){
+                appGlobal.options[optionName] = Number(options[optionName]);
+            }else{
+                appGlobal.options[optionName] = options[optionName];
+            }
+
+        }
+        if(typeof callback === "function"){
+            callback();
+        }
+    });
+}
+
+function setFeedsCounter(number){
+    number = +number;
+    chrome.browserAction.setBadgeText({ text : String(number > 0 ? number : "")});
 }

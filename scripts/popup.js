@@ -2,7 +2,7 @@ var backgroundPage = chrome.extension.getBackgroundPage();
 
 $(function(){
 	$("#login").click(function(){
-		chrome.extension.getBackgroundPage().updateToken();
+        backgroundPage.updateToken();
 	});
 
 	var items = backgroundPage.appGlobal.unreadItems;
@@ -14,8 +14,10 @@ $(function(){
 
 $("#feed").on("click", "a.title", function(event){
     var feedLink = $(this);
-    chrome.tabs.create( {url: feedLink.attr("href") }, function (feedlytab){
-        backgroundPage.markAsRead(feedLink.closest(".item").data("id"));
+    chrome.tabs.create( {url: feedLink.attr("href") }, function (feedTab){
+        if(backgroundPage.appGlobal.options.markReadOnClick === true){
+            backgroundPage.markAsRead(feedLink.closest(".item").data("id"));
+        }
     });
 });
 

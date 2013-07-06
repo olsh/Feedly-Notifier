@@ -30,7 +30,7 @@ var FeedlyApiClient = function (accessToken) {
 		createRequest("GET", methodUrl, callback, this.accessToken, null);
     };
 
-    this.post = function (methodName, parameters, body,callback) {
+    this.post = function (methodName, parameters, body, callback) {
         var methodUrl = getMethodUrl(methodName, parameters);
 		createRequest("POST", methodUrl, callback, this.accessToken, JSON.stringify(body));
     };
