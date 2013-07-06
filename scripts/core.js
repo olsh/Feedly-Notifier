@@ -93,7 +93,7 @@ function fetchEntries(categoryId) {
                     blog: item.origin.title,
                     id: item.id,
                     url: item.alternate[0].href,
-                    content: item.summary.content === undefined ? "" : item.summary.content
+                    content: item.summary.content === undefined || appGlobal.options.compactPopupMode ? "" : item.summary.content
                 };
             });
         }

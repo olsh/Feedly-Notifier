@@ -12,9 +12,6 @@ $(function () {
         $("body").children("div").hide();
         $("#feed").show();
         $('#entryTemplate').tmpl(items).appendTo('#feed');
-        if(backgroundPage.appGlobal.options.compactPopupMode === true){
-            $(".content").hide();
-        }
     }
 });
 
