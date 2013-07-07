@@ -90,7 +90,7 @@ function fetchEntries(categoryId) {
             appGlobal.unreadItems = response.items.map(function (item) {
                 var blogUrl;
                 try{
-                    blogUrl = item.origin.htmlUrl.match(/http:\/\/[^/]+/i).pop();
+                    blogUrl = item.origin.htmlUrl.match(/http(?:s)?:\/\/[^/]+/i).pop();
                 }catch(exception) {
                     blogUrl = "#";
                 }

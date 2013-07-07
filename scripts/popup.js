@@ -19,11 +19,11 @@ $("#login").click(function () {
     backgroundPage.updateToken();
 });
 
-$("#feed").on("click", "a.title", function (event) {
-    var feedLink = $(this);
-    chrome.tabs.create({url: feedLink.attr("href") }, function (feedTab) {
-        if (backgroundPage.appGlobal.options.markReadOnClick === true) {
-            backgroundPage.markAsRead(feedLink.closest(".item").data("id"));
+$("#feed").on("click", "a", function (event) {
+    var link = $(this);
+    chrome.tabs.create({url: link.attr("href") }, function (feedTab) {
+        if (backgroundPage.appGlobal.options.markReadOnClick === true && link.hasClass("title") === true) {
+            backgroundPage.markAsRead(link.closest(".item").data("id"));
         }
     });
 });
