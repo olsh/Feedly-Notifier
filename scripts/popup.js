@@ -1,19 +1,22 @@
 var backgroundPage = chrome.extension.getBackgroundPage();
 
-$(function () {
-    var items = backgroundPage.appGlobal.unreadItems;
-    if (backgroundPage.appGlobal.isLoggedIn === false) {
-        $("body").children("div").hide();
-        $("#login").show();
-    } else if (items.length === 0) {
-        $("body").children("div").hide();
-        $("#feed-empty").show();
-    } else {
-        $("body").children("div").hide();
-        $("#feed").show();
-        $('#entryTemplate').tmpl(items).appendTo('#feed');
-    }
-});
+function renderFeeds(){
+    backgroundPage.getFeeds(function(feeds, isLoggedIn){
+        if (isLoggedIn === false) {
+            $("body").children("div").hide();
+            $("#login").show();
+        } else if (feeds.length === 0) {
+            $("body").children("div").hide();
+            $("#feed-empty").show();
+        } else {
+            $("body").children("div").hide();
+            $("#feed").show();
+            $('#entryTemplate').tmpl(feeds).appendTo('#feed');
+        }
+    })
+}
+
+renderFeeds();
 
 $("#login").click(function () {
     backgroundPage.updateToken();
@@ -30,6 +33,10 @@ $("#feed").on("click", "a", function (event) {
 
 $("#feed").on("click", "input.mark-read", function (event) {
     var feed = $(this).closest(".item");
-    backgroundPage.markAsRead(feed.data("id"));
-    feed.fadeOut();
+    feed.fadeOut().attr("data-is-read", "true");
+    backgroundPage.markAsRead(feed.data("id"), function(){
+        if($("#feed").find(".item[data-is-read!='true']").size() === 0){
+            renderFeeds();
+        }
+    });
 });

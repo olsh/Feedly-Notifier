@@ -10,7 +10,7 @@ var appGlobal = {
         accessToken: "",
         compactPopupMode: true
     },
-    unreadItems: [],
+    cachedFeeds: [],
     isLoggedIn: false
 };
 
@@ -28,21 +28,21 @@ chrome.storage.onChanged.addListener(function (changes, areaName) {
 });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
-    checkUnread();
+    updateFeeds();
 });
 
 chrome.runtime.onStartup.addListener(function () {
     readOptions(initialize);
 });
 
-/* Initialization all parameters and run news check */
+/* Initialization all parameters and run feeds check */
 function initialize() {
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
     startSchedule(appGlobal.options.updateInterval);
 }
 
 function startSchedule(updateInterval) {
-    chrome.alarms.create("checkUnread", {
+    chrome.alarms.create("updateFeeds", {
         when: Date.now(),
         periodInMinutes: updateInterval
     });
@@ -52,42 +52,90 @@ function stopSchedule() {
     chrome.alarms.clearAll();
 }
 
-function checkUnread() {
-    appGlobal.feedlyApiClient.get("markers/counts", null, function (response) {
-        var unreadCounts = response.unreadcounts;
-        if (response.errorCode === undefined) {
-            var max = 0;
-            var categoryForFetching;
-            for (var i = 0; i < unreadCounts.length; i++) {
-                if (max < unreadCounts[i].count) {
-                    max = unreadCounts[i].count;
-
-                    //Search category(global or uncategorized) with max feeds for fetching
-                    categoryForFetching = unreadCounts[i].id;
-                }
-
-            }
-            setFeedsCounter(max);
+/* Runs feeds update and stores unread feeds in cache
+ * Callback will be started after function complete */
+function updateFeeds(callback) {
+    getUnreadFeedsCount(function (unreadFeedsCount, globalCategoryId, isLoggedIn) {
+        chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
+        appGlobal.isLoggedIn = isLoggedIn;
+        if (isLoggedIn === true) {
             chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {
             });
-            fetchEntries(categoryForFetching);
-            appGlobal.isLoggedIn = true;
+            fetchEntries(globalCategoryId, function (feeds, isLoggedIn) {
+                appGlobal.isLoggedIn = isLoggedIn;
+                if (isLoggedIn === true) {
+                    appGlobal.cachedFeeds = feeds;
+                } else {
+                    appGlobal.cachedFeeds = [];
+                }
+                if (typeof callback === "function") {
+                    callback();
+                }
+            });
         } else {
-            setFeedsCounter(0);
             chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
             });
             stopSchedule();
-            appGlobal.isLoggedIn = false;
+            if (typeof callback === "function") {
+                callback();
+            }
         }
     });
 }
 
-function fetchEntries(categoryId) {
+/* Returns feeds from the cache.
+ If the cache is empty, then it will be updated before return */
+function getFeeds(callback){
+     if(appGlobal.cachedFeeds.length > 0){
+         callback(appGlobal.cachedFeeds, appGlobal.isLoggedIn);
+     }else{
+         updateFeeds(function(){
+             callback(appGlobal.cachedFeeds, appGlobal.isLoggedIn);
+         });
+     }
+}
+
+/* Returns unread feeds count.
+ * The callback parameter should specify a function that looks like this:
+ * function(number unreadFeedsCount, string globalCategoryId, boolean isLoggedIn) {...};*/
+function getUnreadFeedsCount(callback) {
+    appGlobal.feedlyApiClient.get("markers/counts", null, function (response) {
+        var unreadCounts = response.unreadcounts;
+
+        var unreadFeedsCount = -1;
+        var globalCategoryId = "";
+        var isLoggedIn;
+        if (response.errorCode === undefined) {
+            for (var i = 0; i < unreadCounts.length; i++) {
+                if (unreadFeedsCount < unreadCounts[i].count) {
+                    unreadFeedsCount = unreadCounts[i].count;
+
+                    //Search category(global or uncategorized) with max feeds
+                    globalCategoryId = unreadCounts[i].id;
+                }
+            }
+            isLoggedIn = true;
+        } else {
+            isLoggedIn = false;
+        }
+        if(typeof  callback === "function"){
+            callback(Number(unreadFeedsCount), globalCategoryId, isLoggedIn);
+        }
+    });
+}
+
+/* Download unread feeds.
+ * categoryId is feedly category ID.
+ * The callback parameter should specify a function that looks like this:
+ * function(array feeds, boolean isLoggedIn) {...};*/
+function fetchEntries(categoryId, callback) {
     appGlobal.feedlyApiClient.get("streams/" + encodeURIComponent(categoryId) + "/contents", {
         unreadOnly: true
     }, function (response) {
+        var isLoggedIn;
+        var feeds = [];
         if (response.errorCode === undefined) {
-            appGlobal.unreadItems = response.items.map(function (item) {
+            feeds = response.items.map(function (item) {
                 var blogUrl;
                 try{
                     blogUrl = item.origin.htmlUrl.match(/http(?:s)?:\/\/[^/]+/i).pop();
@@ -103,20 +151,31 @@ function fetchEntries(categoryId) {
                     content: item.summary === undefined || appGlobal.options.compactPopupMode ? "" : item.summary.content
                 };
             });
+            isLoggedIn = true;
+        }else{
+            isLoggedIn = false;
+        }
+        if(typeof callback === "function"){
+            callback(feeds, isLoggedIn);
         }
     });
 }
 
-function markAsRead(feedId) {
+/* Marks feed as read, remove it from the cache and decrement badge.
+ * categoryId is feedly category ID.
+ * The callback parameter should specify a function that looks like this:
+ * function(boolean isLoggedIn) {...};*/
+function markAsRead(feedId, callback) {
     appGlobal.feedlyApiClient.post("markers", null, {
         action: "markAsRead",
         type: "entries",
         entryIds: [feedId]
     }, function (response) {
+        var isLoggedIn;
         if (response.errorCode !== undefined) {
             var indexFeedForRemove;
-            for (var i = 0; i < appGlobal.unreadItems.length; i++) {
-                if (appGlobal.unreadItems[i].id === feedId) {
+            for (var i = 0; i < appGlobal.cachedFeeds.length; i++) {
+                if (appGlobal.cachedFeeds[i].id === feedId) {
                     indexFeedForRemove = i;
                     break;
                 }
@@ -124,18 +183,27 @@ function markAsRead(feedId) {
 
             //Remove feed from unreadItems and update badge
             if (indexFeedForRemove !== undefined) {
-                appGlobal.unreadItems.splice(indexFeedForRemove, 1);
+                appGlobal.cachedFeeds.splice(indexFeedForRemove, 1);
                 chrome.browserAction.getBadgeText({}, function (feedsCount) {
                     feedsCount = +feedsCount;
                     if (feedsCount > 0) {
-                        setFeedsCounter(--feedsCount);
+                        feedsCount--;
+                        chrome.browserAction.setBadgeText({ text: String(feedsCount > 0 ? feedsCount : "")});
                     }
                 });
             }
+            isLoggedIn = true;
+        }else{
+            isLoggedIn = false;
+        }
+        if(typeof callback === "function"){
+            callback(isLoggedIn);
         }
     });
 }
 
+/* Opens feedly site and if user are logged in,
+ * then read access token and stores in chrome.storage */
 function updateToken() {
     chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
         chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
@@ -180,9 +248,4 @@ function readOptions(callback) {
             callback();
         }
     });
-}
-
-function setFeedsCounter(number) {
-    number = +number;
-    chrome.browserAction.setBadgeText({ text: String(number > 0 ? number : "")});
 }

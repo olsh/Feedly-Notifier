@@ -1,5 +1,5 @@
 #login, #feed {
-	display: block;
+	display: none;
 }
 #feed{
     width: 300px;
