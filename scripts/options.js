@@ -50,7 +50,7 @@ function saveOptions() {
           options[optionControl.data("option-name")] = optionValue;
     });
     chrome.storage.sync.set(options, function () {
-        alert("Options was saved");
+        alert("Options has been saved");
     });
 }
 

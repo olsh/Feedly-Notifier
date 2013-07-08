@@ -7,7 +7,7 @@ function renderFeeds(){
             $("#login").show();
         } else if (feeds.length === 0) {
             $("body").children("div").hide();
-            $("#feed-empty").show();
+            $("#feed-empty").html("All read").show();
         } else {
             $("body").children("div").hide();
             $("#feed").show();
@@ -31,7 +31,7 @@ $("#feed").on("click", "a", function (event) {
     });
 });
 
-$("#feed").on("click", "input.mark-read", function (event) {
+$("#feed").on("click", ".mark-read", function (event) {
     var feed = $(this).closest(".item");
     feed.fadeOut().attr("data-is-read", "true");
     backgroundPage.markAsRead(feed.data("id"), function(){
