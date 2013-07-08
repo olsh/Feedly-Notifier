@@ -11,7 +11,8 @@ var appGlobal = {
         compactPopupMode: true
     },
     cachedFeeds: [],
-    isLoggedIn: false
+    isLoggedIn: false,
+    intervalId : 0
 };
 
 // #Event handlers
@@ -27,10 +28,6 @@ chrome.storage.onChanged.addListener(function (changes, areaName) {
     readOptions(initialize);
 });
 
-chrome.alarms.onAlarm.addListener(function (alarm) {
-    updateFeeds();
-});
-
 chrome.runtime.onStartup.addListener(function () {
     readOptions(initialize);
 });
@@ -42,14 +39,13 @@ function initialize() {
 }
 
 function startSchedule(updateInterval) {
-    chrome.alarms.create("updateFeeds", {
-        when: Date.now(),
-        periodInMinutes: updateInterval
-    });
+    stopSchedule(appGlobal.intervalId);
+    updateFeeds();
+    appGlobal.intervalId = setInterval(updateFeeds, updateInterval * 60000)
 }
 
-function stopSchedule() {
-    chrome.alarms.clearAll();
+function stopSchedule(intervalId) {
+    clearInterval(intervalId);
 }
 
 /* Runs feeds update and stores unread feeds in cache
