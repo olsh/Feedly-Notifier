@@ -47,11 +47,19 @@
     width: 350px;
 }
 
+#feed-empty,
 .title{
     font-family: "Open Sans Condensed";
+    color: #444;
+}
+
+#feed-empty{
+    width: 50px;
+}
+
+.title{
     font-size: 14px;
     cursor: pointer;
-    color: #444;
 }
 
 .blog-title a{
