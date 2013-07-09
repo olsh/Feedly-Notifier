@@ -2,6 +2,8 @@ var backgroundPage = chrome.extension.getBackgroundPage();
 
 function renderFeeds(){
     backgroundPage.getFeeds(function(feeds, isLoggedIn){
+        $("#loading").hide();
+
         if (isLoggedIn === false) {
             $("#login").show();
         } else {
