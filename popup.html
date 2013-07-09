@@ -17,9 +17,13 @@
     <div class="item" data-id="${id}">
         <a href="${url}" class="title">${title}</a>
         <span class="mark-read" title="Mark as read"></span>
-        <div class="blog-title"><a href="${blogUrl}">${blog}</a></div>
+        <div class="blog-title">
+            <a href="${blogUrl}">${blog}</a>
+            <span class="timeago" title="${date}"></span>
+        </div>
         <div class="content">{{html content}}</div>
     </div>
 </script>
+<script src="scripts/jquery.timeago.js"></script>
 <script src="scripts/popup.js"></script>
 </html>

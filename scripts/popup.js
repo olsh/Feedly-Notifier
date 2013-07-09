@@ -12,6 +12,7 @@ function renderFeeds(){
             $("body").children("div").hide();
             $("#feed").show();
             $('#entryTemplate').tmpl(feeds).appendTo('#feed');
+            $(".timeago").timeago();
         }
     })
 }

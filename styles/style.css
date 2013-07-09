@@ -62,10 +62,13 @@
     cursor: pointer;
 }
 
-.blog-title a{
+.blog-title a, .blog-title span{
     color: gray;
-    cursor: pointer;
     font-family: sans-serif;
     font-size: 11px;
+}
+
+.blog-title a{
+    cursor: pointer;
     text-decoration: none;
 }

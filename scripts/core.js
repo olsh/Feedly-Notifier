@@ -144,7 +144,8 @@ function fetchEntries(categoryId, callback) {
                     blog: item.origin === undefined ? "" : item.origin.title,
                     blogUrl: blogUrl,
                     id: item.id,
-                    content: item.summary === undefined || appGlobal.options.compactPopupMode ? "" : item.summary.content
+                    content: item.summary === undefined || appGlobal.options.compactPopupMode ? "" : item.summary.content,
+                    date: item.crawled === undefined ? "" : new Date(item.crawled).toISOString()
                 };
             });
             isLoggedIn = true;
