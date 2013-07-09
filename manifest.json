@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "Feedly notifier",
-  "description": "Extension for Feedly news",
-  "version": "1.0",
+  "description": "Extension for Feedly news reader",
+  "version": "1.0.1",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
   "permissions": [
