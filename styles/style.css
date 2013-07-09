@@ -39,11 +39,11 @@
     background-position: -96px -120px;
 }
 
-#login, #feed {
+#login, #popup-content {
     display: none;
 }
 
-#feed{
+.item{
     width: 350px;
 }
 
@@ -54,7 +54,26 @@
 }
 
 #feed-empty{
-    width: 50px;
+    text-align: center;
+}
+
+#popup-content{
+    min-width: 140px;
+}
+
+#feedly{
+    margin-bottom: 10px;
+}
+
+#feedly img{
+    margin-right: 5px;
+    vertical-align: bottom;
+}
+
+#website{
+    font-family: sans-serif;
+    font-size: 11px;
+    cursor: pointer;
 }
 
 .title{
@@ -62,10 +81,18 @@
     cursor: pointer;
 }
 
+.blog-title{
+    color: gray;
+}
+
 .blog-title a, .blog-title span{
     color: gray;
     font-family: sans-serif;
     font-size: 11px;
+}
+
+.blog-title span{
+    font-family: "Open Sans Condensed";
 }
 
 .blog-title a{

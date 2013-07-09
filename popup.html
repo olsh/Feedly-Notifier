@@ -7,8 +7,13 @@
 <div id="login">
     <button id="login-btn" class="button">Login</button>
 </div>
-<div id="feed"></div>
-<div id="feed-empty"></div>
+<div id="popup-content">
+    <div id="feedly">
+        <img src="/images/icon.png"><span id="website">Feedly website</span>
+    </div>
+    <div id="feed"></div>
+    <div id="feed-empty"></div>
+</div>
 </body>
 
 <script src="scripts/jquery-1.8.3.min.js"></script>
@@ -18,7 +23,7 @@
         <a href="${url}" class="title">${title}</a>
         <span class="mark-read" title="Mark as read"></span>
         <div class="blog-title">
-            <a href="${blogUrl}">${blog}</a>
+            <a href="${blogUrl}">${blog}</a>,
             <span class="timeago" title="${date}"></span>
         </div>
         <div class="content">{{html content}}</div>
