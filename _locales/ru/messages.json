@@ -1,0 +1,35 @@
+{
+    "Login" : {
+        "message" : "Вход"
+    },
+    "NoUnreadArticles" : {
+        "message" : "Нет непрочитанных новостей"
+    },
+    "FeedlyWebsite" : {
+        "message" : "Сайт Feedly"
+    },
+    "OptionsSaved" : {
+        "message" : "Настройки были сохранены"
+    },
+    "MarkAsRead" : {
+        "message" : "Пометить как прочитанное"
+    },
+    "IntervalPeriod" : {
+        "message" : "Интервал проверки (мин.)"
+    },
+    "AutoMarkRead" : {
+        "message" : "Помечать новость как прочитанную при открытии"
+    },
+    "CurrentUser" : {
+        "message" : "Текущий пользователь"
+    },
+    "Email" : {
+        "message" : "Email"
+    },
+    "Logout" : {
+        "message" : "Выйти"
+    },
+    "Save" : {
+        "message" : "Сохранить"
+    }
+}

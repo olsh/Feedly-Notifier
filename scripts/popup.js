@@ -1,33 +1,36 @@
 var backgroundPage = chrome.extension.getBackgroundPage();
 
+//Determines lists of supported jQuery.timeago localizations, default localization is en
+var supportedTimeAgoLocales = ["ru"];
+
 function renderFeeds(){
-    backgroundPage.getFeeds(function(feeds, isLoggedIn){
+    backgroundPage.getFeeds(function (feeds, isLoggedIn) {
         $("#loading").hide();
 
         if (isLoggedIn === false) {
+            $("#login-btn").text(chrome.i18n.getMessage("Login"));
             $("#login").show();
         } else {
             $("#popup-content").show();
+            $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
 
             if (feeds.length === 0) {
-                $("#feed-empty").html("No unread articles");
+                $("#feed-empty").html(chrome.i18n.getMessage("NoUnreadArticles"));
             } else {
                 $("#feed-empty").html("");
                 $('#entryTemplate').tmpl(feeds).appendTo('#feed');
+                $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
                 $(".timeago").timeago();
             }
         }
-    })
+    });
 }
-
 
 function markAsRead(link){
     if (backgroundPage.appGlobal.options.markReadOnClick === true && link.hasClass("title") === true) {
         backgroundPage.markAsRead(link.closest(".item").data("id"));
     }
 }
-
-renderFeeds();
 
 $("#login").click(function () {
     backgroundPage.updateToken();
@@ -64,4 +67,16 @@ $("#feed").on("click", ".mark-read", function (event) {
             renderFeeds();
         }
     });
+});
+
+$(document).ready(function(){
+    //If we support this localization of timeago, then insert script with it
+    if (supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
+        //Trying load localization for jQuery.timeago
+        $.getScript("/scripts/timeago/locales/jquery.timeago." + window.navigator.language + ".js", function () {
+            renderFeeds();
+        });
+    }else{
+        renderFeeds();
+    }
 });

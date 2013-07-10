@@ -1,0 +1,35 @@
+{
+    "Login" : {
+        "message" : "Login"
+    },
+    "NoUnreadArticles" : {
+        "message" : "No unread articles"
+    },
+    "FeedlyWebsite" : {
+        "message" : "Feedly website"
+    },
+    "OptionsSaved" : {
+        "message" : "Options have been saved"
+    },
+    "MarkAsRead" : {
+        "message" : "Mark as read"
+    },
+    "IntervalPeriod" : {
+        "message" : "Interval period (min.)"
+    },
+    "AutoMarkRead" : {
+        "message" : "Auto mark as read on news open"
+    },
+    "CurrentUser" : {
+        "message" : "Current user"
+    },
+    "Email" : {
+        "message" : "Email"
+    },
+    "Logout" : {
+        "message" : "Logout"
+    },
+    "Save" : {
+        "message" : "Save"
+    }
+}

@@ -25,6 +25,11 @@ function loadProfileData() {
             var userInfo = $("#userInfo");
             console.log(result);
             if (result.errorCode === undefined) {
+                userInfo.find("[data-locale-value]").each(function(){
+                    var textBox = $(this);
+                    var localValue = textBox.data("locale-value");
+                    textBox.text(chrome.i18n.getMessage(localValue));
+                });
                 userInfo.show();
                 for (var profileData in result) {
                     userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
@@ -50,7 +55,7 @@ function saveOptions() {
           options[optionControl.data("option-name")] = optionValue;
     });
     chrome.storage.sync.set(options, function () {
-        alert("Options have been saved");
+        alert(chrome.i18n.getMessage("OptionsSaved"));
     });
 }
 
@@ -65,5 +70,10 @@ function loadOptions() {
                 optionControl.val(items[option]);
             }
         }
+    });
+    $("#options").find("[data-locale-value]").each(function(){
+        var textBox = $(this);
+        var localValue = textBox.data("locale-value");
+        textBox.text(chrome.i18n.getMessage(localValue));
     });
 }
