@@ -1,7 +1,7 @@
 var backgroundPage = chrome.extension.getBackgroundPage();
 
 //Determines lists of supported jQuery.timeago localizations, default localization is en
-var supportedTimeAgoLocales = ["ru"];
+var supportedTimeAgoLocales = ["ru", "fr"];
 
 function renderFeeds(){
     backgroundPage.getFeeds(function (feeds, isLoggedIn) {

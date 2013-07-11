@@ -1,0 +1,35 @@
+﻿{
+    "Login" : {
+        "message" : "Connexion"
+    },
+    "NoUnreadArticles" : {
+        "message" : "Aucun article non lu"
+    },
+    "FeedlyWebsite" : {
+        "message" : "Feedly Site web"
+    },
+    "OptionsSaved" : {
+        "message" : "Options enregistrées"
+    },
+    "MarkAsRead" : {
+        "message" : "Marquer comme lu"
+    },
+    "IntervalPeriod" : {
+        "message" : "Periode d'intervalle (min.)"
+    },
+    "AutoMarkRead" : {
+        "message" : "Marquer automatiquement comme lu à l'ouverture d'un article"
+    },
+    "CurrentUser" : {
+        "message" : "Utilisateur actuel"
+    },
+    "Email" : {
+        "message" : "Email"
+    },
+    "Logout" : {
+        "message" : "Déconnexion"
+    },
+    "Save" : {
+        "message" : "Enregistrer"
+    }
+}
