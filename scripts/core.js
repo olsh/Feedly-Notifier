@@ -8,11 +8,14 @@ var appGlobal = {
         updateInterval: 1,
         markReadOnClick: true,
         accessToken: "",
-        compactPopupMode: true
+        compactPopupMode: true,
+        showDesktopNotifications: true
     },
     cachedFeeds: [],
     isLoggedIn: false,
-    intervalId : 0
+    intervalId : 0,
+    lastFeedTime: new Date(),
+    maxNotifications: 4
 };
 
 // #Event handlers
@@ -32,6 +35,18 @@ chrome.runtime.onStartup.addListener(function () {
     readOptions(initialize);
 });
 
+function togglePopup(){
+    chrome.browserAction.getPopup({},function(popup){
+        if(popup){
+            chrome.browserAction.setPopup({popup: ""});
+        }else{
+            setTimeout(function(){
+                chrome.browserAction.setPopup({popup: "popup.html"});
+            }, 1 * 200);
+        }
+    })
+}
+
 /* Initialization all parameters and run feeds check */
 function initialize() {
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
@@ -48,9 +63,52 @@ function stopSchedule(intervalId) {
     clearInterval(intervalId);
 }
 
+function sendDesktopNotification(feeds){
+    var lastFeedTime = appGlobal.lastFeedTime;
+    var newFeeds = [];
+    for (var i = 0; i < feeds.length; i++) {
+        if (feeds[i].date > appGlobal.lastFeedTime) {
+            newFeeds.push(feeds[i]);
+            if (feeds[i].date > lastFeedTime) {
+                lastFeedTime = feeds[i].date;
+            }
+        }
+    }
+    appGlobal.lastFeedTime = lastFeedTime;
+    if(newFeeds.length > 5){
+        var notification = window.webkitNotifications.createNotification(
+            appGlobal.icons.default, "New feeds", chrome.i18n.getMessage("YouHaveUnreadFeeds", newFeeds.length.toString()));
+        notification.show();
+    }else{
+        for(var i = 0; i < feeds.length; i++){
+            var notification = window.webkitNotifications.createNotification(
+                appGlobal.icons.default, "New feed", newFeeds[i].title);
+            notification.show();
+        }
+    }
+}
+
+/* Removes feeds from cache by feed ID */
+function removeFeedFromCache(feedId){
+    var indexFeedForRemove;
+    for (var i = 0; i < appGlobal.cachedFeeds.length; i++) {
+        if (appGlobal.cachedFeeds[i].id === feedId) {
+            indexFeedForRemove = i;
+            break;
+        }
+    }
+
+    //Remove feed from unreadItems and update badge
+    if (indexFeedForRemove !== undefined) {
+        appGlobal.cachedFeeds.splice(indexFeedForRemove, 1);
+    }
+}
+
 /* Runs feeds update and stores unread feeds in cache
- * Callback will be started after function complete */
-function updateFeeds(callback) {
+ * Callback will be started after function complete
+ * If silentUpdate is true, then notifications will not be shown
+ * */
+function updateFeeds(callback, silentUpdate) {
     getUnreadFeedsCount(function (unreadFeedsCount, globalCategoryId, isLoggedIn) {
         chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
         appGlobal.isLoggedIn = isLoggedIn;
@@ -61,6 +119,9 @@ function updateFeeds(callback) {
                 appGlobal.isLoggedIn = isLoggedIn;
                 if (isLoggedIn === true) {
                     appGlobal.cachedFeeds = feeds;
+                    if (!silentUpdate && appGlobal.options.showDesktopNotifications) {
+                        sendDesktopNotification(feeds);
+                    }
                 } else {
                     appGlobal.cachedFeeds = [];
                 }
@@ -87,7 +148,7 @@ function getFeeds(callback){
      }else{
          updateFeeds(function(){
              callback(appGlobal.cachedFeeds, appGlobal.isLoggedIn);
-         });
+         }, true);
      }
 }
 
@@ -145,7 +206,8 @@ function fetchEntries(categoryId, callback) {
                     blogUrl: blogUrl,
                     id: item.id,
                     content: item.summary === undefined || appGlobal.options.compactPopupMode ? "" : item.summary.content,
-                    date: item.crawled === undefined ? "" : new Date(item.crawled).toISOString()
+                    isoDate: item.crawled === undefined ? "" : new Date(item.crawled).toISOString(),
+                    date: item.crawled === undefined ? "" : new Date(item.crawled)
                 };
             });
             isLoggedIn = true;
@@ -159,36 +221,27 @@ function fetchEntries(categoryId, callback) {
 }
 
 /* Marks feed as read, remove it from the cache and decrement badge.
- * categoryId is feedly category ID.
+ * array of the ID of feeds
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
-function markAsRead(feedId, callback) {
+function markAsRead(feedIds, callback) {
     appGlobal.feedlyApiClient.post("markers", null, {
         action: "markAsRead",
         type: "entries",
-        entryIds: [feedId]
+        entryIds: feedIds
     }, function (response) {
         var isLoggedIn;
         if (response.errorCode !== undefined) {
-            var indexFeedForRemove;
-            for (var i = 0; i < appGlobal.cachedFeeds.length; i++) {
-                if (appGlobal.cachedFeeds[i].id === feedId) {
-                    indexFeedForRemove = i;
-                    break;
+            for(var i = 0; i < feedIds.length; i++){
+                removeFeedFromCache(feedIds[i]);
+            }
+            chrome.browserAction.getBadgeText({}, function (feedsCount) {
+                feedsCount = +feedsCount;
+                if (feedsCount > 0) {
+                    feedsCount-= feedIds.length;
+                    chrome.browserAction.setBadgeText({ text: String(feedsCount > 0 ? feedsCount : "")});
                 }
-            }
-
-            //Remove feed from unreadItems and update badge
-            if (indexFeedForRemove !== undefined) {
-                appGlobal.cachedFeeds.splice(indexFeedForRemove, 1);
-                chrome.browserAction.getBadgeText({}, function (feedsCount) {
-                    feedsCount = +feedsCount;
-                    if (feedsCount > 0) {
-                        feedsCount--;
-                        chrome.browserAction.setBadgeText({ text: String(feedsCount > 0 ? feedsCount : "")});
-                    }
-                });
-            }
+            });
             isLoggedIn = true;
         }else{
             isLoggedIn = false;

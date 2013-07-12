@@ -8,28 +8,29 @@
 <body id="options-page">
     <div id="container">
         <div id="header">
-            Feedly notifier options
         </div>
         <form id="options">
             <div class="options-section">
-                <span class="label" data-locale-value="IntervalPeriod">Interval period (min.)</span>:
+                <span class="label" data-locale-value="IntervalPeriod"></span>:
                 <input type="number" min="1" max="60" data-option-name="updateInterval" class="label" /><br>
-                <span class="label" data-locale-value="AutoMarkRead">Auto mark as read on news open</span>
+                <span class="label" data-locale-value="AutoMarkRead"></span>
                 <input type="checkbox" data-option-name="markReadOnClick" />
                 <!--        Compact mode
                         <input type="checkbox" data-option-name="compactPopupMode" />-->
+                <span class="label" data-locale-value="ShowDesktopNotifications"></span>
+                <input type="checkbox" data-option-name="showDesktopNotifications" />
             </div>
             <button type="submit" id="save" data-locale-value="Save" class="button">Save</button>
         </form>
         <div id="userInfo">
             <div class="options-section">
-                <span class="label" data-locale-value="CurrentUser">Current user</span>
+                <span class="label" data-locale-value="CurrentUser"></span>
                 <span data-value-name="givenName"></span>
                 <span data-value-name="familyName"></span><br>
                 <span class="label" data-locale-value="Email">Email</span>
                 <span data-value-name="email"></span>
             </div>
-            <button type="submit" id="logout" class="button" data-locale-value="Logout">Logout</button>
+            <button type="submit" id="logout" class="button" data-locale-value="Logout"></button>
         </div>
     </div>
 </body>

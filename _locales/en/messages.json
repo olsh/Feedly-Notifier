@@ -31,5 +31,29 @@
     },
     "Save" : {
         "message" : "Save"
+    },
+    "FeedlyNotifierOptions" : {
+        "message" : "Feedly Notifier options"
+    },
+    "MarkAllAsRead" : {
+        "message" : "Mark all as read"
+    },
+    "ShowDesktopNotifications" : {
+        "message" : "Show desktop notifications"
+    },
+    "NewFeed" : {
+        "message" : "New feed"
+    },
+    "NewFeeds" : {
+        "message" : "New feeds"
+    },
+    "YouHaveUnreadFeeds" : {
+        "message" : "You have $count$ new feeds",
+        "placeholders" : {
+            "count": {
+                "content": "$1",
+                "example": "10"
+            }
+        }
     }
 }

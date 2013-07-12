@@ -39,7 +39,7 @@
     background-position: -96px -120px;
 }
 
-#login, #popup-content {
+#login, #popup-content, #mark-all-read {
     display: none;
 }
 
@@ -73,7 +73,8 @@
 #website{
     font-family: sans-serif;
     font-size: 11px;
-    cursor: pointer;
+    text-decoration: none;
+    color: black;
 }
 
 .title{

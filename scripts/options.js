@@ -71,6 +71,7 @@ function loadOptions() {
             }
         }
     });
+    $("#header").text(chrome.i18n.getMessage("FeedlyNotifierOptions"));
     $("#options").find("[data-locale-value]").each(function(){
         var textBox = $(this);
         var localValue = textBox.data("locale-value");

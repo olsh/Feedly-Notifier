@@ -31,5 +31,29 @@
     },
     "Save" : {
         "message" : "Сохранить"
+    },
+    "FeedlyNotifierOptions" : {
+        "message" : "Настройки Feedly Notifier"
+    },
+    "MarkAllAsRead" : {
+        "message" : "Пометить все как прочитанное"
+    },
+    "ShowDesktopNotifications" : {
+        "message" : "Показывать уведомления"
+    },
+    "NewFeed" : {
+        "message" : "Новая запись"
+    },
+    "NewFeeds" : {
+        "message" : "Новые записи"
+    },
+    "YouHaveUnreadFeeds" : {
+        "message" : "$count$ новых записей",
+        "placeholders" : {
+            "count": {
+                "content": "$1",
+                "example": "10"
+            }
+        }
     }
 }
