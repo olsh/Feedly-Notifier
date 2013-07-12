@@ -8,6 +8,7 @@ var popupGlobal = {
 
 function renderFeeds(){
     $("body").children("div").hide();
+    $("#all-read-section").hide();
     $("#loading").show();
     backgroundPage.getFeeds(function (feeds, isLoggedIn) {
         $("#loading").hide();
@@ -21,7 +22,6 @@ function renderFeeds(){
 
             if (feeds.length === 0) {
                 $("#feed-empty").html(chrome.i18n.getMessage("NoUnreadArticles"));
-                $("#all-read-section").hide();
             } else {
                 $("#feed-empty").html("");
                 $('#entryTemplate').tmpl(feeds).appendTo('#feed');
