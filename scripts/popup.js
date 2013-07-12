@@ -36,8 +36,8 @@ function markAsRead(feedIds, callback){
         feed.fadeOut().attr("data-is-read", "true");
     }
     backgroundPage.markAsRead(feedIds, function(isLoggedIn){
-        if(typeof callback === "function"){
-            callback(isLoggedIn);
+        if($("#feed").find(".item[data-is-read!='true']").size() === 0){
+            renderFeeds();
         }
     });
 }
@@ -64,18 +64,12 @@ $("#popup-content").on("click", "#mark-all-read",function(event){
     $(".item").each(function(key, value){
         feedIds.push($(value).data("id"));
     });
-    markAsRead(feedIds, function(){
-        renderFeeds();
-    });
+    markAsRead(feedIds);
 });
 
 $("#feed").on("click", ".mark-read", function (event) {
     var feed = $(this).closest(".item");
-    markAsRead([feed.data("id")], function(){
-        if($("#feed").find(".item[data-is-read!='true']").size() === 0){
-            renderFeeds();
-        }
-    });
+    markAsRead([feed.data("id")]);
 });
 
 addEventListener("unload", function (event) {
