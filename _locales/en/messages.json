@@ -47,6 +47,9 @@
     "NewFeeds" : {
         "message" : "New feeds"
     },
+    "More" : {
+        "message" : "More"
+    },
     "YouHaveUnreadFeeds" : {
         "message" : "You have $count$ new feeds",
         "placeholders" : {

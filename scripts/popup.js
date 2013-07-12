@@ -27,6 +27,7 @@ function renderFeeds(){
                 $('#entryTemplate').tmpl(feeds).appendTo('#feed');
                 $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
                 $("#mark-all-read").text(chrome.i18n.getMessage("MarkAllAsRead")).show();
+                $(".show-content").text(chrome.i18n.getMessage("More")).show();
                 $(".timeago").timeago();
             }
         }
@@ -92,6 +93,12 @@ $("#feed").on("click", ".show-content", function(){
         }
         if(content){
             contentContainer.html(content);
+            //For open new tab without closing popup
+            contentContainer.find("a").each(function(key, value){
+                var link = $(value);
+                link.data("link", link.attr("href"));
+                link.attr("href", "javascript:void(0)");
+            });
         }
     }
     contentContainer.slideToggle();

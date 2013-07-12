@@ -47,6 +47,9 @@
     "NewFeeds" : {
         "message" : "Новые записи"
     },
+    "More" : {
+        "message" : "Подробнее"
+    },
     "YouHaveUnreadFeeds" : {
         "message" : "$count$ новых записей",
         "placeholders" : {

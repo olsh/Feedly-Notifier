@@ -5,7 +5,7 @@ var appGlobal = {
         inactive: "/images/icon_inactive.png"
     },
     options: {
-        updateInterval: 1,
+        updateInterval: 2,
         markReadOnClick: true,
         accessToken: "",
         compactPopupMode: true,
@@ -49,6 +49,7 @@ function togglePopup(){
 
 /* Initialization all parameters and run feeds check */
 function initialize() {
+    appGlobal.lastFeedTime = new Date();
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
     startSchedule(appGlobal.options.updateInterval);
 }
