@@ -65,17 +65,6 @@ function stopSchedule(intervalId) {
 }
 
 function sendDesktopNotification(feeds){
-    var lastFeedTime = appGlobal.lastFeedTime;
-    var newFeeds = [];
-    for (var i = 0; i < feeds.length; i++) {
-        if (feeds[i].date > appGlobal.lastFeedTime) {
-            newFeeds.push(feeds[i]);
-            if (feeds[i].date > lastFeedTime) {
-                lastFeedTime = feeds[i].date;
-            }
-        }
-    }
-    appGlobal.lastFeedTime = lastFeedTime;
     if(newFeeds.length > 5){
         var notification = window.webkitNotifications.createNotification(
             appGlobal.icons.default, "New feeds", chrome.i18n.getMessage("YouHaveUnreadFeeds", newFeeds.length.toString()));
@@ -120,8 +109,22 @@ function updateFeeds(callback, silentUpdate) {
                 appGlobal.isLoggedIn = isLoggedIn;
                 if (isLoggedIn === true) {
                     appGlobal.cachedFeeds = feeds;
-                    if (!silentUpdate && appGlobal.options.showDesktopNotifications) {
-                        sendDesktopNotification(feeds);
+                    if (appGlobal.options.showDesktopNotifications) {
+                        //Find only new feeds and set date of last feed
+                        var lastFeedTime = appGlobal.lastFeedTime;
+                        var newFeeds = [];
+                        for (var i = 0; i < feeds.length; i++) {
+                            if (feeds[i].date > appGlobal.lastFeedTime) {
+                                newFeeds.push(feeds[i]);
+                                if (feeds[i].date > lastFeedTime) {
+                                    lastFeedTime = feeds[i].date;
+                                }
+                            }
+                        }
+                        appGlobal.lastFeedTime = lastFeedTime;
+                        if(!silentUpdate ){
+                            sendDesktopNotification(newFeeds);
+                        }
                     }
                 } else {
                     appGlobal.cachedFeeds = [];
