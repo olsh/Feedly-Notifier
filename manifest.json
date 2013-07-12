@@ -3,7 +3,7 @@
 
     "name": "Feedly notifier",
     "description": "Extension for Feedly news reader",
-    "version": "1.1",
+    "version": "1.2.0",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "default_locale": "en",
 
