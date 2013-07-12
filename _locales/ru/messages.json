@@ -58,5 +58,11 @@
                 "example": "10"
             }
         }
+    },
+    "ShowContent" : {
+        "message" : "Показать статью"
+    },
+    "HideContent" : {
+        "message" : "Скрыть статью"
     }
 }

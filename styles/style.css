@@ -22,7 +22,9 @@
     cursor: pointer;
 }
 
-.mark-read {
+.mark-read,
+.show-content,
+.icon-ok{
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -35,11 +37,20 @@
     background-repeat: no-repeat;
 }
 
+.icon-ok{
+    background-position: -288px 0;
+    margin-right: 5px;
+}
+
 .mark-read:hover{
     background-position: -96px -120px;
 }
 
-#login, #popup-content, #mark-all-read {
+.show-content{
+    background-position: -313px -119px;
+}
+
+#login, #popup-content, #all-read-section {
     display: none;
 }
 
@@ -70,11 +81,20 @@
     vertical-align: bottom;
 }
 
-#website{
+#website,
+#mark-all-read{
     font-family: sans-serif;
     font-size: 11px;
     text-decoration: none;
     color: black;
+}
+
+#mark-all-read{
+    cursor: pointer;
+}
+
+#all-read-section{
+    float:right;
 }
 
 .title{

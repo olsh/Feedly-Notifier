@@ -58,5 +58,11 @@
                 "example": "10"
             }
         }
+    },
+    "ShowContent" : {
+        "message" : "Show content"
+    },
+    "HideContent" : {
+        "message" : "Hide content"
     }
 }

@@ -31,5 +31,38 @@
     },
     "Save" : {
         "message" : "Enregistrer"
+    },
+    "FeedlyNotifierOptions" : {
+        "message" : "Options de Feedly Notifier"
+    },
+    "MarkAllAsRead" : {
+        "message" : "Marquer tous lus"
+    },
+    "ShowDesktopNotifications" : {
+        "message" : "Afficher les notifications bureau"
+    },
+    "NewFeed" : {
+        "message" : "Nouvel article"
+    },
+    "NewFeeds" : {
+        "message" : "Nouveaux articles"
+    },
+    "More" : {
+        "message" : "Plus"
+    },
+    "YouHaveUnreadFeeds" : {
+        "message" : "Vous avez $count$ nouveaux articles",
+        "placeholders" : {
+            "count": {
+                "content": "$1",
+                "example": "10"
+            }
+        }
+    },
+    "ShowContent" : {
+        "message" : "Afficher le contenu"
+    },
+    "HideContent" : {
+        "message" : "Masquer le contenu"
     }
 }

@@ -13,8 +13,8 @@
 <div id="popup-content">
     <div id="feedly">
         <img src="/images/icon.png"><a href="http://www.feedly.com" target="_blank" id="website"></a>
+        <span id="all-read-section"><i class="icon-ok"></i><span id="mark-all-read"></span></span>
     </div>
-    <button id="mark-all-read"></button>
     <div id="feed"></div>
     <div id="feed-empty"></div>
 </div>
@@ -26,7 +26,7 @@
     <div class="item" data-id="${id}">
         <a data-link="${url}" class="title">${title}</a>
         <span class="mark-read" title="Mark as read"></span>
-        <button class="show-content"></button>
+        <span class="show-content" title="Show content"></span>
         <div class="blog-title">
             <a data-link="${blogUrl}" href="javascript:void(0)">${blog}</a>,
             <span class="timeago" title="${isoDate}"></span>

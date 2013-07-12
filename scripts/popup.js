@@ -21,13 +21,14 @@ function renderFeeds(){
 
             if (feeds.length === 0) {
                 $("#feed-empty").html(chrome.i18n.getMessage("NoUnreadArticles"));
-                $("#mark-all-read").hide();
+                $("#all-read-section").hide();
             } else {
                 $("#feed-empty").html("");
                 $('#entryTemplate').tmpl(feeds).appendTo('#feed');
                 $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
-                $("#mark-all-read").text(chrome.i18n.getMessage("MarkAllAsRead")).show();
-                $(".show-content").text(chrome.i18n.getMessage("More")).show();
+                $("#mark-all-read").text(chrome.i18n.getMessage("MarkAllAsRead"));
+                $("#all-read-section").show();
+                $(".show-content").attr("title", chrome.i18n.getMessage("More")).show();
                 $(".timeago").timeago();
             }
         }
@@ -81,7 +82,8 @@ addEventListener("unload", function (event) {
 }, true);
 
 $("#feed").on("click", ".show-content", function(){
-    var feed = $(this).closest(".item");
+    var $this = $(this);
+    var feed = $this.closest(".item");
     var contentContainer = feed.find(".content");
     var feedId = feed.data("id");
     if(contentContainer.html() === ""){
@@ -101,7 +103,14 @@ $("#feed").on("click", ".show-content", function(){
             });
         }
     }
-    contentContainer.slideToggle();
+    contentContainer.slideToggle(function () {
+        $this.css("background-position", contentContainer.is(":visible") ? "-288px -120px" :"-313px -119px");
+        if (contentContainer.is(":visible") && contentContainer.text().length > 350){
+            feed.css("width",  "700px");
+        } else{
+            feed.css("width",  "350px");
+        }
+    });
 });
 
 $(document).ready(function(){

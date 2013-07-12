@@ -8,7 +8,6 @@ var appGlobal = {
         updateInterval: 2,
         markReadOnClick: true,
         accessToken: "",
-        compactPopupMode: true,
         showDesktopNotifications: true
     },
     cachedFeeds: [],
