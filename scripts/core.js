@@ -144,10 +144,10 @@ function updateFeeds(callback, silentUpdate) {
  If the cache is empty, then it will be updated before return */
 function getFeeds(callback){
      if(appGlobal.cachedFeeds.length > 0){
-         callback(appGlobal.cachedFeeds, appGlobal.isLoggedIn);
+         callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
      }else{
          updateFeeds(function(){
-             callback(appGlobal.cachedFeeds, appGlobal.isLoggedIn);
+             callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
          }, true);
      }
 }
@@ -205,7 +205,7 @@ function fetchEntries(categoryId, callback) {
                     blog: item.origin === undefined ? "" : item.origin.title,
                     blogUrl: blogUrl,
                     id: item.id,
-                    content: item.summary === undefined || appGlobal.options.compactPopupMode ? "" : item.summary.content,
+                    content: item.summary === undefined ? (item.content === undefined ? "" : item.content.content) : item.summary.content,
                     isoDate: item.crawled === undefined ? "" : new Date(item.crawled).toISOString(),
                     date: item.crawled === undefined ? "" : new Date(item.crawled)
                 };

@@ -1,14 +1,17 @@
-var backgroundPage = chrome.extension.getBackgroundPage();
+var backgroundPage = chrome.extension.getBackgroundPage()
 
-//Determines lists of supported jQuery.timeago localizations, default localization is en
-var supportedTimeAgoLocales = ["ru", "fr"];
+var popupGlobal = {
+    //Determines lists of supported jQuery.timeago localizations, default localization is en
+    supportedTimeAgoLocales : ["ru", "fr"],
+    feeds : []
+}
 
 function renderFeeds(){
     $("body").children("div").hide();
     $("#loading").show();
     backgroundPage.getFeeds(function (feeds, isLoggedIn) {
         $("#loading").hide();
-
+        popupGlobal.feeds = feeds;
         if (isLoggedIn === false) {
             $("#login-btn").text(chrome.i18n.getMessage("Login"));
             $("#login").show();
@@ -76,10 +79,28 @@ addEventListener("unload", function (event) {
     backgroundPage.togglePopup();
 }, true);
 
+$("#feed").on("click", ".show-content", function(){
+    var feed = $(this).closest(".item");
+    var contentContainer = feed.find(".content");
+    var feedId = feed.data("id");
+    if(contentContainer.html() === ""){
+        var content;
+        for(var i = 0; i < popupGlobal.feeds.length; i++){
+            if(popupGlobal.feeds[i].id === feedId){
+                content = popupGlobal.feeds[i].content
+            }
+        }
+        if(content){
+            contentContainer.html(content);
+        }
+    }
+    contentContainer.slideToggle();
+});
+
 $(document).ready(function(){
     backgroundPage.togglePopup();
     //If we support this localization of timeago, then insert script with it
-    if (supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
+    if (popupGlobal.supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
         //Trying load localization for jQuery.timeago
         $.getScript("/scripts/timeago/locales/jquery.timeago." + window.navigator.language + ".js", function () {
             renderFeeds();

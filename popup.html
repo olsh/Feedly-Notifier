@@ -26,11 +26,12 @@
     <div class="item" data-id="${id}">
         <a data-link="${url}" class="title">${title}</a>
         <span class="mark-read" title="Mark as read"></span>
+        <button class="show-content">Show content</button>
         <div class="blog-title">
             <a data-link="${blogUrl}" href="javascript:void(0)">${blog}</a>,
             <span class="timeago" title="${isoDate}"></span>
         </div>
-        <div class="content">{{html content}}</div>
+        <div class="content" style="display: none;"></div>
     </div>
 </script>
 <script src="scripts/timeago/jquery.timeago.js"></script>
