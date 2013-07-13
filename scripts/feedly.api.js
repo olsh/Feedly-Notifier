@@ -11,7 +11,7 @@ var FeedlyApiClient = function (accessToken) {
         var queryString;
         if (parameters !== null) {
             queryString = "?";
-            for (parameterName in parameters) {
+            for (var parameterName in parameters) {
                 queryString += parameterName + "=" + parameters[parameterName] + "&";
             }
             queryString = queryString.replace(/&$/, "");
