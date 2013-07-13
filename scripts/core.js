@@ -64,14 +64,14 @@ function stopSchedule(intervalId) {
 }
 
 function sendDesktopNotification(feeds){
-    if(newFeeds.length > 5){
+    if(feeds.length > 5){
         var notification = window.webkitNotifications.createNotification(
-            appGlobal.icons.default, "New feeds", chrome.i18n.getMessage("YouHaveUnreadFeeds", newFeeds.length.toString()));
+            appGlobal.icons.default, "New feeds", chrome.i18n.getMessage("YouHaveUnreadFeeds", feeds.length.toString()));
         notification.show();
     }else{
         for(var i = 0; i < feeds.length; i++){
             var notification = window.webkitNotifications.createNotification(
-                appGlobal.icons.default, "New feed", newFeeds[i].title);
+                appGlobal.icons.default, "New feed", feeds[i].title);
             notification.show();
         }
     }
