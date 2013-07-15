@@ -2,13 +2,15 @@ var appGlobal = {
     feedlyApiClient: new FeedlyApiClient(),
     icons: {
         default: "/images/icon.png",
-        inactive: "/images/icon_inactive.png"
+        inactive: "/images/icon_inactive.png",
+        defaultBig: "/images/icon128.png"
     },
     options: {
-        updateInterval: 2,
+        updateInterval: 2, //minutes
         markReadOnClick: true,
         accessToken: "",
-        showDesktopNotifications: true
+        showDesktopNotifications: true,
+        hideNotificationDelay: 60 //seconds
     },
     cachedFeeds: [],
     isLoggedIn: false,
@@ -64,16 +66,27 @@ function stopSchedule(intervalId) {
 }
 
 function sendDesktopNotification(feeds){
+    var notifications = [];
     if(feeds.length > 5){
         var notification = window.webkitNotifications.createNotification(
-            appGlobal.icons.default, "New feeds", chrome.i18n.getMessage("YouHaveUnreadFeeds", feeds.length.toString()));
+            appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeeds"), chrome.i18n.getMessage("YouHaveUnreadFeeds", feeds.length.toString()));
         notification.show();
+        notifications.push(notification);
     }else{
         for(var i = 0; i < feeds.length; i++){
             var notification = window.webkitNotifications.createNotification(
-                appGlobal.icons.default, "New feed", feeds[i].title);
+                appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeed"), feeds[i].title);
             notification.show();
+            notifications.push(notification);
         }
+    }
+
+    if(appGlobal.options.hideNotificationDelay > 0){
+        setTimeout(function () {
+            for(i=0; i < notifications.length; i++){
+                notifications[i].cancel();
+            }
+        }, appGlobal.options.hideNotificationDelay * 1000);
     }
 }
 

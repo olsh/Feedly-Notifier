@@ -58,5 +58,8 @@
                 "example": "10"
             }
         }
+    },
+    "HideNotificationsAfter": {
+        "message": "Hide desktop notifications after (sec.), 0 - don't hide"
     }
 }

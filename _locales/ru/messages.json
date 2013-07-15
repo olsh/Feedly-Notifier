@@ -58,5 +58,8 @@
                 "example": "10"
             }
         }
+    },
+    "HideNotificationsAfter": {
+        "message": "Скрывать уведомления после (сек.), 0 - не скрывать"
     }
 }
