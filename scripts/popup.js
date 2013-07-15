@@ -7,9 +7,7 @@ var popupGlobal = {
 }
 
 function renderFeeds(){
-    $("body").children("div").hide();
-    $("#all-read-section").hide();
-    $("#loading").show();
+    showLoader();
     backgroundPage.getFeeds(function (feeds, isLoggedIn) {
         $("#loading").hide();
         popupGlobal.feeds = feeds;
@@ -22,6 +20,7 @@ function renderFeeds(){
 
             if (feeds.length === 0) {
                 $("#feed-empty").html(chrome.i18n.getMessage("NoUnreadArticles"));
+                $("#all-read-section").hide();
             } else {
                 $("#feed-empty").html("");
                 $('#entryTemplate').tmpl(feeds).appendTo('#feed');
@@ -40,11 +39,17 @@ function markAsRead(feedIds, callback){
         var feed = $(".item[data-id='" + feedIds[i] + "']");
         feed.fadeOut().attr("data-is-read", "true");
     }
+    showLoader();
     backgroundPage.markAsRead(feedIds, function(isLoggedIn){
         if($("#feed").find(".item[data-is-read!='true']").size() === 0){
             renderFeeds();
         }
     });
+}
+
+function showLoader(){
+    $("body").children("div").hide();
+    $("#loading").show();
 }
 
 $("#login").click(function () {

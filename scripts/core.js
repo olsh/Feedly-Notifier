@@ -16,7 +16,7 @@ var appGlobal = {
     isLoggedIn: false,
     intervalId : 0,
     lastFeedTime: new Date(),
-    maxNotifications: 4
+    maxNotifications: 5
 };
 
 // #Event handlers
@@ -67,7 +67,7 @@ function stopSchedule(intervalId) {
 
 function sendDesktopNotification(feeds){
     var notifications = [];
-    if(feeds.length > 5){
+    if(feeds.length > appGlobal.maxNotifications){
         var notification = window.webkitNotifications.createNotification(
             appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeeds"), chrome.i18n.getMessage("YouHaveUnreadFeeds", feeds.length.toString()));
         notification.show();
