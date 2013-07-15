@@ -60,6 +60,6 @@
         }
     },
     "HideNotificationsAfter": {
-        "message": "Hide desktop notifications after (sec.), 0 - don't hide"
+        "message": "Masquer les notifications bureau après (sec.), 0 - ne pas masquer"
     }
 }

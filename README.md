@@ -7,6 +7,15 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v1.3.0 (2013.07.15)
+
+* Background mode
+* Hide notifications after delay option
+
+v1.2.1 (2013.07.14)
+
+* Fixed desktop notifications bug
+
 v1.2.0 (2013.07.13)
 
 * "Read all" button
@@ -17,14 +26,14 @@ v1.2.0 (2013.07.13)
 
 v1.1 (2013.07.09)
 
-* Date of news was added.
-* Added link to Feedly homepage.
-* Added loader.
+* Date of news was added
+* Added link to Feedly homepage
+* Added loader
 * Russian translation
 
 v1.0.1 (2013.07.08)
 
-* Scheduler bug was fixed.
+* Scheduler bug was fixed
 
 v1.0 (2013.07.08)
 
