@@ -50,7 +50,7 @@ function togglePopup(){
 
 /* Initialization all parameters and run feeds check */
 function initialize() {
-    appGlobal.lastFeedTime = new Date();
+    appGlobal.lastFeedTime = new Date(1970, 10, 10);
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
     startSchedule(appGlobal.options.updateInterval);
 }
@@ -70,8 +70,10 @@ function sendDesktopNotification(feeds){
     var notifications = [];
     //if notifications too many, then to show only count
     if(feeds.length > appGlobal.maxNotifications){
+        //We can detect only 20 new feeds at time, but actually count of feeds may be more than 20
+        var count = feeds.length === 20 ? chrome.i18n.getMessage("many") : feeds.length.toString();
         var notification = window.webkitNotifications.createNotification(
-            appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeeds"), chrome.i18n.getMessage("YouHaveUnreadFeeds", feeds.length.toString()));
+            appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeeds"), chrome.i18n.getMessage("YouHaveNewFeeds", count));
         notification.show();
         notifications.push(notification);
     }else{

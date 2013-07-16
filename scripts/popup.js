@@ -34,12 +34,15 @@ function renderFeeds(){
     });
 }
 
-function markAsRead(feedIds, callback){
+function markAsRead(feedIds){
     for(var i = 0; i < feedIds.length; i++){
         var feed = $(".item[data-id='" + feedIds[i] + "']");
         feed.fadeOut().attr("data-is-read", "true");
     }
-    showLoader();
+    //Show loader if all feeds were read
+    if($("#feed").find(".item[data-is-read!='true']").size() === 0){
+        showLoader();
+    }
     backgroundPage.markAsRead(feedIds, function(isLoggedIn){
         if($("#feed").find(".item[data-is-read!='true']").size() === 0){
             renderFeeds();

@@ -7,6 +7,11 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v1.3.1 (2013.07.16)
+
+* RTL text direction support
+* UI improvements
+
 v1.3.0 (2013.07.15)
 
 * Background mode

@@ -50,12 +50,15 @@
     "More" : {
         "message" : "Plus"
     },
-    "YouHaveUnreadFeeds" : {
+    "many" : {
+        "message" : "beaucoup"
+    },
+    "YouHaveNewFeeds" : {
         "message" : "Vous avez $count$ nouveaux articles",
         "placeholders" : {
             "count": {
                 "content": "$1",
-                "example": "10"
+                "example": "10 or many"
             }
         }
     },
