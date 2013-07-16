@@ -3,7 +3,7 @@
 
     "name": "Feedly Notifier",
     "description": "Extension for Feedly news reader",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "default_locale": "en",
 
@@ -12,7 +12,7 @@
         "tabs",
         "notifications",
         "background",
-        "http://cloud.feedly.com/"
+        "*://*.feedly.com/"
     ],
     "browser_action": {
         "default_icon": "/images/icon_inactive.png",
