@@ -64,5 +64,8 @@
     },
     "HideNotificationsAfter": {
         "message": "Скрывать уведомления после (сек.), 0 - не скрывать"
+    },
+    "ExtensionDescription": {
+        "message": "Расширение для чтения новостных лент с Feedly"
     }
 }

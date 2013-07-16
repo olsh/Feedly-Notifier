@@ -50,7 +50,7 @@ function togglePopup(){
 
 /* Initialization all parameters and run feeds check */
 function initialize() {
-    appGlobal.lastFeedTime = new Date(1970, 10, 10);
+    appGlobal.lastFeedTime = new Date();
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
     startSchedule(appGlobal.options.updateInterval);
 }

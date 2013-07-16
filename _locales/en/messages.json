@@ -64,5 +64,9 @@
     },
     "HideNotificationsAfter": {
         "message": "Hide desktop notifications after (sec.), 0 - don't hide"
+    },
+    "ExtensionDescription": {
+        "message": "Extension for Feedly news reader"
     }
+
 }

@@ -51,7 +51,7 @@
         "message" : "Plus"
     },
     "many" : {
-        "message" : "beaucoup"
+        "message" : "plusieurs"
     },
     "YouHaveNewFeeds" : {
         "message" : "Vous avez $count$ nouveaux articles",
@@ -64,5 +64,8 @@
     },
     "HideNotificationsAfter": {
         "message": "Masquer les notifications bureau après (sec.), 0 - ne pas masquer"
+    },
+    "ExtensionDescription": {
+        "message": "Extension pour Feedly lecteur de flux"
     }
 }
