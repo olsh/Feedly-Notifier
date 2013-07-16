@@ -23,7 +23,7 @@
 <script src="scripts/jquery-1.8.3.min.js"></script>
 <script src="scripts/jquery.tmpl.min.js"></script>
 <script id="entryTemplate" type="text/x-jquery-tmpl">
-    <div class="item" data-id="${id}">
+    <div class="item ${direction}" data-id="${id}">
         <a data-link="${url}" class="title">${title}</a>
         <span class="mark-read" title="Mark as read"></span>
         <span class="show-content" title="Show content"></span>
@@ -31,7 +31,7 @@
             <a data-link="${blogUrl}" href="javascript:void(0)">${blog}</a>,
             <span class="timeago" title="${isoDate}"></span>
         </div>
-        <div class="content" style="display: none;"></div>
+        <div class="content"></div>
     </div>
 </script>
 <script src="scripts/timeago/jquery.timeago.js"></script>

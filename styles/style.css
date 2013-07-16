@@ -58,6 +58,15 @@
     width: 350px;
 }
 
+.item .content{
+    display: none;
+}
+
+.item.rtl{
+    direction: rtl;
+    text-align: right;
+}
+
 #feed-empty,
 .title{
     font-family: "Open Sans Condensed";

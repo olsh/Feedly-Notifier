@@ -65,8 +65,10 @@ function stopSchedule(intervalId) {
     clearInterval(intervalId);
 }
 
+/* Sends desktop notifications */
 function sendDesktopNotification(feeds){
     var notifications = [];
+    //if notifications too many, then to show only count
     if(feeds.length > appGlobal.maxNotifications){
         var notification = window.webkitNotifications.createNotification(
             appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeeds"), chrome.i18n.getMessage("YouHaveUnreadFeeds", feeds.length.toString()));
@@ -81,6 +83,7 @@ function sendDesktopNotification(feeds){
         }
     }
 
+    //Hide notifications after delay
     if(appGlobal.options.hideNotificationDelay > 0){
         setTimeout(function () {
             for(i=0; i < notifications.length; i++){
@@ -100,10 +103,26 @@ function removeFeedFromCache(feedId){
         }
     }
 
-    //Remove feed from unreadItems and update badge
+    //Remove feed from cached feeds
     if (indexFeedForRemove !== undefined) {
         appGlobal.cachedFeeds.splice(indexFeedForRemove, 1);
     }
+}
+
+/* Returns only new feeds and set date of last feed */
+function filterByNewFeeds(feeds){
+    var lastFeedTime = appGlobal.lastFeedTime;
+    var newFeeds = [];
+    for (var i = 0; i < feeds.length; i++) {
+        if (feeds[i].date > appGlobal.lastFeedTime) {
+            newFeeds.push(feeds[i]);
+            if (feeds[i].date > lastFeedTime) {
+                lastFeedTime = feeds[i].date;
+            }
+        }
+    }
+    appGlobal.lastFeedTime = lastFeedTime;
+    return newFeeds;
 }
 
 /* Runs feeds update and stores unread feeds in cache
@@ -122,18 +141,7 @@ function updateFeeds(callback, silentUpdate) {
                 if (isLoggedIn === true) {
                     appGlobal.cachedFeeds = feeds;
                     if (appGlobal.options.showDesktopNotifications) {
-                        //Find only new feeds and set date of last feed
-                        var lastFeedTime = appGlobal.lastFeedTime;
-                        var newFeeds = [];
-                        for (var i = 0; i < feeds.length; i++) {
-                            if (feeds[i].date > appGlobal.lastFeedTime) {
-                                newFeeds.push(feeds[i]);
-                                if (feeds[i].date > lastFeedTime) {
-                                    lastFeedTime = feeds[i].date;
-                                }
-                            }
-                        }
-                        appGlobal.lastFeedTime = lastFeedTime;
+                        var newFeeds = filterByNewFeeds(feeds);
                         if(!silentUpdate ){
                             sendDesktopNotification(newFeeds);
                         }
@@ -216,14 +224,16 @@ function fetchEntries(categoryId, callback) {
                     blogUrl = "#";
                 }
                 return {
-                    title: item.title,
+                    //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
+                    title: item.title === undefined ? "" : (item.title.indexOf("direction:rtl") === -1 ? item.title : item.title.replace(/<\/?div.*?>/gi, "")),
                     url: item.alternate === undefined || item.alternate[0] === undefined ? "" : item.alternate[0].href,
                     blog: item.origin === undefined ? "" : item.origin.title,
                     blogUrl: blogUrl,
                     id: item.id,
                     content: item.summary === undefined ? (item.content === undefined ? "" : item.content.content) : item.summary.content,
                     isoDate: item.crawled === undefined ? "" : new Date(item.crawled).toISOString(),
-                    date: item.crawled === undefined ? "" : new Date(item.crawled)
+                    date: item.crawled === undefined ? "" : new Date(item.crawled),
+                    direction: item.summary === undefined ? "" : item.summary.direction
                 };
             });
             isLoggedIn = true;
