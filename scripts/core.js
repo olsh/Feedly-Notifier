@@ -56,13 +56,13 @@ function initialize() {
 }
 
 function startSchedule(updateInterval) {
-    stopSchedule(appGlobal.intervalId);
+    stopSchedule();
     updateFeeds();
-    appGlobal.intervalId = setInterval(updateFeeds, updateInterval * 60000)
+    appGlobal.intervalId = setInterval(updateFeeds, updateInterval * 60000);
 }
 
-function stopSchedule(intervalId) {
-    clearInterval(intervalId);
+function stopSchedule() {
+    clearInterval(appGlobal.intervalId);
 }
 
 /* Sends desktop notifications */
