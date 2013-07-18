@@ -11,13 +11,13 @@ var appGlobal = {
         accessToken: "",
         showDesktopNotifications: true,
         hideNotificationDelay: 60, //seconds
-        showFullFeedContent: false
+        showFullFeedContent: false,
+        maxNotificationsCount: 5
     },
     cachedFeeds: [],
     isLoggedIn: false,
     intervalId : 0,
-    lastFeedTime: new Date(),
-    maxNotifications: 5
+    lastFeedTime: new Date()
 };
 
 // #Event handlers
@@ -58,7 +58,7 @@ function stopSchedule() {
 function sendDesktopNotification(feeds){
     var notifications = [];
     //if notifications too many, then to show only count
-    if(feeds.length > appGlobal.maxNotifications){
+    if(feeds.length > appGlobal.options.maxNotificationsCount){
         //We can detect only 20 new feeds at time, but actually count of feeds may be more than 20
         var count = feeds.length === 20 ? chrome.i18n.getMessage("many") : feeds.length.toString();
         var notification = window.webkitNotifications.createNotification(

@@ -15,12 +15,14 @@
                 <input type="number" min="1" max="60" data-option-name="updateInterval" class="label" /><br>
                 <span class="label" data-locale-value="AutoMarkRead"></span>
                 <input type="checkbox" data-option-name="markReadOnClick" /><br>
+                <span class="label" data-locale-value="ShowFullFeedContent"></span>
+                <input type="checkbox" data-option-name="showFullFeedContent" /><br>
                 <span class="label" data-locale-value="ShowDesktopNotifications"></span>
                 <input type="checkbox" data-option-name="showDesktopNotifications" /><br>
                 <span class="label" data-locale-value="HideNotificationsAfter"></span>
-                <input type="number" min="0" data-option-name="hideNotificationDelay" /><br>
-                <span class="label" data-locale-value="ShowFullFeedContent"></span>
-                <input type="checkbox" data-option-name="showFullFeedContent" />
+                <input type="number" min="0" max="3600" data-option-name="hideNotificationDelay" /><br>
+                <span class="label" data-locale-value="MaxNotificationsCount"></span>
+                <input type="number" min="1" max="100" data-option-name="maxNotificationsCount" />
             </div>
             <button type="submit" id="save" data-locale-value="Save" class="button">Save</button>
         </form>

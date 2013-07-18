@@ -70,5 +70,8 @@
     },
     "ShowFullFeedContent": {
         "message": "Show full content of article in the expanded feed (if possible)"
+    },
+    "MaxNotificationsCount": {
+        "message": "Max notifications count at time"
     }
 }

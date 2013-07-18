@@ -70,5 +70,8 @@
     },
     "ShowFullFeedContent": {
         "message": "Afficher le contenu complet dans la vue développé (si possible)"
+    },
+    "MaxNotificationsCount": {
+        "message": "Max de notifications à la fois"
     }
 }

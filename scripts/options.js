@@ -82,7 +82,9 @@ function loadOptions() {
 $("#options").on("change", "input", function(e){
     if($("input[data-option-name='showDesktopNotifications']").is(":checked")){
         $("input[data-option-name='hideNotificationDelay']").removeAttr("disabled");
+        $("input[data-option-name='maxNotificationsCount']").removeAttr("disabled");
     }else{
         $("input[data-option-name='hideNotificationDelay']").attr("disabled", "disabled");
+        $("input[data-option-name='maxNotificationsCount']").attr("disabled", "disabled");
     }
 });
