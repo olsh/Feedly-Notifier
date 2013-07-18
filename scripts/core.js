@@ -36,18 +36,6 @@ chrome.runtime.onStartup.addListener(function () {
     readOptions(initialize);
 });
 
-function togglePopup(){
-    chrome.browserAction.getPopup({},function(popup){
-        if(popup){
-            chrome.browserAction.setPopup({popup: ""});
-        }else{
-            setTimeout(function(){
-                chrome.browserAction.setPopup({popup: "popup.html"});
-            }, 1 * 200);
-        }
-    })
-}
-
 /* Initialization all parameters and run feeds check */
 function initialize() {
     appGlobal.lastFeedTime = new Date();
@@ -80,6 +68,18 @@ function sendDesktopNotification(feeds){
         for(var i = 0; i < feeds.length; i++){
             var notification = window.webkitNotifications.createNotification(
                 appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeed"), feeds[i].title);
+
+            //Open new tab on click and close notification
+            notification.url = feeds[i].url;
+            notification.feedId = feeds[i].id;
+            notification.onclick = function(e){
+                var target = e.target;
+                target.cancel();
+                openUrlInNewTab(target.url, true);
+                if(appGlobal.options.markReadOnClick){
+                    markAsRead(target.feedId);
+                }
+            };
             notification.show();
             notifications.push(notification);
         }
@@ -93,6 +93,24 @@ function sendDesktopNotification(feeds){
             }
         }, appGlobal.options.hideNotificationDelay * 1000);
     }
+}
+
+/* Opens new tab, if tab is being opened when no active window (i.e. background mode)
+ * then creates new window and adds tab in the end of it
+ * url for open
+ * active when is true, then tab will be active */
+function openUrlInNewTab(url, active){
+    chrome.windows.getAll({}, function(windows){
+        if(windows.length < 1){
+            chrome.windows.create({focused: true}, function(window){
+                chrome.tabs.create({url: url, active: active }, function (feedTab) {
+                });
+            });
+        }else{
+            chrome.tabs.create({url: url, active: active }, function (feedTab) {
+            });
+        }
+    });
 }
 
 /* Removes feeds from cache by feed ID */

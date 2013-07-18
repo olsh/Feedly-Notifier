@@ -85,10 +85,6 @@ $("#feed").on("click", ".mark-read", function (event) {
     markAsRead([feed.data("id")]);
 });
 
-addEventListener("unload", function (event) {
-    backgroundPage.togglePopup();
-}, true);
-
 $("#feed").on("click", ".show-content", function(){
     var $this = $(this);
     var feed = $this.closest(".item");
@@ -122,7 +118,6 @@ $("#feed").on("click", ".show-content", function(){
 });
 
 $(document).ready(function(){
-    backgroundPage.togglePopup();
     //If we support this localization of timeago, then insert script with it
     if (popupGlobal.supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
         //Trying load localization for jQuery.timeago
