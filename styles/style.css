@@ -62,7 +62,7 @@
     display: none;
 }
 
-.item.rtl{
+.rtl{
     direction: rtl;
     text-align: right;
 }
@@ -109,6 +109,7 @@
 .title{
     font-size: 14px;
     cursor: pointer;
+    display: inline-block;
 }
 
 .blog-title{

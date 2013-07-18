@@ -67,5 +67,8 @@
     },
     "ExtensionDescription": {
         "message": "Extension pour Feedly lecteur de flux"
+    },
+    "ShowFullFeedContent": {
+        "message": "Afficher le contenu complet dans la vue développé (si possible)"
     }
 }

@@ -23,7 +23,6 @@ function loadProfileData() {
         var feedlyClient = new FeedlyApiClient(items.accessToken);
         feedlyClient.get("profile", null, function (result) {
             var userInfo = $("#userInfo");
-            console.log(result);
             if (result.errorCode === undefined) {
                 userInfo.find("[data-locale-value]").each(function(){
                     var textBox = $(this);
@@ -62,7 +61,7 @@ function saveOptions() {
 function loadOptions() {
     chrome.storage.sync.get(null, function (items) {
         var optionsForm = $("#options");
-        for (option in items){
+        for (var option in items){
             var optionControl = optionsForm.find("input[data-option-name='" + option + "']");
             if(optionControl.attr("type") === "checkbox"){
                 optionControl.attr("checked", items[option]);
@@ -70,6 +69,7 @@ function loadOptions() {
                 optionControl.val(items[option]);
             }
         }
+        optionsForm.find("input").trigger("change");
     });
     $("#header").text(chrome.i18n.getMessage("FeedlyNotifierOptions"));
     $("#options").find("[data-locale-value]").each(function(){
@@ -78,3 +78,11 @@ function loadOptions() {
         textBox.text(chrome.i18n.getMessage(localValue));
     });
 }
+
+$("#options").on("change", "input", function(e){
+    if($("input[data-option-name='showDesktopNotifications']").is(":checked")){
+        $("input[data-option-name='hideNotificationDelay']").removeAttr("disabled");
+    }else{
+        $("input[data-option-name='hideNotificationDelay']").attr("disabled", "disabled");
+    }
+});

@@ -10,7 +10,8 @@ var appGlobal = {
         markReadOnClick: true,
         accessToken: "",
         showDesktopNotifications: true,
-        hideNotificationDelay: 60 //seconds
+        hideNotificationDelay: 60, //seconds
+        showFullFeedContent: false
     },
     cachedFeeds: [],
     isLoggedIn: false,
@@ -77,7 +78,7 @@ function sendDesktopNotification(feeds){
                 target.cancel();
                 openUrlInNewTab(target.url, true);
                 if(appGlobal.options.markReadOnClick){
-                    markAsRead(target.feedId);
+                    markAsRead([target.feedId]);
                 }
             };
             notification.show();
@@ -237,23 +238,55 @@ function fetchEntries(categoryId, callback) {
         var feeds = [];
         if (response.errorCode === undefined) {
             feeds = response.items.map(function (item) {
+
                 var blogUrl;
                 try{
                     blogUrl = item.origin.htmlUrl.match(/http(?:s)?:\/\/[^/]+/i).pop();
                 }catch(exception) {
                     blogUrl = "#";
                 }
+
+                //Set content
+                var content = "";
+                var contentDirection = "";
+                if(appGlobal.options.showFullFeedContent){
+                    if(item.content !== undefined){
+                        content = item.content.content;
+                        contentDirection = item.content.direction;
+                    }
+                }
+                if(content === ""){
+                    if(item.summary !== undefined){
+                        content = item.summary.content;
+                        contentDirection = item.summary.direction;
+                    }
+                }
+
+                //Set title
+                var title = "";
+                var titleDirection = "";
+                if(item.title !== undefined){
+                    if(item.title.indexOf("direction:rtl") !== -1){
+                        //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
+                        title = item.title.replace(/<\/?div.*?>/gi, "");
+                        titleDirection = "rtl";
+                    }else{
+                        title = item.title;
+                    }
+                }
+
                 return {
                     //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
-                    title: item.title === undefined ? "" : (item.title.indexOf("direction:rtl") === -1 ? item.title : item.title.replace(/<\/?div.*?>/gi, "")),
+                    title: title,
+                    titleDirection: titleDirection,
                     url: item.alternate === undefined || item.alternate[0] === undefined ? "" : item.alternate[0].href,
                     blog: item.origin === undefined ? "" : item.origin.title,
                     blogUrl: blogUrl,
                     id: item.id,
-                    content: item.summary === undefined ? (item.content === undefined ? "" : item.content.content) : item.summary.content,
+                    content: content,
+                    contentDirection: contentDirection,
                     isoDate: item.crawled === undefined ? "" : new Date(item.crawled).toISOString(),
-                    date: item.crawled === undefined ? "" : new Date(item.crawled),
-                    direction: item.summary === undefined ? "" : item.summary.direction
+                    date: item.crawled === undefined ? "" : new Date(item.crawled)
                 };
             });
             isLoggedIn = true;

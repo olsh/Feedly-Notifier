@@ -67,6 +67,8 @@
     },
     "ExtensionDescription": {
         "message": "Extension for Feedly news reader"
+    },
+    "ShowFullFeedContent": {
+        "message": "Show full content of article in the expanded feed (if possible)"
     }
-
 }
