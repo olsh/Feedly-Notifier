@@ -8,12 +8,11 @@ var popupGlobal = {
 
 function renderFeeds(){
     showLoader();
-    backgroundPage.getFeeds(function (feeds, isLoggedIn) {
+    backgroundPage.getFeeds(false, function (feeds, isLoggedIn) {
         $("#loading").hide();
         popupGlobal.feeds = feeds;
         if (isLoggedIn === false) {
-            $("#login-btn").text(chrome.i18n.getMessage("Login"));
-            $("#login").show();
+            showLogin();
         } else {
             $("#popup-content").show();
             $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
@@ -53,6 +52,12 @@ function markAsRead(feedIds){
 function showLoader(){
     $("body").children("div").hide();
     $("#loading").show();
+}
+
+function showLogin(){
+    $("body").children("div").hide();
+    $("#login-btn").text(chrome.i18n.getMessage("Login"));
+    $("#login").show();
 }
 
 $("#login").click(function () {
@@ -113,6 +118,23 @@ $("#feed").on("click", ".show-content", function(){
             feed.css("width",  "700px");
         } else{
             feed.css("width",  "350px");
+        }
+    });
+});
+
+/* Manually feeds update */
+$("#feedly").on("click", "#update-feeds", function(){
+    backgroundPage.getFeeds(true, function(feeds, isLoggedIn){
+        if(isLoggedIn){
+            //Backward loop for chronological sequence
+            for(var i = feeds.length - 1; i >= 0; i--){
+                if($(".item[data-id='" + feeds[i].id + "']").size() === 0){
+                    $('#entryTemplate').tmpl(feeds[i]).find(".timeago").timeago().fadeIn().prependTo('#feed');
+                    popupGlobal.feeds.push(feeds[i]);
+                }
+            }
+        }else{
+            showLogin();
         }
     });
 });

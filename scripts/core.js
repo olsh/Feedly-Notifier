@@ -186,9 +186,11 @@ function updateFeeds(callback, silentUpdate) {
 }
 
 /* Returns feeds from the cache.
- If the cache is empty, then it will be updated before return */
-function getFeeds(callback){
-     if(appGlobal.cachedFeeds.length > 0){
+* If the cache is empty, then it will be updated before return
+* forceUpdate, when is true, then cache will be updated
+*/
+function getFeeds(forceUpdate, callback){
+     if(appGlobal.cachedFeeds.length > 0 && !forceUpdate){
          callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
      }else{
          updateFeeds(function(){
