@@ -43,15 +43,17 @@ function loadProfileData() {
 /* Save all option in the chrome storage */
 function saveOptions() {
     var options = {};
-    $("#options").find("input[data-option-name]").each(function(optionName, value){
-          var optionControl = $(value);
-          var optionValue;
-          if(optionControl.attr("type") === "checkbox"){
-              optionValue = optionControl.is(":checked");
-          }else{
-              optionValue = optionControl.val();
-          }
-          options[optionControl.data("option-name")] = optionValue;
+    $("#options").find("input[data-option-name]").each(function (optionName, value) {
+        var optionControl = $(value);
+        var optionValue;
+        if (optionControl.attr("type") === "checkbox") {
+            optionValue = optionControl.is(":checked");
+        } else if (optionControl.attr("type") === "number") {
+            optionValue = Number(optionControl.val());
+        } else {
+            optionValue = optionControl.val();
+        }
+        options[optionControl.data("option-name")] = optionValue;
     });
     chrome.storage.sync.set(options, function () {
         alert(chrome.i18n.getMessage("OptionsSaved"));

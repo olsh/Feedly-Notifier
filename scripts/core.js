@@ -14,10 +14,11 @@ var appGlobal = {
         showFullFeedContent: false,
         maxNotificationsCount: 5
     },
+    //Names of options after changes of which scheduler will be initialized
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent"],
     cachedFeeds: [],
     isLoggedIn: false,
-    intervalId : 0,
-    lastFeedTime: new Date()
+    intervalId : 0
 };
 
 // #Event handlers
@@ -30,7 +31,15 @@ chrome.runtime.onInstalled.addListener(function (details) {
 });
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
-    readOptions(initialize);
+    var callback;
+
+    for(var optionName in changes){
+        if(appGlobal.criticalOptionNames.indexOf(optionName) !== -1 ){
+            callback = initialize;
+            break;
+        }
+    }
+    readOptions(callback);
 });
 
 chrome.runtime.onStartup.addListener(function () {
@@ -39,7 +48,6 @@ chrome.runtime.onStartup.addListener(function () {
 
 /* Initialization all parameters and run feeds check */
 function initialize() {
-    appGlobal.lastFeedTime = new Date();
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
     startSchedule(appGlobal.options.updateInterval);
 }
@@ -130,20 +138,37 @@ function removeFeedFromCache(feedId){
     }
 }
 
-/* Returns only new feeds and set date of last feed */
-function filterByNewFeeds(feeds){
-    var lastFeedTime = appGlobal.lastFeedTime;
-    var newFeeds = [];
-    for (var i = 0; i < feeds.length; i++) {
-        if (feeds[i].date > appGlobal.lastFeedTime) {
-            newFeeds.push(feeds[i]);
+/* Returns only new feeds and set date of last feed
+ * The callback parameter should specify a function that looks like this:
+ * function(object newFeeds) {...};*/
+function filterByNewFeeds(feeds, callback) {
+    chrome.storage.local.get("lastFeedTimeTicks", function (options) {
+        var lastFeedTime;
+
+        if (options.lastFeedTimeTicks) {
+            lastFeedTime = new Date(options.lastFeedTimeTicks);
+        } else {
+            lastFeedTime = new Date(1971, 00, 01);
+        }
+
+        var newFeeds = [];
+        var maxFeedTime = lastFeedTime;
+
+        for (var i = 0; i < feeds.length; i++) {
             if (feeds[i].date > lastFeedTime) {
-                lastFeedTime = feeds[i].date;
+                newFeeds.push(feeds[i]);
+                if (feeds[i].date > maxFeedTime) {
+                    maxFeedTime = feeds[i].date;
+                }
             }
         }
-    }
-    appGlobal.lastFeedTime = lastFeedTime;
-    return newFeeds;
+
+        chrome.storage.local.set({ lastFeedTimeTicks: maxFeedTime.getTime() }, function () {
+            if(typeof callback === "function"){
+                callback(newFeeds);
+            }
+        });
+    });
 }
 
 /* Runs feeds update and stores unread feeds in cache
@@ -161,12 +186,11 @@ function updateFeeds(callback, silentUpdate) {
                 appGlobal.isLoggedIn = isLoggedIn;
                 if (isLoggedIn === true) {
                     appGlobal.cachedFeeds = feeds;
-                    if (appGlobal.options.showDesktopNotifications) {
-                        var newFeeds = filterByNewFeeds(feeds);
-                        if(!silentUpdate ){
+                    filterByNewFeeds(feeds, function(newFeeds){
+                        if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
                             sendDesktopNotification(newFeeds);
                         }
-                    }
+                    });
                 } else {
                     appGlobal.cachedFeeds = [];
                 }
@@ -335,17 +359,19 @@ function markAsRead(feedIds, callback) {
 
 /* Opens feedly site and if user are logged in,
  * then read access token and stores in chrome.storage */
-function updateToken() {
+function getAccessToken() {
     chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
         chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-            //Execute code in feedly page context
-            chrome.tabs.executeScript(tabId, { code: "JSON.parse(localStorage.getItem('session@cloud'))['feedlyToken']"}, function (result) {
-                if (result === undefined || result.length !== 1) {
-                    return;
-                }
-                chrome.storage.sync.set({ accessToken: result[0]}, function () {
+            if(feedlytab.id === tabId){
+                //Execute code in feedly page context
+                chrome.tabs.executeScript(tabId, { code: "JSON.parse(localStorage.getItem('session@cloud'))['feedlyToken']"}, function (result) {
+                    if (result === undefined || result.length !== 1) {
+                        return;
+                    }
+                    chrome.storage.sync.set({ accessToken: result[0]}, function () {
+                    });
                 });
-            });
+            }
         });
     });
 }

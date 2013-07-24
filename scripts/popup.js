@@ -61,7 +61,7 @@ function showLogin(){
 }
 
 $("#login").click(function () {
-    backgroundPage.updateToken();
+    backgroundPage.getAccessToken();
 });
 
 //using "mousedown" instead of "click" event to process middle button click.
