@@ -13,8 +13,10 @@
 <div id="popup-content">
     <div id="feedly">
         <img src="/images/icon.png"><a href="http://www.feedly.com" target="_blank" id="website"></a>
-        <span id="all-read-section"><i class="icon-ok"></i><span id="mark-all-read"></span></span>
-        <button id="update-feeds">Update</button>
+        <span id="all-read-section">
+            <span id="update-feeds"><i class="icon-refresh"></i></span>
+            <i class="icon-ok"></i><span id="mark-all-read"></span>
+        </span>
     </div>
     <div id="feed"></div>
     <div id="feed-empty"></div>
@@ -25,9 +27,13 @@
 <script src="scripts/jquery.tmpl.min.js"></script>
 <script id="entryTemplate" type="text/x-jquery-tmpl">
     <div class="item" data-id="${id}">
-        <a data-link="${url}" class="title ${titleDirection}">${title}</a>
-        <span class="mark-read" title="Mark as read"></span>
-        <span class="show-content" title="Show content"></span>
+        <span class="article-title">
+            <a data-link="${url}" class="title ${titleDirection}">${title}</a>
+        </span>
+        <span class="article-menu">
+            <span class="mark-read" title="Mark as read"></span>
+            <span class="show-content" title="Show content"></span>
+        </span>
         <div class="blog-title">
             <a data-link="${blogUrl}" href="javascript:void(0)">${blog}</a>,
             <span class="timeago" title="${isoDate}"></span>

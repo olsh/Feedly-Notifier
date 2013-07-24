@@ -24,7 +24,8 @@
 
 .mark-read,
 .show-content,
-.icon-ok{
+[class^="icon-"],
+[class*=" icon-"]{
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -40,6 +41,10 @@
 .icon-ok{
     background-position: -288px 0;
     margin-right: 5px;
+}
+
+.icon-refresh{
+    background-position: -240px -24px;
 }
 
 .mark-read:hover{
@@ -60,11 +65,40 @@
 
 .item .content{
     display: none;
+    border: 1px solid #6cc655;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.content a:link{
+    color: #6cc655;
+    text-decoration:none;
+}
+
+.content a:hover{
+    text-decoration:underline;
+}
+
+.content>img{
+    max-width: 100%;
 }
 
 .rtl{
     direction: rtl;
     text-align: right;
+}
+
+.article-menu,
+.article-title{
+    display: inline-block;
+}
+
+.article-title{
+    width: 310px;
+}
+
+.article-menu{
+    vertical-align: top;
 }
 
 #feed-empty,

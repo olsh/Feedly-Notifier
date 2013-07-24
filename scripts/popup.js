@@ -115,9 +115,11 @@ $("#feed").on("click", ".show-content", function(){
     contentContainer.slideToggle(function () {
         $this.css("background-position", contentContainer.is(":visible") ? "-288px -120px" :"-313px -119px");
         if (contentContainer.is(":visible") && contentContainer.text().length > 350){
-            feed.css("width",  "700px");
+            $(".item").css("width",  "700px");
+            $(".article-title").css("width", "660px");
         } else{
-            feed.css("width",  "350px");
+            $(".item").css("width",  "350px");
+            $(".article-title").css("width", "310px");
         }
     });
 });
