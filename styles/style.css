@@ -5,6 +5,11 @@
     src: local('Open Sans Condensed Bold'), local('OpenSans-CondensedBold'), url(opensanscondensed.woff) format('woff');
 }
 
+body{
+    margin:0px 5px 5px 5px
+}
+
+
 .button{
     background-color: #6cc655;
     border: 1px solid rgba( 0, 0, 0, 0.2 );
@@ -60,6 +65,18 @@
 
 .item .content{
     display: none;
+    border: 2px solid #7AD663;
+	padding: 3px;
+	border-radius: 5px;
+}
+
+.content a:link{
+    color: #6cc655;
+	text-decoration:none;
+}
+
+.content a:hover{
+	text-decoration:underline;
 }
 
 .rtl{
@@ -82,7 +99,7 @@
 }
 
 #feedly{
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 #feedly img{
