@@ -46,6 +46,13 @@ chrome.runtime.onStartup.addListener(function () {
     readOptions(initialize);
 });
 
+/* Listener for adding or removing feeds on the feedly website */
+chrome.webRequest.onCompleted.addListener(function(details) {
+    if(details.method === "POST" || details.method === "DELETE"){
+        updateFeeds();
+    }
+}, {urls: ["*://cloud.feedly.com/v3/subscriptions*", "*://cloud.feedly.com/v3/markers?*ct=feedly.desktop*"]});
+
 /* Initialization all parameters and run feeds check */
 function initialize() {
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;

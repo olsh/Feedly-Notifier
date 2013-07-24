@@ -12,6 +12,7 @@
         "tabs",
         "notifications",
         "background",
+        "webRequest",
         "*://*.feedly.com/"
     ],
     "browser_action": {
