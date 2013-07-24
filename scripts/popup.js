@@ -131,7 +131,7 @@ $("#feedly").on("click", "#update-feeds", function(){
             //Backward loop for chronological sequence
             for(var i = feeds.length - 1; i >= 0; i--){
                 if($(".item[data-id='" + feeds[i].id + "']").size() === 0){
-                    $('#entryTemplate').tmpl(feeds[i]).find(".timeago").timeago().fadeIn().prependTo('#feed');
+                    $('#entryTemplate').tmpl(feeds[i]).fadeIn().prependTo('#feed').find(".timeago").timeago();
                     popupGlobal.feeds.push(feeds[i]);
                 }
             }

@@ -7,6 +7,13 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v1.4.2 (2013.07.24)
+
+* Manual update feature
+* Update counter & feeds when user remove or add subscriptions on site
+* UI improvements
+* Small bugfixes
+
 v1.4.1 (2013.07.18)
 
 * Max notifications count option
