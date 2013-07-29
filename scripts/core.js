@@ -234,13 +234,12 @@ function getFeeds(forceUpdate, callback){
  * The callback parameter should specify a function that looks like this:
  * function(number unreadFeedsCount, string globalCategoryId, boolean isLoggedIn) {...};*/
 function getUnreadFeedsCount(callback) {
-    appGlobal.feedlyApiClient.get("markers/counts", null, function (response) {
-        var unreadCounts = response.unreadcounts;
-
-        var unreadFeedsCount = -1;
-        var globalCategoryId = "";
-        var isLoggedIn;
-        if (response.errorCode === undefined) {
+    appGlobal.feedlyApiClient.request("markers/counts", {
+        onSuccess: function(response){
+            var unreadCounts = response.unreadcounts;
+            var unreadFeedsCount = -1;
+            var globalCategoryId = "";
+            var isLoggedIn;
             for (var i = 0; i < unreadCounts.length; i++) {
                 if (unreadFeedsCount < unreadCounts[i].count) {
                     unreadFeedsCount = unreadCounts[i].count;
@@ -249,12 +248,14 @@ function getUnreadFeedsCount(callback) {
                     globalCategoryId = unreadCounts[i].id;
                 }
             }
-            isLoggedIn = true;
-        } else {
-            isLoggedIn = false;
-        }
-        if(typeof  callback === "function"){
-            callback(Number(unreadFeedsCount), globalCategoryId, isLoggedIn);
+            if(typeof  callback === "function"){
+                callback(Number(unreadFeedsCount), globalCategoryId, true);
+            }
+        },
+        onAuthorizationRequired: function(){
+            if(typeof  callback === "function"){
+                callback(0, "", false);
+            }
         }
     });
 }
@@ -264,12 +265,11 @@ function getUnreadFeedsCount(callback) {
  * The callback parameter should specify a function that looks like this:
  * function(array feeds, boolean isLoggedIn) {...};*/
 function fetchEntries(categoryId, callback) {
-    appGlobal.feedlyApiClient.get("streams/" + encodeURIComponent(categoryId) + "/contents", {
-        unreadOnly: true
-    }, function (response) {
-        var isLoggedIn;
-        var feeds = [];
-        if (response.errorCode === undefined) {
+    appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(categoryId) + "/contents", {
+        parameters: {
+            unreadOnly: true
+        },
+        onSuccess: function(response){
             feeds = response.items.map(function (item) {
 
                 var blogUrl;
@@ -322,12 +322,14 @@ function fetchEntries(categoryId, callback) {
                     date: item.crawled === undefined ? "" : new Date(item.crawled)
                 };
             });
-            isLoggedIn = true;
-        }else{
-            isLoggedIn = false;
-        }
-        if(typeof callback === "function"){
-            callback(feeds, isLoggedIn);
+            if(typeof callback === "function"){
+                callback(feeds, true);
+            }
+        },
+        onAuthorizationRequired: function(){
+            if(typeof callback === "function"){
+                callback(null, false);
+            }
         }
     });
 }
@@ -337,29 +339,32 @@ function fetchEntries(categoryId, callback) {
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
 function markAsRead(feedIds, callback) {
-    appGlobal.feedlyApiClient.post("markers", null, {
-        action: "markAsRead",
-        type: "entries",
-        entryIds: feedIds
-    }, function (response) {
-        var isLoggedIn;
-        if (response.errorCode !== undefined) {
-            for(var i = 0; i < feedIds.length; i++){
+    appGlobal.feedlyApiClient.request("markers", {
+        body: {
+            action: "markAsRead",
+            type: "entries",
+            entryIds: feedIds
+        },
+        method: "POST",
+        onSuccess: function () {
+            for (var i = 0; i < feedIds.length; i++) {
                 removeFeedFromCache(feedIds[i]);
             }
             chrome.browserAction.getBadgeText({}, function (feedsCount) {
                 feedsCount = +feedsCount;
                 if (feedsCount > 0) {
-                    feedsCount-= feedIds.length;
+                    feedsCount -= feedIds.length;
                     chrome.browserAction.setBadgeText({ text: String(feedsCount > 0 ? feedsCount : "")});
                 }
             });
-            isLoggedIn = true;
-        }else{
-            isLoggedIn = false;
-        }
-        if(typeof callback === "function"){
-            callback(isLoggedIn);
+            if (typeof callback === "function") {
+                callback(true);
+            }
+        },
+        onAuthorizationRequired: function () {
+            if (typeof callback === "function") {
+                callback(false);
+            }
         }
     });
 }

@@ -9,7 +9,7 @@ var FeedlyApiClient = function (accessToken) {
         }
         var methodUrl = apiUrl + methodName;
         var queryString;
-        if (parameters !== null) {
+        if (parameters) {
             queryString = "?";
             for (var parameterName in parameters) {
                 queryString += parameterName + "=" + parameters[parameterName] + "&";
@@ -17,43 +17,51 @@ var FeedlyApiClient = function (accessToken) {
             queryString = queryString.replace(/&$/, "");
         }
 
-        if (queryString !== undefined) {
+        if (queryString) {
             methodUrl += queryString;
         }
 
         return methodUrl;
     };
 
-
-    this.get = function (methodName, parameters, callback) {
-        var methodUrl = getMethodUrl(methodName, parameters);
-        createRequest("GET", methodUrl, callback, this.accessToken, null);
-    };
-
-    this.post = function (methodName, parameters, body, callback) {
-        var methodUrl = getMethodUrl(methodName, parameters);
-        createRequest("POST", methodUrl, callback, this.accessToken, JSON.stringify(body));
-    };
-
-    var createRequest = function (verb, url, callback, accessToken, body) {
+    this.request = function (methodName, settings) {
+        var url = getMethodUrl(methodName, settings.parameters);
+        var verb = settings.method || "GET";
         var request = new XMLHttpRequest();
         request.open(verb, url, true);
-        if (accessToken !== undefined) {
-            request.setRequestHeader("Authorization", "OAuth " + accessToken);
+        if (this.accessToken) {
+            request.setRequestHeader("Authorization", "OAuth " + this.accessToken);
         }
         request.onload = function (e) {
-
             var json;
             try {
-                json = JSON.parse(e.target.response);
+                if(e.target.response){
+                    json = JSON.parse(e.target.response);
+                }
             } catch (exception) {
                 json = {
-                    Error: exception.message,
-                    errorCode: 500
+                    parsingError: exception.message,
+                    response: e.target.response
                 }
             }
-            callback(json);
+            if (json && !json.errorCode) {
+                if (typeof settings.onSuccess === "function") {
+                    settings.onSuccess(json);
+                }
+            } else if (json && json.errorCode === 401) {
+                if (typeof settings.onAuthorizationRequired === "function") {
+                    settings.onAuthorizationRequired(settings.accessToken);
+                }
+            } else {
+                if (typeof settings.onError === "function") {
+                    settings.onError(json);
+                }
+            }
         };
+        var body;
+        if (settings.body) {
+            body = JSON.stringify(settings.body);
+        }
         request.send(body);
     }
 };
