@@ -79,7 +79,7 @@
     text-decoration:underline;
 }
 
-.content img{
+.content img, .content iframe{
     max-width: 100%!important;
 	height: auto!important;
 }
