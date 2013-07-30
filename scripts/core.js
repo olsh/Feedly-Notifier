@@ -12,10 +12,11 @@ var appGlobal = {
         showDesktopNotifications: true,
         hideNotificationDelay: 60, //seconds
         showFullFeedContent: false,
-        maxNotificationsCount: 5
+        maxNotificationsCount: 5,
+        openSiteOnIconClick: false
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent"],
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick"],
     cachedFeeds: [],
     isLoggedIn: false,
     intervalId : 0
@@ -53,8 +54,17 @@ chrome.webRequest.onCompleted.addListener(function(details) {
     }
 }, {urls: ["*://cloud.feedly.com/v3/subscriptions*", "*://cloud.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
+chrome.browserAction.onClicked.addListener(function() {
+    openUrlInNewTab("http://feedly.com", true);
+});
+
 /* Initialization all parameters and run feeds check */
 function initialize() {
+    if (appGlobal.options.openSiteOnIconClick) {
+        chrome.browserAction.setPopup({popup: ""});
+    } else {
+        chrome.browserAction.setPopup({popup: "popup.html"});
+    }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
     startSchedule(appGlobal.options.updateInterval);
 }

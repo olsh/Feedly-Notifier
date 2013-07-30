@@ -73,5 +73,8 @@
     },
     "MaxNotificationsCount": {
         "message": "Max de notifications à la fois"
+    },
+    "OpenSiteOnIconClick": {
+        "message": "Open Feedly site on icon click (don't show popup)"
     }
 }
