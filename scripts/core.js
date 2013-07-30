@@ -183,37 +183,125 @@ function filterByNewFeeds(feeds, callback) {
  * If silentUpdate is true, then notifications will not be shown
  * */
 function updateFeeds(callback, silentUpdate) {
-    getUnreadFeedsCount(function (unreadFeedsCount, globalCategoryId, isLoggedIn) {
-        chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
-        appGlobal.isLoggedIn = isLoggedIn;
-        if (isLoggedIn === true) {
-            chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {
-            });
-            fetchEntries(globalCategoryId, function (feeds, isLoggedIn) {
-                appGlobal.isLoggedIn = isLoggedIn;
-                if (isLoggedIn === true) {
-                    appGlobal.cachedFeeds = feeds;
-                    filterByNewFeeds(feeds, function(newFeeds){
+    appGlobal.feedlyApiClient.request("markers/counts", {
+        onSuccess: function(response){
+            setActiveStatus();
+
+            var unreadCounts = response.unreadcounts;
+            var unreadFeedsCount = -1;
+            var globalCategoryId = "";
+            for (var i = 0; i < unreadCounts.length; i++) {
+                if (unreadFeedsCount < unreadCounts[i].count) {
+                    unreadFeedsCount = unreadCounts[i].count;
+
+                    //Search category(global or uncategorized) with max feeds
+                    globalCategoryId = unreadCounts[i].id;
+                }
+            }
+            chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
+
+            appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(globalCategoryId) + "/contents", {
+                parameters: {
+                    unreadOnly: true
+                },
+                onSuccess: function(response){
+                    appGlobal.cachedFeeds = parseFeeds(response);
+                    filterByNewFeeds(appGlobal.cachedFeeds, function(newFeeds){
                         if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
                             sendDesktopNotification(newFeeds);
                         }
                     });
-                } else {
-                    appGlobal.cachedFeeds = [];
-                }
-                if (typeof callback === "function") {
-                    callback();
+                    if(typeof callback === "function"){
+                        callback();
+                    }
+                },
+                onAuthorizationRequired: function(){
+                    setInactiveStatus();
+                    if(typeof callback === "function"){
+                        callback();
+                    }
                 }
             });
-        } else {
-            chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
-            });
-            stopSchedule();
-            if (typeof callback === "function") {
+        },
+        onAuthorizationRequired: function(){
+            setInactiveStatus();
+            if(typeof  callback === "function"){
                 callback();
             }
         }
     });
+}
+
+/* Stops scheduler, sets badge as inactive and resets counter */
+function setInactiveStatus() {
+    chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
+    });
+    chrome.browserAction.setBadgeText({ text: ""});
+    appGlobal.cachedFeeds = [];
+    appGlobal.isLoggedIn = false;
+    stopSchedule();
+}
+
+/* Sets badge as active */
+function setActiveStatus(){
+    chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {});
+    appGlobal.isLoggedIn = true;
+}
+
+/* Converts feedly response to feeds */
+function parseFeeds(feedlyResponse){
+    var feeds = feedlyResponse.items.map(function (item) {
+
+        var blogUrl;
+        try{
+            blogUrl = item.origin.htmlUrl.match(/http(?:s)?:\/\/[^/]+/i).pop();
+        }catch(exception) {
+            blogUrl = "#";
+        }
+
+        //Set content
+        var content = "";
+        var contentDirection = "";
+        if(appGlobal.options.showFullFeedContent){
+            if(item.content !== undefined){
+                content = item.content.content;
+                contentDirection = item.content.direction;
+            }
+        }
+        if(content === ""){
+            if(item.summary !== undefined){
+                content = item.summary.content;
+                contentDirection = item.summary.direction;
+            }
+        }
+
+        //Set title
+        var title = "";
+        var titleDirection = "";
+        if(item.title !== undefined){
+            if(item.title.indexOf("direction:rtl") !== -1){
+                //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
+                title = item.title.replace(/<\/?div.*?>/gi, "");
+                titleDirection = "rtl";
+            }else{
+                title = item.title;
+            }
+        }
+
+        return {
+            title: title,
+            titleDirection: titleDirection,
+            url: item.alternate === undefined || item.alternate[0] === undefined ? "" : item.alternate[0].href,
+            blog: item.origin === undefined ? "" : item.origin.title,
+            blogUrl: blogUrl,
+            id: item.id,
+            content: content,
+            contentDirection: contentDirection,
+            isoDate: item.crawled === undefined ? "" : new Date(item.crawled).toISOString(),
+            date: item.crawled === undefined ? "" : new Date(item.crawled)
+        };
+    });
+    return feeds;
 }
 
 /* Returns feeds from the cache.
@@ -228,110 +316,6 @@ function getFeeds(forceUpdate, callback){
              callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
          }, true);
      }
-}
-
-/* Returns unread feeds count.
- * The callback parameter should specify a function that looks like this:
- * function(number unreadFeedsCount, string globalCategoryId, boolean isLoggedIn) {...};*/
-function getUnreadFeedsCount(callback) {
-    appGlobal.feedlyApiClient.request("markers/counts", {
-        onSuccess: function(response){
-            var unreadCounts = response.unreadcounts;
-            var unreadFeedsCount = -1;
-            var globalCategoryId = "";
-            var isLoggedIn;
-            for (var i = 0; i < unreadCounts.length; i++) {
-                if (unreadFeedsCount < unreadCounts[i].count) {
-                    unreadFeedsCount = unreadCounts[i].count;
-
-                    //Search category(global or uncategorized) with max feeds
-                    globalCategoryId = unreadCounts[i].id;
-                }
-            }
-            if(typeof  callback === "function"){
-                callback(Number(unreadFeedsCount), globalCategoryId, true);
-            }
-        },
-        onAuthorizationRequired: function(){
-            if(typeof  callback === "function"){
-                callback(0, "", false);
-            }
-        }
-    });
-}
-
-/* Download unread feeds.
- * categoryId is feedly category ID.
- * The callback parameter should specify a function that looks like this:
- * function(array feeds, boolean isLoggedIn) {...};*/
-function fetchEntries(categoryId, callback) {
-    appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(categoryId) + "/contents", {
-        parameters: {
-            unreadOnly: true
-        },
-        onSuccess: function(response){
-            feeds = response.items.map(function (item) {
-
-                var blogUrl;
-                try{
-                    blogUrl = item.origin.htmlUrl.match(/http(?:s)?:\/\/[^/]+/i).pop();
-                }catch(exception) {
-                    blogUrl = "#";
-                }
-
-                //Set content
-                var content = "";
-                var contentDirection = "";
-                if(appGlobal.options.showFullFeedContent){
-                    if(item.content !== undefined){
-                        content = item.content.content;
-                        contentDirection = item.content.direction;
-                    }
-                }
-                if(content === ""){
-                    if(item.summary !== undefined){
-                        content = item.summary.content;
-                        contentDirection = item.summary.direction;
-                    }
-                }
-
-                //Set title
-                var title = "";
-                var titleDirection = "";
-                if(item.title !== undefined){
-                    if(item.title.indexOf("direction:rtl") !== -1){
-                        //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
-                        title = item.title.replace(/<\/?div.*?>/gi, "");
-                        titleDirection = "rtl";
-                    }else{
-                        title = item.title;
-                    }
-                }
-
-                return {
-                    //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
-                    title: title,
-                    titleDirection: titleDirection,
-                    url: item.alternate === undefined || item.alternate[0] === undefined ? "" : item.alternate[0].href,
-                    blog: item.origin === undefined ? "" : item.origin.title,
-                    blogUrl: blogUrl,
-                    id: item.id,
-                    content: content,
-                    contentDirection: contentDirection,
-                    isoDate: item.crawled === undefined ? "" : new Date(item.crawled).toISOString(),
-                    date: item.crawled === undefined ? "" : new Date(item.crawled)
-                };
-            });
-            if(typeof callback === "function"){
-                callback(feeds, true);
-            }
-        },
-        onAuthorizationRequired: function(){
-            if(typeof callback === "function"){
-                callback(null, false);
-            }
-        }
-    });
 }
 
 /* Marks feed as read, remove it from the cache and decrement badge.
@@ -362,6 +346,7 @@ function markAsRead(feedIds, callback) {
             }
         },
         onAuthorizationRequired: function () {
+            setInactiveStatus();
             if (typeof callback === "function") {
                 callback(false);
             }

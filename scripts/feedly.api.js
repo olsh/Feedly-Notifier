@@ -35,9 +35,7 @@ var FeedlyApiClient = function (accessToken) {
         request.onload = function (e) {
             var json;
             try {
-                if(e.target.response){
-                    json = JSON.parse(e.target.response);
-                }
+                json = JSON.parse(e.target.response);
             } catch (exception) {
                 json = {
                     parsingError: exception.message,
