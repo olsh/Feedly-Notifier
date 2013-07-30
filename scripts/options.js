@@ -21,10 +21,10 @@ $("body").on("click", "#logout", function(){
 function loadProfileData() {
     chrome.storage.sync.get(null, function (items) {
         var feedlyClient = new FeedlyApiClient(items.accessToken);
-        feedlyClient.get("profile", null, function (result) {
-            var userInfo = $("#userInfo");
-            if (result.errorCode === undefined) {
-                userInfo.find("[data-locale-value]").each(function(){
+        feedlyClient.request("profile", {
+            onSuccess: function (result) {
+                var userInfo = $("#userInfo");
+                userInfo.find("[data-locale-value]").each(function () {
                     var textBox = $(this);
                     var localValue = textBox.data("locale-value");
                     textBox.text(chrome.i18n.getMessage(localValue));
@@ -33,7 +33,9 @@ function loadProfileData() {
                 for (var profileData in result) {
                     userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
                 }
-            } else {
+            },
+            onAuthorizationRequired: function () {
+                var userInfo = $("#userInfo");
                 userInfo.hide();
             }
         });

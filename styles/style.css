@@ -165,3 +165,7 @@
     cursor: pointer;
     text-decoration: none;
 }
+
+.saved-feeds{
+    display: none;
+}

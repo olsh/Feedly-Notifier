@@ -76,5 +76,8 @@
     },
     "OpenSiteOnIconClick": {
         "message": "Open Feedly site on icon click (don't show popup)"
+    },
+    "NoSavedArticles": {
+        "message": "No saved articles"
     }
 }

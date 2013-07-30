@@ -13,11 +13,13 @@ var appGlobal = {
         hideNotificationDelay: 60, //seconds
         showFullFeedContent: false,
         maxNotificationsCount: 5,
-        openSiteOnIconClick: false
+        openSiteOnIconClick: false,
+        feedlyUserId : ""
     },
     //Names of options after changes of which scheduler will be initialized
     criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick"],
     cachedFeeds: [],
+    cachedSavedFeeds: [],
     isLoggedIn: false,
     intervalId : 0
 };
@@ -188,11 +190,24 @@ function filterByNewFeeds(feeds, callback) {
     });
 }
 
+/* Update saved feeds and stores its in cache */
+function updateSavedFeeds(callback) {
+    appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/contents", {
+        onSuccess: function (response) {
+            appGlobal.cachedSavedFeeds = parseFeeds(response);
+            if(typeof callback === "function"){
+                callback();
+            }
+        }
+    });
+}
+
 /* Runs feeds update and stores unread feeds in cache
  * Callback will be started after function complete
  * If silentUpdate is true, then notifications will not be shown
  * */
 function updateFeeds(callback, silentUpdate) {
+    updateSavedFeeds();
     appGlobal.feedlyApiClient.request("markers/counts", {
         onSuccess: function(response){
             setActiveStatus();
@@ -200,12 +215,23 @@ function updateFeeds(callback, silentUpdate) {
             var unreadCounts = response.unreadcounts;
             var unreadFeedsCount = -1;
             var globalCategoryId = "";
+            var userIdRegex = /user\/(.+?)\/category/i;
+
             for (var i = 0; i < unreadCounts.length; i++) {
                 if (unreadFeedsCount < unreadCounts[i].count) {
                     unreadFeedsCount = unreadCounts[i].count;
 
                     //Search category(global or uncategorized) with max feeds
                     globalCategoryId = unreadCounts[i].id;
+
+                    //TODO: Remove this search in later versions, we get user id in getAccessToken method
+                    if(!appGlobal.options.feedlyUserId){
+                        //Search user id
+                        var matches = userIdRegex.exec(unreadCounts[i].id);
+                        if(matches){
+                            appGlobal.options.feedlyUserId = matches[1];
+                        }
+                    }
                 }
             }
             chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
@@ -298,6 +324,16 @@ function parseFeeds(feedlyResponse){
             }
         }
 
+        var isSaved = false;
+        if(item.tags){
+            for(var i = 0; i < item.tags.length; i++){
+                if(item.tags[i].id.search(/global\.saved$/i) !== -1){
+                    isSaved = true;
+                    break;
+                }
+            }
+        }
+
         return {
             title: title,
             titleDirection: titleDirection,
@@ -308,7 +344,8 @@ function parseFeeds(feedlyResponse){
             content: content,
             contentDirection: contentDirection,
             isoDate: item.crawled === undefined ? "" : new Date(item.crawled).toISOString(),
-            date: item.crawled === undefined ? "" : new Date(item.crawled)
+            date: item.crawled === undefined ? "" : new Date(item.crawled),
+            isSaved: isSaved
         };
     });
     return feeds;
@@ -326,6 +363,20 @@ function getFeeds(forceUpdate, callback){
              callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
          }, true);
      }
+}
+
+/* Returns saved feeds from the cache.
+ * If the cache is empty, then it will be updated before return
+ * forceUpdate, when is true, then cache will be updated
+ */
+function getSavedFeeds(forceUpdate, callback){
+    if(appGlobal.cachedSavedFeeds.length > 0 && !forceUpdate){
+        callback(appGlobal.cachedSavedFeeds.slice(0), appGlobal.isLoggedIn);
+    }else{
+        updateSavedFeeds(function(){
+            callback(appGlobal.cachedSavedFeeds.slice(0), appGlobal.isLoggedIn);
+        }, true);
+    }
 }
 
 /* Marks feed as read, remove it from the cache and decrement badge.
@@ -371,12 +422,16 @@ function getAccessToken() {
         chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             if(feedlytab.id === tabId){
                 //Execute code in feedly page context
-                chrome.tabs.executeScript(tabId, { code: "JSON.parse(localStorage.getItem('session@cloud'))['feedlyToken']"}, function (result) {
-                    if (result === undefined || result.length !== 1) {
-                        return;
+                chrome.tabs.executeScript(tabId, { code: "localStorage.getItem('session@cloud')"}, function (result) {
+                    if (result) {
+                        try{
+                            var sessionData = JSON.parse(result);
+                            chrome.storage.sync.set({ accessToken: sessionData.feedlyToken, feedlyUserId: sessionData.id || sessionData.feedlyId}, function () {
+                            });
+                        } catch (exception){
+
+                        }
                     }
-                    chrome.storage.sync.set({ accessToken: result[0]}, function () {
-                    });
                 });
             }
         });

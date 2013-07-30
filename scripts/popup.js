@@ -3,13 +3,15 @@ var backgroundPage = chrome.extension.getBackgroundPage()
 var popupGlobal = {
     //Determines lists of supported jQuery.timeago localizations, default localization is en
     supportedTimeAgoLocales : ["ru", "fr"],
-    feeds : []
+    feeds : [],
+    savedFeeds : []
 }
 
 function renderFeeds(){
     showLoader();
     backgroundPage.getFeeds(false, function (feeds, isLoggedIn) {
         $("#loading").hide();
+        $("#feed-saved").hide();
         popupGlobal.feeds = feeds;
         if (isLoggedIn === false) {
             showLogin();
@@ -22,12 +24,38 @@ function renderFeeds(){
                 $("#all-read-section").hide();
             } else {
                 $("#feed-empty").html("");
-                $('#entryTemplate').tmpl(feeds).appendTo('#feed');
+                var container = $("#feed").show().empty();
+                $('#entryTemplate').tmpl(feeds).appendTo(container);
                 $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
                 $("#mark-all-read").text(chrome.i18n.getMessage("MarkAllAsRead"));
                 $("#all-read-section").show();
-                $(".show-content").attr("title", chrome.i18n.getMessage("More")).show();
-                $(".timeago").timeago();
+                $(".show-content").attr("title", chrome.i18n.getMessage("More"));
+                container.find(".timeago").timeago();
+            }
+        }
+    });
+}
+
+function renderSavedFeeds() {
+    $("#all-read-section").hide();
+    $("#feed").hide();
+    $("#loading").show();
+    backgroundPage.getSavedFeeds(false, function (feeds, isLoggedIn) {
+        $("#loading").hide();
+        popupGlobal.savedFeeds = feeds;
+        if (isLoggedIn === false) {
+            showLogin();
+        } else {
+            $("#popup-content").show();
+            if (feeds.length === 0) {
+                $("#feed-empty").html(chrome.i18n.getMessage("NoSavedArticles"));
+            } else {
+                $("#feed-empty").html("");
+                var container = $("#feed-saved").show().empty();
+                console.log(feeds);
+                $('#entryTemplate').tmpl(feeds).appendTo(container);
+                container.find(".show-content").attr("title", chrome.i18n.getMessage("More"));
+                container.find(".timeago").timeago();
             }
         }
     });
@@ -90,16 +118,26 @@ $("#feed").on("click", ".mark-read", function (event) {
     markAsRead([feed.data("id")]);
 });
 
-$("#feed").on("click", ".show-content", function(){
+$("#feedly").on("click", "#btn-feeds-saved", function(){
+    renderSavedFeeds();
+});
+
+$("#feedly").on("click", "#btn-feeds", function(){
+    renderFeeds();
+});
+
+$("#popup-content").on("click", ".show-content", function(){
     var $this = $(this);
     var feed = $this.closest(".item");
     var contentContainer = feed.find(".content");
     var feedId = feed.data("id");
     if(contentContainer.html() === ""){
         var content;
-        for(var i = 0; i < popupGlobal.feeds.length; i++){
-            if(popupGlobal.feeds[i].id === feedId){
-                content = popupGlobal.feeds[i].content
+        var feeds = $("#feed").is(":visible") ? popupGlobal.feeds : popupGlobal.savedFeeds;
+        console.log(feeds);
+        for(var i = 0; i < feeds.length; i++){
+            if(feeds[i].id === feedId){
+                content = feeds[i].content
             }
         }
         if(content){
