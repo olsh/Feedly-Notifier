@@ -1,4 +1,4 @@
-var backgroundPage = chrome.extension.getBackgroundPage()
+var backgroundPage = chrome.extension.getBackgroundPage();
 
 var popupGlobal = {
     //Determines lists of supported jQuery.timeago localizations, default localization is en
@@ -28,16 +28,19 @@ function renderFeeds(){
                 $('#entryTemplate').tmpl(feeds).appendTo(container);
                 $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
                 $("#mark-all-read").text(chrome.i18n.getMessage("MarkAllAsRead"));
-                $("#all-read-section").show();
+                $("#all-read-section").show().find("*").show();
                 $(".show-content").attr("title", chrome.i18n.getMessage("More"));
                 container.find(".timeago").timeago();
+                if(backgroundPage.appGlobal.options.abilitySaveFeeds){
+                    container.find(".save-feed").show();
+                }
             }
         }
     });
 }
 
 function renderSavedFeeds() {
-    $("#all-read-section").hide();
+    $("#mark-all-read").hide().siblings(".icon-ok").hide();
     $("#feed").hide();
     $("#loading").show();
     backgroundPage.getSavedFeeds(false, function (feeds, isLoggedIn) {
@@ -52,10 +55,11 @@ function renderSavedFeeds() {
             } else {
                 $("#feed-empty").html("");
                 var container = $("#feed-saved").show().empty();
-                console.log(feeds);
                 $('#entryTemplate').tmpl(feeds).appendTo(container);
                 container.find(".show-content").attr("title", chrome.i18n.getMessage("More"));
                 container.find(".timeago").timeago();
+                container.find(".mark-read").hide();
+                container.find(".save-feed").show();
             }
         }
     });
@@ -93,7 +97,7 @@ $("#login").click(function () {
 });
 
 //using "mousedown" instead of "click" event to process middle button click.
-$("#feed").on("mousedown", "a", function (event) {
+$("#feed, #feed-saved").on("mousedown", "a", function (event) {
     var link = $(this);
     if(event.which === 1 || event.which === 2){
         var isActiveTab = !(event.ctrlKey || event.which === 2);
@@ -134,7 +138,7 @@ $("#popup-content").on("click", ".show-content", function(){
     if(contentContainer.html() === ""){
         var content;
         var feeds = $("#feed").is(":visible") ? popupGlobal.feeds : popupGlobal.savedFeeds;
-        console.log(feeds);
+
         for(var i = 0; i < feeds.length; i++){
             if(feeds[i].id === feedId){
                 content = feeds[i].content
@@ -164,22 +168,58 @@ $("#popup-content").on("click", ".show-content", function(){
 
 /* Manually feeds update */
 $("#feedly").on("click", "#update-feeds", function(){
-    backgroundPage.getFeeds(true, function(feeds, isLoggedIn){
-        if(isLoggedIn){
-            //Backward loop for chronological sequence
-            for(var i = feeds.length - 1; i >= 0; i--){
-                if($(".item[data-id='" + feeds[i].id + "']").size() === 0){
-                    $('#entryTemplate').tmpl(feeds[i]).fadeIn().prependTo('#feed').find(".timeago").timeago();
-                    popupGlobal.feeds.push(feeds[i]);
+    if($("#feed").is(":visible")){
+        backgroundPage.getFeeds(true, function(feeds, isLoggedIn){
+            console.log(feeds);
+            if(isLoggedIn){
+                //Backward loop for chronological sequence
+                for(var i = feeds.length - 1; i >= 0; i--){
+                    if($("#feed .item[data-id='" + feeds[i].id + "']").size() === 0){
+                        $('#entryTemplate').tmpl(feeds[i]).fadeIn().prependTo('#feed').find(".timeago").timeago();
+                        popupGlobal.feeds.push(feeds[i]);
+                    }
                 }
+            }else{
+                showLogin();
             }
-        }else{
-            showLogin();
-        }
-    });
+        });
+    } else {
+        backgroundPage.getSavedFeeds(true, function(feeds, isLoggedIn){
+            console.log(feeds);
+            if(isLoggedIn){
+                //Backward loop for chronological sequence
+                var container = $("#feed-saved");
+                for(var i = feeds.length - 1; i >= 0; i--){
+                    if($("#feed-saved .item[data-id='" + feeds[i].id + "']").size() === 0){
+                        $('#entryTemplate').tmpl(feeds[i]).fadeIn().prependTo(container).find(".timeago").timeago();
+                        popupGlobal.savedFeeds.push(feeds[i]);
+                        container.find(".mark-read").hide();
+                    }
+                }
+            }else{
+                showLogin();
+            }
+        });
+    }
+});
+
+/* Save or unsave feed */
+$("#popup-content").on("click", ".save-feed", function(){
+    var $this = $(this);
+    var feed = $this.closest(".item");
+    var feedId = feed.data("id");
+    var saveItem = !$this.data("saved");
+    console.log(typeof $this.data("saved"));
+    backgroundPage.toggleSavedFeed(feedId, saveItem);
+    $this.text(saveItem);
+    $this.data("saved", saveItem);
 });
 
 $(document).ready(function(){
+    if(backgroundPage.appGlobal.options.abilitySaveFeeds){
+        $("#feedly").children("button").show();
+    }
+
     //If we support this localization of timeago, then insert script with it
     if (popupGlobal.supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
         //Trying load localization for jQuery.timeago

@@ -166,6 +166,10 @@
     text-decoration: none;
 }
 
-.saved-feeds{
+#feedly > button{
+    display: none;
+}
+
+.save-feed {
     display: none;
 }

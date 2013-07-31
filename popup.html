@@ -30,6 +30,7 @@
 <script src="scripts/jquery.tmpl.min.js"></script>
 <script id="entryTemplate" type="text/x-jquery-tmpl">
     <div class="item" data-id="${id}">
+        <span class="save-feed" data-saved="${isSaved}">${isSaved}</span>
         <span class="article-title">
             <a data-link="${url}" class="title ${titleDirection}">${title}</a>
         </span>

@@ -32,6 +32,7 @@ var FeedlyApiClient = function (accessToken) {
         if (this.accessToken) {
             request.setRequestHeader("Authorization", "OAuth " + this.accessToken);
         }
+
         request.onload = function (e) {
             var json;
             try {

@@ -78,6 +78,9 @@
         "message": "Ouvrir le site Feedly lors du clique sur l'icone (Désactive la popup)"
     },
     "NoSavedArticles": {
-        "message": "No saved articles"
+        "message": "Pas d'articles enregistrés"
+    },
+    "AbilitySaveFeeds": {
+        "message": "Possibilité d'enregistrer les articles"
     }
 }

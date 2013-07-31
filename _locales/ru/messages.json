@@ -79,5 +79,8 @@
     },
     "NoSavedArticles": {
         "message": "Нет сохраненных записей"
+    },
+    "AbilitySaveFeeds": {
+        "message": "Возможность сохранять записи"
     }
 }

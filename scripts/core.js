@@ -14,7 +14,8 @@ var appGlobal = {
         showFullFeedContent: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
-        feedlyUserId : ""
+        feedlyUserId : "",
+        abilitySaveFeeds: false
     },
     //Names of options after changes of which scheduler will be initialized
     criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick"],
@@ -56,6 +57,13 @@ chrome.webRequest.onCompleted.addListener(function(details) {
     }
 }, {urls: ["*://cloud.feedly.com/v3/subscriptions*", "*://cloud.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
+/* Listener for adding or removing saved feeds */
+chrome.webRequest.onCompleted.addListener(function(details) {
+    if(details.method === "PUT" || details.method === "DELETE"){
+        updateSavedFeeds();
+    }
+}, {urls: ["*://cloud.feedly.com/v3/tags*global.saved*"]});
+
 chrome.browserAction.onClicked.addListener(function() {
     openUrlInNewTab("http://feedly.com", true);
 });
@@ -74,6 +82,9 @@ function initialize() {
 function startSchedule(updateInterval) {
     stopSchedule();
     updateFeeds();
+    if(appGlobal.options.abilitySaveFeeds){
+        updateSavedFeeds();
+    }
     appGlobal.intervalId = setInterval(updateFeeds, updateInterval * 60000);
 }
 
@@ -207,7 +218,6 @@ function updateSavedFeeds(callback) {
  * If silentUpdate is true, then notifications will not be shown
  * */
 function updateFeeds(callback, silentUpdate) {
-    updateSavedFeeds();
     appGlobal.feedlyApiClient.request("markers/counts", {
         onSuccess: function(response){
             setActiveStatus();
@@ -415,20 +425,68 @@ function markAsRead(feedIds, callback) {
     });
 }
 
+/* Save feed or unsave it.
+ * feed ID
+ * if saveFeed is true, then save feed, else unsafe it
+ * The callback parameter should specify a function that looks like this:
+ * function(boolean isLoggedIn) {...};*/
+function toggleSavedFeed(feedId, saveFeed, callback){
+    if(saveFeed){
+        appGlobal.feedlyApiClient.request("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved"), {
+            method: "PUT",
+            body: {
+                entryId: feedId
+            },
+            onSuccess: function(response){
+                if(typeof callback === "function"){
+                    callback(true);
+                }
+            },
+            onAuthorizationRequired: function(){
+                if(typeof callback === "function"){
+                    callback(false);
+                }
+            }
+        });
+    } else {
+        appGlobal.feedlyApiClient.request("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/" + encodeURIComponent(feedId), {
+            method: "DELETE",
+            onSuccess: function(response){
+                if(typeof callback === "function"){
+                    callback(true);
+                }
+            },
+            onAuthorizationRequired: function(){
+                if(typeof callback === "function"){
+                    callback(false);
+                }
+            }
+        });
+    }
+
+    //Update state in the cache
+    for(var i = 0; i < appGlobal.cachedFeeds.length; i++){
+        if(appGlobal.cachedFeeds[i].id === feedId){
+            appGlobal.cachedFeeds[i].isSaved = saveFeed;
+            break;
+        }
+    }
+}
+
 /* Opens feedly site and if user are logged in,
  * then read access token and stores in chrome.storage */
 function getAccessToken() {
     chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
         chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-            if(feedlytab.id === tabId){
+            if (feedlytab.id === tabId) {
                 //Execute code in feedly page context
                 chrome.tabs.executeScript(tabId, { code: "localStorage.getItem('session@cloud')"}, function (result) {
                     if (result) {
-                        try{
+                        try {
                             var sessionData = JSON.parse(result);
                             chrome.storage.sync.set({ accessToken: sessionData.feedlyToken, feedlyUserId: sessionData.id || sessionData.feedlyId}, function () {
                             });
-                        } catch (exception){
+                        } catch (exception) {
 
                         }
                     }

@@ -79,5 +79,8 @@
     },
     "NoSavedArticles": {
         "message": "No saved articles"
+    },
+    "AbilitySaveFeeds": {
+        "message": "Ability to save feeds"
     }
 }
