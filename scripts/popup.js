@@ -158,9 +158,11 @@ $("#popup-content").on("click", ".show-content", function(){
         $this.css("background-position", contentContainer.is(":visible") ? "-288px -120px" :"-313px -119px");
         if (contentContainer.is(":visible") && contentContainer.text().length > 350){
             $(".item").css("width",  "700px");
+            $("#feedly").css("width",  "700px");
             $(".article-title").css("width", "660px");
         } else{
             $(".item").css("width",  "350px");
+            $("#feedly").css("width",  "350px");
             $(".article-title").css("width", "310px");
         }
     });
