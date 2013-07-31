@@ -170,6 +170,7 @@ $("#popup-content").on("click", ".show-content", function(){
 
 /* Manually feeds update */
 $("#feedly").on("click", "#update-feeds", function(){
+    $(".icon-refresh").css("background", "url(/images/loading16.gif)");
     if($("#feed").is(":visible")){
         backgroundPage.getFeeds(true, function(feeds, isLoggedIn){
             console.log(feeds);
@@ -184,6 +185,7 @@ $("#feedly").on("click", "#update-feeds", function(){
             }else{
                 showLogin();
             }
+            $(".icon-refresh").css("background", "");
         });
     } else {
         backgroundPage.getSavedFeeds(true, function(feeds, isLoggedIn){
@@ -201,6 +203,7 @@ $("#feedly").on("click", "#update-feeds", function(){
             }else{
                 showLogin();
             }
+            $(".icon-refresh").css("background", "");
         });
     }
 });
