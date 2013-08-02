@@ -33,7 +33,8 @@ body{
 }
 
 #options,
-#userInfo{
+#userInfo,
+#donate{
     margin:20px;
 }
 
