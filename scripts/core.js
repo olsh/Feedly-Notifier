@@ -371,11 +371,12 @@ function getAccessToken() {
         chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             if(feedlytab.id === tabId){
                 //Execute code in feedly page context
-                chrome.tabs.executeScript(tabId, { code: "JSON.parse(localStorage.getItem('session@cloud'))['feedlyToken']"}, function (result) {
-                    if (result === undefined || result.length !== 1) {
+                chrome.cookies.get({url: tab.url, name: "session@cloud"}, function (cookie){
+                    if(cookie === null){
                         return;
                     }
-                    chrome.storage.sync.set({ accessToken: result[0]}, function () {
+                    var feedlyToken = JSON.parse(cookie.value).feedlyToken;
+                    chrome.storage.sync.set({ accessToken: feedlyToken}, function () {
                     });
                 });
             }
