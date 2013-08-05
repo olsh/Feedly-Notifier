@@ -234,7 +234,7 @@ function updateFeeds(callback, silentUpdate) {
                     //Search category(global or uncategorized) with max feeds
                     globalCategoryId = unreadCounts[i].id;
 
-                    //TODO: Remove this search in later versions, we get user id in getAccessToken method
+                    //Search Feedly user id
                     if(!appGlobal.options.feedlyUserId){
                         //Search user id
                         var matches = userIdRegex.exec(unreadCounts[i].id);
@@ -285,6 +285,7 @@ function setInactiveStatus() {
     chrome.browserAction.setBadgeText({ text: ""});
     appGlobal.cachedFeeds = [];
     appGlobal.isLoggedIn = false;
+    appGlobal.options.feedlyUserId = "";
     stopSchedule();
 }
 
@@ -477,22 +478,18 @@ function toggleSavedFeed(feedId, saveFeed, callback){
  * then read access token and stores in chrome.storage */
 function getAccessToken() {
     chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
-        chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-            if (feedlytab.id === tabId) {
-                //Execute code in feedly page context
-                chrome.tabs.executeScript(tabId, { code: "localStorage.getItem('session@cloud')"}, function (result) {
-                    if (result) {
-                        try {
-                            var sessionData = JSON.parse(result);
-                            chrome.storage.sync.set({ accessToken: sessionData.feedlyToken, feedlyUserId: sessionData.id || sessionData.feedlyId}, function () {
-                            });
-                        } catch (exception) {
-
-                        }
+        chrome.webRequest.onBeforeSendHeaders.addListener(function (details) {
+                console.log(details);
+                for (var i = 0; i < details.requestHeaders.length; i++) {
+                    if (details.requestHeaders[i].name === "X-Feedly-Access-Token") {
+                        chrome.storage.sync.set({ accessToken: details.requestHeaders[i].value }, function () {
+                        });
+                        break;
                     }
-                });
-            }
-        });
+                }
+            },
+            {urls: ["*://cloud.feedly.com/v3/subscriptions*"],
+                tabId: feedlytab.id}, ["requestHeaders"]);
     });
 }
 
