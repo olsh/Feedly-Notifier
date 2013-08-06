@@ -203,14 +203,16 @@ function filterByNewFeeds(feeds, callback) {
 
 /* Update saved feeds and stores its in cache */
 function updateSavedFeeds(callback) {
-    appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/contents", {
-        onSuccess: function (response) {
-            appGlobal.cachedSavedFeeds = parseFeeds(response);
-            if(typeof callback === "function"){
-                callback();
+    if(appGlobal.options.feedlyUserId){
+        appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/contents", {
+            onSuccess: function (response) {
+                appGlobal.cachedSavedFeeds = parseFeeds(response);
+                if(typeof callback === "function"){
+                    callback();
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 /* Runs feeds update and stores unread feeds in cache
@@ -233,14 +235,13 @@ function updateFeeds(callback, silentUpdate) {
 
                     //Search category(global or uncategorized) with max feeds
                     globalCategoryId = unreadCounts[i].id;
-
-                    //Search Feedly user id
-                    if(!appGlobal.options.feedlyUserId){
-                        //Search user id
-                        var matches = userIdRegex.exec(unreadCounts[i].id);
-                        if(matches){
-                            appGlobal.options.feedlyUserId = matches[1];
-                        }
+                }
+                //Search Feedly user id
+                if(!appGlobal.options.feedlyUserId){
+                    //Search user id
+                    var matches = userIdRegex.exec(unreadCounts[i].id);
+                    if(matches){
+                        appGlobal.options.feedlyUserId = matches[1];
                     }
                 }
             }
