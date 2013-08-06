@@ -162,12 +162,14 @@
 }
 
 #feed,
-#feed-saved{
+#feed-saved,
+#feed-empty{
     margin-top: 40px;
 }
 
 .tabs #feed,
-.tabs #feed-saved{
+.tabs #feed-saved,
+.tabs #feed-empty{
     margin-top: 80px;
 }
 
