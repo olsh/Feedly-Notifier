@@ -32,7 +32,7 @@ function renderFeeds(){
                 $(".show-content").attr("title", chrome.i18n.getMessage("More"));
                 container.find(".timeago").timeago();
                 if(backgroundPage.appGlobal.options.abilitySaveFeeds){
-                    container.find(".save-feed").show();
+                    $("#popup-content").addClass("tabs");
                 }
             }
         }
@@ -59,7 +59,6 @@ function renderSavedFeeds() {
                 container.find(".show-content").attr("title", chrome.i18n.getMessage("More"));
                 container.find(".timeago").timeago();
                 container.find(".mark-read").hide();
-                container.find(".save-feed").show();
             }
         }
     });
@@ -159,11 +158,11 @@ $("#popup-content").on("click", ".show-content", function(){
         if (contentContainer.is(":visible") && contentContainer.text().length > 350){
             $(".item").css("width",  "700px");
             $("#feedly").css("width",  "700px");
-            $(".article-title").css("width", "660px");
+            $(".article-title").css("width", $("#popup-content").hasClass("tabs") ? "645px" : "660px");
         } else{
-            $(".item").css("width",  "350px");
-            $("#feedly").css("width",  "350px");
-            $(".article-title").css("width", "310px");
+            $(".item").css("width", $("#popup-content").hasClass("tabs") ? "380px" : "350px");
+            $("#feedly").css("width", $("#popup-content").hasClass("tabs") ? "380px" : "350px");
+            $(".article-title").css("width", $("#popup-content").hasClass("tabs") ? "325px" : "310px");
         }
     });
 });
@@ -216,8 +215,8 @@ $("#popup-content").on("click", ".save-feed", function(){
     var saveItem = !$this.data("saved");
     console.log(typeof $this.data("saved"));
     backgroundPage.toggleSavedFeed(feedId, saveItem);
-    $this.text(saveItem);
     $this.data("saved", saveItem);
+    $this.toggleClass("saved");
 });
 
 $(document).ready(function(){

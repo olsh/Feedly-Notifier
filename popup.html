@@ -16,8 +16,9 @@
             <span id="update-feeds"><i class="icon-refresh"></i></span>
             <i class="icon-ok"></i><span id="mark-all-read"></span>
         </div>
-        <button id="btn-feeds">Feeds</button>
-        <button id="btn-feeds-saved">Saved</button>
+        <div class="clear"></div>
+        <button id="btn-feeds" class="tab">Feeds</button>
+        <button id="btn-feeds-saved" class="tab">Saved</button>
     </div>
     <div id="feed"></div>
     <div id="feed-saved"></div>
@@ -32,13 +33,18 @@
 <script src="scripts/jquery.tmpl.min.js"></script>
 <script id="entryTemplate" type="text/x-jquery-tmpl">
     <div class="item" data-id="${id}">
-        <span class="save-feed" data-saved="${isSaved}">${isSaved}</span>
         <span class="article-title">
             <a data-link="${url}" class="title ${titleDirection}">${title}</a>
         </span>
         <span class="article-menu">
+            {{if (isSaved)}}
+                <span class="save-feed saved" data-saved="${isSaved}"></span>
+            {{else}}
+                 <span class="save-feed" data-saved="${isSaved}"></span>
+            {{/if}}
             <span class="mark-read" title="Mark as read"></span>
             <span class="show-content" title="Show content"></span>
+
         </span>
         <div class="blog-title">
             <a data-link="${blogUrl}" href="javascript:void(0)">${blog}</a>,

@@ -24,6 +24,7 @@
 
 .mark-read,
 .show-content,
+.save-feed,
 [class^="icon-"],
 [class*=" icon-"]{
     display: inline-block;
@@ -55,12 +56,24 @@
     background-position: -313px -119px;
 }
 
+.save-feed{
+    background: url(save.png) no-repeat 0 0;
+}
+
+.saved{
+    background-position: -14px 0px
+}
+
 #login, #popup-content, #all-read-section {
     display: none;
 }
 
 .item{
     width: 350px;
+}
+
+.tabs .item{
+    width: 380px;
 }
 
 .item .content{
@@ -98,6 +111,10 @@
     width: 310px;
 }
 
+.tabs .article-title{
+    width: 325px;
+}
+
 .article-menu{
     vertical-align: top;
 }
@@ -121,8 +138,22 @@
     position: fixed;
     background-color: white;
     width: 350px;
-    padding: 10px 0;
+    padding: 10px 0 0 0;
     top: 0;
+}
+
+.tabs #feedly{
+    border-bottom: 1px solid #eaeaea;
+    width: 380px;
+}
+
+#feedly>button{
+    display: none;
+}
+
+
+.tabs #feedly>button{
+    display: inline;
 }
 
 #feedly img{
@@ -132,6 +163,10 @@
 
 #feed{
     margin-top: 40px;
+}
+
+.tabs #feed{
+    margin-top: 80px;
 }
 
 #website,
@@ -179,10 +214,23 @@
     text-decoration: none;
 }
 
-#feedly > button{
+.clear{
+    clear: both;
+}
+
+.tab{
+    border: 1px solid #eaeaea;
+    background: white;
+    padding: 5px 10px;
+    border-bottom: none;
+    border-radius: 4px 4px 0px 0px;
+    margin: 10px 0 0 0;
+}
+
+.save-feed{
     display: none;
 }
 
-.save-feed {
-    display: none;
+.tabs .save-feed{
+    display: inline-block;
 }
