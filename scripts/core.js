@@ -15,10 +15,11 @@ var appGlobal = {
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
         feedlyUserId : "",
-        abilitySaveFeeds: false
+        abilitySaveFeeds: false,
+        maxNumberOfFeeds: 20
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick"],
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds"],
     cachedFeeds: [],
     cachedSavedFeeds: [],
     isLoggedIn: false,
@@ -82,9 +83,6 @@ function initialize() {
 function startSchedule(updateInterval) {
     stopSchedule();
     updateFeeds();
-    if(appGlobal.options.abilitySaveFeeds){
-        updateSavedFeeds();
-    }
     appGlobal.intervalId = setInterval(updateFeeds, updateInterval * 60000);
 }
 
@@ -97,8 +95,8 @@ function sendDesktopNotification(feeds){
     var notifications = [];
     //if notifications too many, then to show only count
     if(feeds.length > appGlobal.options.maxNotificationsCount){
-        //We can detect only 20 new feeds at time, but actually count of feeds may be more than 20
-        var count = feeds.length === 20 ? chrome.i18n.getMessage("many") : feeds.length.toString();
+        //We can detect only limit count of new feeds at time, but actually count of feeds may be more
+        var count = feeds.length === appGlobal.options.maxNumberOfFeeds ? chrome.i18n.getMessage("many") : feeds.length.toString();
         var notification = window.webkitNotifications.createNotification(
             appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeeds"), chrome.i18n.getMessage("YouHaveNewFeeds", count));
         notification.show();
@@ -237,38 +235,43 @@ function updateFeeds(callback, silentUpdate) {
                     globalCategoryId = unreadCounts[i].id;
                 }
                 //Search Feedly user id
-                if(!appGlobal.options.feedlyUserId){
+                if(!appGlobal.options.feedlyUserId && appGlobal.options.abilitySaveFeeds){
                     //Search user id
                     var matches = userIdRegex.exec(unreadCounts[i].id);
                     if(matches){
                         appGlobal.options.feedlyUserId = matches[1];
+                        //Update cache when update feedlyUserId
+                        updateSavedFeeds();
                     }
                 }
             }
             chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
 
-            appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(globalCategoryId) + "/contents", {
-                parameters: {
-                    unreadOnly: true
-                },
-                onSuccess: function(response){
-                    appGlobal.cachedFeeds = parseFeeds(response);
-                    filterByNewFeeds(appGlobal.cachedFeeds, function(newFeeds){
-                        if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
-                            sendDesktopNotification(newFeeds);
+            if (appGlobal.options.showDesktopNotifications || !appGlobal.options.openSiteOnIconClick) {
+                appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(globalCategoryId) + "/contents", {
+                    parameters: {
+                        unreadOnly: true,
+                        count: appGlobal.options.maxNumberOfFeeds
+                    },
+                    onSuccess: function (response) {
+                        appGlobal.cachedFeeds = parseFeeds(response);
+                        filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
+                            if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
+                                sendDesktopNotification(newFeeds);
+                            }
+                        });
+                        if (typeof callback === "function") {
+                            callback();
                         }
-                    });
-                    if(typeof callback === "function"){
-                        callback();
+                    },
+                    onAuthorizationRequired: function () {
+                        setInactiveStatus();
+                        if (typeof callback === "function") {
+                            callback();
+                        }
                     }
-                },
-                onAuthorizationRequired: function(){
-                    setInactiveStatus();
-                    if(typeof callback === "function"){
-                        callback();
-                    }
-                }
-            });
+                });
+            }
         },
         onAuthorizationRequired: function(){
             setInactiveStatus();

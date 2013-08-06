@@ -82,5 +82,8 @@
     },
     "AbilitySaveFeeds": {
         "message": "Ability to save feeds"
+    },
+    "MaxNumberOfFeeds": {
+        "message": "Max number of feeds in the popup"
     }
 }

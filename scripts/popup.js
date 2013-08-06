@@ -172,7 +172,6 @@ $("#feedly").on("click", "#update-feeds", function(){
     $(".icon-refresh").css("background", "url(/images/loading16.gif)");
     if($("#feed").is(":visible")){
         backgroundPage.getFeeds(true, function(feeds, isLoggedIn){
-            console.log(feeds);
             if(isLoggedIn){
                 //Backward loop for chronological sequence
                 for(var i = feeds.length - 1; i >= 0; i--){
@@ -188,7 +187,6 @@ $("#feedly").on("click", "#update-feeds", function(){
         });
     } else {
         backgroundPage.getSavedFeeds(true, function(feeds, isLoggedIn){
-            console.log(feeds);
             if(isLoggedIn){
                 //Backward loop for chronological sequence
                 var container = $("#feed-saved");
@@ -213,7 +211,6 @@ $("#popup-content").on("click", ".save-feed", function(){
     var feed = $this.closest(".item");
     var feedId = feed.data("id");
     var saveItem = !$this.data("saved");
-    console.log(typeof $this.data("saved"));
     backgroundPage.toggleSavedFeed(feedId, saveItem);
     $this.data("saved", saveItem);
     $this.toggleClass("saved");

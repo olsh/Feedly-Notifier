@@ -82,5 +82,8 @@
     },
     "AbilitySaveFeeds": {
         "message": "Possibilité d'enregistrer les articles"
+    },
+    "MaxNumberOfFeeds": {
+        "message": "Max number of feeds in the popup"
     }
 }
