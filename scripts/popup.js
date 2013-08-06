@@ -102,7 +102,7 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
     if(event.which === 1 || event.which === 2){
         var isActiveTab = !(event.ctrlKey || event.which === 2);
         chrome.tabs.create({url: link.data("link"), active : isActiveTab }, function (feedTab) {
-            if (backgroundPage.appGlobal.options.markReadOnClick === true && link.hasClass("title") === true) {
+            if (backgroundPage.appGlobal.options.markReadOnClick === true && link.hasClass("title") === true && $("#feed").is(":visible")) {
                 markAsRead([link.closest(".item").data("id")]);
             }
         });
