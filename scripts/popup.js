@@ -24,10 +24,11 @@ function renderFeeds(){
             }
 
             if (feeds.length === 0) {
-                $("#feed-empty").html(chrome.i18n.getMessage("NoUnreadArticles"));
+                $("#feed-empty").text(chrome.i18n.getMessage("NoUnreadArticles"));
+                $("#feed-empty").show();
                 $("#all-read-section").hide();
             } else {
-                $("#feed-empty").html("");
+                $("#feed-empty").hide();
                 var container = $("#feed").show().empty();
                 $('#entryTemplate').tmpl(feeds).appendTo(container);
                 $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
@@ -46,16 +47,18 @@ function renderSavedFeeds() {
     backgroundPage.getSavedFeeds(false, function (feeds, isLoggedIn) {
         $("#loading").hide();
         $("#feed").hide();
+        $("#feed-saved").empty();
         popupGlobal.savedFeeds = feeds;
         if (isLoggedIn === false) {
             showLogin();
         } else {
             $("#popup-content").show();
             if (feeds.length === 0) {
-                $("#feed-empty").html(chrome.i18n.getMessage("NoSavedArticles"));
+                $("#feed-empty").text(chrome.i18n.getMessage("NoSavedArticles"));
+                $("#feed-empty").show();
             } else {
-                $("#feed-empty").html("");
-                var container = $("#feed-saved").show().empty();
+                $("#feed-empty").hide();
+                var container = $("#feed-saved").show();
                 $('#entryTemplate').tmpl(feeds).appendTo(container);
                 container.find(".show-content").attr("title", chrome.i18n.getMessage("More"));
                 container.find(".timeago").timeago();
