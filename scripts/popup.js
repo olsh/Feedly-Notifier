@@ -122,10 +122,14 @@ $("#feed").on("click", ".mark-read", function (event) {
 });
 
 $("#feedly").on("click", "#btn-feeds-saved", function(){
+    $(this).toggleClass("active-tab");
+    $("#btn-feeds").toggleClass("active-tab");
     renderSavedFeeds();
 });
 
 $("#feedly").on("click", "#btn-feeds", function(){
+    $(this).toggleClass("active-tab");
+    $("#btn-feeds-saved").toggleClass("active-tab");
     renderFeeds();
 });
 

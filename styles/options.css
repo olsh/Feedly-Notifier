@@ -23,6 +23,13 @@ body{
     font-size: 20px;
 }
 
+h3{
+    font-family: "Open Sans Condensed";
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+}
+
 .label{
     font-family: sans-serif;
     font-size: 15px;
