@@ -85,5 +85,14 @@
     },
     "MaxNumberOfFeeds": {
         "message": "Max number of feeds in the popup"
+    },
+    "General": {
+        "message": "General"
+    },
+    "Popup": {
+        "message": "Popup"
+    },
+    "Notifications": {
+        "message": "Notifications"
     }
 }

@@ -19,7 +19,7 @@ var appGlobal = {
         maxNumberOfFeeds: 20
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds"],
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds"],
     cachedFeeds: [],
     cachedSavedFeeds: [],
     isLoggedIn: false,

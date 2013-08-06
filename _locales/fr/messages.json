@@ -84,6 +84,15 @@
         "message": "Possibilité d'enregistrer les articles"
     },
     "MaxNumberOfFeeds": {
-        "message": "Max number of feeds in the popup"
+        "message": "Max de notifications à la fois"
+    },
+    "General": {
+        "message": "Général"
+    },
+    "Popup": {
+        "message": "Popup"
+    },
+    "Notifications": {
+        "message": "Notifications"
     }
 }

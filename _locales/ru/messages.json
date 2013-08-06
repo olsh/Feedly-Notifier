@@ -85,5 +85,14 @@
     },
     "MaxNumberOfFeeds": {
         "message": "Максимальное количество новостей во всплывающем окне"
+    },
+    "General": {
+        "message": "Общие"
+    },
+    "Popup": {
+        "message": "Всплывающее окно"
+    },
+    "Notifications": {
+        "message": "Уведомления"
     }
 }
