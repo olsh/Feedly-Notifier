@@ -42,10 +42,10 @@ function renderFeeds(){
 
 function renderSavedFeeds() {
     $("#mark-all-read").hide().siblings(".icon-ok").hide();
-    $("#feed").hide();
-    $("#loading").show();
+    showLoader();
     backgroundPage.getSavedFeeds(false, function (feeds, isLoggedIn) {
         $("#loading").hide();
+        $("#feed").hide();
         popupGlobal.savedFeeds = feeds;
         if (isLoggedIn === false) {
             showLogin();
