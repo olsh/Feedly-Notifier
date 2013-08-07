@@ -7,12 +7,14 @@
 
     <meta property="og:title" content="Feedly Notifier" />
     <meta property="og:description" content="Google chrome extension for reading news from rss aggregator Feedly" />
-    <meta property="og:image" content="http://olsh.github.io/images/feedly-logo.png" />
+    <meta property="og:image" content="http://olsh.github.io/Feedly-Notifier/images/feedly-logo.png" />
 
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print"/>
+    <link rel="stylesheet" type="text/css" href="javascripts/fancybox/jquery.fancybox.css" />
+    <link rel="stylesheet" type="text/css" href="javascripts/fancybox/helpers/jquery.fancybox-buttons.css"/>
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -41,113 +43,135 @@
                         class="octicon octicon-link"></span></a>Feedly Notifier</h1>
 
             <p>Google chrome extension for reading news from rss aggregator <a href="http://www.feedly.com">Feedly</a>.
-                Also, you can download firefox extension <a href="http://olsh.github.io/Feedly-Notifier-Firefox/">here</a>.
             </p>
 
             <p>Feedly Notifier is a tiny extension that keeps you up to date with your feedly subscriptions.</p>
 
-            <h2>Features</h2>
-            <ul>
-                <li>unread news count</li>
-                <li>unread news headers (with direct link on the news site) in the popup window</li>
-                <li>ability to mark news as read</li>
-                <li>ability to mark all news as read</li>
-                <li>article preview in the popup window</li>
-                <li>desktop notifications</li>
-                <li>background mode</li>
-                <li>ability save feeds</li>
-            </ul>
+            <h2 class="toggle-link">Features</h2>
+            <div class="toggle-container">
+                <ul>
+                    <li>unread news count</li>
+                    <li>unread news headers (with direct link on the news site) in the popup window</li>
+                    <li>ability to mark news as read</li>
+                    <li>ability to mark all news as read</li>
+                    <li>article preview in the popup window</li>
+                    <li>desktop notifications</li>
+                    <li>background mode</li>
+                    <li>ability save feeds</li>
+                </ul>
+            </div>
 
-            <h2>Changelog</h2>
+            <h2 class="toggle-link">Screenshots</h2>
+            <div class="toggle-container" id="screenshots">
+                <a class="fancybox-button" rel="fancybox-button" href="images/screenshots/counter_b.jpg" title="Counter">
+                    <img src="images/screenshots/counter_m.jpg" alt="counter">
+                </a>
+                <a class="fancybox-button" rel="fancybox-button" href="images/screenshots/popup_b.jpg" title="Popup">
+                    <img src="images/screenshots/popup_m.jpg" alt="counter">
+                </a>
+                <a class="fancybox-button" rel="fancybox-button" href="images/screenshots/expanded_popup_b.jpg" title="Expanded popup">
+                    <img src="images/screenshots/expanded_popup_m.jpg" alt="counter">
+                </a>
+                <a class="fancybox-button" rel="fancybox-button" href="images/screenshots/notifications_b.jpg" title="Desktop notifications">
+                    <img src="images/screenshots/notifications_m.jpg" alt="counter">
+                </a>
+                <a class="fancybox-button" rel="fancybox-button" href="images/screenshots/options_b.jpg" title="Options">
+                    <img src="images/screenshots/options_m.jpg" alt="counter">
+                </a>
+            </div>
 
-            <p>v1.5.0 (2013.08.05)</p>
+            <h2 class="toggle-link">Changelog</h2>
+            <div class="toggle-container">
+                <p>v1.5.0 (2013.08.05)</p>
 
-            <ul>
-                <li>Ability to save feeds was added (option)</li>
-                <li>Ability to open site on button click (don't show popup, work as a counter only)</li>
-                <li>UI improvements</li>
-                <li>Stability improvements</li>
-            </ul>
+                <ul>
+                    <li>Ability to save feeds was added (option)</li>
+                    <li>Ability to open site on button click (don't show popup, work as a counter only)</li>
+                    <li>UI improvements</li>
+                    <li>Stability improvements</li>
+                </ul>
 
-            <p>v1.4.3 (2013.08.05)</p>
+                <p>v1.4.3 (2013.08.05)</p>
 
-            <ul>
-                <li>Login fixed</li>
-            </ul>
+                <ul>
+                    <li>Login fixed</li>
+                </ul>
 
-            <p>v1.4.2 (2013.07.24)</p>
+                <p>v1.4.2 (2013.07.24)</p>
 
-            <ul>
-                <li>Manual update feature</li>
-                <li>Update counter &amp; feeds when user remove or add subscriptions on site</li>
-                <li>UI improvements</li>
-                <li>Small bugfixes</li>
-            </ul>
+                <ul>
+                    <li>Manual update feature</li>
+                    <li>Update counter &amp; feeds when user remove or add subscriptions on site</li>
+                    <li>UI improvements</li>
+                    <li>Small bugfixes</li>
+                </ul>
 
-            <p>v1.4.1 (2013.07.18)</p>
+                <p>v1.4.1 (2013.07.18)</p>
 
-            <ul>
-                <li>Max notifications count option</li>
-            </ul>
+                <ul>
+                    <li>Max notifications count option</li>
+                </ul>
 
-            <p>v1.4.0 (2013.07.18)</p>
+                <p>v1.4.0 (2013.07.18)</p>
 
-            <ul>
-                <li>Show full article feature</li>
-                <li>Open news on notification click</li>
-                <li>Small bugs were fixed</li>
-            </ul>
+                <ul>
+                    <li>Show full article feature</li>
+                    <li>Open news on notification click</li>
+                    <li>Small bugs were fixed</li>
+                </ul>
 
-            <p>v1.3.1 (2013.07.16)</p>
+                <p>v1.3.1 (2013.07.16)</p>
 
-            <ul>
-                <li>RTL text direction support</li>
-                <li>UI improvements</li>
-            </ul>
+                <ul>
+                    <li>RTL text direction support</li>
+                    <li>UI improvements</li>
+                </ul>
 
-            <p>v1.3.0 (2013.07.15)</p>
+                <p>v1.3.0 (2013.07.15)</p>
 
-            <ul>
-                <li>Background mode</li>
-                <li>Hide notifications after delay option</li>
-            </ul>
+                <ul>
+                    <li>Background mode</li>
+                    <li>Hide notifications after delay option</li>
+                </ul>
 
-            <p>v1.2.1 (2013.07.14)</p>
+                <p>v1.2.1 (2013.07.14)</p>
 
-            <ul>
-                <li>Fixed desktop notifications bug</li>
-            </ul>
+                <ul>
+                    <li>Fixed desktop notifications bug</li>
+                </ul>
 
-            <p>v1.2.0 (2013.07.13)</p>
+                <p>v1.2.0 (2013.07.13)</p>
 
-            <ul>
-                <li>"Read all" button</li>
-                <li>Read article in the popup window</li>
-                <li>Desktop notification</li>
-                <li>UI improvements</li>
-                <li>French translation (by Jérémy Hagège)</li>
-            </ul>
+                <ul>
+                    <li>"Read all" button</li>
+                    <li>Read article in the popup window</li>
+                    <li>Desktop notification</li>
+                    <li>UI improvements</li>
+                    <li>French translation (by Jérémy Hagège)</li>
+                </ul>
 
-            <p>v1.1 (2013.07.09)</p>
+                <p>v1.1 (2013.07.09)</p>
 
-            <ul>
-                <li>Date of news was added</li>
-                <li>Added link to Feedly homepage</li>
-                <li>Added loader</li>
-                <li>Russian translation</li>
-            </ul>
+                <ul>
+                    <li>Date of news was added</li>
+                    <li>Added link to Feedly homepage</li>
+                    <li>Added loader</li>
+                    <li>Russian translation</li>
+                </ul>
 
-            <p>v1.0.1 (2013.07.08)</p>
+                <p>v1.0.1 (2013.07.08)</p>
 
-            <ul>
-                <li>Scheduler bug was fixed</li>
-            </ul>
+                <ul>
+                    <li>Scheduler bug was fixed</li>
+                </ul>
 
-            <p>v1.0 (2013.07.08)</p>
+                <p>v1.0 (2013.07.08)</p>
 
-            <ul>
-                <li>Initial relase</li>
-            </ul>
+                <ul>
+                    <li>Initial relase</li>
+                </ul>
+            </div>
+
         </section>
 
         <aside id="sidebar">
@@ -165,12 +189,21 @@
                 .tar.gz file
             </a>
 
+            <a href="http://olsh.github.io/Feedly-Notifier-Firefox/" class="button orange">
+                <small>Addon site</small>
+                Firefox
+            </a>
+
             <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a
                     href="https://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
     </div>
 </div>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="javascripts/fancybox/jquery.fancybox.pack.js"></script>
+<script src="javascripts/fancybox/helpers/jquery.fancybox-buttons.js"></script>
+<script src="javascripts/main.js"></script>
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;

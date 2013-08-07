@@ -157,6 +157,10 @@ aside a.button {
   font-size: 21px;
 }
 
+aside a.button.orange{
+    background: url("../images/download-button-orange.png");
+}
+
 code, pre {
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   color: #222;
@@ -477,3 +481,19 @@ footer a:hover {
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {}
+
+#main-content .toggle-link{
+    cursor: pointer;
+}
+
+#main-content .toggle-link:hover{
+    color: #2879d0;
+}
+
+#main-content .toggle-container{
+    display: none;
+}
+
+#screenshots img{
+    margin: 5px;
+}
