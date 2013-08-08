@@ -482,19 +482,37 @@ function toggleSavedFeed(feedId, saveFeed, callback){
  * then read access token and stores in chrome.storage */
 function getAccessToken() {
     chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
-        chrome.webRequest.onBeforeSendHeaders.addListener(function (details) {
-                console.log(details);
-                for (var i = 0; i < details.requestHeaders.length; i++) {
-                    if (details.requestHeaders[i].name === "X-Feedly-Access-Token") {
-                        chrome.storage.sync.set({ accessToken: details.requestHeaders[i].value }, function () {
-                        });
-                        break;
-                    }
-                }
-            },
-            {urls: ["*://cloud.feedly.com/v3/subscriptions*"],
+        chrome.webRequest.onBeforeSendHeaders.addListener(getAccessTokenFromRequest,
+            {urls: ["<all_urls>"],
                 tabId: feedlytab.id}, ["requestHeaders"]);
     });
+}
+
+function getAccessTokenFromRequest(details) {
+    var accessToken;
+    var accessTokenRegex = /session@cloud=({.+?})/i;
+
+    for (var i = 0; i < details.requestHeaders.length; i++) {
+        if (details.requestHeaders[i].name === "X-Feedly-Access-Token") {
+            accessToken = details.requestHeaders[i].value;
+            break;
+        }
+        if (details.requestHeaders[i].name === "Cookie") {
+            var header = details.requestHeaders[i].value;
+            try{
+                accessToken = JSON.parse(accessTokenRegex.exec(header)[1]).feedlyToken;
+                break;
+            } catch (exception){
+
+            }
+        }
+    }
+
+    if(accessToken){
+        chrome.storage.sync.set({ accessToken: accessToken }, function () {
+        });
+        chrome.webRequest.onBeforeSendHeaders.removeListener(getAccessTokenFromRequest);
+    }
 }
 
 /* Writes all application options in chrome storage and runs callback after it */
