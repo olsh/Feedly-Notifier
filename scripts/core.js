@@ -483,8 +483,7 @@ function toggleSavedFeed(feedId, saveFeed, callback){
 function getAccessToken() {
     chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
         chrome.webRequest.onBeforeSendHeaders.addListener(getAccessTokenFromRequest,
-            {urls: ["<all_urls>"],
-                tabId: feedlytab.id}, ["requestHeaders"]);
+            {urls: ["<all_urls>"], tabId: feedlytab.id}, ["requestHeaders"]);
     });
 }
 
