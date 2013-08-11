@@ -106,7 +106,7 @@ function sendDesktopNotification(feeds) {
     } else {
         for (var i = 0; i < feeds.length; i++) {
             var notification = window.webkitNotifications.createNotification(
-                appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeed"), feeds[i].title);
+                appGlobal.icons.defaultBig, feeds[i].blog, feeds[i].title);
 
             //Open new tab on click and close notification
             notification.url = feeds[i].url;

@@ -41,9 +41,6 @@
     "ShowDesktopNotifications" : {
         "message" : "Show desktop notifications"
     },
-    "NewFeed" : {
-        "message" : "New feed"
-    },
     "NewFeeds" : {
         "message" : "New feeds"
     },

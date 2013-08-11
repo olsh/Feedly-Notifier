@@ -41,9 +41,6 @@
     "ShowDesktopNotifications" : {
         "message" : "Показывать уведомления"
     },
-    "NewFeed" : {
-        "message" : "Новая запись"
-    },
     "NewFeeds" : {
         "message" : "Новые записи"
     },

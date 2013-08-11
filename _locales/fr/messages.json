@@ -41,9 +41,6 @@
     "ShowDesktopNotifications" : {
         "message" : "Afficher les notifications bureau"
     },
-    "NewFeed" : {
-        "message" : "Nouvel article"
-    },
     "NewFeeds" : {
         "message" : "Nouveaux articles"
     },
