@@ -488,7 +488,6 @@ function getAccessToken() {
     chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
         chrome.webRequest.onBeforeSendHeaders.addListener(function processRequest(details) {
                 var accessToken;
-                var accessTokenRegex = /session@cloud=({.+?})/i;
 
                 for (var i = 0; i < details.requestHeaders.length; i++) {
                     if (details.requestHeaders[i].name === "X-Feedly-Access-Token") {
@@ -496,9 +495,13 @@ function getAccessToken() {
                         break;
                     }
                     if (details.requestHeaders[i].name === "Cookie") {
-                        var header = details.requestHeaders[i].value;
+                        var cookies = details.requestHeaders[i].value;
                         try {
-                            accessToken = JSON.parse(accessTokenRegex.exec(header)[1]).feedlyToken;
+                            var feedlyParametersRegex = /session@cloud=({.+?})/i;
+                            var feedlyParameters = JSON.parse(feedlyParametersRegex.exec(cookies)[1]);
+                            if(feedlyParameters.feedlyExpirationTime > new Date()){
+                                accessToken = feedlyParameters.feedlyToken;
+                            }
                             break;
                         } catch (exception) {
 
