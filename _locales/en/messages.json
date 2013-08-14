@@ -91,5 +91,8 @@
     },
     "Notifications": {
         "message": "Notifications"
+    },
+    "ForceUpdateFeeds": {
+        "message": "Force update feeds on popup open"
     }
 }

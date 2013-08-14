@@ -18,7 +18,8 @@ var appGlobal = {
         openSiteOnIconClick: false,
         feedlyUserId: "",
         abilitySaveFeeds: false,
-        maxNumberOfFeeds: 20
+        maxNumberOfFeeds: 20,
+        forceUpdateFeeds: false
     },
     //Names of options after changes of which scheduler will be initialized
     criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds"],

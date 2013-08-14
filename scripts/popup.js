@@ -155,7 +155,7 @@ $("#popup-content").on("click", ".save-feed", function () {
 
 function renderFeeds() {
     showLoader();
-    popupGlobal.backgroundPage.getFeeds(false, function (feeds, isLoggedIn) {
+    popupGlobal.backgroundPage.getFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds, function (feeds, isLoggedIn) {
         $("#loading").hide();
         $("#feed-saved").hide();
         popupGlobal.feeds = feeds;
@@ -190,7 +190,7 @@ function renderFeeds() {
 function renderSavedFeeds() {
     $("#mark-all-read").hide().siblings(".icon-ok").hide();
     showLoader();
-    popupGlobal.backgroundPage.getSavedFeeds(false, function (feeds, isLoggedIn) {
+    popupGlobal.backgroundPage.getSavedFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds, function (feeds, isLoggedIn) {
         $("#loading").hide();
         $("#feed").hide();
         $("#feed-saved").empty();
