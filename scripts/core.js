@@ -12,7 +12,7 @@ var appGlobal = {
         markReadOnClick: true,
         accessToken: "",
         showDesktopNotifications: true,
-        hideNotificationDelay: 60, //seconds
+        hideNotificationDelay: 5, //seconds
         showFullFeedContent: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
