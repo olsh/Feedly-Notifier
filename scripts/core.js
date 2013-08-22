@@ -14,7 +14,7 @@ var appGlobal = {
         showDesktopNotifications: true,
         hideNotificationDelay: 10, //seconds
         showFullFeedContent: false,
-        maxNotificationsCount: 50,
+        maxNotificationsCount: 5,
         openSiteOnIconClick: false,
         feedlyUserId: "",
         abilitySaveFeeds: false,
