@@ -215,18 +215,23 @@ function renderSavedFeeds() {
 }
 
 function markAsRead(feedIds) {
+    var feedItems = $();
     for (var i = 0; i < feedIds.length; i++) {
-        var feed = $(".item[data-id='" + feedIds[i] + "']");
-        feed.fadeOut().attr("data-is-read", "true");
+        feedItems = feedItems.add(".item[data-id='" + feedIds[i] + "']");
     }
-    //Show loader if all feeds were read
-    if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
-        showLoader();
-    }
-    popupGlobal.backgroundPage.markAsRead(feedIds, function (isLoggedIn) {
-        if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
-            renderFeeds();
+
+    feedItems.fadeOut("fast", function(){
+        $(this).remove();
+
+        //Show loader if all feeds were read
+        if ($("#feed").find(".item").size() === 0) {
+            showLoader();
         }
+        popupGlobal.backgroundPage.markAsRead(feedIds, function (isLoggedIn) {
+            if ($("#feed").find(".item").size() === 0) {
+                renderFeeds();
+            }
+        });
     });
 }
 
