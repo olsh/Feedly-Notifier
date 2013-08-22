@@ -497,3 +497,10 @@ footer a:hover {
 #screenshots img{
     margin: 5px;
 }
+
+.feedly-logo{
+    float: left;
+    border-radius: 5px;
+    border: solid gray 1px;
+    margin-right: 20px;
+}
