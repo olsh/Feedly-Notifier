@@ -359,6 +359,7 @@ function parseFeeds(feedlyResponse) {
             url: item.alternate === undefined || item.alternate[0] === undefined ? "" : item.alternate[0].href,
             blog: item.origin === undefined ? "" : item.origin.title,
             blogUrl: blogUrl,
+            blogIcon: "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed",
             id: item.id,
             content: content,
             contentDirection: contentDirection,
