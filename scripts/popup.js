@@ -222,16 +222,18 @@ function markAsRead(feedIds) {
 
     feedItems.fadeOut("fast", function(){
         $(this).remove();
+    });
 
-        //Show loader if all feeds were read
-        if ($("#feed").find(".item").size() === 0) {
-            showLoader();
+    feedItems.attr("data-is-read", "true");
+
+    //Show loader if all feeds were read
+    if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
+        showLoader();
+    }
+    popupGlobal.backgroundPage.markAsRead(feedIds, function (isLoggedIn) {
+        if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
+            renderFeeds();
         }
-        popupGlobal.backgroundPage.markAsRead(feedIds, function (isLoggedIn) {
-            if ($("#feed").find(".item").size() === 0) {
-                renderFeeds();
-            }
-        });
     });
 }
 
