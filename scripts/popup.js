@@ -155,7 +155,7 @@ $("#popup-content").on("click", ".save-feed", function () {
 
 function renderFeeds() {
     showLoader();
-    popupGlobal.backgroundPage.getFeeds(false, function (feeds, isLoggedIn) {
+    popupGlobal.backgroundPage.getFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds, function (feeds, isLoggedIn) {
         $("#loading").hide();
         $("#feed-saved").hide();
         popupGlobal.feeds = feeds;
@@ -190,7 +190,7 @@ function renderFeeds() {
 function renderSavedFeeds() {
     $("#mark-all-read").hide().siblings(".icon-ok").hide();
     showLoader();
-    popupGlobal.backgroundPage.getSavedFeeds(false, function (feeds, isLoggedIn) {
+    popupGlobal.backgroundPage.getSavedFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds, function (feeds, isLoggedIn) {
         $("#loading").hide();
         $("#feed").hide();
         $("#feed-saved").empty();
@@ -215,10 +215,17 @@ function renderSavedFeeds() {
 }
 
 function markAsRead(feedIds) {
+    var feedItems = $();
     for (var i = 0; i < feedIds.length; i++) {
-        var feed = $(".item[data-id='" + feedIds[i] + "']");
-        feed.fadeOut().attr("data-is-read", "true");
+        feedItems = feedItems.add(".item[data-id='" + feedIds[i] + "']");
     }
+
+    feedItems.fadeOut("fast", function(){
+        $(this).remove();
+    });
+
+    feedItems.attr("data-is-read", "true");
+
     //Show loader if all feeds were read
     if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
         showLoader();

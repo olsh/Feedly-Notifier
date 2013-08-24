@@ -7,6 +7,28 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v1.5.5 (2013.08.23)
+
+* Fixed bug with auto mark as read
+
+v1.5.4 (2013.08.22)
+
+* Icons bug fixed
+
+v1.5.3 (2013.08.22)
+
+* UI improvements
+* Small bugfixes
+
+v1.5.2 (2013.08.14)
+
+* Added option - force update on popup open
+
+v1.5.1 (2013.08.12)
+
+* Small improvements of desktop notifications
+* Small bugfixes
+
 v1.5.0 (2013.08.07)
 
 * Ability to save feeds was added (option)
@@ -70,4 +92,4 @@ v1.0.1 (2013.07.08)
 
 v1.0 (2013.07.08)
 
-* Initial relase
+* Initial release

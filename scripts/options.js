@@ -34,10 +34,12 @@ $("#options").on("change", "input", function (e) {
         $("input[data-option-name='showFullFeedContent']").attr("disabled", "disabled");
         $("input[data-option-name='abilitySaveFeeds']").attr("disabled", "disabled");
         $("input[data-option-name='maxNumberOfFeeds']").attr("disabled", "disabled");
+        $("input[data-option-name='forceUpdateFeeds']").attr("disabled", "disabled");
     } else {
         $("input[data-option-name='showFullFeedContent']").removeAttr("disabled");
         $("input[data-option-name='abilitySaveFeeds']").removeAttr("disabled");
         $("input[data-option-name='maxNumberOfFeeds']").removeAttr("disabled");
+        $("input[data-option-name='forceUpdateFeeds']").removeAttr("disabled");
     }
 });
 

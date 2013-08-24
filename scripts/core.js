@@ -13,14 +13,15 @@ var appGlobal = {
         accessToken: "",
         refreshToken: "",
         showDesktopNotifications: true,
-        hideNotificationDelay: 60, //seconds
+        hideNotificationDelay: 10, //seconds
         showFullFeedContent: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
         feedlyUserId: "",
         feedlyUserPlan: "",
         abilitySaveFeeds: false,
-        maxNumberOfFeeds: 20
+        maxNumberOfFeeds: 20,
+        forceUpdateFeeds: false
     },
     //Names of options after changes of which scheduler will be initialized
     criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds"],
@@ -111,7 +112,7 @@ function sendDesktopNotification(feeds) {
     } else {
         for (var i = 0; i < feeds.length; i++) {
             var notification = window.webkitNotifications.createNotification(
-                appGlobal.icons.defaultBig, feeds[i].blog, feeds[i].title);
+                feeds[i].blogIcon, feeds[i].blog, feeds[i].title);
 
             //Open new tab on click and close notification
             notification.url = feeds[i].url;
@@ -364,6 +365,7 @@ function parseFeeds(feedlyResponse) {
             url: item.alternate === undefined || item.alternate[0] === undefined ? "" : item.alternate[0].href,
             blog: item.origin === undefined ? "" : item.origin.title,
             blogUrl: blogUrl,
+            blogIcon: "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed",
             id: item.id,
             content: content,
             contentDirection: contentDirection,
