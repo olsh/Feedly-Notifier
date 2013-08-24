@@ -11,12 +11,14 @@ var appGlobal = {
         updateInterval: 2, //minutes
         markReadOnClick: true,
         accessToken: "",
+        refreshToken: "",
         showDesktopNotifications: true,
         hideNotificationDelay: 60, //seconds
         showFullFeedContent: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
         feedlyUserId: "",
+        feedlyUserPlan: "",
         abilitySaveFeeds: false,
         maxNumberOfFeeds: 20
     },
@@ -25,7 +27,9 @@ var appGlobal = {
     cachedFeeds: [],
     cachedSavedFeeds: [],
     isLoggedIn: false,
-    intervalId: 0
+    intervalId: 0,
+    clientId: "",
+    clientSecret: ""
 };
 
 // #Event handlers
@@ -58,14 +62,14 @@ chrome.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "POST" || details.method === "DELETE") {
         updateFeeds();
     }
-}, {urls: ["*://cloud.feedly.com/v3/subscriptions*", "*://cloud.feedly.com/v3/markers?*ct=feedly.desktop*"]});
+}, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
 /* Listener for adding or removing saved feeds */
 chrome.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "PUT" || details.method === "DELETE") {
         updateSavedFeeds();
     }
-}, {urls: ["*://cloud.feedly.com/v3/tags*global.saved*"]});
+}, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
 
 chrome.browserAction.onClicked.addListener(function () {
     openUrlInNewTab("http://feedly.com", true);
@@ -79,6 +83,7 @@ function initialize() {
         chrome.browserAction.setPopup({popup: "popup.html"});
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
+    appGlobal.feedlyApiClient.refreshToken = appGlobal.options.refreshToken;
     startSchedule(appGlobal.options.updateInterval);
 }
 
@@ -286,6 +291,7 @@ function updateFeeds(callback, silentUpdate) {
 
 /* Stops scheduler, sets badge as inactive and resets counter */
 function setInactiveStatus() {
+    refreshAccessToken();
     chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
     });
     chrome.browserAction.setBadgeText({ text: ""});
@@ -481,41 +487,70 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
     }
 }
 
-/* Opens feedly site and if user are logged in,
+/* Runs authenticating a user process,
  * then read access token and stores in chrome.storage */
 function getAccessToken() {
-    chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
-        chrome.webRequest.onBeforeSendHeaders.addListener(getAccessTokenFromRequest,
-            {urls: ["<all_urls>"], tabId: feedlytab.id}, ["requestHeaders"]);
+    var url = appGlobal.feedlyApiClient.getMethodUrl("auth/auth", {
+        response_type: "code",
+        client_id: appGlobal.clientId,
+        redirect_uri: "http://localhost",
+        scope: "https://cloud.feedly.com/subscriptions"
+    });
+
+    chrome.tabs.create({url: url}, function (authorizationTab) {
+        chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
+            if (authorizationTab.id === tabId) {
+                var codeParse = /code=(.+?)&/i;
+                var matches = codeParse.exec(information.url);
+                if (matches) {
+                    appGlobal.feedlyApiClient.request("auth/token", {
+                        method: "POST",
+                        parameters: {
+                            code: matches[1],
+                            client_id: appGlobal.clientId,
+                            client_secret: appGlobal.clientSecret,
+                            redirect_uri: "http://localhost",
+                            grant_type: "authorization_code"
+                        },
+                        onSuccess: function (response) {
+                            chrome.storage.sync.set({
+                                accessToken: response.access_token,
+                                refreshToken: response.refresh_token,
+                                feedlyUserId: response.id,
+                                feedlyUserPlan: response.plan
+                            }, function () {
+                            });
+                            chrome.tabs.onUpdated.removeListener(processCode);
+                            chrome.tabs.remove(authorizationTab.id, function () {
+                            });
+                        }
+                    });
+                }
+            }
+        });
     });
 }
 
-function getAccessTokenFromRequest(details) {
-    var accessToken;
-    var accessTokenRegex = /session@cloud=({.+?})/i;
-
-    for (var i = 0; i < details.requestHeaders.length; i++) {
-        if (details.requestHeaders[i].name === "X-Feedly-Access-Token") {
-            accessToken = details.requestHeaders[i].value;
-            break;
+/* Tries refresh access token if possible */
+function refreshAccessToken(){
+    appGlobal.feedlyApiClient.request("auth/token", {
+        method: "POST",
+        parameters: {
+            refresh_token: appGlobal.options.refreshToken,
+            client_id: appGlobal.clientId,
+            client_secret: appGlobal.clientSecret,
+            grant_type: "refresh_token",
+            plan: appGlobal.options.feedlyUserPlan
+        },
+        onSuccess: function (response) {
+            chrome.storage.sync.set({
+                accessToken: response.access_token,
+                refreshToken: response.refresh_token,
+                feedlyUserPlan: response.plan
+            }, function () {});
         }
-        if (details.requestHeaders[i].name === "Cookie") {
-            var header = details.requestHeaders[i].value;
-            try {
-                accessToken = JSON.parse(accessTokenRegex.exec(header)[1]).feedlyToken;
-                break;
-            } catch (exception) {
-
-            }
-        }
-    }
-
-    if (accessToken) {
-        chrome.storage.sync.set({ accessToken: accessToken }, function () {
-        });
-        chrome.webRequest.onBeforeSendHeaders.removeListener(getAccessTokenFromRequest);
-    }
-}
+    });
+ }
 
 /* Writes all application options in chrome storage and runs callback after it */
 function writeOptions(callback) {
