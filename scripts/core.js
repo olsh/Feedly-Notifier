@@ -21,7 +21,8 @@ var appGlobal = {
         feedlyUserPlan: "",
         abilitySaveFeeds: false,
         maxNumberOfFeeds: 20,
-        forceUpdateFeeds: false
+        forceUpdateFeeds: false,
+        useSecureConnection: false
     },
     //Names of options after changes of which scheduler will be initialized
     criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds"],
@@ -85,6 +86,7 @@ function initialize() {
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
     appGlobal.feedlyApiClient.refreshToken = appGlobal.options.refreshToken;
+    appGlobal.feedlyApiClient.useSecureConnection = appGlobal.options.useSecureConnection;
     startSchedule(appGlobal.options.updateInterval);
 }
 
@@ -497,7 +499,7 @@ function getAccessToken() {
         client_id: appGlobal.clientId,
         redirect_uri: "http://localhost",
         scope: "https://cloud.feedly.com/subscriptions"
-    });
+    }, appGlobal.options.useSecureConnection);
 
     chrome.tabs.create({url: url}, function (authorizationTab) {
         chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
@@ -535,6 +537,8 @@ function getAccessToken() {
 
 /* Tries refresh access token if possible */
 function refreshAccessToken(){
+    if(!appGlobal.options.refreshToken) return;
+
     appGlobal.feedlyApiClient.request("auth/token", {
         method: "POST",
         parameters: {

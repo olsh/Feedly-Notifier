@@ -14,6 +14,7 @@ var FeedlyApiClient = function (accessToken, refreshToken, useSecureConnection) 
             return "";
         }
         var methodUrl = (useSecureConnection ? secureApiUrl : apiUrl) + methodName;
+
         var queryString;
         if (parameters) {
             queryString = "?";

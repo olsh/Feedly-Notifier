@@ -94,5 +94,8 @@
     },
     "ForceUpdateFeeds": {
         "message": "Forcer l'actualisation à l'ouverture de la popup"
+    },
+    "UseSecureConnection": {
+        "message": "Use secure connection (https)"
     }
 }
