@@ -6,25 +6,25 @@
         "message" : "Aucun article non lu"
     },
     "FeedlyWebsite" : {
-        "message" : "Feedly Site web"
+        "message" : "Site web de Feedly"
     },
     "OptionsSaved" : {
-        "message" : "Options enregistrées"
+        "message" : "Les options ont été enregistrées"
     },
     "MarkAsRead" : {
         "message" : "Marquer comme lu"
     },
     "IntervalPeriod" : {
-        "message" : "Periode d'intervalle (min.)"
+        "message" : "Intervalle de vérification (en minutes)"
     },
     "AutoMarkRead" : {
         "message" : "Marquer automatiquement comme lu à l'ouverture d'un article"
     },
     "CurrentUser" : {
-        "message" : "Utilisateur actuel"
+        "message" : "Utilisateur courant"
     },
     "Email" : {
-        "message" : "Email"
+        "message" : "E-mail"
     },
     "Logout" : {
         "message" : "Déconnexion"
@@ -39,7 +39,7 @@
         "message" : "Marquer tous lus"
     },
     "ShowDesktopNotifications" : {
-        "message" : "Afficher les notifications bureau"
+        "message" : "Afficher les notifications de bureau"
     },
     "NewFeeds" : {
         "message" : "Nouveaux articles"
@@ -55,33 +55,33 @@
         "placeholders" : {
             "count": {
                 "content": "$1",
-                "example": "10 or many"
+                "example": "10 ou plusieurs"
             }
         }
     },
     "HideNotificationsAfter": {
-        "message": "Masquer les notifications bureau après (sec.), 0 - ne pas masquer"
+        "message": "Masquer les notifications de bureau après (en secondes). 0 pour ne pas masquer"
     },
     "ExtensionDescription": {
-        "message": "Extension pour Feedly lecteur de flux"
+        "message": "Extension pour le lecteur de flux Feedly"
     },
     "ShowFullFeedContent": {
-        "message": "Afficher le contenu complet dans la vue développé (si possible)"
+        "message": "Afficher le contenu complet dans la vue développé (quand c'est possible)"
     },
     "MaxNotificationsCount": {
-        "message": "Max de notifications à la fois"
+        "message": "Nombre maximum de notifications simultanées"
     },
     "OpenSiteOnIconClick": {
         "message": "Ouvrir le site Feedly lors du clique sur l'icone (Désactive la popup)"
     },
     "NoSavedArticles": {
-        "message": "Pas d'articles enregistrés"
+        "message": "Aucun article enregistré"
     },
     "AbilitySaveFeeds": {
         "message": "Possibilité d'enregistrer les articles"
     },
     "MaxNumberOfFeeds": {
-        "message": "Max de notifications à la fois"
+        "message": "Nombre maximum d'articles affichés"
     },
     "General": {
         "message": "Général"
