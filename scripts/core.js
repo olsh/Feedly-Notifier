@@ -106,7 +106,9 @@ function startSchedule(updateInterval) {
     stopSchedule();
     updateCounter();
     updateFeeds();
-    appGlobal.intervalIds.push(setInterval(updateCounter, updateInterval * 60000));
+    if(appGlobal.options.showCounter){
+        appGlobal.intervalIds.push(setInterval(updateCounter, updateInterval * 60000));
+    }
     if (appGlobal.options.showDesktopNotifications || !appGlobal.options.openSiteOnIconClick) {
         appGlobal.intervalIds.push(setInterval(updateFeeds, updateInterval * 60000));
     }
