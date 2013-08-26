@@ -2,6 +2,7 @@
 
 $(document).ready(function () {
     loadOptions();
+    loadUserCategories();
     loadProfileData();
 });
 
@@ -17,54 +18,77 @@ $("body").on("click", "#logout", function () {
     chrome.extension.getBackgroundPage().appGlobal.options.accessToken = "";
     chrome.extension.getBackgroundPage().appGlobal.options.refreshToken = "";
     chrome.storage.sync.remove(["accessToken", "refreshToken"], function () {
-        loadProfileData();
     });
+    $("#userInfo, #filters-settings").hide();
 });
 
 $("#options").on("change", "input", function (e) {
-    if ($("input[data-option-name='showDesktopNotifications']").is(":checked")) {
-        $("input[data-option-name='hideNotificationDelay']").removeAttr("disabled");
-        $("input[data-option-name='maxNotificationsCount']").removeAttr("disabled");
-    } else {
-        $("input[data-option-name='hideNotificationDelay']").attr("disabled", "disabled");
-        $("input[data-option-name='maxNotificationsCount']").attr("disabled", "disabled");
-    }
+    $("[data-disable-parent]").each(function(key, value){
+        var child = $(value);
+        var parent = $("input[data-option-name='" + child.data("disable-parent") + "']");
+        parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
+    });
 
-    if ($("input[data-option-name='openSiteOnIconClick']").is(":checked")) {
-        $("input[data-option-name='showFullFeedContent']").attr("disabled", "disabled");
-        $("input[data-option-name='abilitySaveFeeds']").attr("disabled", "disabled");
-        $("input[data-option-name='maxNumberOfFeeds']").attr("disabled", "disabled");
-        $("input[data-option-name='forceUpdateFeeds']").attr("disabled", "disabled");
-    } else {
-        $("input[data-option-name='showFullFeedContent']").removeAttr("disabled");
-        $("input[data-option-name='abilitySaveFeeds']").removeAttr("disabled");
-        $("input[data-option-name='maxNumberOfFeeds']").removeAttr("disabled");
-        $("input[data-option-name='forceUpdateFeeds']").removeAttr("disabled");
-    }
+    $("[data-enable-parent]").each(function(key, value){
+        var child = $(value);
+        var parent = $("input[data-option-name='" + child.data("enable-parent") + "']");
+        !parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
+    });
 });
 
 function loadProfileData() {
-    chrome.storage.sync.get(null, function (items) {
-        var feedlyClient = new FeedlyApiClient(items.accessToken, items.useSecureConnection);
-        feedlyClient.request("profile", {
-            onSuccess: function (result) {
-                var userInfo = $("#userInfo");
-                userInfo.find("[data-locale-value]").each(function () {
-                    var textBox = $(this);
-                    var localValue = textBox.data("locale-value");
-                    textBox.text(chrome.i18n.getMessage(localValue));
-                });
-                userInfo.show();
-                for (var profileData in result) {
-                    userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
-                }
-            },
-            onAuthorizationRequired: function () {
-                var userInfo = $("#userInfo");
-                userInfo.hide();
+    chrome.extension.getBackgroundPage().apiRequestWrapper("profile", {
+        onSuccess: function (result) {
+            var userInfo = $("#userInfo");
+            userInfo.find("[data-locale-value]").each(function () {
+                var textBox = $(this);
+                var localValue = textBox.data("locale-value");
+                textBox.text(chrome.i18n.getMessage(localValue));
+            });
+            userInfo.show();
+            for (var profileData in result) {
+                userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
             }
-        });
+        },
+        onAuthorizationRequired: function () {
+            $("#userInfo, #filters-settings").hide();
+        }
     });
+}
+
+function loadUserCategories(){
+    chrome.extension.getBackgroundPage().apiRequestWrapper("categories", {
+        onSuccess: function (result) {
+            result.forEach(function(element){
+                appendCategory(element.id, element.label);
+            });
+            appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalUncategorized, "Uncategorized");
+            chrome.storage.sync.get("filters", function(items){
+                var filters = items.filters || [];
+                filters.forEach(function(id){
+                    $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
+                });
+            });
+        }
+    });
+}
+
+function appendCategory(id, label){
+    var categories = $("#categories");
+    var label = $("<span class='label' />").text(label);
+    var checkbox = $("<input type='checkbox' />").attr("data-id", id);
+    categories.append(label);
+    categories.append(checkbox);
+    categories.append("<br/>");
+}
+
+function parseFilters() {
+    var filters = [];
+    $("#categories").find("input[type='checkbox']:checked").each(function (key, value) {
+        var checkbox = $(value);
+        filters.push(checkbox.data("id"));
+    });
+    return filters;
 }
 
 /* Save all option in the chrome storage */
@@ -82,6 +106,7 @@ function saveOptions() {
         }
         options[optionControl.data("option-name")] = optionValue;
     });
+    options.filters = parseFilters();
     chrome.storage.sync.set(options, function () {
         alert(chrome.i18n.getMessage("OptionsSaved"));
     });

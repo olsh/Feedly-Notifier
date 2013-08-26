@@ -22,10 +22,12 @@ var appGlobal = {
         abilitySaveFeeds: false,
         maxNumberOfFeeds: 20,
         forceUpdateFeeds: false,
-        useSecureConnection: false
+        useSecureConnection: false,
+        isFiltersEnabled: false,
+        filters: []
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds"],
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled"],
     cachedFeeds: [],
     cachedSavedFeeds: [],
     isLoggedIn: false,
@@ -37,6 +39,9 @@ var appGlobal = {
     },
     get globalGroup(){
         return "user/" + this.options.feedlyUserId + "/category/global.all";
+    },
+    get globalUncategorized(){
+        return "user/" + this.options.feedlyUserId + "/category/global.uncategorized";
     }
 };
 
@@ -69,6 +74,7 @@ chrome.runtime.onStartup.addListener(function () {
 chrome.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "POST" || details.method === "DELETE") {
         updateCounter();
+        updateFeeds();
     }
 }, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
@@ -238,27 +244,35 @@ function updateSavedFeeds(callback) {
 /* Runs feeds update and stores unread feeds in cache
  * Callback will be started after function complete
  * */
-function updateCounter(callback) {
+function updateCounter() {
     apiRequestWrapper("markers/counts", {
         onSuccess: function (response) {
-            setActiveStatus();
-
             var unreadCounts = response.unreadcounts;
-            var unreadFeedsCount;
+            var unreadFeedsCount = 0;
 
-            for (var i = 0; i < unreadCounts.length; i++) {
-                if (appGlobal.globalGroup === unreadCounts[i].id) {
-                    unreadFeedsCount = unreadCounts[i].count;
-                    break;
+            if (appGlobal.options.isFiltersEnabled) {
+                var globalGroupCount = 0;
+                unreadCounts.forEach(function (element) {
+                    if (appGlobal.options.filters.indexOf(element.id) !== -1) {
+                        unreadFeedsCount += element.count;
+                    }
+                    if (appGlobal.globalGroup === element.id) {
+                        globalGroupCount = element.count;
+                    }
+                });
+                if (unreadFeedsCount > globalGroupCount) {
+                    unreadFeedsCount = globalGroupCount;
+                }
+            } else {
+                for (var i = 0; i < unreadCounts.length; i++) {
+                    if (appGlobal.globalGroup === unreadCounts[i].id) {
+                        unreadFeedsCount = unreadCounts[i].count;
+                        break;
+                    }
                 }
             }
 
             chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
-        },
-        onAuthorizationRequired: function () {
-            if (typeof  callback === "function") {
-                callback();
-            }
         }
     });
 }
@@ -268,28 +282,51 @@ function updateCounter(callback) {
  * If silentUpdate is true, then notifications will not be shown
  *  */
 function updateFeeds(callback, silentUpdate){
-    apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.globalGroup) + "/contents", {
-        parameters: {
-            unreadOnly: true,
-            count: appGlobal.options.maxNumberOfFeeds
-        },
-        onSuccess: function (response) {
-            appGlobal.cachedFeeds = parseFeeds(response);
-            filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
-                if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
-                    sendDesktopNotification(newFeeds);
+    appGlobal.cachedFeeds = [];
+
+    var streamIds = appGlobal.options.isFiltersEnabled ? appGlobal.options.filters : [appGlobal.globalGroup];
+
+    var requestCount = streamIds.length;
+    for(var i = 0; i < streamIds.length; i++){
+        apiRequestWrapper("streams/" + encodeURIComponent(streamIds[i]) + "/contents", {
+            parameters: {
+                unreadOnly: true,
+                count: appGlobal.options.maxNumberOfFeeds
+            },
+            onSuccess: function (response) {
+                requestCount--;
+
+                appGlobal.cachedFeeds = appGlobal.cachedFeeds.concat(parseFeeds(response));
+                // When all request are completed
+                if (requestCount < 1) {
+                    console.log(appGlobal.cachedFeeds);
+                    appGlobal.cachedFeeds = appGlobal.cachedFeeds.sort(function (a, b) {
+                        if (a.date > b.date) {
+                            return -1;
+                        } else if (a.date < b.date) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                    appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
+                    console.log(appGlobal.cachedFeeds);
+                    filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
+                        if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
+                            sendDesktopNotification(newFeeds);
+                        }
+                    });
+                    if (typeof callback === "function") {
+                        callback();
+                    }
                 }
-            });
-            if (typeof callback === "function") {
-                callback();
+            },
+            onAuthorizationRequired: function () {
+                if (typeof callback === "function") {
+                    callback();
+                }
             }
-        },
-        onAuthorizationRequired: function () {
-            if (typeof callback === "function") {
-                callback();
-            }
-        }
-    });
+        });
+    }
 }
 
 /* Stops scheduler, sets badge as inactive and resets counter */
@@ -588,13 +625,21 @@ function readOptions(callback) {
 }
 
 function apiRequestWrapper(methodName, settings) {
+    var onSuccess = settings.onSuccess;
+    settings.onSuccess = function (response) {
+        setActiveStatus();
+        if (typeof onSuccess === "function") {
+            onSuccess(response);
+        }
+    }
+
     var onAuthorizationRequired = settings.onAuthorizationRequired;
 
-    settings.onAuthorizationRequired = function () {
+    settings.onAuthorizationRequired = function (accessToken) {
         setInactiveStatus();
         refreshAccessToken();
         if (typeof onAuthorizationRequired === "function") {
-            onAuthorizationRequired();
+            onAuthorizationRequired(accessToken);
         }
     }
 

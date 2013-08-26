@@ -97,5 +97,14 @@
     },
     "UseSecureConnection": {
         "message": "Использовать защищенное соединение (https)"
+    },
+    "Filters": {
+        "message": "Фильтры"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Обновлять только следующие категории"
+    },
+    "Categories": {
+        "message": "Категории"
     }
 }

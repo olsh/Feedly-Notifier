@@ -96,6 +96,15 @@
         "message": "Forcer l'actualisation à l'ouverture de la popup"
     },
     "UseSecureConnection": {
-        "message": "Use secure connection (https)"
+        "message": "Utiliser une connection sécurisée (https)"
+    },
+    "Filters": {
+        "message": "Filtres"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Mettre à jour uniquement ces catégories"
+    },
+    "Categories": {
+        "message": "Catégories"
     }
 }

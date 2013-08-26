@@ -28,26 +28,35 @@
                 <input type="checkbox" data-option-name="openSiteOnIconClick" /><br>
 
                 <span class="label" data-locale-value="AbilitySaveFeeds"></span>
-                <input type="checkbox" data-option-name="abilitySaveFeeds" /><br>
+                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="abilitySaveFeeds" /><br>
 
                 <span class="label" data-locale-value="MaxNumberOfFeeds"></span>:
-                <input type="number" min="1" max="60" data-option-name="maxNumberOfFeeds" class="label" /><br>
+                <input type="number" data-disable-parent="openSiteOnIconClick" min="1" max="60" data-option-name="maxNumberOfFeeds" class="label" /><br>
 
                 <span class="label" data-locale-value="ShowFullFeedContent"></span>
-                <input type="checkbox" data-option-name="showFullFeedContent" /><br>
+                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="showFullFeedContent" /><br>
 
                 <span class="label" data-locale-value="ForceUpdateFeeds"></span>
-                <input type="checkbox" data-option-name="forceUpdateFeeds" /><br>
+                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="forceUpdateFeeds" /><br>
 
                 <h3 data-locale-value="Notifications"></h3>
                 <span class="label" data-locale-value="ShowDesktopNotifications"></span>
                 <input type="checkbox" data-option-name="showDesktopNotifications" /><br>
 
                 <span class="label" data-locale-value="HideNotificationsAfter"></span>
-                <input type="number" min="0" max="3600" data-option-name="hideNotificationDelay" /><br>
+                <input type="number" data-enable-parent="showDesktopNotifications" min="0" max="3600" data-option-name="hideNotificationDelay" /><br>
 
                 <span class="label" data-locale-value="MaxNotificationsCount"></span>
-                <input type="number" min="1" max="100" data-option-name="maxNotificationsCount" />
+                <input type="number" data-enable-parent="showDesktopNotifications" min="1" max="100" data-option-name="maxNotificationsCount" />
+
+                <div id="filters-settings">
+                    <h3 data-locale-value="Filters"></h3>
+                    <span class="label" data-locale-value="UpdateFollowingCategories"></span>
+                    <input type="checkbox" data-option-name="isFiltersEnabled" /><br>
+                    <fieldset data-enable-parent="isFiltersEnabled" id="categories">
+                        <legend data-locale-value="Categories"></legend>
+                    </fieldset>
+                </div>
             </div>
             <button type="submit" id="save" data-locale-value="Save" class="button">Save</button>
         </form>
