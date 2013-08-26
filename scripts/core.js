@@ -29,9 +29,15 @@ var appGlobal = {
     cachedFeeds: [],
     cachedSavedFeeds: [],
     isLoggedIn: false,
-    intervalId: 0,
+    intervalIds: [],
     clientId: "",
-    clientSecret: ""
+    clientSecret: "",
+    get savedGroup(){
+        return "user/" + this.options.feedlyUserId + "/tag/global.saved";
+    },
+    get globalGroup(){
+        return "user/" + this.options.feedlyUserId + "/category/global.all";
+    }
 };
 
 // #Event handlers
@@ -62,7 +68,7 @@ chrome.runtime.onStartup.addListener(function () {
 /* Listener for adding or removing feeds on the feedly website */
 chrome.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "POST" || details.method === "DELETE") {
-        updateFeeds();
+        updateCounter();
     }
 }, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
@@ -92,12 +98,19 @@ function initialize() {
 
 function startSchedule(updateInterval) {
     stopSchedule();
+    updateCounter();
     updateFeeds();
-    appGlobal.intervalId = setInterval(updateFeeds, updateInterval * 60000);
+    appGlobal.intervalIds.push(setInterval(updateCounter, updateInterval * 60000));
+    if (appGlobal.options.showDesktopNotifications || !appGlobal.options.openSiteOnIconClick) {
+        appGlobal.intervalIds.push(setInterval(updateFeeds, updateInterval * 60000));
+    }
 }
 
 function stopSchedule() {
-    clearInterval(appGlobal.intervalId);
+    appGlobal.intervalIds.forEach(function(intervalId){
+        clearInterval(intervalId);
+    });
+    appGlobal.intervalIds = [];
 }
 
 /* Sends desktop notifications */
@@ -212,7 +225,7 @@ function filterByNewFeeds(feeds, callback) {
 /* Update saved feeds and stores its in cache */
 function updateSavedFeeds(callback) {
     if (appGlobal.options.feedlyUserId) {
-        appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/contents", {
+        appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents", {
             onSuccess: function (response) {
                 appGlobal.cachedSavedFeeds = parseFeeds(response);
                 if (typeof callback === "function") {
@@ -225,67 +238,57 @@ function updateSavedFeeds(callback) {
 
 /* Runs feeds update and stores unread feeds in cache
  * Callback will be started after function complete
- * If silentUpdate is true, then notifications will not be shown
  * */
-function updateFeeds(callback, silentUpdate) {
+function updateCounter(callback) {
     appGlobal.feedlyApiClient.request("markers/counts", {
         onSuccess: function (response) {
             setActiveStatus();
 
             var unreadCounts = response.unreadcounts;
-            var unreadFeedsCount = -1;
-            var globalCategoryId = "";
-            var userIdRegex = /user\/(.+?)\/category/i;
+            var unreadFeedsCount;
 
             for (var i = 0; i < unreadCounts.length; i++) {
-                if (unreadFeedsCount < unreadCounts[i].count) {
+                if (appGlobal.globalGroup === unreadCounts[i].id) {
                     unreadFeedsCount = unreadCounts[i].count;
-
-                    //Search category(global or uncategorized) with max feeds
-                    globalCategoryId = unreadCounts[i].id;
-                }
-                //Search Feedly user id
-                if (!appGlobal.options.feedlyUserId && appGlobal.options.abilitySaveFeeds) {
-                    //Search user id
-                    var matches = userIdRegex.exec(unreadCounts[i].id);
-                    if (matches) {
-                        appGlobal.options.feedlyUserId = matches[1];
-                        //Update cache when update feedlyUserId
-                        updateSavedFeeds();
-                    }
+                    break;
                 }
             }
+
             chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
-
-            if (appGlobal.options.showDesktopNotifications || !appGlobal.options.openSiteOnIconClick) {
-                appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(globalCategoryId) + "/contents", {
-                    parameters: {
-                        unreadOnly: true,
-                        count: appGlobal.options.maxNumberOfFeeds
-                    },
-                    onSuccess: function (response) {
-                        appGlobal.cachedFeeds = parseFeeds(response);
-                        filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
-                            if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
-                                sendDesktopNotification(newFeeds);
-                            }
-                        });
-                        if (typeof callback === "function") {
-                            callback();
-                        }
-                    },
-                    onAuthorizationRequired: function () {
-                        setInactiveStatus();
-                        if (typeof callback === "function") {
-                            callback();
-                        }
-                    }
-                });
-            }
         },
         onAuthorizationRequired: function () {
             setInactiveStatus();
             if (typeof  callback === "function") {
+                callback();
+            }
+        }
+    });
+}
+
+/* Runs feeds update and stores unread feeds in cache
+ * Callback will be started after function complete
+ * If silentUpdate is true, then notifications will not be shown
+ *  */
+function updateFeeds(callback, silentUpdate){
+    appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(appGlobal.globalGroup) + "/contents", {
+        parameters: {
+            unreadOnly: true,
+            count: appGlobal.options.maxNumberOfFeeds
+        },
+        onSuccess: function (response) {
+            appGlobal.cachedFeeds = parseFeeds(response);
+            filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
+                if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
+                    sendDesktopNotification(newFeeds);
+                }
+            });
+            if (typeof callback === "function") {
+                callback();
+            }
+        },
+        onAuthorizationRequired: function () {
+            setInactiveStatus();
+            if (typeof callback === "function") {
                 callback();
             }
         }
