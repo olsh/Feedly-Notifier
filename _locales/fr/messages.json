@@ -106,5 +106,8 @@
     },
     "Categories": {
         "message": "Catégories"
+    },
+    "ShowCounter": {
+        "message": "Show counter"
     }
 }

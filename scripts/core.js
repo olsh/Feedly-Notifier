@@ -24,10 +24,11 @@ var appGlobal = {
         forceUpdateFeeds: false,
         useSecureConnection: false,
         isFiltersEnabled: false,
-        filters: []
+        filters: [],
+        showCounter: true
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled"],
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled", "showCounter"],
     cachedFeeds: [],
     cachedSavedFeeds: [],
     isLoggedIn: false,
@@ -272,7 +273,11 @@ function updateCounter() {
                 }
             }
 
-            chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
+            if(appGlobal.options.showCounter){
+                chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
+            } else {
+                chrome.browserAction.setBadgeText({ text: ""});
+            }
         }
     });
 }
@@ -299,7 +304,17 @@ function updateFeeds(callback, silentUpdate){
                 appGlobal.cachedFeeds = appGlobal.cachedFeeds.concat(parseFeeds(response));
                 // When all request are completed
                 if (requestCount < 1) {
-                    console.log(appGlobal.cachedFeeds);
+
+                    // Remove duplicates
+                    appGlobal.cachedFeeds = appGlobal.cachedFeeds.filter(function(value, index, feeds){
+                        for(var i = ++index; i < feeds.length; i++){
+                            if(feeds[i].id == value.id){
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+
                     appGlobal.cachedFeeds = appGlobal.cachedFeeds.sort(function (a, b) {
                         if (a.date > b.date) {
                             return -1;
@@ -308,8 +323,8 @@ function updateFeeds(callback, silentUpdate){
                         }
                         return 0;
                     });
+
                     appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
-                    console.log(appGlobal.cachedFeeds);
                     filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
                         if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
                             sendDesktopNotification(newFeeds);

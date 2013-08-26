@@ -106,5 +106,8 @@
     },
     "Categories": {
         "message": "Категории"
+    },
+    "ShowCounter": {
+        "message": "Показывать счетчик"
     }
 }
