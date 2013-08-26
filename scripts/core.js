@@ -242,6 +242,15 @@ function updateSavedFeeds(callback) {
     }
 }
 
+/* Sets badge counter if unread feeds more than zero */
+function setBadgeCounter(unreadFeedsCount) {
+    if (appGlobal.options.showCounter) {
+        chrome.browserAction.setBadgeText({ text: String(+unreadFeedsCount > 0 ? unreadFeedsCount : "")});
+    } else {
+        chrome.browserAction.setBadgeText({ text: ""});
+    }
+}
+
 /* Runs feeds update and stores unread feeds in cache
  * Callback will be started after function complete
  * */
@@ -252,18 +261,35 @@ function updateCounter() {
             var unreadFeedsCount = 0;
 
             if (appGlobal.options.isFiltersEnabled) {
-                var globalGroupCount = 0;
-                unreadCounts.forEach(function (element) {
-                    if (appGlobal.options.filters.indexOf(element.id) !== -1) {
-                        unreadFeedsCount += element.count;
-                    }
-                    if (appGlobal.globalGroup === element.id) {
-                        globalGroupCount = element.count;
+                apiRequestWrapper("subscriptions", {
+                    onSuccess: function (response) {
+                        unreadCounts.forEach(function (element) {
+                            if (appGlobal.options.filters.indexOf(element.id) !== -1) {
+                                unreadFeedsCount += element.count;
+                            }
+                        });
+
+                        // When feed consists in more than one category, we remove feed which was counted twice or more
+                        response.forEach(function (feed) {
+                            var numberOfDupesCategories = 0;
+                            feed.categories.forEach(function(category){
+                                if(appGlobal.options.filters.indexOf(category.id) !== -1){
+                                    numberOfDupesCategories++;
+                                }
+                            });
+                            if(numberOfDupesCategories > 1){
+                                for (var i = 0; i < unreadCounts.length; i++) {
+                                    if (feed.id === unreadCounts[i].id) {
+                                        unreadFeedsCount -= unreadCounts[i].count * --numberOfDupesCategories;
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+
+                        setBadgeCounter(unreadFeedsCount);
                     }
                 });
-                if (unreadFeedsCount > globalGroupCount) {
-                    unreadFeedsCount = globalGroupCount;
-                }
             } else {
                 for (var i = 0; i < unreadCounts.length; i++) {
                     if (appGlobal.globalGroup === unreadCounts[i].id) {
@@ -272,12 +298,7 @@ function updateCounter() {
                     }
                 }
             }
-
-            if(appGlobal.options.showCounter){
-                chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
-            } else {
-                chrome.browserAction.setBadgeText({ text: ""});
-            }
+            setBadgeCounter(unreadFeedsCount);
         }
     });
 }
@@ -478,7 +499,7 @@ function markAsRead(feedIds, callback) {
                 feedsCount = +feedsCount;
                 if (feedsCount > 0) {
                     feedsCount -= feedIds.length;
-                    chrome.browserAction.setBadgeText({ text: String(feedsCount > 0 ? feedsCount : "")});
+                    setBadgeCounter(feedsCount);
                 }
             });
             if (typeof callback === "function") {
