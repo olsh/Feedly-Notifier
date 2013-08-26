@@ -1,9 +1,8 @@
 "use strict";
 
-var FeedlyApiClient = function (accessToken, refreshToken, useSecureConnection) {
+var FeedlyApiClient = function (accessToken, useSecureConnection) {
 
     this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
     this.useSecureConnection = useSecureConnection;
 
     var apiUrl = "http://sandbox.feedly.com/v3/";

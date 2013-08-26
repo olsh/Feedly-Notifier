@@ -91,7 +91,6 @@ function initialize() {
         chrome.browserAction.setPopup({popup: "popup.html"});
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
-    appGlobal.feedlyApiClient.refreshToken = appGlobal.options.refreshToken;
     appGlobal.feedlyApiClient.useSecureConnection = appGlobal.options.useSecureConnection;
     startSchedule(appGlobal.options.updateInterval);
 }
@@ -225,7 +224,7 @@ function filterByNewFeeds(feeds, callback) {
 /* Update saved feeds and stores its in cache */
 function updateSavedFeeds(callback) {
     if (appGlobal.options.feedlyUserId) {
-        appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents", {
+        apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents", {
             onSuccess: function (response) {
                 appGlobal.cachedSavedFeeds = parseFeeds(response);
                 if (typeof callback === "function") {
@@ -240,7 +239,7 @@ function updateSavedFeeds(callback) {
  * Callback will be started after function complete
  * */
 function updateCounter(callback) {
-    appGlobal.feedlyApiClient.request("markers/counts", {
+    apiRequestWrapper("markers/counts", {
         onSuccess: function (response) {
             setActiveStatus();
 
@@ -257,7 +256,6 @@ function updateCounter(callback) {
             chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
         },
         onAuthorizationRequired: function () {
-            setInactiveStatus();
             if (typeof  callback === "function") {
                 callback();
             }
@@ -270,7 +268,7 @@ function updateCounter(callback) {
  * If silentUpdate is true, then notifications will not be shown
  *  */
 function updateFeeds(callback, silentUpdate){
-    appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(appGlobal.globalGroup) + "/contents", {
+    apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.globalGroup) + "/contents", {
         parameters: {
             unreadOnly: true,
             count: appGlobal.options.maxNumberOfFeeds
@@ -287,7 +285,6 @@ function updateFeeds(callback, silentUpdate){
             }
         },
         onAuthorizationRequired: function () {
-            setInactiveStatus();
             if (typeof callback === "function") {
                 callback();
             }
@@ -297,7 +294,6 @@ function updateFeeds(callback, silentUpdate){
 
 /* Stops scheduler, sets badge as inactive and resets counter */
 function setInactiveStatus() {
-    refreshAccessToken();
     chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
     });
     chrome.browserAction.setBadgeText({ text: ""});
@@ -415,7 +411,7 @@ function getSavedFeeds(forceUpdate, callback) {
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
 function markAsRead(feedIds, callback) {
-    appGlobal.feedlyApiClient.request("markers", {
+    apiRequestWrapper("markers", {
         body: {
             action: "markAsRead",
             type: "entries",
@@ -438,7 +434,6 @@ function markAsRead(feedIds, callback) {
             }
         },
         onAuthorizationRequired: function () {
-            setInactiveStatus();
             if (typeof callback === "function") {
                 callback(false);
             }
@@ -453,7 +448,7 @@ function markAsRead(feedIds, callback) {
  * function(boolean isLoggedIn) {...};*/
 function toggleSavedFeed(feedId, saveFeed, callback) {
     if (saveFeed) {
-        appGlobal.feedlyApiClient.request("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved"), {
+        apiRequestWrapper("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved"), {
             method: "PUT",
             body: {
                 entryId: feedId
@@ -470,7 +465,7 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
             }
         });
     } else {
-        appGlobal.feedlyApiClient.request("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/" + encodeURIComponent(feedId), {
+        apiRequestWrapper("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/" + encodeURIComponent(feedId), {
             method: "DELETE",
             onSuccess: function (response) {
                 if (typeof callback === "function") {
@@ -590,4 +585,18 @@ function readOptions(callback) {
             callback();
         }
     });
+}
+
+function apiRequestWrapper(methodName, settings) {
+    var onAuthorizationRequired = settings.onAuthorizationRequired;
+
+    settings.onAuthorizationRequired = function () {
+        setInactiveStatus();
+        refreshAccessToken();
+        if (typeof onAuthorizationRequired === "function") {
+            onAuthorizationRequired();
+        }
+    }
+
+    appGlobal.feedlyApiClient.request(methodName, settings);
 }

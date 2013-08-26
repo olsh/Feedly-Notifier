@@ -45,7 +45,7 @@ $("#options").on("change", "input", function (e) {
 
 function loadProfileData() {
     chrome.storage.sync.get(null, function (items) {
-        var feedlyClient = new FeedlyApiClient(items.accessToken, items.refreshToken, items.useSecureConnection);
+        var feedlyClient = new FeedlyApiClient(items.accessToken, items.useSecureConnection);
         feedlyClient.request("profile", {
             onSuccess: function (result) {
                 var userInfo = $("#userInfo");
