@@ -1,15 +1,15 @@
-{
+ï»¿{
     "Login" : {
         "message" : "Login"
     },
     "NoUnreadArticles" : {
-        "message" : "Não há novos artigos"
+        "message" : "NÃ£o hÃ¡ novos artigos"
     },
     "FeedlyWebsite" : {
         "message" : "Abrir Feedly em nova aba"
     },
     "OptionsSaved" : {
-        "message" : "As configurações foram salvas"
+        "message" : "As configuraÃ§Ãµes foram salvas"
     },
     "MarkAsRead" : {
         "message" : "Marcar como lido"
@@ -21,7 +21,7 @@
         "message" : "Automaticamente marcar artigo como lido ao abri-lo"
     },
     "CurrentUser" : {
-        "message" : "Usuário atual"
+        "message" : "UsuÃ¡rio atual"
     },
     "Email" : {
         "message" : "E-mail"
@@ -33,13 +33,13 @@
         "message" : "Salvar"
     },
     "FeedlyNotifierOptions" : {
-        "message" : "Opções do Feedly Notifier"
+        "message" : "OpÃ§Ãµes do Feedly Notifier"
     },
     "MarkAllAsRead" : {
         "message" : "Marcar tudo como lido"
     },
     "ShowDesktopNotifications" : {
-        "message" : "Mostrar notificações na área de trabalho"
+        "message" : "Mostrar notificaÃ§Ãµes na Ã¡rea de trabalho"
     },
     "NewFeeds" : {
         "message" : "Novos feeds"
@@ -51,7 +51,7 @@
         "message" : "muitos"
     },
     "YouHaveNewFeeds" : {
-        "message" : "Vocês tem $count$ novos feeds",
+        "message" : "VocÃªs tem $count$ novos feeds",
         "placeholders" : {
             "count": {
                 "content": "$1",
@@ -60,28 +60,28 @@
         }
     },
     "HideNotificationsAfter": {
-        "message": "Ocultar notificações na área de trabalho após (segundos); 0 – não ocultar"
+        "message": "Ocultar notificaÃ§Ãµes na Ã¡rea de trabalho apÃ³s (segundos); 0 â€“ nÃ£o ocultar"
     },
     "ExtensionDescription": {
-        "message": "Extensão para o leitor de notícias Feedly"
+        "message": "ExtensÃ£o para o leitor de notÃ­cias Feedly"
     },
     "ShowFullFeedContent": {
-        "message": "Se possível, mostrar conteúdo completo do artigo no feed expandido"
+        "message": "Se possÃ­vel, mostrar conteÃºdo completo do artigo no feed expandido"
     },
     "MaxNotificationsCount": {
-        "message": "Número máximo de notificações por vez"
+        "message": "NÃºmero mÃ¡ximo de notificaÃ§Ãµes por vez"
     },
     "OpenSiteOnIconClick": {
-        "message": "Abrir Feedly ao clicar sobre o ícone (não mostrar popup)"
+        "message": "Abrir Feedly ao clicar sobre o Ã­cone (nÃ£o mostrar popup)"
     },
     "NoSavedArticles": {
-        "message": "Não há artigos salvos"
+        "message": "NÃ£o hÃ¡ artigos salvos"
     },
     "AbilitySaveFeeds": {
         "message": "Habilidade de salvar feeds"
     },
     "MaxNumberOfFeeds": {
-        "message": "Número máximo de feeds no popup"
+        "message": "NÃºmero mÃ¡ximo de feeds no popup"
     },
     "General": {
         "message": "Geral"
@@ -90,13 +90,13 @@
         "message": "Popup"
     },
     "Notifications": {
-        "message": "Notificações"
+        "message": "NotificaÃ§Ãµes"
     },
     "ForceUpdateFeeds": {
-        "message": "Forçar rechecagem ao abrir popup"
+        "message": "ForÃ§ar rechecagem ao abrir popup"
     },
     "UseSecureConnection": {
-        "message": "Usar conexão segura (https)"
+        "message": "Usar conexÃ£o segura (https)"
     },
     "Filters": {
         "message": "Filtros"
