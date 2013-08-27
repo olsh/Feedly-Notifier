@@ -1,0 +1,113 @@
+{
+    "Login" : {
+        "message" : "Login"
+    },
+    "NoUnreadArticles" : {
+        "message" : "Não há novos artigos"
+    },
+    "FeedlyWebsite" : {
+        "message" : "Abrir Feedly em nova aba"
+    },
+    "OptionsSaved" : {
+        "message" : "As configurações foram salvas"
+    },
+    "MarkAsRead" : {
+        "message" : "Marcar como lido"
+    },
+    "IntervalPeriod" : {
+        "message" : "Checar novos artigos a cada (min.)"
+    },
+    "AutoMarkRead" : {
+        "message" : "Automaticamente marcar artigo como lido ao abri-lo"
+    },
+    "CurrentUser" : {
+        "message" : "Usuário atual"
+    },
+    "Email" : {
+        "message" : "E-mail"
+    },
+    "Logout" : {
+        "message" : "Logout"
+    },
+    "Save" : {
+        "message" : "Salvar"
+    },
+    "FeedlyNotifierOptions" : {
+        "message" : "Opções do Feedly Notifier"
+    },
+    "MarkAllAsRead" : {
+        "message" : "Marcar tudo como lido"
+    },
+    "ShowDesktopNotifications" : {
+        "message" : "Mostrar notificações na área de trabalho"
+    },
+    "NewFeeds" : {
+        "message" : "Novos feeds"
+    },
+    "More" : {
+        "message" : "Mais"
+    },
+    "many" : {
+        "message" : "muitos"
+    },
+    "YouHaveNewFeeds" : {
+        "message" : "Vocês tem $count$ novos feeds",
+        "placeholders" : {
+            "count": {
+                "content": "$1",
+                "example": "10 or many"
+            }
+        }
+    },
+    "HideNotificationsAfter": {
+        "message": "Ocultar notificações na área de trabalho após (segundos); 0 – não ocultar"
+    },
+    "ExtensionDescription": {
+        "message": "Extensão para o leitor de notícias Feedly"
+    },
+    "ShowFullFeedContent": {
+        "message": "Se possível, mostrar conteúdo completo do artigo no feed expandido"
+    },
+    "MaxNotificationsCount": {
+        "message": "Número máximo de notificações por vez"
+    },
+    "OpenSiteOnIconClick": {
+        "message": "Abrir Feedly ao clicar sobre o ícone (não mostrar popup)"
+    },
+    "NoSavedArticles": {
+        "message": "Não há artigos salvos"
+    },
+    "AbilitySaveFeeds": {
+        "message": "Habilidade de salvar feeds"
+    },
+    "MaxNumberOfFeeds": {
+        "message": "Número máximo de feeds no popup"
+    },
+    "General": {
+        "message": "Geral"
+    },
+    "Popup": {
+        "message": "Popup"
+    },
+    "Notifications": {
+        "message": "Notificações"
+    },
+    "ForceUpdateFeeds": {
+        "message": "Forçar rechecagem ao abrir popup"
+    },
+    "UseSecureConnection": {
+        "message": "Usar conexão segura (https)"
+    },
+    "Filters": {
+        "message": "Filtros"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Atualizar apenas as seguintes categorias"
+    },
+    "Categories": {
+        "message": "Categorias"
+    },
+    "ShowCounter": {
+        "message": "Mostrar contador"
+    }
+}
