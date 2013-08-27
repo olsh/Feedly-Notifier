@@ -87,7 +87,11 @@ chrome.webRequest.onCompleted.addListener(function (details) {
 }, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
 
 chrome.browserAction.onClicked.addListener(function () {
-    openUrlInNewTab("http://feedly.com", true);
+    if (appGlobal.isLoggedIn) {
+        openUrlInNewTab("http://feedly.com", true);
+    } else {
+        getAccessToken();
+    }
 });
 
 /* Initialization all parameters and run feeds check */
