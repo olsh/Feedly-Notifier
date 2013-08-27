@@ -2,7 +2,7 @@
 
 var popupGlobal = {
     //Determines lists of supported jQuery.timeago localizations, default localization is en
-    supportedTimeAgoLocales: ["ru", "fr"],
+    supportedTimeAgoLocales: ["ru", "fr", "pt-BR"],
     feeds: [],
     savedFeeds: [],
     backgroundPage: chrome.extension.getBackgroundPage()
@@ -15,6 +15,7 @@ $(document).ready(function () {
 
     //If we support this localization of timeago, then insert script with it
     if (popupGlobal.supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
+
         //Trying load localization for jQuery.timeago
         $.getScript("/scripts/timeago/locales/jquery.timeago." + window.navigator.language + ".js", function () {
             renderFeeds();
