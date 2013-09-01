@@ -622,8 +622,7 @@ function refreshAccessToken(){
             refresh_token: appGlobal.options.refreshToken,
             client_id: appGlobal.clientId,
             client_secret: appGlobal.clientSecret,
-            grant_type: "refresh_token",
-            plan: appGlobal.options.feedlyUserPlan
+            grant_type: "refresh_token"
         },
         onSuccess: function (response) {
             chrome.storage.sync.set({
