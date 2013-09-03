@@ -7,6 +7,13 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v1.6.0 (2013.09.03)
+
+* Ability to hide counter
+* Added filters by category
+* French translation updated (by Arnaud Ligny)
+* Brazilian Portuguese translation (by Jucá Costa)
+
 v1.5.5 (2013.08.23)
 
 * Fixed bug with auto mark as read
