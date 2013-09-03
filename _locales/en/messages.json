@@ -94,5 +94,20 @@
     },
     "ForceUpdateFeeds": {
         "message": "Force update feeds on popup open"
+    },
+    "UseSecureConnection": {
+        "message": "Use secure connection (https)"
+    },
+    "Filters": {
+        "message": "Filters"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Update only following categories"
+    },
+    "Categories": {
+        "message": "Categories"
+    },
+    "ShowCounter": {
+        "message": "Show counter"
     }
 }

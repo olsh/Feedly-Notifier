@@ -48,3 +48,7 @@ h3{
 #userInfo{
     display: none;
 }
+
+#categories{
+    width: 50%;
+}

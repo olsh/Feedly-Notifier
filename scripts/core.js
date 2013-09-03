@@ -11,22 +11,39 @@ var appGlobal = {
         updateInterval: 2, //minutes
         markReadOnClick: true,
         accessToken: "",
+        refreshToken: "",
         showDesktopNotifications: true,
         hideNotificationDelay: 10, //seconds
         showFullFeedContent: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
         feedlyUserId: "",
+        feedlyUserPlan: "",
         abilitySaveFeeds: false,
         maxNumberOfFeeds: 20,
-        forceUpdateFeeds: false
+        forceUpdateFeeds: false,
+        useSecureConnection: false,
+        isFiltersEnabled: false,
+        filters: [],
+        showCounter: true
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds"],
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled", "showCounter"],
     cachedFeeds: [],
     cachedSavedFeeds: [],
     isLoggedIn: false,
-    intervalId: 0
+    intervalIds: [],
+    clientId: "",
+    clientSecret: "",
+    get savedGroup(){
+        return "user/" + this.options.feedlyUserId + "/tag/global.saved";
+    },
+    get globalGroup(){
+        return "user/" + this.options.feedlyUserId + "/category/global.all";
+    },
+    get globalUncategorized(){
+        return "user/" + this.options.feedlyUserId + "/category/global.uncategorized";
+    }
 };
 
 // #Event handlers
@@ -57,19 +74,24 @@ chrome.runtime.onStartup.addListener(function () {
 /* Listener for adding or removing feeds on the feedly website */
 chrome.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "POST" || details.method === "DELETE") {
+        updateCounter();
         updateFeeds();
     }
-}, {urls: ["*://cloud.feedly.com/v3/subscriptions*", "*://cloud.feedly.com/v3/markers?*ct=feedly.desktop*"]});
+}, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
 /* Listener for adding or removing saved feeds */
 chrome.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "PUT" || details.method === "DELETE") {
         updateSavedFeeds();
     }
-}, {urls: ["*://cloud.feedly.com/v3/tags*global.saved*"]});
+}, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
 
 chrome.browserAction.onClicked.addListener(function () {
-    openUrlInNewTab("http://feedly.com", true);
+    if (appGlobal.isLoggedIn) {
+        openUrlInNewTab("https://feedly.com", true);
+    } else {
+        getAccessToken();
+    }
 });
 
 /* Initialization all parameters and run feeds check */
@@ -80,17 +102,40 @@ function initialize() {
         chrome.browserAction.setPopup({popup: "popup.html"});
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
-    startSchedule(appGlobal.options.updateInterval);
+    appGlobal.feedlyApiClient.useSecureConnection = appGlobal.options.useSecureConnection;
+
+    // TODO: Fallback, must be removed when we'll get secret key
+    if (!appGlobal.options.feedlyUserId) {
+        apiRequestWrapper("profile", {
+            onSuccess: function (response) {
+                chrome.storage.sync.set({feedlyUserId: response.id}, function () {
+                    appGlobal.options.feedlyUserId = response.id;
+                    startSchedule(appGlobal.options.updateInterval);
+                });
+            }
+        });
+    } else {
+        startSchedule(appGlobal.options.updateInterval);
+    }
 }
 
 function startSchedule(updateInterval) {
     stopSchedule();
+    updateCounter();
     updateFeeds();
-    appGlobal.intervalId = setInterval(updateFeeds, updateInterval * 60000);
+    if(appGlobal.options.showCounter){
+        appGlobal.intervalIds.push(setInterval(updateCounter, updateInterval * 60000));
+    }
+    if (appGlobal.options.showDesktopNotifications || !appGlobal.options.openSiteOnIconClick) {
+        appGlobal.intervalIds.push(setInterval(updateFeeds, updateInterval * 60000));
+    }
 }
 
 function stopSchedule() {
-    clearInterval(appGlobal.intervalId);
+    appGlobal.intervalIds.forEach(function(intervalId){
+        clearInterval(intervalId);
+    });
+    appGlobal.intervalIds = [];
 }
 
 /* Sends desktop notifications */
@@ -204,85 +249,137 @@ function filterByNewFeeds(feeds, callback) {
 
 /* Update saved feeds and stores its in cache */
 function updateSavedFeeds(callback) {
-    if (appGlobal.options.feedlyUserId) {
-        appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/contents", {
+    apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents", {
+        onSuccess: function (response) {
+            appGlobal.cachedSavedFeeds = parseFeeds(response);
+            if (typeof callback === "function") {
+                callback();
+            }
+        }
+    });
+}
+
+/* Sets badge counter if unread feeds more than zero */
+function setBadgeCounter(unreadFeedsCount) {
+    if (appGlobal.options.showCounter) {
+        chrome.browserAction.setBadgeText({ text: String(+unreadFeedsCount > 0 ? unreadFeedsCount : "")});
+    } else {
+        chrome.browserAction.setBadgeText({ text: ""});
+    }
+}
+
+/* Runs feeds update and stores unread feeds in cache
+ * Callback will be started after function complete
+ * */
+function updateCounter() {
+    apiRequestWrapper("markers/counts", {
+        onSuccess: function (response) {
+            var unreadCounts = response.unreadcounts;
+            var unreadFeedsCount = 0;
+
+            if (appGlobal.options.isFiltersEnabled) {
+                apiRequestWrapper("subscriptions", {
+                    onSuccess: function (response) {
+                        unreadCounts.forEach(function (element) {
+                            if (appGlobal.options.filters.indexOf(element.id) !== -1) {
+                                unreadFeedsCount += element.count;
+                            }
+                        });
+
+                        // When feed consists in more than one category, we remove feed which was counted twice or more
+                        response.forEach(function (feed) {
+                            var numberOfDupesCategories = 0;
+                            feed.categories.forEach(function(category){
+                                if(appGlobal.options.filters.indexOf(category.id) !== -1){
+                                    numberOfDupesCategories++;
+                                }
+                            });
+                            if(numberOfDupesCategories > 1){
+                                for (var i = 0; i < unreadCounts.length; i++) {
+                                    if (feed.id === unreadCounts[i].id) {
+                                        unreadFeedsCount -= unreadCounts[i].count * --numberOfDupesCategories;
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+
+                        setBadgeCounter(unreadFeedsCount);
+                    }
+                });
+            } else {
+                for (var i = 0; i < unreadCounts.length; i++) {
+                    if (appGlobal.globalGroup === unreadCounts[i].id) {
+                        unreadFeedsCount = unreadCounts[i].count;
+                        break;
+                    }
+                }
+            }
+            setBadgeCounter(unreadFeedsCount);
+        }
+    });
+}
+
+/* Runs feeds update and stores unread feeds in cache
+ * Callback will be started after function complete
+ * If silentUpdate is true, then notifications will not be shown
+ *  */
+function updateFeeds(callback, silentUpdate){
+    appGlobal.cachedFeeds = [];
+
+    var streamIds = appGlobal.options.isFiltersEnabled ? appGlobal.options.filters : [appGlobal.globalGroup];
+
+    var requestCount = streamIds.length;
+    for(var i = 0; i < streamIds.length; i++){
+        apiRequestWrapper("streams/" + encodeURIComponent(streamIds[i]) + "/contents", {
+            parameters: {
+                unreadOnly: true,
+                count: appGlobal.options.maxNumberOfFeeds
+            },
             onSuccess: function (response) {
-                appGlobal.cachedSavedFeeds = parseFeeds(response);
+                requestCount--;
+
+                appGlobal.cachedFeeds = appGlobal.cachedFeeds.concat(parseFeeds(response));
+                // When all request are completed
+                if (requestCount < 1) {
+
+                    // Remove duplicates
+                    appGlobal.cachedFeeds = appGlobal.cachedFeeds.filter(function(value, index, feeds){
+                        for(var i = ++index; i < feeds.length; i++){
+                            if(feeds[i].id == value.id){
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+
+                    appGlobal.cachedFeeds = appGlobal.cachedFeeds.sort(function (a, b) {
+                        if (a.date > b.date) {
+                            return -1;
+                        } else if (a.date < b.date) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+
+                    appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
+                    filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
+                        if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
+                            sendDesktopNotification(newFeeds);
+                        }
+                    });
+                    if (typeof callback === "function") {
+                        callback();
+                    }
+                }
+            },
+            onAuthorizationRequired: function () {
                 if (typeof callback === "function") {
                     callback();
                 }
             }
         });
     }
-}
-
-/* Runs feeds update and stores unread feeds in cache
- * Callback will be started after function complete
- * If silentUpdate is true, then notifications will not be shown
- * */
-function updateFeeds(callback, silentUpdate) {
-    appGlobal.feedlyApiClient.request("markers/counts", {
-        onSuccess: function (response) {
-            setActiveStatus();
-
-            var unreadCounts = response.unreadcounts;
-            var unreadFeedsCount = -1;
-            var globalCategoryId = "";
-            var userIdRegex = /user\/(.+?)\/category/i;
-
-            for (var i = 0; i < unreadCounts.length; i++) {
-                if (unreadFeedsCount < unreadCounts[i].count) {
-                    unreadFeedsCount = unreadCounts[i].count;
-
-                    //Search category(global or uncategorized) with max feeds
-                    globalCategoryId = unreadCounts[i].id;
-                }
-                //Search Feedly user id
-                if (!appGlobal.options.feedlyUserId && appGlobal.options.abilitySaveFeeds) {
-                    //Search user id
-                    var matches = userIdRegex.exec(unreadCounts[i].id);
-                    if (matches) {
-                        appGlobal.options.feedlyUserId = matches[1];
-                        //Update cache when update feedlyUserId
-                        updateSavedFeeds();
-                    }
-                }
-            }
-            chrome.browserAction.setBadgeText({ text: String(unreadFeedsCount > 0 ? unreadFeedsCount : "")});
-
-            if (appGlobal.options.showDesktopNotifications || !appGlobal.options.openSiteOnIconClick) {
-                appGlobal.feedlyApiClient.request("streams/" + encodeURIComponent(globalCategoryId) + "/contents", {
-                    parameters: {
-                        unreadOnly: true,
-                        count: appGlobal.options.maxNumberOfFeeds
-                    },
-                    onSuccess: function (response) {
-                        appGlobal.cachedFeeds = parseFeeds(response);
-                        filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
-                            if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
-                                sendDesktopNotification(newFeeds);
-                            }
-                        });
-                        if (typeof callback === "function") {
-                            callback();
-                        }
-                    },
-                    onAuthorizationRequired: function () {
-                        setInactiveStatus();
-                        if (typeof callback === "function") {
-                            callback();
-                        }
-                    }
-                });
-            }
-        },
-        onAuthorizationRequired: function () {
-            setInactiveStatus();
-            if (typeof  callback === "function") {
-                callback();
-            }
-        }
-    });
 }
 
 /* Stops scheduler, sets badge as inactive and resets counter */
@@ -404,7 +501,7 @@ function getSavedFeeds(forceUpdate, callback) {
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
 function markAsRead(feedIds, callback) {
-    appGlobal.feedlyApiClient.request("markers", {
+    apiRequestWrapper("markers", {
         body: {
             action: "markAsRead",
             type: "entries",
@@ -419,7 +516,7 @@ function markAsRead(feedIds, callback) {
                 feedsCount = +feedsCount;
                 if (feedsCount > 0) {
                     feedsCount -= feedIds.length;
-                    chrome.browserAction.setBadgeText({ text: String(feedsCount > 0 ? feedsCount : "")});
+                    setBadgeCounter(feedsCount);
                 }
             });
             if (typeof callback === "function") {
@@ -427,7 +524,6 @@ function markAsRead(feedIds, callback) {
             }
         },
         onAuthorizationRequired: function () {
-            setInactiveStatus();
             if (typeof callback === "function") {
                 callback(false);
             }
@@ -442,7 +538,7 @@ function markAsRead(feedIds, callback) {
  * function(boolean isLoggedIn) {...};*/
 function toggleSavedFeed(feedId, saveFeed, callback) {
     if (saveFeed) {
-        appGlobal.feedlyApiClient.request("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved"), {
+        apiRequestWrapper("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved"), {
             method: "PUT",
             body: {
                 entryId: feedId
@@ -459,7 +555,7 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
             }
         });
     } else {
-        appGlobal.feedlyApiClient.request("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/" + encodeURIComponent(feedId), {
+        apiRequestWrapper("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/" + encodeURIComponent(feedId), {
             method: "DELETE",
             onSuccess: function (response) {
                 if (typeof callback === "function") {
@@ -483,7 +579,7 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
     }
 }
 
-/* Opens feedly site and if user are logged in,
+/* Runs authenticating a user process,
  * then read access token and stores in chrome.storage */
 function getAccessToken() {
     chrome.tabs.create({url: "http://cloud.feedly.com" }, function (feedlytab) {
@@ -511,8 +607,7 @@ function getAccessToken() {
                 }
 
                 if (accessToken) {
-                    chrome.storage.sync.set({ accessToken: accessToken }, function () {
-                    });
+                    chrome.storage.sync.set({accessToken: accessToken }, function () {});
                     chrome.webRequest.onBeforeSendHeaders.removeListener(processRequest);
                 }
             },
@@ -550,4 +645,26 @@ function readOptions(callback) {
             callback();
         }
     });
+}
+
+function apiRequestWrapper(methodName, settings) {
+    var onSuccess = settings.onSuccess;
+    settings.onSuccess = function (response) {
+        setActiveStatus();
+        if (typeof onSuccess === "function") {
+            onSuccess(response);
+        }
+    }
+
+    var onAuthorizationRequired = settings.onAuthorizationRequired;
+
+    settings.onAuthorizationRequired = function (accessToken) {
+        setInactiveStatus();
+
+        if (typeof onAuthorizationRequired === "function") {
+            onAuthorizationRequired(accessToken);
+        }
+    }
+
+    appGlobal.feedlyApiClient.request(methodName, settings);
 }

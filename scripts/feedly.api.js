@@ -1,15 +1,19 @@
 "use strict";
 
-var FeedlyApiClient = function (accessToken) {
+var FeedlyApiClient = function (accessToken, useSecureConnection) {
 
     this.accessToken = accessToken;
-    var apiUrl = "http://cloud.feedly.com/v3/";
+    this.useSecureConnection = useSecureConnection;
 
-    var getMethodUrl = function (methodName, parameters) {
+    var apiUrl = "http://cloud.feedly.com/v3/";
+    var secureApiUrl = "https://cloud.feedly.com/v3/";
+
+    this.getMethodUrl = function (methodName, parameters, useSecureConnection) {
         if (methodName === undefined) {
             return "";
         }
-        var methodUrl = apiUrl + methodName;
+        var methodUrl = (useSecureConnection ? secureApiUrl : apiUrl) + methodName;
+
         var queryString;
         if (parameters) {
             queryString = "?";
@@ -27,7 +31,7 @@ var FeedlyApiClient = function (accessToken) {
     };
 
     this.request = function (methodName, settings) {
-        var url = getMethodUrl(methodName, settings.parameters);
+        var url = this.getMethodUrl(methodName, settings.parameters, this.useSecureConnection);
         var verb = settings.method || "GET";
         var request = new XMLHttpRequest();
         request.open(verb, url, true);
@@ -64,5 +68,5 @@ var FeedlyApiClient = function (accessToken) {
             body = JSON.stringify(settings.body);
         }
         request.send(body);
-    }
+    };
 };

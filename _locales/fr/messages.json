@@ -94,5 +94,20 @@
     },
     "ForceUpdateFeeds": {
         "message": "Forcer l'actualisation à l'ouverture de la popup"
+    },
+    "UseSecureConnection": {
+        "message": "Utiliser une connection sécurisée (https)"
+    },
+    "Filters": {
+        "message": "Filtres"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Mettre à jour uniquement ces catégories"
+    },
+    "Categories": {
+        "message": "Catégories"
+    },
+    "ShowCounter": {
+        "message": "Show counter"
     }
 }
