@@ -5,8 +5,8 @@ var FeedlyApiClient = function (accessToken, useSecureConnection) {
     this.accessToken = accessToken;
     this.useSecureConnection = useSecureConnection;
 
-    var apiUrl = "http://sandbox.feedly.com/v3/";
-    var secureApiUrl = "https://sandbox.feedly.com/v3/";
+    var apiUrl = "http://cloud.feedly.com/v3/";
+    var secureApiUrl = "https://cloud.feedly.com/v3/";
 
     this.getMethodUrl = function (methodName, parameters, useSecureConnection) {
         if (methodName === undefined) {
