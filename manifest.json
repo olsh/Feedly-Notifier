@@ -22,7 +22,7 @@
     },
     "options_page": "options.html",
     "background": {
-        "page": "default.html"
+        "scripts": ["scripts/feedly.api.js", "scripts/core.js"]
     },
     "icons": {
         "16": "/images/icon16.png",
