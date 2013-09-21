@@ -17,8 +17,7 @@ $("body").on("click", "#save", function (e) {
 $("body").on("click", "#logout", function () {
     chrome.extension.getBackgroundPage().appGlobal.options.accessToken = "";
     chrome.extension.getBackgroundPage().appGlobal.options.refreshToken = "";
-    chrome.storage.sync.remove(["accessToken", "refreshToken"], function () {
-    });
+    chrome.storage.sync.remove(["accessToken", "refreshToken"], function () {});
     $("#userInfo, #filters-settings").hide();
 });
 

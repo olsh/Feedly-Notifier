@@ -23,7 +23,6 @@ $(document).ready(function () {
     } else {
         renderFeeds();
     }
-
 });
 
 $("#login").click(function () {
