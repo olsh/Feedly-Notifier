@@ -626,7 +626,7 @@ function refreshAccessToken(){
         onSuccess: function (response) {
             chrome.storage.sync.set({
                 accessToken: response.access_token,
-                refreshToken: response.refresh_token,
+                feedlyUserId: response.id,
                 feedlyUserPlan: response.plan
             }, function () {});
         }
