@@ -580,7 +580,7 @@ function getAccessToken() {
     chrome.tabs.create({url: url}, function (authorizationTab) {
         chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
             if (authorizationTab.id === tabId) {
-                var codeParse = /code=(.+?)&/i;
+                var codeParse = /code=(.+?)(?:&|$)/i;
                 var matches = codeParse.exec(information.url);
                 if (matches) {
                     appGlobal.feedlyApiClient.request("auth/token", {
