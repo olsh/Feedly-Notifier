@@ -18,7 +18,6 @@ var appGlobal = {
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
         feedlyUserId: "",
-        feedlyUserPlan: "",
         abilitySaveFeeds: false,
         maxNumberOfFeeds: 20,
         forceUpdateFeeds: false,
@@ -575,7 +574,7 @@ function getAccessToken() {
         client_id: appGlobal.clientId,
         redirect_uri: "http://localhost",
         scope: "https://cloud.feedly.com/subscriptions"
-    }, appGlobal.options.useSecureConnection);
+    }, true);
 
     chrome.tabs.create({url: url}, function (authorizationTab) {
         chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
@@ -585,6 +584,7 @@ function getAccessToken() {
                 if (matches) {
                     appGlobal.feedlyApiClient.request("auth/token", {
                         method: "POST",
+                        useSecureConnection: true,
                         parameters: {
                             code: matches[1],
                             client_id: appGlobal.clientId,
@@ -596,8 +596,7 @@ function getAccessToken() {
                             chrome.storage.sync.set({
                                 accessToken: response.access_token,
                                 refreshToken: response.refresh_token,
-                                feedlyUserId: response.id,
-                                feedlyUserPlan: response.plan
+                                feedlyUserId: response.id
                             }, function () {
                             });
                             chrome.tabs.onUpdated.removeListener(processCode);
@@ -617,6 +616,7 @@ function refreshAccessToken(){
 
     appGlobal.feedlyApiClient.request("auth/token", {
         method: "POST",
+        useSecureConnection: true,
         parameters: {
             refresh_token: appGlobal.options.refreshToken,
             client_id: appGlobal.clientId,
@@ -626,8 +626,7 @@ function refreshAccessToken(){
         onSuccess: function (response) {
             chrome.storage.sync.set({
                 accessToken: response.access_token,
-                feedlyUserId: response.id,
-                feedlyUserPlan: response.plan
+                feedlyUserId: response.id
             }, function () {});
         }
     });
@@ -676,8 +675,10 @@ function apiRequestWrapper(methodName, settings) {
     var onAuthorizationRequired = settings.onAuthorizationRequired;
 
     settings.onAuthorizationRequired = function (accessToken) {
-        setInactiveStatus();
-        refreshAccessToken();
+        if (appGlobal.isLoggedIn) {
+            setInactiveStatus();
+            refreshAccessToken();
+        }
         if (typeof onAuthorizationRequired === "function") {
             onAuthorizationRequired(accessToken);
         }
