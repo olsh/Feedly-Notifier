@@ -7,6 +7,10 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v2.0.1 (2013.09.27)
+
+* Using secure connection in the authorization flow
+
 v2.0.0 (2013.09.21)
 
 * Switched to official Feedly API
