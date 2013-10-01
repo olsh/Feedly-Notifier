@@ -1,5 +1,3 @@
-#WebStorm settings folder
-.idea/
-
-# Minified plugin version
-compiled/
+.idea
+node_modules
+build

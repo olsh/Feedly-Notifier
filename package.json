@@ -1,0 +1,20 @@
+{
+  "name": "Feedly-Notifier",
+  "description": "Feedly notifier is a tiny extension that keeps you up to date with your feedly subscriptions.",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-string-replace": "~0.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olsh/Feedly-Notifier.git"
+  },
+  "author": "Dmitriy Samodov, Oleg Shevchenko",
+  "bugs": {
+    "url": "https://github.com/olsh/Feedly-Notifier/issues"
+  },
+  "sourcePath": "src",
+  "buildPath": "build"
+}
