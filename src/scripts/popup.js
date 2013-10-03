@@ -111,13 +111,14 @@ $("#feedly").on("click", "#update-feeds", function () {
     if ($("#feed").is(":visible")) {
         popupGlobal.backgroundPage.getFeeds(true, function (feeds, isLoggedIn) {
             if (isLoggedIn) {
-                //Backward loop for chronological sequence
-                for (var i = feeds.length - 1; i >= 0; i--) {
+                var newFeeds = [];
+                for (var i = 0; i < feeds.length; i++) {
                     if ($("#feed .item[data-id='" + feeds[i].id + "']").size() === 0) {
-                        $('#entryTemplate').tmpl(feeds[i]).fadeIn().prependTo('#feed').find(".timeago").timeago();
-                        popupGlobal.feeds.push(feeds[i]);
+                        newFeeds.push(feeds[i]);
                     }
                 }
+                $("#feed").prepend($("#feedTemplate").mustache({feeds: newFeeds})).find(".timeago").timeago();
+                popupGlobal.feeds = popupGlobal.feeds.concat(newFeeds);
             } else {
                 showLogin();
             }
@@ -128,13 +129,15 @@ $("#feedly").on("click", "#update-feeds", function () {
             if (isLoggedIn) {
                 //Backward loop for chronological sequence
                 var container = $("#feed-saved");
-                for (var i = feeds.length - 1; i >= 0; i--) {
+                var newSavedFeeds = [];
+                for (var i = 0; i < feeds.length; i++) {
                     if ($("#feed-saved .item[data-id='" + feeds[i].id + "']").size() === 0) {
-                        $('#entryTemplate').tmpl(feeds[i]).fadeIn().prependTo(container).find(".timeago").timeago();
-                        popupGlobal.savedFeeds.push(feeds[i]);
-                        container.find(".mark-read").hide();
+                        newSavedFeeds.push(feeds[i]);
                     }
                 }
+                $("#feed-saved").prepend($("#feedTemplate").mustache({feeds: newSavedFeeds})).find(".timeago").timeago();
+                container.find(".mark-read").hide();
+                popupGlobal.savedFeeds = popupGlobal.savedFeeds.concat(newSavedFeeds);
             } else {
                 showLogin();
             }
@@ -177,7 +180,7 @@ function renderFeeds() {
             } else {
                 $("#feed-empty").hide();
                 var container = $("#feed").show().empty();
-                $('#entryTemplate').tmpl(feeds).appendTo(container);
+                container.append($("#feedTemplate").mustache({feeds: feeds}));
                 $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
                 $("#mark-all-read").text(chrome.i18n.getMessage("MarkAllAsRead"));
                 $("#all-read-section").show().find("*").show();
@@ -206,7 +209,7 @@ function renderSavedFeeds() {
             } else {
                 $("#feed-empty").hide();
                 var container = $("#feed-saved").show();
-                $('#entryTemplate').tmpl(feeds).appendTo(container);
+                container.append($("#feedTemplate").mustache({feeds: feeds}));
                 container.find(".show-content").attr("title", chrome.i18n.getMessage("More"));
                 container.find(".timeago").timeago();
                 container.find(".mark-read").hide();
