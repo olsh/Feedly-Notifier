@@ -1,113 +1,116 @@
 ﻿{
-    "Login" : {
-        "message" : "Login"
+    "AbilitySaveFeeds": {
+        "message": "Habilidade de salvar feeds"
     },
-    "NoUnreadArticles" : {
-        "message" : "Não há novos artigos"
+    "AutoMarkRead": {
+        "message": "Automaticamente marcar artigo como lido ao abri-lo"
     },
-    "FeedlyWebsite" : {
-        "message" : "Abrir Feedly em nova aba"
+    "Categories": {
+        "message": "Categorias"
     },
-    "OptionsSaved" : {
-        "message" : "As configurações foram salvas"
+    "CurrentUser": {
+        "message": "Usuário atual"
     },
-    "MarkAsRead" : {
-        "message" : "Marcar como lido"
+    "Email": {
+        "message": "E-mail"
     },
-    "IntervalPeriod" : {
-        "message" : "Checar novos artigos a cada (min.)"
+    "ExtensionDescription": {
+        "message": "Extensão para o leitor de notícias Feedly"
     },
-    "AutoMarkRead" : {
-        "message" : "Automaticamente marcar artigo como lido ao abri-lo"
+    "FeedlyNotifierOptions": {
+        "message": "Opções do Feedly Notifier"
     },
-    "CurrentUser" : {
-        "message" : "Usuário atual"
+    "FeedlyWebsite": {
+        "message": "Abrir Feedly em nova aba"
     },
-    "Email" : {
-        "message" : "E-mail"
+    "Filters": {
+        "message": "Filtros"
     },
-    "Logout" : {
-        "message" : "Logout"
+    "ForceUpdateFeeds": {
+        "message": "Forçar rechecagem ao abrir popup"
     },
-    "Save" : {
-        "message" : "Salvar"
+    "General": {
+        "message": "Geral"
     },
-    "FeedlyNotifierOptions" : {
-        "message" : "Opções do Feedly Notifier"
+    "HideNotificationsAfter": {
+        "message": "Ocultar notificações na área de trabalho após (segundos); 0 – não ocultar"
     },
-    "MarkAllAsRead" : {
-        "message" : "Marcar tudo como lido"
+    "IntervalPeriod": {
+        "message": "Checar novos artigos a cada (min.)"
     },
-    "ShowDesktopNotifications" : {
-        "message" : "Mostrar notificações na área de trabalho"
+    "Login": {
+        "message": "Login"
     },
-    "NewFeeds" : {
-        "message" : "Novos feeds"
+    "Logout": {
+        "message": "Logout"
     },
-    "More" : {
-        "message" : "Mais"
+    "MarkAllAsRead": {
+        "message": "Marcar tudo como lido"
     },
-    "many" : {
-        "message" : "muitos"
+    "MarkAsRead": {
+        "message": "Marcar como lido"
     },
-    "YouHaveNewFeeds" : {
-        "message" : "Vocês tem $count$ novos feeds",
-        "placeholders" : {
+    "MaxNotificationsCount": {
+        "message": "Número máximo de notificações por vez"
+    },
+    "MaxNumberOfFeeds": {
+        "message": "Número máximo de feeds no popup"
+    },
+    "More": {
+        "message": "Mais"
+    },
+    "NewFeeds": {
+        "message": "Novos feeds"
+    },
+    "NoSavedArticles": {
+        "message": "Não há artigos salvos"
+    },
+    "NoUnreadArticles": {
+        "message": "Não há novos artigos"
+    },
+    "Notifications": {
+        "message": "Notificações"
+    },
+    "OldestFeedsFirst": {
+        "message": "Oldest feeds first"
+    },
+    "OpenSiteOnIconClick": {
+        "message": "Abrir Feedly ao clicar sobre o ícone (não mostrar popup)"
+    },
+    "OptionsSaved": {
+        "message": "As configurações foram salvas"
+    },
+    "Popup": {
+        "message": "Popup"
+    },
+    "Save": {
+        "message": "Salvar"
+    },
+    "ShowCounter": {
+        "message": "Mostrar contador"
+    },
+    "ShowDesktopNotifications": {
+        "message": "Mostrar notificações na área de trabalho"
+    },
+    "ShowFullFeedContent": {
+        "message": "Se possível, mostrar conteúdo completo do artigo no feed expandido"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Atualizar apenas as seguintes categorias"
+    },
+    "UseSecureConnection": {
+        "message": "Usar conexão segura (https)"
+    },
+    "YouHaveNewFeeds": {
+        "message": "Vocês tem $count$ novos feeds",
+        "placeholders": {
             "count": {
                 "content": "$1",
                 "example": "10 or many"
             }
         }
     },
-    "HideNotificationsAfter": {
-        "message": "Ocultar notificações na área de trabalho após (segundos); 0 – não ocultar"
-    },
-    "ExtensionDescription": {
-        "message": "Extensão para o leitor de notícias Feedly"
-    },
-    "ShowFullFeedContent": {
-        "message": "Se possível, mostrar conteúdo completo do artigo no feed expandido"
-    },
-    "MaxNotificationsCount": {
-        "message": "Número máximo de notificações por vez"
-    },
-    "OpenSiteOnIconClick": {
-        "message": "Abrir Feedly ao clicar sobre o ícone (não mostrar popup)"
-    },
-    "NoSavedArticles": {
-        "message": "Não há artigos salvos"
-    },
-    "AbilitySaveFeeds": {
-        "message": "Habilidade de salvar feeds"
-    },
-    "MaxNumberOfFeeds": {
-        "message": "Número máximo de feeds no popup"
-    },
-    "General": {
-        "message": "Geral"
-    },
-    "Popup": {
-        "message": "Popup"
-    },
-    "Notifications": {
-        "message": "Notificações"
-    },
-    "ForceUpdateFeeds": {
-        "message": "Forçar rechecagem ao abrir popup"
-    },
-    "UseSecureConnection": {
-        "message": "Usar conexão segura (https)"
-    },
-    "Filters": {
-        "message": "Filtros"
-    },
-    "UpdateFollowingCategories": {
-        "message": "Atualizar apenas as seguintes categorias"
-    },
-    "Categories": {
-        "message": "Categorias"
-    },
-    "ShowCounter": {
-        "message": "Mostrar contador"
+    "many": {
+        "message": "muitos"
     }
 }

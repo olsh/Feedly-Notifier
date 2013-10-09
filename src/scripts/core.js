@@ -24,10 +24,11 @@ var appGlobal = {
         useSecureConnection: false,
         isFiltersEnabled: false,
         filters: [],
-        showCounter: true
+        showCounter: true,
+        oldestFeedsFirst: false
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled", "showCounter"],
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled", "showCounter", "oldestFeedsFirst"],
     cachedFeeds: [],
     cachedSavedFeeds: [],
     isLoggedIn: false,
@@ -321,7 +322,8 @@ function updateFeeds(callback, silentUpdate){
         apiRequestWrapper("streams/" + encodeURIComponent(streamIds[i]) + "/contents", {
             parameters: {
                 unreadOnly: true,
-                count: appGlobal.options.maxNumberOfFeeds
+                count: appGlobal.options.maxNumberOfFeeds,
+                ranked: appGlobal.options.oldestFeedsFirst ? "oldest" : "newest"
             },
             onSuccess: function (response) {
                 requestCount--;
