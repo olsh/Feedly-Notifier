@@ -33,8 +33,15 @@ var FeedlyApiClient = function (accessToken, useSecureConnection) {
     this.request = function (methodName, settings) {
         var url = this.getMethodUrl(methodName, settings.parameters, this.useSecureConnection);
         var verb = settings.method || "GET";
+
+        // For bypassing the cache
+        if (verb === "GET"){
+            url += ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime();
+        }
+
         var request = new XMLHttpRequest();
         request.open(verb, url, true);
+
         if (this.accessToken) {
             request.setRequestHeader("Authorization", "OAuth " + this.accessToken);
         }
@@ -63,6 +70,7 @@ var FeedlyApiClient = function (accessToken, useSecureConnection) {
                 }
             }
         };
+
         var body;
         if (settings.body) {
             body = JSON.stringify(settings.body);
