@@ -36,7 +36,7 @@ var FeedlyApiClient = function (accessToken, useSecureConnection) {
 
         // For bypassing the cache
         if (verb === "GET"){
-            url += ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime();
+            url += ((/\?/).test(url) ? "&" : "?") + "ck=" + (new Date()).getTime();
         }
 
         var request = new XMLHttpRequest();
