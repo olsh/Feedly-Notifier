@@ -7,6 +7,10 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v2.1.2 (2013.10.11)
+
+* Minor bug were fixed
+
 v2.1.1 (2013.10.10)
 
 * Fixed popup rendering bug
