@@ -357,9 +357,9 @@ function updateFeeds(callback, silentUpdate){
 
                     appGlobal.cachedFeeds = appGlobal.cachedFeeds.sort(function (a, b) {
                         if (a.date > b.date) {
-                            return -1;
+                            return appGlobal.options.oldestFeedsFirst ? 1 : -1;
                         } else if (a.date < b.date) {
-                            return 1;
+                            return appGlobal.options.oldestFeedsFirst ? -1 : 1;
                         }
                         return 0;
                     });
