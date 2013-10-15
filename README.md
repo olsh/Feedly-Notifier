@@ -7,6 +7,11 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v2.1.4 (2013.10.15)
+
+* Fixed RTL text support
+* Fixed "Oldest feeds first" option
+
 v2.1.3 (2013.10.15)
 
 * Stability improvements
