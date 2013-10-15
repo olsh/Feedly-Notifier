@@ -34,8 +34,8 @@
 <script id="feedTemplate" type="text/x-handlebars-template">
     {{#feeds}}
     <div class="item" data-id="{{id}}">
-        <span class="article-title">
-            <a data-link="{{url}}" class="title {{titleDirection}}">{{title}}</a>
+        <span class="article-title {{titleDirection}}">
+            <a data-link="{{url}}" class="title">{{title}}</a>
         </span>
         <span class="article-menu">
             <span class="save-feed {{#isSaved}} saved {{/isSaved}}" data-saved="{{isSaved}}"></span>
@@ -43,7 +43,7 @@
             <span class="show-content" title="Show content"></span>
         </span>
 
-        <div class="blog-title">
+        <div class="blog-title {{blogTitleDirection}}">
             <img class="blog-icon" src="{{blogIcon}}"/>
             <a data-link="{{blogUrl}}" href="javascript:void(0)">{{blog}}</a>,
             <span class="timeago" title="{{isoDate}}"></span>

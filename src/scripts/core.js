@@ -414,15 +414,16 @@ function parseFeeds(feedlyResponse) {
         }
 
         //Set content
-        var content = "";
-        var contentDirection = "";
+        var content;
+        var contentDirection;
         if (appGlobal.options.showFullFeedContent) {
             if (item.content !== undefined) {
                 content = item.content.content;
                 contentDirection = item.content.direction;
             }
         }
-        if (content === "") {
+
+        if (!content) {
             if (item.summary !== undefined) {
                 content = item.summary.content;
                 contentDirection = item.summary.direction;
@@ -430,9 +431,9 @@ function parseFeeds(feedlyResponse) {
         }
 
         //Set title
-        var title = "";
-        var titleDirection = "";
-        if (item.title !== undefined) {
+        var title;
+        var titleDirection;
+        if (item.title) {
             if (item.title.indexOf("direction:rtl") !== -1) {
                 //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
                 title = item.title.replace(/<\/?div.*?>/gi, "");
@@ -442,7 +443,7 @@ function parseFeeds(feedlyResponse) {
             }
         }
 
-        var isSaved = false;
+        var isSaved;
         if (item.tags) {
             for (var i = 0; i < item.tags.length; i++) {
                 if (item.tags[i].id.search(/global\.saved$/i) !== -1) {
@@ -452,18 +453,31 @@ function parseFeeds(feedlyResponse) {
             }
         }
 
+        var blog;
+        var blogTitleDirection;
+        if (item.origin && item.origin.title) {
+            if (item.origin.title.indexOf("direction:rtl") !== -1) {
+                //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
+                blog = item.origin.title.replace(/<\/?div.*?>/gi, "");
+                blogTitleDirection = "rtl";
+            } else {
+                blog = item.origin.title;
+            }
+        }
+
         return {
             title: title,
             titleDirection: titleDirection,
-            url: item.alternate === undefined || item.alternate[0] === undefined ? "" : item.alternate[0].href,
-            blog: item.origin === undefined ? "" : item.origin.title,
+            url: item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "",
+            blog: blog,
+            blogTitleDirection: blogTitleDirection,
             blogUrl: blogUrl,
             blogIcon: "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed",
             id: item.id,
             content: content,
             contentDirection: contentDirection,
-            isoDate: item.crawled === undefined ? "" : new Date(item.crawled).toISOString(),
-            date: item.crawled === undefined ? "" : new Date(item.crawled),
+            isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
+            date: item.crawled ? new Date(item.crawled) : "",
             isSaved: isSaved
         };
     });

@@ -96,11 +96,11 @@ $("#popup-content").on("click", ".show-content", function () {
         if (contentContainer.is(":visible") && contentContainer.text().length > 350) {
             $(".item").css("width", "700px");
             $("#feedly").css("width", "700px");
-            $(".article-title").css("width", $("#popup-content").hasClass("tabs") ? "645px" : "660px");
+            $(".article-title, .blog-title").css("width", $("#popup-content").hasClass("tabs") ? "645px" : "660px");
         } else {
             $(".item").css("width", $("#popup-content").hasClass("tabs") ? "380px" : "350px");
             $("#feedly").css("width", $("#popup-content").hasClass("tabs") ? "380px" : "350px");
-            $(".article-title").css("width", $("#popup-content").hasClass("tabs") ? "325px" : "310px");
+            $(".article-title, .blog-title").css("width", $("#popup-content").hasClass("tabs") ? "325px" : "310px");
         }
     });
 });

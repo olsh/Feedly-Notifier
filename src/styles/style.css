@@ -5,9 +5,9 @@
     src: local('Open Sans Condensed Bold'), local('OpenSans-CondensedBold'), url(opensanscondensed.woff) format('woff');
 }
 
-.button{
+.button {
     background-color: #6cc655;
-    border: 1px solid rgba( 0, 0, 0, 0.2 );
+    border: 1px solid rgba(0, 0, 0, 0.2);
     color: #E8E8E8;
     font-size: 14px;
     line-height: 17px;
@@ -26,7 +26,7 @@
 .show-content,
 .save-feed,
 [class^="icon-"],
-[class*=" icon-"]{
+[class*=" icon-"] {
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -39,28 +39,28 @@
     background-repeat: no-repeat;
 }
 
-.icon-ok{
+.icon-ok {
     background-position: -288px 0;
     margin-right: 5px;
 }
 
-.icon-refresh{
+.icon-refresh {
     background-position: -240px -24px;
 }
 
-.mark-read:hover{
+.mark-read:hover {
     background-position: -96px -120px;
 }
 
-.show-content{
+.show-content {
     background-position: -313px -119px;
 }
 
-.save-feed{
+.save-feed {
     background: url(save.png) no-repeat 0 0;
 }
 
-.saved{
+.saved {
     background-position: -14px 0px
 }
 
@@ -68,30 +68,29 @@
     display: none;
 }
 
-.item{
+.item {
     width: 350px;
     padding: 2px 0 2px 0;
 }
 
-.item:hover{
+.item:hover {
     background-color: #F5F5F4;
 }
 
-.item .content{
+.item .content {
     background-color: white;
 }
 
 #feed .item:not(:last-child),
-#feed-saved .item:not(:last-child)
-{
+#feed-saved .item:not(:last-child) {
     border-bottom: solid #d2d2d2 1px;
 }
 
-.tabs .item{
+.tabs .item {
     width: 380px;
 }
 
-.item .content{
+.item .content {
     display: none;
     border: 1px solid #6cc655;
     padding: 5px;
@@ -99,57 +98,59 @@
     border-radius: 3px;
 }
 
-.content a:link{
+.content a:link {
     color: #6cc655;
-    text-decoration:none;
+    text-decoration: none;
 }
 
-.content a:hover{
-    text-decoration:underline;
+.content a:hover {
+    text-decoration: underline;
 }
 
-.content img, .content iframe{
-    max-width: 100%!important;
-	height: auto!important;
+.content img, .content iframe {
+    max-width: 100% !important;
+    height: auto !important;
 }
 
-.rtl{
+.rtl {
     direction: rtl;
     text-align: right;
 }
 
 .article-menu,
-.article-title{
+.article-title {
     display: inline-block;
 }
 
-.article-title{
+.article-title,
+.blog-title {
     width: 310px;
 }
 
-.tabs .article-title{
+.tabs .article-title,
+.tabs .blog-title {
     width: 325px;
 }
 
-.article-menu{
+.article-menu {
     vertical-align: top;
 }
 
 #feed-empty,
-.title{
+.title {
     font-family: "Open Sans Condensed";
     color: #444;
 }
 
-#feed-empty{
+#feed-empty {
     text-align: center;
 }
 
-#popup-content{
+#popup-content {
     min-width: 140px;
 }
 
-#feedly{
+#feedly {
     margin: 0;
     position: fixed;
     background-color: white;
@@ -158,64 +159,63 @@
     top: 0;
 }
 
-.tabs #feedly{
+.tabs #feedly {
     border-bottom: 1px solid #6cc655;
     width: 380px;
 }
 
-#feedly>button{
+#feedly > button {
     display: none;
 }
 
-
-.tabs #feedly>button{
+.tabs #feedly > button {
     display: inline;
 }
 
-#feedly img{
+#feedly img {
     margin-right: 5px;
     vertical-align: bottom;
 }
 
 #feed,
 #feed-saved,
-#feed-empty{
+#feed-empty {
     margin-top: 40px;
 }
 
 .tabs #feed,
 .tabs #feed-saved,
-.tabs #feed-empty{
+.tabs #feed-empty {
     margin-top: 80px;
 }
 
 #website,
-#mark-all-read{
+#mark-all-read {
     font-family: sans-serif;
     font-size: 11px;
     text-decoration: none;
     color: black;
 }
 
-#mark-all-read{
+#mark-all-read {
     cursor: pointer;
 }
 
-#feedly-section{
-    float:left;
+#feedly-section {
+    float: left;
 }
 
-#all-read-section{
-    float:right;
+#all-read-section {
+    float: right;
 }
 
-.title{
+.title {
     font-size: 14px;
     cursor: pointer;
     display: inline-block;
 }
 
-.blog-title{
+.blog-title {
     display: table-cell;
     color: gray;
 }
@@ -224,27 +224,27 @@
     vertical-align: middle;
 }
 
-.blog-title a, .blog-title span{
+.blog-title a, .blog-title span {
     color: gray;
     font-family: sans-serif;
     font-size: 11px;
 }
 
-.blog-title span{
+.blog-title span {
     font-family: "Open Sans Condensed";
 }
 
-.blog-title a{
+.blog-title a {
     cursor: pointer;
     text-decoration: none;
 }
 
-.clear{
+.clear {
     clear: both;
 }
 
-.tab{
-    border: 1px solid rgba( 0, 0, 0, 0.2 );
+.tab {
+    border: 1px solid rgba(0, 0, 0, 0.2);
     background-color: #eaeaea;
     padding: 5px 10px;
     border-bottom: none;
@@ -259,20 +259,20 @@
     cursor: pointer;
 }
 
-.save-feed{
+.save-feed {
     display: none;
 }
 
-.tabs .save-feed{
+.tabs .save-feed {
     display: inline-block;
 }
 
-.active-tab{
+.active-tab {
     background-color: #6cc655;
     color: white;
 }
 
-.blog-icon{
+.blog-icon {
     width: 16px;
     height: 16px;
 }
