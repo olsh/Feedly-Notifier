@@ -157,6 +157,10 @@ $("#popup-content").on("click", ".save-feed", function () {
     $this.toggleClass("saved");
 });
 
+$("#popup-content").on("click", "#website", function(){
+    popupGlobal.backgroundPage.openFeedlyTab();
+});
+
 function renderFeeds() {
     showLoader();
     popupGlobal.backgroundPage.getFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds, function (feeds, isLoggedIn) {

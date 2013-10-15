@@ -35,6 +35,7 @@ var appGlobal = {
     intervalIds: [],
     clientId: "",
     clientSecret: "",
+    feedlyUrl: "https://cloud.feedly.com/",
     get savedGroup(){
         return "user/" + this.options.feedlyUserId + "/tag/global.saved";
     },
@@ -88,7 +89,7 @@ chrome.webRequest.onCompleted.addListener(function (details) {
 
 chrome.browserAction.onClicked.addListener(function () {
     if (appGlobal.isLoggedIn) {
-        openUrlInNewTab("https://feedly.com", true);
+        openFeedlyTab();
     } else {
         getAccessToken();
     }
@@ -182,6 +183,18 @@ function openUrlInNewTab(url, active) {
         } else {
             chrome.tabs.create({url: url, active: active }, function (feedTab) {
             });
+        }
+    });
+}
+
+/* Opens new Feedly tab, if tab was already opened, then switches on it and reload. */
+function openFeedlyTab() {
+    chrome.tabs.query({url: appGlobal.feedlyUrl + "*"}, function (tabs) {
+        if (tabs.length < 1) {
+            chrome.tabs.create({url: appGlobal.feedlyUrl});
+        } else {
+            chrome.tabs.update(tabs[0].id, {active: true});
+            chrome.tabs.reload(tabs[0].id);
         }
     });
 }
@@ -527,7 +540,7 @@ function markAsRead(feedIds, callback) {
  * function(boolean isLoggedIn) {...};*/
 function toggleSavedFeed(feedId, saveFeed, callback) {
     if (saveFeed) {
-        apiRequestWrapper("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved"), {
+        apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup), {
             method: "PUT",
             body: {
                 entryId: feedId
@@ -544,7 +557,7 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
             }
         });
     } else {
-        apiRequestWrapper("tags/" + encodeURIComponent("user/" + appGlobal.options.feedlyUserId + "/tag/global.saved") + "/" + encodeURIComponent(feedId), {
+        apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup) + "/" + encodeURIComponent(feedId), {
             method: "DELETE",
             onSuccess: function (response) {
                 if (typeof callback === "function") {
@@ -571,42 +584,47 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
 /* Runs authenticating a user process,
  * then read access token and stores in chrome.storage */
 function getAccessToken() {
+    var state = (new Date()).getTime();
     var url = appGlobal.feedlyApiClient.getMethodUrl("auth/auth", {
         response_type: "code",
         client_id: appGlobal.clientId,
         redirect_uri: "http://localhost",
-        scope: "https://cloud.feedly.com/subscriptions"
+        scope: "https://cloud.feedly.com/subscriptions",
+        state: state
     }, true);
 
     chrome.tabs.create({url: url}, function (authorizationTab) {
         chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
-            if (authorizationTab.id === tabId) {
-                var codeParse = /code=(.+?)(?:&|$)/i;
-                var matches = codeParse.exec(information.url);
-                if (matches) {
-                    appGlobal.feedlyApiClient.request("auth/token", {
-                        method: "POST",
-                        useSecureConnection: true,
-                        parameters: {
-                            code: matches[1],
-                            client_id: appGlobal.clientId,
-                            client_secret: appGlobal.clientSecret,
-                            redirect_uri: "http://localhost",
-                            grant_type: "authorization_code"
-                        },
-                        onSuccess: function (response) {
-                            chrome.storage.sync.set({
-                                accessToken: response.access_token,
-                                refreshToken: response.refresh_token,
-                                feedlyUserId: response.id
-                            }, function () {
-                            });
-                            chrome.tabs.onUpdated.removeListener(processCode);
-                            chrome.tabs.remove(authorizationTab.id, function () {
-                            });
-                        }
-                    });
-                }
+
+            var checkStateRegex = new RegExp("state=" + state);
+            if (!checkStateRegex.test(information.url)) {
+                return;
+            }
+
+            var codeParse = /code=(.+?)(?:&|$)/i;
+            var matches = codeParse.exec(information.url);
+            if (matches) {
+                appGlobal.feedlyApiClient.request("auth/token", {
+                    method: "POST",
+                    useSecureConnection: true,
+                    parameters: {
+                        code: matches[1],
+                        client_id: appGlobal.clientId,
+                        client_secret: appGlobal.clientSecret,
+                        redirect_uri: "http://localhost",
+                        grant_type: "authorization_code"
+                    },
+                    onSuccess: function (response) {
+                        chrome.storage.sync.set({
+                            accessToken: response.access_token,
+                            refreshToken: response.refresh_token,
+                            feedlyUserId: response.id
+                        }, function () {
+                        });
+                        chrome.tabs.onUpdated.removeListener(processCode);
+                        chrome.tabs.update(authorizationTab.id, {url: chrome.extension.getURL("options.html")});
+                    }
+                });
             }
         });
     });
