@@ -7,6 +7,11 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v2.1.5 (2013.10.20)
+
+* Fixed bug with some characters set
+* Added Czech translation (by Michal Haták)
+
 v2.1.4 (2013.10.15)
 
 * Fixed RTL text support
