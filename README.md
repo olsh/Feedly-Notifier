@@ -7,6 +7,10 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v2.1.6 (2013.10.20)
+
+* Fixed loading Czech timeago locale
+
 v2.1.5 (2013.10.20)
 
 * Fixed bug with some characters set
