@@ -94,7 +94,6 @@
     },
     "ShowFullFeedContent": {
         "message": "Zobrazit celý obsah článku v pohledu zdroje (pokud je to možné)"
-        // "message": "Show full content of article in the expanded feed (if possible)"
     },
     "UpdateFollowingCategories": {
         "message": "Aktualizovat pouze následující kategorie"
