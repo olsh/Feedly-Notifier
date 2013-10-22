@@ -36,6 +36,7 @@ var appGlobal = {
     clientId: "",
     clientSecret: "",
     feedlyUrl: "https://cloud.feedly.com/",
+    tokenIsRefreshing: false,
     get savedGroup(){
         return "user/" + this.options.feedlyUserId + "/tag/global.saved";
     },
@@ -662,6 +663,9 @@ function refreshAccessToken(){
                 accessToken: response.access_token,
                 feedlyUserId: response.id
             }, function () {});
+        },
+        onComplete: function(){
+            appGlobal.tokenIsRefreshing = false;
         }
     });
 }
@@ -711,6 +715,9 @@ function apiRequestWrapper(methodName, settings) {
     settings.onAuthorizationRequired = function (accessToken) {
         if (appGlobal.isLoggedIn) {
             setInactiveStatus();
+        }
+        if (!appGlobal.tokenIsRefreshing){
+            appGlobal.tokenIsRefreshing = true;
             refreshAccessToken();
         }
         if (typeof onAuthorizationRequired === "function") {
