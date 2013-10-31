@@ -7,6 +7,10 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v2.2.1 (2013.10.31)
+
+* Fixed changing font size in the saved feeds
+
 v2.2.0 (2013.10.31)
 
 * Added ability to change font size in the popup

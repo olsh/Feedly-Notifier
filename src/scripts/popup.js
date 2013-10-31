@@ -185,7 +185,7 @@ function renderFeeds() {
                 if (popupGlobal.backgroundPage.appGlobal.options.resetCounterOnClick) {
                     popupGlobal.backgroundPage.resetCounter();
                 }
-                $("#feed").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
+                $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
                 $("#feed-empty").hide();
                 var container = $("#feed").show().empty();
                 container.append($("#feedTemplate").mustache({feeds: feeds}));
