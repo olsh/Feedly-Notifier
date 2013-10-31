@@ -7,6 +7,12 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v2.2.0 (2013.10.31)
+
+* Added ability to change font size in the popup
+* Added option "Reset counter when extension button clicked"
+* Added option use secure connection (HTTPS)
+
 v2.1.7 (2013.10.22)
 
 * Small API fixes

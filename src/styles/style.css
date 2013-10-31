@@ -77,10 +77,6 @@
     background-color: #F5F5F4;
 }
 
-.item .content {
-    background-color: white;
-}
-
 #feed .item:not(:last-child),
 #feed-saved .item:not(:last-child) {
     border-bottom: solid #d2d2d2 1px;
@@ -91,11 +87,13 @@
 }
 
 .item .content {
+    font-size: 1em;
     display: none;
     border: 1px solid #6cc655;
     padding: 5px;
     margin-top: 2px;
     border-radius: 3px;
+    background-color: white;
 }
 
 .content a:link {
@@ -134,6 +132,7 @@
 
 .article-menu {
     vertical-align: top;
+    font-size: 12px;
 }
 
 #feed-empty,
@@ -210,7 +209,7 @@
 }
 
 .title {
-    font-size: 14px;
+    font-size: 0.9em;
     cursor: pointer;
     display: inline-block;
 }
@@ -227,7 +226,7 @@
 .blog-title a, .blog-title span {
     color: gray;
     font-family: sans-serif;
-    font-size: 11px;
+    font-size: 0.7em;
 }
 
 .blog-title span {

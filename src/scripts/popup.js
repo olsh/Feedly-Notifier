@@ -6,7 +6,7 @@ var popupGlobal = {
     feeds: [],
     savedFeeds: [],
     backgroundPage: chrome.extension.getBackgroundPage()
-}
+};
 
 $(document).ready(function () {
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
@@ -182,6 +182,10 @@ function renderFeeds() {
                 $("#feed-empty").show();
                 $("#all-read-section").hide();
             } else {
+                if (popupGlobal.backgroundPage.appGlobal.options.resetCounterOnClick) {
+                    popupGlobal.backgroundPage.resetCounter();
+                }
+                $("#feed").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
                 $("#feed-empty").hide();
                 var container = $("#feed").show().empty();
                 container.append($("#feedTemplate").mustache({feeds: feeds}));

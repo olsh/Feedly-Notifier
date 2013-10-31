@@ -83,6 +83,12 @@
     "Popup": {
         "message": "Popup"
     },
+    "PopupFontSize": {
+        "message": "Popup font size in percent"
+    },
+    "ResetCounterOnClick": {
+        "message": "Reset counter when extension button clicked"
+    },
     "Save": {
         "message": "Salvar"
     },
