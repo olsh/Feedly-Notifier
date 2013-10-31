@@ -37,7 +37,7 @@ $("#options").on("change", "input", function (e) {
 
 function loadProfileData() {
     chrome.extension.getBackgroundPage().apiRequestWrapper("profile", {
-        useSecureConnection: true,
+        useSecureConnection: chrome.extension.getBackgroundPage().appGlobal.options.useSecureConnection,
         onSuccess: function (result) {
             var userInfo = $("#userInfo");
             userInfo.find("[data-locale-value]").each(function () {

@@ -7,6 +7,11 @@ Google chrome extension for reading news from rss aggregator [Feedly](http://www
 
 **Changelog**
 
+v2.2.2 (2013.11.01)
+
+* HTTPS is enabled by default
+* Some small bugfixes
+
 v2.2.1 (2013.10.31)
 
 * Fixed changing font size in the saved feeds

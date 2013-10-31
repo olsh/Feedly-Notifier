@@ -21,7 +21,7 @@ var appGlobal = {
         abilitySaveFeeds: false,
         maxNumberOfFeeds: 20,
         forceUpdateFeeds: false,
-        useSecureConnection: false,
+        useSecureConnection: true,
         isFiltersEnabled: false,
         filters: [],
         showCounter: true,
@@ -634,7 +634,7 @@ function getAccessToken() {
         redirect_uri: "http://localhost",
         scope: "https://cloud.feedly.com/subscriptions",
         state: state
-    }, true);
+    }, appGlobal.options.useSecureConnection);
 
     chrome.tabs.create({url: url}, function (authorizationTab) {
         chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
@@ -649,7 +649,7 @@ function getAccessToken() {
             if (matches) {
                 appGlobal.feedlyApiClient.request("auth/token", {
                     method: "POST",
-                    useSecureConnection: true,
+                    useSecureConnection: appGlobal.options.useSecureConnection,
                     parameters: {
                         code: matches[1],
                         client_id: appGlobal.clientId,
@@ -679,7 +679,7 @@ function refreshAccessToken(){
 
     appGlobal.feedlyApiClient.request("auth/token", {
         method: "POST",
-        useSecureConnection: true,
+        useSecureConnection: appGlobal.options.useSecureConnection,
         parameters: {
             refresh_token: appGlobal.options.refreshToken,
             client_id: appGlobal.clientId,
