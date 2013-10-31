@@ -1,9 +1,8 @@
 "use strict";
 
-var FeedlyApiClient = function (accessToken, useSecureConnection) {
+var FeedlyApiClient = function (accessToken) {
 
     this.accessToken = accessToken;
-    this.useSecureConnection = useSecureConnection;
 
     var apiUrl = "http://cloud.feedly.com/v3/";
     var secureApiUrl = "https://cloud.feedly.com/v3/";
@@ -31,7 +30,7 @@ var FeedlyApiClient = function (accessToken, useSecureConnection) {
     };
 
     this.request = function (methodName, settings) {
-        var url = this.getMethodUrl(methodName, settings.parameters, this.useSecureConnection);
+        var url = this.getMethodUrl(methodName, settings.parameters, settings.useSecureConnection);
         var verb = settings.method || "GET";
 
         // For bypassing the cache

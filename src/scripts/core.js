@@ -35,8 +35,10 @@ var appGlobal = {
     intervalIds: [],
     clientId: "",
     clientSecret: "",
-    feedlyUrl: "https://cloud.feedly.com/",
     tokenIsRefreshing: false,
+    get feedlyUrl(){
+        return this.options.useSecureConnection ? "https://cloud.feedly.com/" : "http://cloud.feedly.com/"
+    },
     get savedGroup(){
         return "user/" + this.options.feedlyUserId + "/tag/global.saved";
     },
@@ -104,7 +106,6 @@ function initialize() {
         chrome.browserAction.setPopup({popup: "popup.html"});
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
-    appGlobal.feedlyApiClient.useSecureConnection = appGlobal.options.useSecureConnection;
 
     startSchedule(appGlobal.options.updateInterval);
 }
