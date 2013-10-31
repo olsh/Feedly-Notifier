@@ -185,7 +185,7 @@ function renderFeeds() {
                 if (popupGlobal.backgroundPage.appGlobal.options.resetCounterOnClick) {
                     popupGlobal.backgroundPage.resetCounter();
                 }
-                $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
+                $("#feed").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
                 $("#feed-empty").hide();
                 var container = $("#feed").show().empty();
                 container.append($("#feedTemplate").mustache({feeds: feeds}));
@@ -215,6 +215,7 @@ function renderSavedFeeds() {
                 $("#feed-empty").text(chrome.i18n.getMessage("NoSavedArticles"));
                 $("#feed-empty").show();
             } else {
+                $("#feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
                 $("#feed-empty").hide();
                 var container = $("#feed-saved").show();
                 container.append($("#feedTemplate").mustache({feeds: feeds}));
