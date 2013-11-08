@@ -1,21 +1,18 @@
 @font-face {
     font-family: 'Open Sans Condensed';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Open Sans Condensed Bold'), local('OpenSans-CondensedBold'), url(opensanscondensed.woff) format('woff');
+    src: url(opensanscondensed.woff) format('woff');
 }
 
 .button {
     background-color: #6cc655;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    color: #E8E8E8;
     font-size: 14px;
     line-height: 17px;
     padding: 5px 15px;
     font-weight: bold;
     color: #FFF;
-    margin: 0px;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2), inset 0px 0px 1px rgba(255, 255, 255, 1);
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 1px rgba(255, 255, 255, 1);
     text-decoration: none;
     border-radius: 3px;
     -webkit-appearance: none;
@@ -31,12 +28,9 @@
     width: 14px;
     height: 14px;
     margin-top: 1px;
-    *margin-right: .3em;
     line-height: 14px;
     vertical-align: text-top;
-    background-image: url("glyphicons-halflings.png");
-    background-position: -120px -120px;
-    background-repeat: no-repeat;
+    background: url("glyphicons-halflings.png") no-repeat -120px -120px;
 }
 
 .icon-ok {
@@ -61,7 +55,7 @@
 }
 
 .saved {
-    background-position: -14px 0px
+    background-position: -14px 0;
 }
 
 #login, #popup-content, #all-read-section {
@@ -137,7 +131,7 @@
 
 #feed-empty,
 .title {
-    font-family: "Open Sans Condensed";
+    font-family: "Open Sans Condensed", serif;
     color: #444;
 }
 
@@ -230,7 +224,7 @@
 }
 
 .blog-title span {
-    font-family: "Open Sans Condensed";
+    font-family: "Open Sans Condensed", serif;
 }
 
 .blog-title a {
@@ -247,12 +241,12 @@
     background-color: #eaeaea;
     padding: 5px 10px;
     border-bottom: none;
-    border-radius: 4px 4px 0px 0px;
+    border-radius: 4px 4px 0 0;
     margin: 10px 0 0 0;
     font-size: 14px;
     line-height: 17px;
     color: black;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2), inset 0px 0px 1px rgba(255, 255, 255, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 1px rgba(255, 255, 255, 1);
     text-decoration: none;
     -webkit-appearance: none;
     cursor: pointer;
