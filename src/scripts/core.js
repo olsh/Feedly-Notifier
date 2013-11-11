@@ -27,7 +27,8 @@ var appGlobal = {
         showCounter: true,
         oldestFeedsFirst: false,
         resetCounterOnClick: false,
-        popupFontSize: 100 //percent
+        popupFontSize: 100, //percent
+        showCategories: false
     },
     //Names of options after changes of which scheduler will be initialized
     criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled", "showCounter", "oldestFeedsFirst", "resetCounterOnClick"],
@@ -507,7 +508,8 @@ function parseFeeds(feedlyResponse) {
             contentDirection: contentDirection,
             isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
             date: item.crawled ? new Date(item.crawled) : "",
-            isSaved: isSaved
+            isSaved: isSaved,
+            categories: item.categories
         };
     });
     return feeds;

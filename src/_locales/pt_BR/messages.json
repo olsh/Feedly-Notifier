@@ -92,6 +92,9 @@
     "Save": {
         "message": "Salvar"
     },
+    "ShowCategories": {
+        "message": "Show categories in popup"
+    },
     "ShowCounter": {
         "message": "Mostrar contador"
     },

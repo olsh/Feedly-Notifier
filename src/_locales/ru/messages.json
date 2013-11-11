@@ -92,6 +92,9 @@
     "Save": {
         "message": "Сохранить"
     },
+    "ShowCategories": {
+        "message": "Показывать категории во всплывающем окне"
+    },
     "ShowCounter": {
         "message": "Показывать счетчик"
     },

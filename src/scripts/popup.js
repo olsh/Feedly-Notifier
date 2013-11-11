@@ -47,7 +47,7 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
 
 $("#popup-content").on("click", "#mark-all-read", function (event) {
     var feedIds = [];
-    $(".item").each(function (key, value) {
+    $(".item:visible").each(function (key, value) {
         feedIds.push($(value).data("id"));
     });
     markAsRead(feedIds);
@@ -106,42 +106,10 @@ $("#popup-content").on("click", ".show-content", function () {
 
 /* Manually feeds update */
 $("#feedly").on("click", "#update-feeds", function () {
-    $(".icon-refresh").css("background", "url(/images/loading16.gif)");
     if ($("#feed").is(":visible")) {
-        popupGlobal.backgroundPage.getFeeds(true, function (feeds, isLoggedIn) {
-            if (isLoggedIn) {
-                var newFeeds = [];
-                for (var i = 0; i < feeds.length; i++) {
-                    if ($("#feed .item[data-id='" + feeds[i].id + "']").size() === 0) {
-                        newFeeds.push(feeds[i]);
-                    }
-                }
-                $("#feed").prepend($("#feedTemplate").mustache({feeds: newFeeds})).find(".timeago").timeago();
-                popupGlobal.feeds = popupGlobal.feeds.concat(newFeeds);
-            } else {
-                showLogin();
-            }
-            $(".icon-refresh").css("background", "");
-        });
+        renderFeeds(true);
     } else {
-        popupGlobal.backgroundPage.getSavedFeeds(true, function (feeds, isLoggedIn) {
-            if (isLoggedIn) {
-                //Backward loop for chronological sequence
-                var container = $("#feed-saved");
-                var newSavedFeeds = [];
-                for (var i = 0; i < feeds.length; i++) {
-                    if ($("#feed-saved .item[data-id='" + feeds[i].id + "']").size() === 0) {
-                        newSavedFeeds.push(feeds[i]);
-                    }
-                }
-                $("#feed-saved").prepend($("#feedTemplate").mustache({feeds: newSavedFeeds})).find(".timeago").timeago();
-                container.find(".mark-read").hide();
-                popupGlobal.savedFeeds = popupGlobal.savedFeeds.concat(newSavedFeeds);
-            } else {
-                showLogin();
-            }
-            $(".icon-refresh").css("background", "");
-        });
+        renderSavedFeeds(true);
     }
 });
 
@@ -160,9 +128,21 @@ $("#popup-content").on("click", "#website", function(){
     popupGlobal.backgroundPage.openFeedlyTab();
 });
 
-function renderFeeds() {
+$("#popup-content").on("click", ".categories > span", function (){
+    $(".categories").find("span").removeClass("active");
+    var button = $(this).addClass("active");
+    var categoryId = button.data("id");
+    if (categoryId) {
+        $(".item").hide();
+        $(".item[data-categories~='" + categoryId + "']").show();
+    } else {
+        $(".item").show();
+    }
+});
+
+function renderFeeds(forceUpdate) {
     showLoader();
-    popupGlobal.backgroundPage.getFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds, function (feeds, isLoggedIn) {
+    popupGlobal.backgroundPage.getFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds || forceUpdate, function (feeds, isLoggedIn) {
         popupGlobal.feeds = feeds;
         if (isLoggedIn === false) {
             showLogin();
@@ -171,6 +151,11 @@ function renderFeeds() {
                 showEmptyContent();
             } else {
                 var container = $("#feed").show().empty();
+
+                if (popupGlobal.backgroundPage.appGlobal.options.showCategories) {
+                    renderCategories(container, feeds);
+                }
+
                 container.append($("#feedTemplate").mustache({feeds: feeds}));
                 container.find(".timeago").timeago();
                 showFeeds();
@@ -179,9 +164,9 @@ function renderFeeds() {
     });
 }
 
-function renderSavedFeeds() {
+function renderSavedFeeds(forceUpdate) {
     showLoader();
-    popupGlobal.backgroundPage.getSavedFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds, function (feeds, isLoggedIn) {
+    popupGlobal.backgroundPage.getSavedFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds || forceUpdate, function (feeds, isLoggedIn) {
         popupGlobal.savedFeeds = feeds;
         if (isLoggedIn === false) {
             showLogin();
@@ -190,6 +175,11 @@ function renderSavedFeeds() {
                 showEmptyContent();
             } else {
                 var container = $("#feed-saved").empty();
+
+                if (popupGlobal.backgroundPage.appGlobal.options.showCategories) {
+                    renderCategories(container, feeds);
+                }
+
                 container.append($("#feedTemplate").mustache({feeds: feeds}));
                 container.find(".timeago").timeago();
                 showSavedFeeds();
@@ -219,6 +209,28 @@ function markAsRead(feedIds) {
             renderFeeds();
         }
     });
+}
+
+function renderCategories(container, feeds){
+    $(".categories").remove();
+    var categories = getUniqueCategories(feeds);
+    container.append($("#categories-template").mustache({categories: categories}));
+}
+
+function getUniqueCategories(feeds){
+    var categories = [];
+    var addedIds = [];
+    feeds.forEach(function(feed){
+        if (feed.categories) {
+            feed.categories.forEach(function(category){
+                if(addedIds.indexOf(category.id) === -1){
+                    categories.push(category);
+                    addedIds.push(category.id);
+                }
+            });
+        }
+    });
+    return categories;
 }
 
 function showLoader() {
@@ -259,12 +271,10 @@ function showSavedFeeds() {
 function setPopupExpand(isExpand){
     if (isExpand){
         $(".item").css("width", "700px");
-        $("#feedly").css("width", "700px");
         $(".article-title, .blog-title").css("width", $("#popup-content").hasClass("tabs") ? "645px" : "660px");
     } else {
         var popupContent = $("#popup-content");
         $(".item").css("width", popupContent.hasClass("tabs") ? "380px" : "350px");
-        $("#feedly").css("width", popupContent.hasClass("tabs") ? "380px" : "350px");
         $(".article-title, .blog-title").css("width", popupContent.hasClass("tabs") ? "325px" : "310px");
     }
 }

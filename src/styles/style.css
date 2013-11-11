@@ -140,21 +140,21 @@
 }
 
 #popup-content {
-    min-width: 140px;
+    min-width: 230px;
 }
 
 #feedly {
-    margin: 0;
+    padding: 10px 0 0 0;
+    margin: 0 8px;
     position: fixed;
     background-color: white;
-    width: 350px;
-    padding: 10px 0 0 0;
     top: 0;
+    left: 0;
+    right: 0;
 }
 
 .tabs #feedly {
     border-bottom: 1px solid #6cc655;
-    width: 380px;
 }
 
 #feedly > button {
@@ -268,4 +268,22 @@
 .blog-icon {
     width: 16px;
     height: 16px;
+}
+
+.categories {
+    padding-bottom: 5px;
+}
+
+.categories > span {
+    display: inline-block;
+    color: black;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 4px 8px;
+}
+
+.categories > span.active {
+    background-color: #6ABA45;
+    border-radius: 4px;
+    color: #FFFFFF;
 }

@@ -95,6 +95,9 @@
     "ShowCounter": {
         "message": "Ukázat počitadlo"
     },
+    "ShowCategories": {
+        "message": "Show categories in popup"
+    },
     "ShowDesktopNotifications": {
         "message": "Zobrazit oznámení"
     },
