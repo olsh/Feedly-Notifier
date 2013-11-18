@@ -8,7 +8,7 @@ var appGlobal = {
         defaultBig: "/images/icon128.png"
     },
     options: {
-        updateInterval: 2, //minutes
+        _updateInterval: 2, //minutes
         markReadOnClick: true,
         accessToken: "",
         refreshToken: "",
@@ -28,7 +28,14 @@ var appGlobal = {
         oldestFeedsFirst: false,
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
-        showCategories: false
+        showCategories: false,
+        get updateInterval(){
+            var minimumInterval = 1;
+            return this._updateInterval >= 1 ? this._updateInterval : minimumInterval;
+        },
+        set updateInterval(value) {
+            return this._updateInterval = value;
+        }
     },
     //Names of options after changes of which scheduler will be initialized
     criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled", "showCounter", "oldestFeedsFirst", "resetCounterOnClick"],
