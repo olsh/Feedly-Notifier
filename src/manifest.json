@@ -3,7 +3,7 @@
 
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
-    "version": "2.3.1",
+    "version": "2.3.2",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "default_locale": "en",
 
@@ -32,5 +32,5 @@
     "web_accessible_resources": [
         "/images/icon128.png"
     ],
-    "minimum_chrome_version": "19"
+    "minimum_chrome_version": "22"
 }

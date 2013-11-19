@@ -6,6 +6,7 @@ var FeedlyApiClient = function (accessToken) {
 
     var apiUrl = "http://cloud.feedly.com/v3/";
     var secureApiUrl = "https://cloud.feedly.com/v3/";
+    var extensionVersion = chrome.runtime.getManifest().version;
 
     this.getMethodUrl = function (methodName, parameters, useSecureConnection) {
         if (methodName === undefined) {
@@ -13,18 +14,13 @@ var FeedlyApiClient = function (accessToken) {
         }
         var methodUrl = (useSecureConnection ? secureApiUrl : apiUrl) + methodName;
 
-        var queryString;
-        if (parameters) {
-            queryString = "?";
-            for (var parameterName in parameters) {
-                queryString += parameterName + "=" + parameters[parameterName] + "&";
-            }
-            queryString = queryString.replace(/&$/, "");
+        var queryString = "?";
+        for (var parameterName in parameters) {
+            queryString += parameterName + "=" + parameters[parameterName] + "&";
         }
+        queryString += "av=c" + extensionVersion;
 
-        if (queryString) {
-            methodUrl += queryString;
-        }
+        methodUrl += queryString;
 
         return methodUrl;
     };
