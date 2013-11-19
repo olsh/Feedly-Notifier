@@ -8,7 +8,7 @@ var appGlobal = {
         defaultBig: "/images/icon128.png"
     },
     options: {
-        _updateInterval: 2, //minutes
+        _updateInterval: 10, //minutes
         markReadOnClick: true,
         accessToken: "",
         refreshToken: "",
@@ -30,8 +30,8 @@ var appGlobal = {
         popupFontSize: 100, //percent
         showCategories: false,
         get updateInterval(){
-            var minimumInterval = 1;
-            return this._updateInterval >= 1 ? this._updateInterval : minimumInterval;
+            var minimumInterval = 10;
+            return this._updateInterval >= minimumInterval ? this._updateInterval : minimumInterval;
         },
         set updateInterval(value) {
             return this._updateInterval = value;
