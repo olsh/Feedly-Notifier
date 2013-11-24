@@ -33,7 +33,7 @@
 <script src="scripts/jquery.mustache.min.js"></script>
 <script id="feedTemplate" type="text/x-handlebars-template">
     {{#feeds}}
-    <div class="item" data-id="{{id}}" data-categories="{{#categories}}{{id}} {{/categories}}">
+    <div class="item" data-id="{{id}}" data-categories="{{#categories}}{{encodedId}} {{/categories}}">
         <span class="article-title {{titleDirection}}">
             <a data-link="{{url}}" class="title">{{title}}</a>
         </span>
@@ -56,7 +56,7 @@
     <div class="categories">
         <span class="active">All</span>
         {{#categories}}
-        <span data-id="{{id}}">{{label}}</span>
+        <span data-id="{{encodedId}}">{{label}}</span>
         {{/categories}}
     </div>
 </script>
