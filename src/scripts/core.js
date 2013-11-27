@@ -204,7 +204,7 @@ function openUrlInNewTab(url, active) {
 
 /* Opens new Feedly tab, if tab was already opened, then switches on it and reload. */
 function openFeedlyTab() {
-    chrome.tabs.query({url: appGlobal.feedlyUrl + "*"}, function (tabs) {
+    chrome.tabs.query({url: appGlobal.feedlyUrl + "/*"}, function (tabs) {
         if (tabs.length < 1) {
             chrome.tabs.create({url: appGlobal.feedlyUrl});
         } else {
