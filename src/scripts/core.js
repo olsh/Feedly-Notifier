@@ -47,7 +47,7 @@ var appGlobal = {
     clientSecret: "",
     tokenIsRefreshing: false,
     get feedlyUrl(){
-        return this.options.useSecureConnection ? "https://cloud.feedly.com/" : "http://cloud.feedly.com/"
+        return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com"
     },
     get savedGroup(){
         return "user/" + this.options.feedlyUserId + "/tag/global.saved";
