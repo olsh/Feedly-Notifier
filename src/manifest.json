@@ -11,10 +11,10 @@
         "storage",
         "tabs",
         "notifications",
-        "background",
         "webRequest",
         "*://*.feedly.com/"
     ],
+    "optional_permissions": ["background"],
     "browser_action": {
         "default_icon": "/images/icon_inactive.png",
         "default_title": "Feedly Notifier",

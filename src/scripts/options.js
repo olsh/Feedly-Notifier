@@ -1,5 +1,11 @@
 "use strict";
 
+var optionsGlobal = {
+    backgroundPermission: {
+        permissions: ["background"]
+    }
+};
+
 $(document).ready(function () {
     loadOptions();
     loadUserCategories();
@@ -107,12 +113,19 @@ function saveOptions() {
         options[optionControl.data("option-name")] = optionValue;
     });
     options.filters = parseFilters();
+
+    setBackgroundMode($("#enable-background-mode").is(":checked"));
+
     chrome.storage.sync.set(options, function () {
         alert(chrome.i18n.getMessage("OptionsSaved"));
     });
 }
 
 function loadOptions() {
+    chrome.permissions.contains(optionsGlobal.backgroundPermission, function (enabled){
+        $("#enable-background-mode").prop("checked", enabled);
+    });
+
     chrome.storage.sync.get(null, function (items) {
         var optionsForm = $("#options");
         for (var option in items) {
@@ -131,4 +144,14 @@ function loadOptions() {
         var localValue = textBox.data("locale-value");
         textBox.text(chrome.i18n.getMessage(localValue));
     });
+}
+
+function setBackgroundMode(enable) {
+    if (enable) {
+        chrome.permissions.request(optionsGlobal.backgroundPermission, function () {
+        });
+    } else {
+        chrome.permissions.remove(optionsGlobal.backgroundPermission, function () {
+        });
+    }
 }
