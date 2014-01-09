@@ -280,6 +280,7 @@
     cursor: pointer;
     font-size: 1em;
     padding: 4px 8px;
+    font-family: sans-serif;
 }
 
 .categories > span.active {
