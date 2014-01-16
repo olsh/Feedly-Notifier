@@ -37,4 +37,4 @@ You can help us to translate the extension (send a pull request on GitHub).
 
 **Source code**
 
-https://github.com/olsh/Feedly-Notifier-Firefox
+https://github.com/olsh/Feedly-Notifier
