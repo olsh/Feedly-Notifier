@@ -35,6 +35,9 @@
     "General": {
         "message": "Generale"
     },
+    "HideNotifications": {
+        "message": "Hide notifications"
+    },
     "HideNotificationsAfter": {
         "message": "Nascondi le notifiche desktop dopo (sec.), 0 - non le nasconde"
     },
@@ -49,6 +52,9 @@
     },
     "MarkAllAsRead": {
         "message": "Segna tutti come giа letti"
+    },
+    "MarkAllAsReadGlobal": {
+        "message": "Mark all as read (globally)"
     },
     "MarkAsRead": {
         "message": "Segna come letto"
@@ -106,6 +112,9 @@
     },
     "ShowFullFeedContent": {
         "message": "Mostra il contenuto completo dell'articolo quando si espande un feed (se possibile)"
+    },
+    "UpdateFeeds": {
+        "message": "Update feeds"
     },
     "UpdateFollowingCategories": {
         "message": "Aggiorna solo le seguenti categorie"
