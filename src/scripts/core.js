@@ -351,8 +351,9 @@ function updateCounter() {
                             break;
                         }
                     }
+
+                    setBadgeCounter(unreadFeedsCount);
                 }
-                setBadgeCounter(unreadFeedsCount);
             }
         });
     }
