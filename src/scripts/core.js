@@ -46,7 +46,7 @@ var appGlobal = {
     clientId: "",
     clientSecret: "",
     tokenIsRefreshing: false,
-    notifications: null,
+    notifications: [],
     get feedlyUrl(){
         return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com"
     },
