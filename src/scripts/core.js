@@ -46,7 +46,6 @@ var appGlobal = {
     clientId: "",
     clientSecret: "",
     tokenIsRefreshing: false,
-    notifications: [],
     get feedlyUrl(){
         return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com"
     },
@@ -112,25 +111,6 @@ chrome.browserAction.onClicked.addListener(function () {
     }
 });
 
-chrome.commands.onCommand.addListener(function (command) {
-
-    switch (command) {
-        case "update":
-            updateCounter();
-            updateFeeds();
-            break;
-        case "hide_notifications":
-            hideAllNotifications();
-            break;
-        case "mark_all_as_read":
-            markAllAsRead(function(){
-                updateCounter();
-                updateFeeds();
-            });
-            break;
-    }
-});
-
 /* Initialization all parameters and run feeds check */
 function initialize() {
     if (appGlobal.options.openSiteOnIconClick) {
@@ -164,7 +144,7 @@ function stopSchedule() {
 
 /* Sends desktop notifications */
 function sendDesktopNotification(feeds) {
-    appGlobal.notifications = [];
+    var notifications = [];
     //if notifications too many, then to show only count
     if (feeds.length > appGlobal.options.maxNotificationsCount) {
         //We can detect only limit count of new feeds at time, but actually count of feeds may be more
@@ -172,7 +152,7 @@ function sendDesktopNotification(feeds) {
         var notification = window.webkitNotifications.createNotification(
             appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeeds"), chrome.i18n.getMessage("YouHaveNewFeeds", count));
         notification.show();
-        appGlobal.notifications.push(notification);
+        notifications.push(notification);
     } else {
         for (var i = 0; i < feeds.length; i++) {
             var notification = window.webkitNotifications.createNotification(
@@ -190,22 +170,18 @@ function sendDesktopNotification(feeds) {
                 }
             };
             notification.show();
-            appGlobal.notifications.push(notification);
+            notifications.push(notification);
         }
     }
 
     //Hide notifications after delay
     if (appGlobal.options.hideNotificationDelay > 0) {
-        setTimeout(hideAllNotifications, appGlobal.options.hideNotificationDelay * 1000);
+        setTimeout(function () {
+            for (i = 0; i < notifications.length; i++) {
+                notifications[i].cancel();
+            }
+        }, appGlobal.options.hideNotificationDelay * 1000);
     }
-}
-
-/* Hides all active desktop notifications.
- */
-function hideAllNotifications(){
-    appGlobal.notifications.forEach(function(notification){
-        notification.cancel();
-    });
 }
 
 /* Opens new tab, if tab is being opened when no active window (i.e. background mode)
@@ -616,26 +592,6 @@ function markAsRead(feedIds, callback) {
         onAuthorizationRequired: function () {
             if (typeof callback === "function") {
                 callback(false);
-            }
-        }
-    });
-}
-
-/* Marks ALL feeds as read.
- * callback will be executed after this method will be completed
- */
-function markAllAsRead(callback){
-    apiRequestWrapper("markers", {
-        body: {
-            action: "markAsRead",
-            type: "categories",
-            categoryIds: [appGlobal.globalGroup],
-            asOf: new Date().getTime()
-        },
-        method: "POST",
-        onComplete: function () {
-            if(typeof callback === "function"){
-                callback();
             }
         }
     });

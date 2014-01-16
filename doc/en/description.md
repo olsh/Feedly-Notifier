@@ -14,15 +14,6 @@ Feedly notifier is a tiny extension that keeps you up to date with your feedly s
 - desktop notifications
 - background mode
 
-**Shortcuts**
-
-Open popup/site (ctrl + shift + F)
-Update feeds (ctrl + shift + U)
-Hide notifications (ctrl + shift + H)
-Mark as read (globally) (not defined, user need to manually set it to use)
-
-All shortcuts can be changed from the chrome://extensions page
-
 **Changelog**
 
 http://olsh.github.io/Feedly-Notifier/

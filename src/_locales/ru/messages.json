@@ -35,9 +35,6 @@
     "General": {
         "message": "Общие"
     },
-    "HideNotifications": {
-        "message": "Скрыть уведомления"
-    },
     "HideNotificationsAfter": {
         "message": "Скрывать уведомления после (сек.), 0 - не скрывать"
     },
@@ -52,9 +49,6 @@
     },
     "MarkAllAsRead": {
         "message": "Пометить все как прочитанное"
-    },
-    "MarkAllAsReadGlobal": {
-        "message": "Пометить все как прочитанное (глобально)"
     },
     "MarkAsRead": {
         "message": "Пометить как прочитанное"
@@ -112,9 +106,6 @@
     },
     "ShowFullFeedContent": {
         "message": "Показывать полное содержание статьи при раскрытии новости (если возможно)"
-    },
-    "UpdateFeeds": {
-        "message": "Обновить новости"
     },
     "UpdateFollowingCategories": {
         "message": "Обновлять только следующие категории"

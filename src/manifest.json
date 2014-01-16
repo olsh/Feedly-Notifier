@@ -3,7 +3,7 @@
 
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "default_locale": "en",
 
@@ -32,27 +32,5 @@
     "web_accessible_resources": [
         "/images/icon128.png"
     ],
-    "commands": {
-        "_execute_browser_action": {
-            "suggested_key": {
-                "windows": "Ctrl+Shift+F"
-            }
-        },
-        "update": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+U"
-            },
-            "description": "__MSG_UpdateFeeds__"
-        },
-        "hide_notifications": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+H"
-            },
-            "description": "__MSG_HideNotifications__"
-        },
-        "mark_all_as_read": {
-            "description": "__MSG_MarkAllAsReadGlobal__"
-        }
-    },
-    "minimum_chrome_version": "25"
+    "minimum_chrome_version": "22"
 }
