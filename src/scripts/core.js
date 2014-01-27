@@ -366,7 +366,7 @@ function updateCounter() {
 function updateFeeds(callback, silentUpdate){
     appGlobal.cachedFeeds = [];
 
-    var streamIds = appGlobal.options.isFiltersEnabled ? appGlobal.options.filters : [appGlobal.globalGroup];
+    var streamIds = appGlobal.options.isFiltersEnabled && appGlobal.options.filters ? appGlobal.options.filters : [appGlobal.globalGroup];
 
     var requestCount = streamIds.length;
     for(var i = 0; i < streamIds.length; i++){
