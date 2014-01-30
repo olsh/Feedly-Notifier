@@ -1,3 +1,3 @@
 
-var firstLocationPart = location.pathname.match(/(\/[^/]+)/)[1];
-$(".nav > li").children("a[href^='" + firstLocationPart +"']").parent().addClass("active");
+var match = location.pathname.match(/\/[^/]+(\/[^/]+)/);
+$(".nav > li").children("a[href^='" + match ? match[1] : "" +"']").parent().addClass("active");

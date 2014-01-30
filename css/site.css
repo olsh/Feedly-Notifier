@@ -1,10 +1,5 @@
-@font-face {
-    font-family: 'Open Sans Condensed';
-    src: url(opensanscondensed.woff) format('woff');
-}
-
 header, h1, h2, h3 {
-    font-family: 'Open Sans Condensed', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .feedly-logo {

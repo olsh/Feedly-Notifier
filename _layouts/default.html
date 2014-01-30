@@ -4,21 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedly Notifier - {{page.title}}</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="/css/site.css"/>
+    <link rel="stylesheet" href="{{site.url}}/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{site.url}}/css/bootstrap-theme.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{site.url}}/css/site.css"/>
 </head>
 <body>
 <header class="container">
     <div class="row">
         <div class="col-md-4">
-            <a href="/"><img src="/images/feedly-notifier-logo-small.png" class="feedly-logo"></a>
+            <a href="{{site.url}}/"><img src="{{site.url}}/images/feedly-notifier-logo-small.png" class="feedly-logo"></a>
         </div>
         <div class="col-md-8">
             <h2>Feedly Notifier</h2>
 
             <h3>Browser extension for reading news from rss aggregator Feedly</h3>
-            <a class="rss-header" href="/feed.xml"><img src="/images/rss.png" alt="RSS"/></a>
+            <a class="rss-header" href="{{site.url}}/feed.xml"><img src="/images/rss.png" alt="RSS"/></a>
         </div>
     </div>
     <div class="row">
@@ -35,14 +36,14 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="/">Main</a></li>
-                        <li><a href="/features/">Features</a></li>
+                        <li><a href="{{site.url}}/">Main</a></li>
+                        <li><a href="{{site.url}}/features/">Features</a></li>
                         <li class="dropdown">
                             <a href="/changelog/" class="dropdown-toggle" data-toggle="dropdown">Changelog <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/changelog/chrome/">Chrome</a></li>
-                                <li><a href="/changelog/firefox/">Firefox</a></li>
-                                <li><a href="/changelog/opera/">Opera</a></li>
+                                <li><a href="{{site.url}}/changelog/chrome/">Chrome</a></li>
+                                <li><a href="{{site.url}}/changelog/firefox/">Firefox</a></li>
+                                <li><a href="{{site.url}}/changelog/opera/">Opera</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -77,8 +78,8 @@
 </section>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/core.js"></script>
+<script src="{{site.url}}/js/bootstrap.min.js"></script>
+<script src="{{site.url}}/js/core.js"></script>
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
