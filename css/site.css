@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Open Sans Condensed';
+    src: url(opensanscondensed.woff) format('woff');
+}
+
+header, h1, h2, h3 {
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.feedly-logo {
+    border: 1px solid #808080;
+    border-radius: 5px;
+    margin: 20px;
+}
+
+.rss-header{
+    float: right;
+}
