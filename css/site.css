@@ -11,3 +11,11 @@ header, h1, h2, h3 {
 .rss-header{
     float: right;
 }
+
+.main-content {
+    padding: 20px;
+}
+
+.carousel-row {
+    margin: 50px 0;
+}

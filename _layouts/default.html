@@ -3,7 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Feedly Notifier" />
+    <meta property="og:description" content="Browser extension for reading news from rss aggregator Feedly" />
+    <meta property="og:image" content="{{site.url}}/images/feedlylogo.jpg" />
+
     <title>Feedly Notifier - {{page.title}}</title>
+
+    <link rel="icon" href="{{site.url}}/images/favicon.png" type="image/png" />
     <link rel="stylesheet" href="{{site.url}}/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="{{site.url}}/css/bootstrap-theme.min.css"/>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:700' rel='stylesheet' type='text/css'>
@@ -64,7 +71,11 @@
 
 <section class="container">
     <div class="row">
-        <div class="col-md-10">{{content}}</div>
+        <div class="col-md-10">
+            <div class="main-content">
+                {{content}}
+            </div>
+        </div>
         <div class="col-md-2">
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                 <input type="hidden" name="cmd" value="_s-xclick">
