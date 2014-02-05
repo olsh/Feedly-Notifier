@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Feedly Notifier for Opera"
+title:  "Feedly Notifier for Safari"
 date:   2014-02-06 00:29:00
 categories: site
 ---
