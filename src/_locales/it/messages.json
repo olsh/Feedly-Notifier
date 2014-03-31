@@ -77,6 +77,9 @@
     "OldestFeedsFirst": {
         "message": "Mostra prima i feed più vecchi"
     },
+    "OpenAllFeeds": {
+        "message": "Apri tutti i feed"
+    },
     "OpenSiteOnIconClick": {
         "message": "Apri il sito di Feedly con un clic sull'icona (non visualizza il popup)"
     },

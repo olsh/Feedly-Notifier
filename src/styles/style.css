@@ -38,8 +38,14 @@
     margin-right: 5px;
 }
 
+.icon-share {
+    background-position: -120px -72px;
+    margin-right: 5px;
+}
+
 .icon-refresh {
     background-position: -240px -24px;
+    margin-right: 5px;
 }
 
 .mark-read:hover {
@@ -58,7 +64,7 @@
     background-position: -14px 0;
 }
 
-#login, #popup-content, #all-read-section {
+#login, #popup-content, #popup-actions {
     display: none;
 }
 
@@ -151,6 +157,7 @@
     top: 0;
     left: 0;
     right: 0;
+    height: 100px;
 }
 
 .tabs #feedly {
@@ -173,33 +180,50 @@
 #feed,
 #feed-saved,
 #feed-empty {
-    margin-top: 40px;
+    margin-top: 80px;
 }
 
 .tabs #feed,
 .tabs #feed-saved,
 .tabs #feed-empty {
-    margin-top: 80px;
+    margin-top: 120px;
+}
+
+#tabs-container {
+    position: absolute;
+    bottom: 0;
 }
 
 #website,
-#mark-all-read {
+#popup-actions {
     font-family: sans-serif;
     font-size: 11px;
     text-decoration: none;
     color: black;
 }
 
-#mark-all-read {
-    cursor: pointer;
+#website:hover {
+    color: #6cc655;
 }
 
 #feedly-section {
     float: left;
 }
 
-#all-read-section {
+#popup-actions {
     float: right;
+}
+
+#popup-actions > div {
+    margin-bottom: 5px;
+}
+
+#popup-actions span {
+    cursor: pointer;
+}
+
+#popup-actions span:hover {
+    color: #6cc655;
 }
 
 .title {

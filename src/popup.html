@@ -12,13 +12,25 @@
         <div id="feedly-section">
         <img src="/images/icon.png"><a href="#" id="website"></a>
         </div>
-        <div id="all-read-section">
-            <span id="update-feeds"><i class="icon-refresh"></i></span>
-            <i class="icon-ok"></i><span id="mark-all-read"></span>
+        <div id="popup-actions">
+            <div>
+                <i class="icon-refresh"></i>
+                <span id="update-feeds"></span>
+            </div>
+            <div>
+                <i class="icon-ok"></i>
+                <span id="mark-all-read"></span>
+            </div>
+            <div>
+                <i class="icon-share"></i>
+                <span id="open-all-news"></span>
+            </div>
         </div>
         <div class="clear"></div>
-        <button id="btn-feeds" class="tab active-tab">Feeds</button>
-        <button id="btn-feeds-saved" class="tab">Saved</button>
+        <div id="tabs-container">
+            <button id="btn-feeds" class="tab active-tab">Feeds</button>
+            <button id="btn-feeds-saved" class="tab">Saved</button>
+        </div>
     </div>
     <div id="feed"></div>
     <div id="feed-saved"></div>

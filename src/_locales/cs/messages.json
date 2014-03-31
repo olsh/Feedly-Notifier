@@ -83,6 +83,9 @@
     "OldestFeedsFirst": {
         "message": "Starší zdroje první"
     },
+    "OpenAllFeeds": {
+        "message": "Open all feeds"
+    },
     "OpenSiteOnIconClick": {
         "message": "Otevřít Feedly po kliknutí na ikonu (neukazovat vyjížděcí okno)"
     },

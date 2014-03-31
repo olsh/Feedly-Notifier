@@ -77,6 +77,9 @@
     "OldestFeedsFirst": {
         "message": "Oldest feeds first"
     },
+    "OpenAllFeeds": {
+        "message": "Open all feeds"
+    },
     "OpenSiteOnIconClick": {
         "message": "Open Feedly site on icon click (don't show popup)"
     },
@@ -106,6 +109,9 @@
     },
     "ShowFullFeedContent": {
         "message": "Show full content of article in the expanded feed (if possible)"
+    },
+    "UpdateFeeds": {
+        "message": "Update"
     },
     "UpdateFollowingCategories": {
         "message": "Update only following categories"

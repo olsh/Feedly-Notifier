@@ -12,6 +12,8 @@ $(document).ready(function () {
     $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
     $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
     $("#mark-all-read").text(chrome.i18n.getMessage("MarkAllAsRead"));
+    $("#update-feeds").text(chrome.i18n.getMessage("UpdateFeeds"));
+    $("#open-all-news").text(chrome.i18n.getMessage("OpenAllFeeds"));
 
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
@@ -37,20 +39,24 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
     var link = $(this);
     if (event.which === 1 || event.which === 2) {
         var isActiveTab = !(event.ctrlKey || event.which === 2);
-        chrome.tabs.create({url: link.data("link"), active: isActiveTab }, function (feedTab) {
-            if (popupGlobal.backgroundPage.appGlobal.options.markReadOnClick === true && link.hasClass("title") === true && $("#feed").is(":visible")) {
+        chrome.tabs.create({url: link.data("link"), active: isActiveTab }, function () {
+            if (popupGlobal.backgroundPage.appGlobal.options.markReadOnClick && link.hasClass("title") && $("#feed").is(":visible")) {
                 markAsRead([link.closest(".item").data("id")]);
             }
         });
     }
 });
 
-$("#popup-content").on("click", "#mark-all-read", function (event) {
-    var feedIds = [];
-    $(".item:visible").each(function (key, value) {
-        feedIds.push($(value).data("id"));
+$("#popup-content").on("click", "#mark-all-read", markAllAsRead);
+
+$("#popup-content").on("click", "#open-all-news", function () {
+    $("#feed").find("a.title[data-link]").filter(":visible").each(function (key, value) {
+        var news = $(value);
+        chrome.tabs.create({url: news.data("link"), active: false }, function () {});
     });
-    markAsRead(feedIds);
+    if (popupGlobal.backgroundPage.appGlobal.options.markReadOnClick) {
+        markAllAsRead();
+    }
 });
 
 $("#feed").on("click", ".mark-read", function (event) {
@@ -204,11 +210,19 @@ function markAsRead(feedIds) {
     if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
         showLoader();
     }
-    popupGlobal.backgroundPage.markAsRead(feedIds, function (isLoggedIn) {
+    popupGlobal.backgroundPage.markAsRead(feedIds, function () {
         if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
             renderFeeds();
         }
     });
+}
+
+function markAllAsRead() {
+    var feedIds = [];
+    $(".item:visible").each(function (key, value) {
+        feedIds.push($(value).data("id"));
+    });
+    markAsRead(feedIds);
 }
 
 function renderCategories(container, feeds){
@@ -245,7 +259,7 @@ function showLogin() {
 function showEmptyContent() {
     $("body").children("div").hide();
     $("#popup-content").show().children("div").hide().filter("#feed-empty").text(chrome.i18n.getMessage("NoUnreadArticles")).show();
-    $("#feedly").show().find("#all-read-section").hide();
+    $("#feedly").show().find("#popup-actions").hide();
 }
 
 function showFeeds() {
@@ -254,7 +268,7 @@ function showFeeds() {
     }
     $("body").children("div").hide();
     $("#popup-content").show().children("div").hide().filter("#feed").show();
-    $("#feedly").show().find("#all-read-section").show().children().show();
+    $("#feedly").show().find("#popup-actions").show().children().show();
     $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
     $(".show-content").attr("title", chrome.i18n.getMessage("More"));
 }
@@ -263,7 +277,7 @@ function showSavedFeeds() {
     $("body").children("div").hide();
     $("#popup-content").show().children("div").hide().filter("#feed-saved").show().find(".mark-read").hide();
     $("#feed-saved").find(".show-content").attr("title", chrome.i18n.getMessage("More"));
-    $("#feedly").show().find("#all-read-section").children().hide().filter("#update-feeds").show();
+    $("#feedly").show().find("#popup-actions").children().hide().first().show();
 }
 
 function setPopupExpand(isExpand){
