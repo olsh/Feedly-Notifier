@@ -146,6 +146,13 @@ $("#popup-content").on("click", ".categories > span", function (){
     }
 });
 
+$("#feedly").on("click", "#feedly-logo", function (event) {
+    if (event.ctrlKey) {
+        popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds = !popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds;
+        location.reload();
+    }
+});
+
 function renderFeeds(forceUpdate) {
     showLoader();
     popupGlobal.backgroundPage.getFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds || forceUpdate, function (feeds, isLoggedIn) {

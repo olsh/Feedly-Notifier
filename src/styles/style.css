@@ -157,18 +157,17 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 100px;
 }
 
 .tabs #feedly {
     border-bottom: 1px solid #6cc655;
 }
 
-#feedly > button {
+#tabs-container {
     display: none;
 }
 
-.tabs #feedly > button {
+.tabs #tabs-container {
     display: inline;
 }
 
@@ -178,20 +177,21 @@
 }
 
 #feed,
-#feed-saved,
-#feed-empty {
+#feed-saved {
     margin-top: 80px;
 }
 
-.tabs #feed,
-.tabs #feed-saved,
-.tabs #feed-empty {
-    margin-top: 120px;
+#feed-empty {
+    margin-top: 40px;
 }
 
-#tabs-container {
-    position: absolute;
-    bottom: 0;
+.tabs #feed,
+.tabs #feed-saved {
+    margin-top: 100px;
+}
+
+.tabs #feed-empty {
+    margin-top: 80px;
 }
 
 #website,
@@ -212,6 +212,8 @@
 
 #popup-actions {
     float: right;
+    height: 40px;
+    padding-right: 5px;
 }
 
 #popup-actions > div {
