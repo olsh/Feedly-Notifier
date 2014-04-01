@@ -284,7 +284,7 @@ function showSavedFeeds() {
     $("body").children("div").hide();
     $("#popup-content").show().children("div").hide().filter("#feed-saved").show().find(".mark-read").hide();
     $("#feed-saved").find(".show-content").attr("title", chrome.i18n.getMessage("More"));
-    $("#feedly").show().find("#popup-actions").children().hide().first().show();
+    $("#feedly").show().find("#popup-actions").show().children().hide().first().show();
 }
 
 function setPopupExpand(isExpand){
