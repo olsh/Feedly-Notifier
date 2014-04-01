@@ -34,17 +34,17 @@
 }
 
 .icon-ok {
-    background-position: -288px 0;
+    background-position: -285px 2px;
     margin-right: 5px;
 }
 
 .icon-share {
-    background-position: -120px -72px;
+    background-position: -117px -69px;
     margin-right: 5px;
 }
 
 .icon-refresh {
-    background-position: -240px -24px;
+    background-position: -237px -21px;
     margin-right: 5px;
 }
 
@@ -176,21 +176,31 @@
     vertical-align: bottom;
 }
 
-#feed {
-    margin-top: 80px;
+#feed{
+    margin-top: 65px;
 }
 
-#feed-empty {
+#feed-empty{
     margin-top: 40px;
 }
 
 .tabs #feed,
-.tabs #feed-saved {
-    margin-top: 110px;
+.tabs #feed-saved,
+.tabs #feed-empty
+{
+    margin-top: 90px;
 }
 
-.tabs #feed-empty {
-    margin-top: 80px;
+.arrow-up {
+    display: none;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid #6cc655;
+    position: absolute;
+    top: 36px;
+    right: 1px
 }
 
 #website,
@@ -199,6 +209,35 @@
     font-size: 11px;
     text-decoration: none;
     color: black;
+}
+
+#popup-actions > i > span {
+    display: none;
+}
+
+#popup-actions > i {
+    cursor: pointer;
+    border: 1px solid #6cc655;
+    border-radius: 3px;
+    padding: 3px;
+}
+
+#popup-actions > i:hover{
+    background-color: #eaeaea;
+}
+
+#popup-actions > i:hover > span {
+    display: inline-block;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    border-top: 1px solid #6cc655;
+    min-width: 100px;
+    text-align: right;
+}
+
+#popup-actions > i:hover > div {
+    display: inline-block;
 }
 
 #website:hover {
@@ -211,7 +250,7 @@
 
 #popup-actions {
     float: right;
-    height: 50px;
+    height: 37px;
     padding-right: 5px;
 }
 

@@ -11,9 +11,9 @@ var popupGlobal = {
 $(document).ready(function () {
     $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
     $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
-    $("#mark-all-read").text(chrome.i18n.getMessage("MarkAllAsRead"));
-    $("#update-feeds").text(chrome.i18n.getMessage("UpdateFeeds"));
-    $("#open-all-news").text(chrome.i18n.getMessage("OpenAllFeeds"));
+    $("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
+    $("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
+    $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
 
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
