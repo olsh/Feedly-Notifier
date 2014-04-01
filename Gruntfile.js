@@ -41,7 +41,7 @@ module.exports = function (grunt) {
             },
             sandboxLink: {
                 files: {
-                    "<%= pkg.buildPath %>/popup.html": "<%= pkg.buildPath %>/popup.html"
+                    "<%= pkg.buildPath %>/scripts/core.js": "<%= pkg.buildPath %>/scripts/core.js"
                 },
                 options: {
                     replacements: [
