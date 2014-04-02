@@ -110,6 +110,9 @@
     "ShowFullFeedContent": {
         "message": "Показывать полное содержание статьи при раскрытии новости (если возможно)"
     },
+    "UpdateFeeds": {
+        "message": "Обновить"
+    },
     "UpdateFollowingCategories": {
         "message": "Обновлять только следующие категории"
     },

@@ -110,6 +110,9 @@
     "ShowFullFeedContent": {
         "message": "Afficher le contenu complet dans la vue développé (quand c'est possible)"
     },
+    "UpdateFeeds": {
+        "message": "Update"
+    },
     "UpdateFollowingCategories": {
         "message": "Mettre à jour uniquement ces catégories"
     },

@@ -110,6 +110,9 @@
     "ShowFullFeedContent": {
         "message": "Mostra il contenuto completo dell'articolo quando si espande un feed (se possibile)"
     },
+    "UpdateFeeds": {
+        "message": "Update"
+    },
     "UpdateFollowingCategories": {
         "message": "Aggiorna solo le seguenti categorie"
     },
