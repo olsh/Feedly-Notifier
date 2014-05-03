@@ -15,7 +15,7 @@
         "message": "Email"
     },
     "EnableBackgroundMode": {
-        "message": "Enable background mode"
+        "message": "Povolit background mód"
     },
     "ExtensionDescription": {
         "message": "Rozšíření pro Feddly"
@@ -36,7 +36,7 @@
         "message": "Základní"
     },
     "HideNotifications": {
-        "message": "Hide notifications"
+        "message": "Skrýt upozornění"
     },
     "HideNotificationsAfter": {
         "message": "Skrýt oznámení po (sekundy), 0 - neskrývat"
@@ -84,7 +84,7 @@
         "message": "Starší zdroje první"
     },
     "OpenAllFeeds": {
-        "message": "Open all feeds"
+        "message": "Otevřít vše"
     },
     "OpenSiteOnIconClick": {
         "message": "Otevřít Feedly po kliknutí na ikonu (neukazovat vyjížděcí okno)"
@@ -96,10 +96,10 @@
         "message": "Vyjížděcí okno"
     },
     "PopupFontSize": {
-        "message": "Popup font size in percent"
+        "message": "Velikost písma v pop-upu"
     },
     "ResetCounterOnClick": {
-        "message": "Reset counter when extension button clicked"
+        "message": "Vynulovat počitadlo po otevření"
     },
     "Save": {
         "message": "Uložit"
@@ -108,7 +108,7 @@
         "message": "Ukázat počitadlo"
     },
     "ShowCategories": {
-        "message": "Show categories in popup"
+        "message": "Zobrazit kategorie"
     },
     "ShowDesktopNotifications": {
         "message": "Zobrazit oznámení"
@@ -117,7 +117,7 @@
         "message": "Zobrazit celý obsah článku v pohledu zdroje (pokud je to možné)"
     },
     "UpdateFeeds": {
-        "message": "Update feeds"
+        "message": "Aktualizovat"
     },
     "UpdateFollowingCategories": {
         "message": "Aktualizovat pouze následující kategorie"
