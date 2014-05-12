@@ -149,27 +149,29 @@ function sendDesktopNotification(feeds) {
     if (feeds.length > appGlobal.options.maxNotificationsCount) {
         //We can detect only limit count of new feeds at time, but actually count of feeds may be more
         var count = feeds.length === appGlobal.options.maxNumberOfFeeds ? chrome.i18n.getMessage("many") : feeds.length.toString();
-        var notification = window.webkitNotifications.createNotification(
-            appGlobal.icons.defaultBig, chrome.i18n.getMessage("NewFeeds"), chrome.i18n.getMessage("YouHaveNewFeeds", count));
-        notification.show();
+        var notification = new Notification(chrome.i18n.getMessage("NewFeeds"), {
+                body: chrome.i18n.getMessage("YouHaveNewFeeds", count),
+                icon: appGlobal.icons.defaultBig
+            });
         notifications.push(notification);
     } else {
         for (var i = 0; i < feeds.length; i++) {
-            var notification = window.webkitNotifications.createNotification(
-                feeds[i].blogIcon, feeds[i].blog, feeds[i].title);
+            notification = new Notification(feeds[i].blog,{
+                body: feeds[i].title,
+                icon: feeds[i].blogIcon
+            });
 
             //Open new tab on click and close notification
             notification.url = feeds[i].url;
             notification.feedId = feeds[i].id;
             notification.onclick = function (e) {
                 var target = e.target;
-                target.cancel();
+                target.close();
                 openUrlInNewTab(target.url, true);
                 if (appGlobal.options.markReadOnClick) {
                     markAsRead([target.feedId]);
                 }
             };
-            notification.show();
             notifications.push(notification);
         }
     }
@@ -178,7 +180,7 @@ function sendDesktopNotification(feeds) {
     if (appGlobal.options.hideNotificationDelay > 0) {
         setTimeout(function () {
             for (i = 0; i < notifications.length; i++) {
-                notifications[i].cancel();
+                notifications[i].close();
             }
         }, appGlobal.options.hideNotificationDelay * 1000);
     }
