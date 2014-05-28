@@ -35,6 +35,7 @@ var FeedlyApiClient = function (accessToken) {
         }
 
         var request = new XMLHttpRequest();
+        request.timeout = 5000;
         request.open(verb, url, true);
 
         if (this.accessToken) {

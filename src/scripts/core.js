@@ -411,12 +411,9 @@ function updateFeeds(callback, silentUpdate){
                             sendDesktopNotification(newFeeds);
                         }
                     });
-                    if (typeof callback === "function") {
-                        callback();
-                    }
                 }
             },
-            onAuthorizationRequired: function () {
+            onComplete: function(){
                 if (typeof callback === "function") {
                     callback();
                 }
@@ -760,7 +757,7 @@ function apiRequestWrapper(methodName, settings) {
         if (typeof onSuccess === "function") {
             onSuccess(response);
         }
-    }
+    };
 
     var onAuthorizationRequired = settings.onAuthorizationRequired;
 
@@ -775,7 +772,7 @@ function apiRequestWrapper(methodName, settings) {
         if (typeof onAuthorizationRequired === "function") {
             onAuthorizationRequired(accessToken);
         }
-    }
+    };
 
     appGlobal.feedlyApiClient.request(methodName, settings);
 }
