@@ -35,7 +35,9 @@ var FeedlyApiClient = function (accessToken) {
         }
 
         var request = new XMLHttpRequest();
-        request.timeout = 5000;
+        if (settings.timeout){
+            request.timeout = settings.timeout;
+        }
         request.open(verb, url, true);
 
         if (this.accessToken) {
@@ -68,6 +70,12 @@ var FeedlyApiClient = function (accessToken) {
 
             if (typeof settings.onComplete === "function"){
                 settings.onComplete(json);
+            }
+        };
+
+        request.ontimeout = function (e) {
+            if (typeof settings.onComplete === "function"){
+                settings.onComplete(e);
             }
         };
 

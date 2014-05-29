@@ -374,6 +374,7 @@ function updateFeeds(callback, silentUpdate){
     var requestCount = streamIds.length;
     for(var i = 0; i < streamIds.length; i++){
         apiRequestWrapper("streams/" + encodeURIComponent(streamIds[i]) + "/contents", {
+            timeout: 7000, // Prevent infinite loading
             parameters: {
                 unreadOnly: true,
                 count: appGlobal.options.maxNumberOfFeeds,
@@ -545,6 +546,7 @@ function getFeeds(forceUpdate, callback) {
         updateFeeds(function () {
             callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
         }, true);
+        updateCounter();
     }
 }
 
