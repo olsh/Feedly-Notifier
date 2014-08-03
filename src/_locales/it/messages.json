@@ -18,10 +18,10 @@
         "message": "Enable background mode"
     },
     "ExpandedPopupWidth": {
-        "message": "Expanded popup width"
+        "message": "Larghezza del popup espanso"
     },
     "ExpandFeeds": {
-        "message": "Expand all feeds when popup is opened"
+        "message": "Espandi tutti i feed quando il popup è aperto"
     },
     "ExtensionDescription": {
         "message": "Estensione per Feedly news reader"
@@ -87,10 +87,10 @@
         "message": "Apri tutti i feed"
     },
     "OpenFeedsInBackground": {
-        "message": "Open feeds in background tab"
+        "message": "Apri i feed in una scheda in sottofondo"
     },
     "OpenFeedsInSameTab": {
-        "message": "Open feeds in the same tab"
+        "message": "Apri i feed nella stessa scheda"
     },
     "OpenSiteOnIconClick": {
         "message": "Apri il sito di Feedly con un clic sull'icona (non visualizza il popup)"
@@ -102,13 +102,13 @@
         "message": "Popup"
     },
     "PopupFontSize": {
-        "message": "Popup font size in percent"
+        "message": "Altezza font del popup in percentuale"
     },
     "PopupWidth": {
-        "message": "Popup width"
+        "message": "Larghezza del popup"
     },
     "ResetCounterOnClick": {
-        "message": "Reset counter when extension button clicked"
+        "message": "Azzera il contatore quando si fa clic sul pulsante di Feedly Notifier"
     },
     "Save": {
         "message": "Salva"
