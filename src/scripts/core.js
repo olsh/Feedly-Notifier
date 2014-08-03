@@ -529,7 +529,8 @@ function parseFeeds(feedlyResponse) {
             isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
             date: item.crawled ? new Date(item.crawled) : "",
             isSaved: isSaved,
-            categories: categories
+            categories: categories,
+            author: item.author
         };
     });
     return feeds;

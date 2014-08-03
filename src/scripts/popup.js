@@ -82,22 +82,19 @@ $("#popup-content").on("click", ".show-content", function () {
     var contentContainer = feed.find(".content");
     var feedId = feed.data("id");
     if (contentContainer.html() === "") {
-        var content;
         var feeds = $("#feed").is(":visible") ? popupGlobal.feeds : popupGlobal.savedFeeds;
 
         for (var i = 0; i < feeds.length; i++) {
             if (feeds[i].id === feedId) {
-                content = feeds[i].content
+                contentContainer.html($("#feed-content").mustache(feeds[i]));
+
+                //For open new tab without closing popup
+                contentContainer.find("a").each(function (key, value) {
+                    var link = $(value);
+                    link.data("link", link.attr("href"));
+                    link.attr("href", "javascript:void(0)");
+                });
             }
-        }
-        if (content) {
-            contentContainer.html(content);
-            //For open new tab without closing popup
-            contentContainer.find("a").each(function (key, value) {
-                var link = $(value);
-                link.data("link", link.attr("href"));
-                link.attr("href", "javascript:void(0)");
-            });
         }
     }
     contentContainer.slideToggle(function () {

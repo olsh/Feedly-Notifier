@@ -51,7 +51,7 @@
             <a data-link="{{blogUrl}}" href="javascript:void(0)">{{blog}}</a>,
             <span class="timeago" title="{{isoDate}}"></span>
         </div>
-        <div class="content {{contentDirection}}"></div>
+        <div class="content"></div>
     </div>
     {{/feeds}}
 </script>
@@ -61,6 +61,12 @@
         {{#categories}}
         <span data-id="{{encodedId}}">{{label}}</span>
         {{/categories}}
+    </div>
+</script>
+<script type="text/x-handlebars-template" id="feed-content">
+    <div class="{{contentDirection}}">
+        <em class="author">{{author}}</em>
+        {{{content}}}
     </div>
 </script>
 <script src="scripts/timeago/jquery.timeago.js"></script>

@@ -110,6 +110,17 @@
     height: auto !important;
 }
 
+.content .author {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.content:after {
+    content:"";
+    display:table;
+    clear:both;
+}
+
 .rtl {
     direction: rtl;
     text-align: right;
