@@ -39,11 +39,28 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
     var link = $(this);
     if (event.which === 1 || event.which === 2) {
         var isActiveTab = !(event.ctrlKey || event.which === 2);
-        chrome.tabs.create({url: link.data("link"), active: isActiveTab }, function () {
-            if (popupGlobal.backgroundPage.appGlobal.options.markReadOnClick && link.hasClass("title") && $("#feed").is(":visible")) {
+        var isFeed = link.hasClass("title") && $("#feed").is(":visible");
+        var url = link.data("link");
+
+        if (isFeed && popupGlobal.backgroundPage.appGlobal.feedTab && popupGlobal.backgroundPage.appGlobal.options.openFeedsInSameTab) {
+            chrome.tabs.update(popupGlobal.backgroundPage.appGlobal.feedTab.id,{url: url}, function(tab) {
+                onOpenCallback(isFeed, tab);
+            })
+        } else {
+            chrome.tabs.create({url: url, active: isActiveTab }, function(tab) {
+                onOpenCallback(isFeed, tab);
+            });
+        }
+    }
+
+    function onOpenCallback(isFeed, tab) {
+        if (isFeed) {
+            popupGlobal.backgroundPage.appGlobal.feedTab = tab;
+
+            if (popupGlobal.backgroundPage.appGlobal.options.markReadOnClick) {
                 markAsRead([link.closest(".item").data("id")]);
             }
-        });
+        }
     }
 });
 

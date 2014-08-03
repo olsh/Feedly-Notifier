@@ -89,6 +89,9 @@
     "OpenAllFeeds": {
         "message": "Otevřít vše"
     },
+    "OpenFeedsInSameTab": {
+        "message": "Open feeds in the same tab"
+    },
     "OpenSiteOnIconClick": {
         "message": "Otevřít Feedly po kliknutí na ikonu (neukazovat vyjížděcí okno)"
     },

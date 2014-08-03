@@ -2,6 +2,7 @@
 
 var appGlobal = {
     feedlyApiClient: new FeedlyApiClient(),
+    feedTab: null,
     icons: {
         default: "/images/icon.png",
         inactive: "/images/icon_inactive.png",
@@ -24,6 +25,7 @@ var appGlobal = {
         useSecureConnection: true,
         expandFeeds: false,
         isFiltersEnabled: false,
+        openFeedsInSameTab: false,
         filters: [],
         showCounter: true,
         oldestFeedsFirst: false,
@@ -80,6 +82,12 @@ chrome.storage.onChanged.addListener(function (changes, areaName) {
         }
     }
     readOptions(callback);
+});
+
+chrome.tabs.onRemoved.addListener(function(tabId){
+    if (appGlobal.feedTab && appGlobal.feedTab.id == tabId) {
+        appGlobal.feedTab = null;
+    }
 });
 
 chrome.runtime.onStartup.addListener(function () {

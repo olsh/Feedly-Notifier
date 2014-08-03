@@ -83,6 +83,9 @@
     "OpenAllFeeds": {
         "message": "Открыть все новости"
     },
+    "OpenFeedsInSameTab": {
+        "message": "Открывать новости в одной вкладке"
+    },
     "OpenSiteOnIconClick": {
         "message": "Открывать сайт Feedly по нажатию на иконку (не показывать всплывающее окно)"
     },

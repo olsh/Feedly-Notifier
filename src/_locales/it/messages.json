@@ -83,6 +83,9 @@
     "OpenAllFeeds": {
         "message": "Apri tutti i feed"
     },
+    "OpenFeedsInSameTab": {
+        "message": "Open feeds in the same tab"
+    },
     "OpenSiteOnIconClick": {
         "message": "Apri il sito di Feedly con un clic sull'icona (non visualizza il popup)"
     },
