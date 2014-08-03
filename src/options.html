@@ -23,78 +23,78 @@
         <form id="options">
             <div class="options-section">
                 <h3 data-locale-value="General"></h3>
-                <span class="label" data-locale-value="IntervalPeriod"></span>:
-                <input type="number" min="10" max="120" data-option-name="updateInterval" /><br>
+                <label for="updateInterval" class="label" data-locale-value="IntervalPeriod"></label>:
+                <input id="updateInterval" type="number" min="10" max="120" data-option-name="updateInterval" /><br>
 
-                <span class="label" data-locale-value="AutoMarkRead"></span>
-                <input type="checkbox" data-option-name="markReadOnClick" /><br>
+                <label for="markReadOnClick" class="label" data-locale-value="AutoMarkRead"></label>
+                <input id="markReadOnClick" type="checkbox" data-option-name="markReadOnClick" /><br>
 
-                <span class="label" data-locale-value="ShowCounter"></span>
-                <input type="checkbox" data-option-name="showCounter" /><br>
+                <label for="showCounter" class="label" data-locale-value="ShowCounter"></label>
+                <input id="showCounter" type="checkbox" data-option-name="showCounter" /><br>
 
-                <span class="label" data-locale-value="ResetCounterOnClick"></span>
-                <input type="checkbox" data-enable-parent="showCounter" data-option-name="resetCounterOnClick" /><br>
+                <label for="resetCounterOnClick" class="label" data-locale-value="ResetCounterOnClick"></label>
+                <input id="resetCounterOnClick" type="checkbox" data-enable-parent="showCounter" data-option-name="resetCounterOnClick" /><br>
 
-                <span class="label" data-locale-value="UseSecureConnection"></span>
-                <input type="checkbox" data-option-name="useSecureConnection" /><br>
+                <label for="useSecureConnection" class="label" data-locale-value="UseSecureConnection"></label>
+                <input id="useSecureConnection" type="checkbox" data-option-name="useSecureConnection" /><br>
 
-                <span class="label" data-locale-value="EnableBackgroundMode"></span>
+                <label for="enable-background-mode" class="label" data-locale-value="EnableBackgroundMode"></label>
                 <input type="checkbox" id="enable-background-mode" />
 
                 <h3 data-locale-value="Popup"></h3>
-                <span class="label" data-locale-value="OpenSiteOnIconClick"></span>
-                <input type="checkbox" data-option-name="openSiteOnIconClick" /><br>
+                <label for="openSiteOnIconClick" class="label" data-locale-value="OpenSiteOnIconClick"></label>
+                <input id="openSiteOnIconClick" type="checkbox" data-option-name="openSiteOnIconClick" /><br>
 
-                <span class="label" data-locale-value="OpenFeedsInBackground"></span>
-                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="openFeedsInBackground" /><br>
+                <label for="openFeedsInBackground" class="label" data-locale-value="OpenFeedsInBackground"></label>
+                <input id="openFeedsInBackground" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="openFeedsInBackground" /><br>
 
-                <span class="label" data-locale-value="AbilitySaveFeeds"></span>
-                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="abilitySaveFeeds" /><br>
+                <label for="abilitySaveFeeds" class="label" data-locale-value="AbilitySaveFeeds"></label>
+                <input id="abilitySaveFeeds" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="abilitySaveFeeds" /><br>
 
-                <span class="label" data-locale-value="MaxNumberOfFeeds"></span>:
-                <input type="number" data-disable-parent="openSiteOnIconClick" min="1" max="60" data-option-name="maxNumberOfFeeds" /><br>
+                <label for="maxNumberOfFeeds" class="label" data-locale-value="MaxNumberOfFeeds"></label>:
+                <input id="maxNumberOfFeeds" type="number" data-disable-parent="openSiteOnIconClick" min="1" max="60" data-option-name="maxNumberOfFeeds" /><br>
 
-                <span class="label" data-locale-value="OldestFeedsFirst"></span>
-                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="oldestFeedsFirst" /><br>
+                <label for="oldestFeedsFirst" class="label" data-locale-value="OldestFeedsFirst"></label>
+                <input id="oldestFeedsFirst" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="oldestFeedsFirst" /><br>
 
-                <span class="label" data-locale-value="PopupFontSize"></span>
-                <input type="number" data-disable-parent="openSiteOnIconClick" min="70" max="150" data-option-name="popupFontSize" /><br>
+                <label for="popupFontSize" class="label" data-locale-value="PopupFontSize"></label>
+                <input id="popupFontSize" type="number" data-disable-parent="openSiteOnIconClick" min="70" max="150" data-option-name="popupFontSize" /><br>
 
-                <span class="label" data-locale-value="PopupWidth"></span>
-                <input type="number" data-disable-parent="openSiteOnIconClick" min="380" max="750" data-option-name="popupWidth" /><br>
+                <label for="popupWidth" class="label" data-locale-value="PopupWidth"></label>
+                <input id="popupWidth" type="number" data-disable-parent="openSiteOnIconClick" min="380" max="750" data-option-name="popupWidth" /><br>
 
-                <span class="label" data-locale-value="ExpandedPopupWidth"></span>
-                <input type="number" data-disable-parent="openSiteOnIconClick" min="380" max="750" data-option-name="expandedPopupWidth" /><br>
+                <label for="expandedPopupWidth" class="label" data-locale-value="ExpandedPopupWidth"></label>
+                <input id="expandedPopupWidth" type="number" data-disable-parent="openSiteOnIconClick" min="380" max="750" data-option-name="expandedPopupWidth" /><br>
 
-                <span class="label" data-locale-value="ShowFullFeedContent"></span>
-                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="showFullFeedContent" /><br>
+                <label for="showFullFeedContent" class="label" data-locale-value="ShowFullFeedContent"></label>
+                <input id="showFullFeedContent" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="showFullFeedContent" /><br>
 
-                <span class="label" data-locale-value="ShowCategories"></span>
-                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="showCategories" /><br>
+                <label for="showCategories" class="label" data-locale-value="ShowCategories"></label>
+                <input id="showCategories" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="showCategories" /><br>
 
-                <span class="label" data-locale-value="ForceUpdateFeeds"></span>
-                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="forceUpdateFeeds" /><br>
+                <label for="forceUpdateFeeds" class="label" data-locale-value="ForceUpdateFeeds"></label>
+                <input id="forceUpdateFeeds" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="forceUpdateFeeds" /><br>
 
-                <span class="label" data-locale-value="OpenFeedsInSameTab"></span>
-                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="openFeedsInSameTab" /><br>
+                <label for="openFeedsInSameTab" class="label" data-locale-value="OpenFeedsInSameTab"></label>
+                <input id="openFeedsInSameTab" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="openFeedsInSameTab" /><br>
 
-                <span class="label" data-locale-value="ExpandFeeds"></span>
-                <input type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="expandFeeds" /><br>
+                <label for="expandFeeds" class="label" data-locale-value="ExpandFeeds"></label>
+                <input id="expandFeeds" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="expandFeeds" /><br>
 
                 <h3 data-locale-value="Notifications"></h3>
-                <span class="label" data-locale-value="ShowDesktopNotifications"></span>
-                <input type="checkbox" data-option-name="showDesktopNotifications" /><br>
+                <label for="showDesktopNotifications" class="label" data-locale-value="ShowDesktopNotifications"></label>
+                <input id="showDesktopNotifications" type="checkbox" data-option-name="showDesktopNotifications" /><br>
 
-                <span class="label" data-locale-value="HideNotificationsAfter"></span>
-                <input type="number" data-enable-parent="showDesktopNotifications" min="0" max="3600" data-option-name="hideNotificationDelay" /><br>
+                <label for="hideNotificationDelay" class="label" data-locale-value="HideNotificationsAfter"></label>
+                <input id="hideNotificationDelay" type="number" data-enable-parent="showDesktopNotifications" min="0" max="3600" data-option-name="hideNotificationDelay" /><br>
 
-                <span class="label" data-locale-value="MaxNotificationsCount"></span>
-                <input type="number" data-enable-parent="showDesktopNotifications" min="1" max="100" data-option-name="maxNotificationsCount" />
+                <label for="maxNotificationsCount" class="label" data-locale-value="MaxNotificationsCount"></label>
+                <input id="maxNotificationsCount" type="number" data-enable-parent="showDesktopNotifications" min="1" max="100" data-option-name="maxNotificationsCount" />
 
                 <div id="filters-settings">
                     <h3 data-locale-value="Filters"></h3>
-                    <span class="label" data-locale-value="UpdateFollowingCategories"></span>
-                    <input type="checkbox" data-option-name="isFiltersEnabled" /><br>
+                    <label for="isFiltersEnabled" class="label" data-locale-value="UpdateFollowingCategories"></label>
+                    <input id="isFiltersEnabled" type="checkbox" data-option-name="isFiltersEnabled" /><br>
                     <fieldset data-enable-parent="isFiltersEnabled" id="categories">
                         <legend data-locale-value="Categories"></legend>
                     </fieldset>

@@ -1,22 +1,27 @@
 @font-face {
-    font-family: 'Open Sans Condensed';
-    src: url(opensanscondensed.woff) format('woff');
+    font-family: "Open Sans Condensed";
+
+    src: url(opensanscondensed.woff) format("woff");
 }
 
 .button {
-    background-color: #6cc655;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    font-size: 14px;
-    line-height: 17px;
-    padding: 5px 15px;
-    font-weight: bold;
-    color: #FFF;
     margin: 0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 1px rgba(255, 255, 255, 1);
-    text-decoration: none;
-    border-radius: 3px;
-    -webkit-appearance: none;
+    padding: 5px 15px;
+
     cursor: pointer;
+    text-decoration: none;
+
+    color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    background-color: #6cc655;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 1px rgba(255, 255, 255, 1);
+
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 17px;
+
+    -webkit-appearance: none;
 }
 
 .mark-read,
@@ -25,27 +30,34 @@
 [class^="icon-"],
 [class*=" icon-"] {
     display: inline-block;
+
     width: 14px;
     height: 14px;
     margin-top: 1px;
-    line-height: 14px;
+
     vertical-align: text-top;
+
     background: url("glyphicons-halflings.png") no-repeat -120px -120px;
+
+    line-height: 14px;
 }
 
 .icon-ok {
-    background-position: -285px 2px;
     margin-right: 5px;
+
+    background-position: -285px 2px;
 }
 
 .icon-share {
-    background-position: -117px -69px;
     margin-right: 5px;
+
+    background-position: -117px -69px;
 }
 
 .icon-refresh {
-    background-position: -237px -21px;
     margin-right: 5px;
+
+    background-position: -237px -21px;
 }
 
 .mark-read:hover {
@@ -64,7 +76,9 @@
     background-position: -14px 0;
 }
 
-#login, #popup-content, #popup-actions {
+#login,
+#popup-content,
+#popup-actions {
     display: none;
 }
 
@@ -74,7 +88,7 @@
 }
 
 .item:hover {
-    background-color: #F5F5F4;
+    background-color: #f5f5f4;
 }
 
 #feed .item:not(:last-child),
@@ -83,43 +97,51 @@
 }
 
 .item .content {
-    font-size: 1em;
     display: none;
-    border: 1px solid #6cc655;
-    padding: 5px;
+
     margin-top: 2px;
+    padding: 5px;
+
+    border: 1px solid #6cc655;
     border-radius: 3px;
     background-color: white;
+
+    font-size: 1em;
 }
 
 .content a:link {
-    color: #6cc655;
     text-decoration: none;
+
+    color: #6cc655;
 }
 
 .content a:hover {
     text-decoration: underline;
 }
 
-.content img, .content iframe {
+.content img,
+.content iframe {
     max-width: 100% !important;
     height: auto !important;
 }
 
 .content .author {
     display: block;
+
     margin-bottom: 3px;
 }
 
 .content:after {
-    content:"";
-    display:table;
-    clear:both;
+    display: table;
+    clear: both;
+
+    content: "";
 }
 
 .rtl {
-    direction: rtl;
     text-align: right;
+
+    direction: rtl;
 }
 
 .article-menu,
@@ -139,13 +161,15 @@
 
 .article-menu {
     vertical-align: top;
+
     font-size: 12px;
 }
 
 #feed-empty,
 .title {
+    color: #444444;
+
     font-family: "Open Sans Condensed", serif;
-    color: #444;
 }
 
 #feed-empty {
@@ -157,13 +181,15 @@
 }
 
 #feedly {
-    padding: 10px 0 0 0;
-    margin: 0 8px;
     position: fixed;
-    background-color: white;
     top: 0;
-    left: 0;
     right: 0;
+    left: 0;
+
+    margin: 0 8px;
+    padding: 10px 0 0 0;
+
+    background-color: white;
 }
 
 .tabs #feedly {
@@ -180,42 +206,47 @@
 
 #feedly img {
     margin-right: 5px;
+
     vertical-align: bottom;
 }
 
-#feed{
+#feed {
     margin-top: 65px;
 }
 
-#feed-empty{
+#feed-empty {
     margin-top: 40px;
 }
 
 .tabs #feed,
 .tabs #feed-saved,
-.tabs #feed-empty
-{
+.tabs #feed-empty {
     margin-top: 90px;
 }
 
 .arrow-up {
-    display: none;
-    width: 0;
-    height: 0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-bottom: 4px solid #6cc655;
     position: absolute;
     top: 36px;
-    right: 1px
+    right: 1px;
+
+    display: none;
+
+    width: 0;
+    height: 0;
+
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid #6cc655;
+    border-left: 4px solid transparent;
 }
 
 #website,
 #popup-actions {
+    text-decoration: none;
+
+    color: black;
+
     font-family: sans-serif;
     font-size: 11px;
-    text-decoration: none;
-    color: black;
 }
 
 #popup-actions > i > span {
@@ -223,24 +254,30 @@
 }
 
 #popup-actions > i {
+    padding: 3px;
+
     cursor: pointer;
+
     border: 1px solid #6cc655;
     border-radius: 3px;
-    padding: 3px;
 }
 
-#popup-actions > i:hover{
+#popup-actions > i:hover {
     background-color: #eaeaea;
 }
 
 #popup-actions > i:hover > span {
-    display: inline-block;
     position: absolute;
     top: 40px;
     right: 0;
-    border-top: 1px solid #6cc655;
+
+    display: inline-block;
+
     min-width: 100px;
+
     text-align: right;
+
+    border-top: 1px solid #6cc655;
 }
 
 #popup-actions > i:hover > div {
@@ -257,6 +294,7 @@
 
 #popup-actions {
     float: right;
+
     height: 37px;
     padding-right: 5px;
 }
@@ -274,13 +312,16 @@
 }
 
 .title {
-    font-size: 0.9em;
-    cursor: pointer;
     display: inline-block;
+
+    cursor: pointer;
+
+    font-size: 0.9em;
 }
 
 .blog-title {
     display: table-cell;
+
     color: gray;
 }
 
@@ -288,8 +329,10 @@
     vertical-align: middle;
 }
 
-.blog-title a, .blog-title span {
+.blog-title a,
+.blog-title span {
     color: gray;
+
     font-family: sans-serif;
     font-size: 0.7em;
 }
@@ -308,19 +351,23 @@
 }
 
 .tab {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    background-color: #eaeaea;
+    margin: 10px 0 0 0;
     padding: 5px 10px;
+
+    cursor: pointer;
+    text-decoration: none;
+
+    color: black;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-bottom: none;
     border-radius: 4px 4px 0 0;
-    margin: 10px 0 0 0;
+    background-color: #eaeaea;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 1px rgba(255, 255, 255, 1);
+
     font-size: 14px;
     line-height: 17px;
-    color: black;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 1px rgba(255, 255, 255, 1);
-    text-decoration: none;
+
     -webkit-appearance: none;
-    cursor: pointer;
 }
 
 .save-feed {
@@ -332,8 +379,8 @@
 }
 
 .active-tab {
-    background-color: #6cc655;
     color: white;
+    background-color: #6cc655;
 }
 
 .blog-icon {
@@ -347,15 +394,19 @@
 
 .categories > span {
     display: inline-block;
-    color: black;
-    cursor: pointer;
-    font-size: 1em;
+
     padding: 4px 8px;
+
+    cursor: pointer;
+
+    color: black;
+
     font-family: sans-serif;
+    font-size: 1em;
 }
 
 .categories > span.active {
-    background-color: #6ABA45;
+    color: #ffffff;
     border-radius: 4px;
-    color: #FFFFFF;
+    background-color: #6aba45;
 }

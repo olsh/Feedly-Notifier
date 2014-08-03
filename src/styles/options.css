@@ -1,57 +1,61 @@
 html,
-body{
+body {
     height: 100%;
     margin: 0;
 }
 
-body{
-    background-color: #eee;
-    color: #444;
+body {
+    color: #444444;
+    background-color: #eeeeee;
 }
 
-#container{
-    background-color: white;
+#container {
     width: 800px;
     margin: 0 auto;
+
+    background-color: white;
 }
 
-#header{
-    font-family: "Open Sans Condensed";
-    background-color: #6cc655;
+#header {
     padding: 15px;
+
+    background-color: #6cc655;
+
+    font-family: "Open Sans Condensed", serif;
     font-size: 20px;
 }
 
-h3{
-    font-family: "Open Sans Condensed";
-    font-size: 18px;
+h3 {
     margin: 0;
     padding: 0;
+
+    font-family: "Open Sans Condensed", serif;
+    font-size: 18px;
 }
 
-.label{
+.label {
     font-family: sans-serif;
     font-size: 15px;
 }
 
-.options-section{
+.options-section {
     margin-bottom: 10px;
 }
 
 #options,
 #donate,
 #userInfo {
-    padding:20px;
+    padding: 20px;
 }
 
 #donate {
     float: right;
 }
 
-#userInfo{
+#userInfo {
     display: none;
 }
 
-#categories{
+#categories {
     width: 50%;
 }

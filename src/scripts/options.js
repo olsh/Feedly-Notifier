@@ -81,8 +81,8 @@ function loadUserCategories(){
 
 function appendCategory(id, label){
     var categories = $("#categories");
-    var label = $("<span class='label' />").text(label);
-    var checkbox = $("<input type='checkbox' />").attr("data-id", id);
+    var label = $("<label for='" + id + "' class='label' />").text(label);
+    var checkbox = $("<input id='" + id + "' type='checkbox' />").attr("data-id", id);
     categories.append(label);
     categories.append(checkbox);
     categories.append("<br/>");
