@@ -10,6 +10,9 @@ var appGlobal = {
     },
     options: {
         _updateInterval: 10, //minutes
+        _popupWidth: 380,
+        _expandedPopupWidth: 650,
+
         markReadOnClick: true,
         accessToken: "",
         refreshToken: "",
@@ -26,18 +29,48 @@ var appGlobal = {
         expandFeeds: false,
         isFiltersEnabled: false,
         openFeedsInSameTab: false,
+        openFeedsInBackground: true,
         filters: [],
         showCounter: true,
         oldestFeedsFirst: false,
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
         showCategories: false,
+
         get updateInterval(){
             var minimumInterval = 10;
             return this._updateInterval >= minimumInterval ? this._updateInterval : minimumInterval;
         },
         set updateInterval(value) {
             return this._updateInterval = value;
+        },
+        get popupWidth() {
+            var maxValue = 750;
+            var minValue = 380;
+            if (this._popupWidth > maxValue ) {
+                return maxValue;
+            }
+            if (this._popupWidth < minValue){
+                return minValue;
+            }
+            return this._popupWidth;
+        },
+        set popupWidth(value) {
+            this._popupWidth = value;
+        },
+        get expandedPopupWidth() {
+            var maxValue = 750;
+            var minValue = 380;
+            if (this._expandedPopupWidth > maxValue ) {
+                return maxValue;
+            }
+            if (this._expandedPopupWidth < minValue){
+                return minValue;
+            }
+            return this._expandedPopupWidth;
+        },
+        set expandedPopupWidth(value) {
+            this._expandedPopupWidth = value;
         }
     },
     //Names of options after changes of which scheduler will be initialized

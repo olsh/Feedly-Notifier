@@ -32,5 +32,5 @@
     "web_accessible_resources": [
         "/images/icon128.png"
     ],
-    "minimum_chrome_version": "22"
+    "minimum_chrome_version": "26"
 }

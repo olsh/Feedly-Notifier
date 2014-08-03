@@ -17,6 +17,9 @@
     "EnableBackgroundMode": {
         "message": "Povolit background mód"
     },
+    "ExpandedPopupWidth": {
+        "message": "Expanded popup width"
+    },
     "ExpandFeeds": {
         "message": "Expand all feeds when popup is opened"
     },
@@ -89,6 +92,9 @@
     "OpenAllFeeds": {
         "message": "Otevřít vše"
     },
+    "OpenFeedsInBackground": {
+        "message": "Open feeds in background tab"
+    },
     "OpenFeedsInSameTab": {
         "message": "Open feeds in the same tab"
     },
@@ -103,6 +109,9 @@
     },
     "PopupFontSize": {
         "message": "Velikost písma v pop-upu"
+    },
+    "PopupWidth": {
+        "message": "Popup width"
     },
     "ResetCounterOnClick": {
         "message": "Vynulovat počitadlo po otevření"

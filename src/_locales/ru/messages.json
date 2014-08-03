@@ -17,6 +17,9 @@
     "EnableBackgroundMode": {
         "message": "Включить фоновый режим"
     },
+    "ExpandedPopupWidth": {
+        "message": "Ширина всплывающего окна в раскрытом режиме"
+    },
     "ExpandFeeds": {
         "message": "Раскрывать все новости при открытии всплывающего окна"
     },
@@ -83,6 +86,9 @@
     "OpenAllFeeds": {
         "message": "Открыть все новости"
     },
+    "OpenFeedsInBackground": {
+        "message": "Открывать новости в фоновой вкладке"
+    },
     "OpenFeedsInSameTab": {
         "message": "Открывать новости в одной вкладке"
     },
@@ -97,6 +103,9 @@
     },
     "PopupFontSize": {
         "message": "Размер шрифта во всплывающем окне в процентах"
+    },
+    "PopupWidth": {
+        "message": "Ширина всплывающего окна"
     },
     "ResetCounterOnClick": {
         "message": "Сбрасывать счетчик при нажатии на иконку расширения"

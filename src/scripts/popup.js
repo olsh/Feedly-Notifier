@@ -19,6 +19,8 @@ $(document).ready(function () {
         $("#popup-content").addClass("tabs");
     }
 
+    setPopupExpand(false);
+
     //If we support this localization of timeago, then insert script with it
     if (popupGlobal.supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
         //Trying load localization for jQuery.timeago
@@ -38,7 +40,7 @@ $("#login").click(function () {
 $("#feed, #feed-saved").on("mousedown", "a", function (event) {
     var link = $(this);
     if (event.which === 1 || event.which === 2) {
-        var isActiveTab = !(event.ctrlKey || event.which === 2);
+        var isActiveTab = !(event.ctrlKey || event.which === 2) && !popupGlobal.backgroundPage.appGlobal.options.openFeedsInBackground;
         var isFeed = link.hasClass("title") && $("#feed").is(":visible");
         var url = link.data("link");
 
@@ -321,11 +323,8 @@ function showSavedFeeds() {
 
 function setPopupExpand(isExpand){
     if (isExpand){
-        $(".item").css("width", "700px");
-        $(".article-title, .blog-title").css("width", $("#popup-content").hasClass("tabs") ? "645px" : "660px");
+        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
     } else {
-        var popupContent = $("#popup-content");
-        $(".item").css("width", popupContent.hasClass("tabs") ? "380px" : "350px");
-        $(".article-title, .blog-title").css("width", popupContent.hasClass("tabs") ? "325px" : "310px");
+        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.popupWidth);
     }
 }

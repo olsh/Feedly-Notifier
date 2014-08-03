@@ -17,6 +17,9 @@
     "EnableBackgroundMode": {
         "message": "Enable background mode"
     },
+    "ExpandedPopupWidth": {
+        "message": "Expanded popup width"
+    },
     "ExpandFeeds": {
         "message": "Expand all feeds when popup is opened"
     },
@@ -83,6 +86,9 @@
     "OpenAllFeeds": {
         "message": "Open all feeds"
     },
+    "OpenFeedsInBackground": {
+        "message": "Open feeds in background tab"
+    },
     "OpenFeedsInSameTab": {
         "message": "Open feeds in the same tab"
     },
@@ -97,6 +103,9 @@
     },
     "PopupFontSize": {
         "message": "Popup font size in percent"
+    },
+    "PopupWidth": {
+        "message": "Popup width"
     },
     "ResetCounterOnClick": {
         "message": "Reset counter when extension button clicked"
