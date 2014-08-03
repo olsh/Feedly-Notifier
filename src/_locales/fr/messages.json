@@ -17,6 +17,9 @@
     "EnableBackgroundMode": {
         "message": "Enable background mode"
     },
+    "ExpandFeeds": {
+        "message": "Expand all feeds when popup is opened"
+    },
     "ExtensionDescription": {
         "message": "Extension pour le lecteur de flux Feedly"
     },

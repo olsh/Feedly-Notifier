@@ -17,6 +17,9 @@
     "EnableBackgroundMode": {
         "message": "Povolit background mód"
     },
+    "ExpandFeeds": {
+        "message": "Expand all feeds when popup is opened"
+    },
     "ExtensionDescription": {
         "message": "Rozšíření pro Feddly"
     },

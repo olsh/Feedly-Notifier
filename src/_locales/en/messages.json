@@ -17,6 +17,9 @@
     "EnableBackgroundMode": {
         "message": "Enable background mode"
     },
+    "ExpandFeeds": {
+        "message": "Expand all feeds when popup is opened"
+    },
     "ExtensionDescription": {
         "message": "Extension for Feedly news reader"
     },

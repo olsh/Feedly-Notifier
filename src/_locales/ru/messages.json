@@ -17,6 +17,9 @@
     "EnableBackgroundMode": {
         "message": "Включить фоновый режим"
     },
+    "ExpandFeeds": {
+        "message": "Раскрывать все новости при открытии всплывающего окна"
+    },
     "ExtensionDescription": {
         "message": "Расширение для чтения новостных лент с Feedly"
     },

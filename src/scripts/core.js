@@ -22,6 +22,7 @@ var appGlobal = {
         maxNumberOfFeeds: 20,
         forceUpdateFeeds: false,
         useSecureConnection: true,
+        expandFeeds: false,
         isFiltersEnabled: false,
         filters: [],
         showCounter: true,
