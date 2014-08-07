@@ -32,6 +32,7 @@ var appGlobal = {
         openFeedsInBackground: true,
         filters: [],
         showCounter: true,
+        playSound: false,
         oldestFeedsFirst: false,
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
@@ -172,7 +173,7 @@ function startSchedule(updateInterval) {
     if(appGlobal.options.showCounter){
         appGlobal.intervalIds.push(setInterval(updateCounter, updateInterval * 60000));
     }
-    if (appGlobal.options.showDesktopNotifications || !appGlobal.options.openSiteOnIconClick) {
+    if (appGlobal.options.showDesktopNotifications || appGlobal.options.playSound || !appGlobal.options.openSiteOnIconClick) {
         appGlobal.intervalIds.push(setInterval(updateFeeds, updateInterval * 60000));
     }
 }
@@ -272,6 +273,12 @@ function removeFeedFromCache(feedId) {
     if (indexFeedForRemove !== undefined) {
         appGlobal.cachedFeeds.splice(indexFeedForRemove, 1);
     }
+}
+
+/* Plays alert sound */
+function playSound(){
+    var audio = new Audio("sound/alert.mp3");
+    audio.play();
 }
 
 /* Returns only new feeds and set date of last feed
@@ -449,11 +456,18 @@ function updateFeeds(callback, silentUpdate){
                     });
 
                     appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
-                    filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
-                        if (appGlobal.options.showDesktopNotifications && !silentUpdate) {
-                            sendDesktopNotification(newFeeds);
-                        }
-                    });
+                    if (!silentUpdate
+                        && (appGlobal.options.showDesktopNotifications || appGlobal.options.playSound)) {
+
+                        filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
+                            if (appGlobal.options.showDesktopNotifications) {
+                                sendDesktopNotification(newFeeds);
+                            }
+                            if (appGlobal.options.playSound && newFeeds.length > 0) {
+                                playSound();
+                            }
+                        });
+                    }
                 }
             },
             onComplete: function(){

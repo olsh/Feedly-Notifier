@@ -104,6 +104,9 @@
     "OptionsSaved": {
         "message": "Nastavení bylo uloženo"
     },
+    "PlaySound": {
+        "message": "Play alert sound on new feeds"
+    },
     "Popup": {
         "message": "Vyjížděcí okno"
     },

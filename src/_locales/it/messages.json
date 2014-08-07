@@ -98,6 +98,9 @@
     "OptionsSaved": {
         "message": "Le opzioni sono state salvate"
     },
+    "PlaySound": {
+        "message": "Play alert sound on new feeds"
+    },
     "Popup": {
         "message": "Popup"
     },
