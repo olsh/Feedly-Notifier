@@ -58,6 +58,12 @@ body {
     background-position: -117px -69px;
 }
 
+.icon-expand-toggle-all {
+    margin-right: 5px;
+
+    background-position: -310px -117px;
+}
+
 .icon-refresh {
     margin-right: 5px;
 
@@ -91,13 +97,18 @@ body {
     padding: 2px 0 2px 0;
 }
 
-.item:hover {
+.item:hover,
+.item.condensed .blog-title:hover {
     background-color: #f5f5f4;
 }
 
-#feed .item:not(:last-child),
-#feed-saved .item:not(:last-child) {
+#feed .item:not(:last-child):not(.condensed),
+#feed-saved .item:not(:last-child):not(.condensed) {
     border-bottom: solid #d2d2d2 1px;
+}
+
+.item.condensed {
+    padding: 0 0 4px 0;
 }
 
 .item .content {
@@ -158,6 +169,11 @@ body {
     width: calc(100% - 45px);
 }
 
+.condensed .article-title {
+    width: calc(100% - 65px);
+    margin-left: 20px;
+}
+
 .tabs .article-title,
 .tabs .blog-title {
     width: calc(100% - 55px);
@@ -189,6 +205,7 @@ body {
     top: 0;
     right: 0;
     left: 0;
+    z-index: 99;
 
     margin: 0 8px;
     padding: 10px 0 0 0;
@@ -325,6 +342,18 @@ body {
 
 .blog-title {
     color: gray;
+}
+
+.condensed .blog-title {
+    position: absolute;
+    margin-top: -22px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 20px;
+}
+
+.condensed .blog-title:hover {
+    width: calc(100% - 65px);
 }
 
 .blog-title > * {

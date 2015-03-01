@@ -15,6 +15,7 @@
         <div id="popup-actions">
             <i class="icon-share" id="open-all-news"><div class="arrow-up"></div><span></span></i>
             <i class="icon-ok" id="mark-all-read"><div class="arrow-up"></div><span></span></i>
+            <i class="icon-expand-toggle-all" id="expand-toggle-all"><div class="arrow-up"></div><span></span></i>
             <i class="icon-refresh" id="update-feeds"><div class="arrow-up"></div><span></span></i>
         </div>
         <div class="clear"></div>
@@ -36,7 +37,7 @@
 <script src="scripts/jquery.mustache.min.js"></script>
 <script id="feedTemplate" type="text/x-handlebars-template">
     {{#feeds}}
-    <div class="item" data-id="{{id}}" data-categories="{{#categories}}{{encodedId}} {{/categories}}">
+    <div class="item {{subClass}}" data-id="{{id}}" data-categories="{{#categories}}{{encodedId}} {{/categories}}">
         <span class="article-title {{titleDirection}}">
             <a data-link="{{url}}" class="title">{{title}}</a>
         </span>

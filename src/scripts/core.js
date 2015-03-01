@@ -19,6 +19,7 @@ var appGlobal = {
         showDesktopNotifications: true,
         hideNotificationDelay: 10, //seconds
         showFullFeedContent: false,
+        condensedDisplay: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
         feedlyUserId: "",
@@ -581,6 +582,7 @@ function parseFeeds(feedlyResponse) {
             blogIcon: "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed",
             id: item.id,
             content: content,
+            subClass: appGlobal.options.condensedDisplay ? "condensed" : "",
             contentDirection: contentDirection,
             isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
             date: item.crawled ? new Date(item.crawled) : "",
