@@ -124,6 +124,7 @@ $("#popup-content").on("click", ".show-content, .article-title, .blog-title", fu
 
     function updateAppearance(){
         var isExpanded = expandAllRunning ? expandAllToggle : contentContainer.is(":visible");
+        feed.toggleClass("expanded", isExpanded);
         feed.find(".show-content").css("background-position",
             isExpanded ? "-288px -120px" : "-313px -119px");
 
