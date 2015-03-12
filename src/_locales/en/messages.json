@@ -11,6 +11,9 @@
     "CurrentUser": {
         "message": "Current user"
     },
+    "CustomCSS": {
+        "message": "Custom CSS"
+    },
     "Email": {
         "message": "Email"
     },

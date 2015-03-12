@@ -15,6 +15,7 @@ $(document).ready(function () {
     $("#expand-toggle-all>span").text(chrome.i18n.getMessage("ExpandToggleAll"));
     $("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
     $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
+    $("<style>" + popupGlobal.backgroundPage.appGlobal.options.customCSS + "</style>").appendTo('head');
 
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");

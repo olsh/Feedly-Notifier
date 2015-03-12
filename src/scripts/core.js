@@ -37,6 +37,7 @@ var appGlobal = {
         oldestFeedsFirst: false,
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
+        customCSS: "",
         showCategories: false,
 
         get updateInterval(){
