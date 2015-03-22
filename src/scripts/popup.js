@@ -175,6 +175,7 @@ $("#popup-content").on("click", ".save-feed", function () {
 
 $("#popup-content").on("click", "#website", function(){
     popupGlobal.backgroundPage.openFeedlyTab();
+    close();
 });
 
 $("#popup-content").on("click", ".categories > span", function (){
