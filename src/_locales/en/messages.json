@@ -11,6 +11,9 @@
     "CurrentUser": {
         "message": "Current user"
     },
+    "CustomCSS": {
+        "message": "Custom CSS"
+    },
     "Email": {
         "message": "Email"
     },
@@ -55,6 +58,9 @@
     },
     "MarkAllAsRead": {
         "message": "Mark all as read"
+    },
+    "ExpandToggleAll": {
+        "message": "Toggle expanded view of all articles (if possible)"
     },
     "MarkAsRead": {
         "message": "Mark as read"
@@ -127,6 +133,9 @@
     },
     "ShowFullFeedContent": {
         "message": "Show full content of article in the expanded feed (if possible)"
+    },
+    "CondensedDisplay": {
+        "message": "Only show titles and icons, expand the blog name when mouse is over the icon"
     },
     "UpdateFeeds": {
         "message": "Update"

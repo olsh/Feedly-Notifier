@@ -27,16 +27,16 @@ $("body").on("click", "#logout", function () {
     $("#userInfo, #filters-settings").hide();
 });
 
-$("#options").on("change", "input", function (e) {
+$("#options").on("change", "input, textarea", function (e) {
     $("[data-disable-parent]").each(function(key, value){
         var child = $(value);
-        var parent = $("input[data-option-name='" + child.data("disable-parent") + "']");
+        var parent = $("[data-option-name='" + child.data("disable-parent") + "']");
         parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
     });
 
     $("[data-enable-parent]").each(function(key, value){
         var child = $(value);
-        var parent = $("input[data-option-name='" + child.data("enable-parent") + "']");
+        var parent = $("[data-option-name='" + child.data("enable-parent") + "']");
         !parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
     });
 });
@@ -100,7 +100,7 @@ function parseFilters() {
 /* Save all option in the chrome storage */
 function saveOptions() {
     var options = {};
-    $("#options").find("input[data-option-name]").each(function (optionName, value) {
+    $("#options").find("[data-option-name]").each(function (optionName, value) {
         var optionControl = $(value);
         var optionValue;
         if (optionControl.attr("type") === "checkbox") {
@@ -129,14 +129,14 @@ function loadOptions() {
     chrome.storage.sync.get(null, function (items) {
         var optionsForm = $("#options");
         for (var option in items) {
-            var optionControl = optionsForm.find("input[data-option-name='" + option + "']");
+            var optionControl = optionsForm.find("[data-option-name='" + option + "']");
             if (optionControl.attr("type") === "checkbox") {
                 optionControl.attr("checked", items[option]);
             } else {
                 optionControl.val(items[option]);
             }
         }
-        optionsForm.find("input").trigger("change");
+        optionsForm.find("input, textarea").trigger("change");
     });
     $("#header").text(chrome.i18n.getMessage("FeedlyNotifierOptions"));
     $("#options").find("[data-locale-value]").each(function () {

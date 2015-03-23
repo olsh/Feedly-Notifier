@@ -12,8 +12,10 @@ $(document).ready(function () {
     $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
     $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
     $("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
+    $("#expand-toggle-all>span").text(chrome.i18n.getMessage("ExpandToggleAll"));
     $("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
     $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
+    $("<style>" + popupGlobal.backgroundPage.appGlobal.options.customCSS + "</style>").appendTo('head');
 
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
@@ -68,6 +70,8 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
 
 $("#popup-content").on("click", "#mark-all-read", markAllAsRead);
 
+$("#popup-content").on("click", "#expand-toggle-all", expandToggleAll);
+
 $("#popup-content").on("click", "#open-all-news", function () {
     $("#feed").find("a.title[data-link]").filter(":visible").each(function (key, value) {
         var news = $(value);
@@ -95,35 +99,58 @@ $("#feedly").on("click", "#btn-feeds", function () {
     renderFeeds();
 });
 
-$("#popup-content").on("click", ".show-content", function () {
+$("#popup-content").on("click", ".show-content, .article-title, .blog-title", function (event) {
+    if (event.target.tagName == 'A') {
+        return;
+    }
     var $this = $(this);
     var feed = $this.closest(".item");
-    var contentContainer = feed.find(".content");
     var feedId = feed.data("id");
+    var contentContainer = feed.find(".content");
     if (contentContainer.html() === "") {
         var feeds = $("#feed").is(":visible") ? popupGlobal.feeds : popupGlobal.savedFeeds;
 
         for (var i = 0; i < feeds.length; i++) {
             if (feeds[i].id === feedId) {
                 contentContainer.html($("#feed-content").mustache(feeds[i]));
-
-                //For open new tab without closing popup
-                contentContainer.find("a").each(function (key, value) {
-                    var link = $(value);
-                    link.data("link", link.attr("href"));
-                    link.attr("href", "javascript:void(0)");
-                });
+                retargetLinks(contentContainer);
+                break;
             }
         }
     }
-    contentContainer.slideToggle("fast", function () {
-        $this.css("background-position", contentContainer.is(":visible") ? "-288px -120px" : "-313px -119px");
-        if ($(".content").is(":visible")) {
-            setPopupExpand(true);
-        } else {
-            setPopupExpand(false);
+
+    var expandAllToggle = $("#expand-toggle-all").data("isExpanded");
+    var expandAllRunning = $("#expand-toggle-all").data("running");
+
+    function updateAppearance(){
+        var isExpanded = expandAllRunning ? expandAllToggle : contentContainer.is(":visible");
+        feed.toggleClass("expanded", isExpanded);
+        feed.find(".show-content").css("background-position",
+            isExpanded ? "-288px -120px" : "-313px -119px");
+
+        if (popupGlobal.backgroundPage.appGlobal.options.condensedDisplay) {
+            feed.toggleClass("condensed", !isExpanded);
         }
-    });
+        if (!expandAllRunning) {
+            // collapse only if all other items are collapsed
+            if (isExpanded || $("#feed > .expanded").length == 0) {
+                setPopupExpand(isExpanded);
+            }
+        }
+        return isExpanded;
+    }
+
+    if (expandAllRunning) {
+        contentContainer.toggle(expandAllToggle);
+        updateAppearance();
+    } else {
+        contentContainer.slideToggle("fast", function(){
+            var isExpanded = updateAppearance();
+            if (!isExpanded) {
+                window.scrollTo(0, Math.min(window.scrollY, feed.offset().top - $("#feedly").outerHeight()));
+            }
+        });
+    }
 });
 
 /* Manually feeds update */
@@ -148,6 +175,7 @@ $("#popup-content").on("click", ".save-feed", function () {
 
 $("#popup-content").on("click", "#website", function(){
     popupGlobal.backgroundPage.openFeedlyTab();
+    close();
 });
 
 $("#popup-content").on("click", ".categories > span", function (){
@@ -170,68 +198,66 @@ $("#feedly").on("click", "#feedly-logo", function (event) {
 });
 
 function renderFeeds(forceUpdate) {
-    showLoader();
-    popupGlobal.backgroundPage.getFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds || forceUpdate, function (feeds, isLoggedIn) {
-        popupGlobal.feeds = feeds;
-        if (isLoggedIn === false) {
-            showLogin();
-        } else {
-            if (feeds.length === 0) {
-                showEmptyContent();
-            } else {
-                var container = $("#feed").show().empty();
-
-                if (popupGlobal.backgroundPage.appGlobal.options.showCategories) {
-                    renderCategories(container, feeds);
-                }
-
-                if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
-                    var partials = { content: $("#feed-content").html() };
-                }
-
-                container.append($("#feedTemplate").mustache({feeds: feeds}, partials));
-                container.find(".timeago").timeago();
-
-                if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
-                    container.find(".show-content").click();
-                }
-
-                showFeeds();
-            }
-        }
-    });
+    doRenderFeeds(forceUpdate);
 }
 
 function renderSavedFeeds(forceUpdate) {
+    doRenderFeeds(forceUpdate, true);
+}
+
+function doRenderFeeds(forceUpdate, saved) {
     showLoader();
-    popupGlobal.backgroundPage.getSavedFeeds(popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds || forceUpdate, function (feeds, isLoggedIn) {
-        popupGlobal.savedFeeds = feeds;
-        if (isLoggedIn === false) {
-            showLogin();
-        } else {
-            if (feeds.length === 0) {
-                showEmptyContent();
+    forceUpdate = popupGlobal.backgroundPage.appGlobal.options.forceUpdateFeeds || forceUpdate;
+    setTimeout(function() {
+        popupGlobal.backgroundPage[saved ? "getSavedFeeds" : "getFeeds"](forceUpdate, function (feeds, isLoggedIn) {
+            popupGlobal[saved ? "savedFeeds" : "feeds"] = feeds;
+            if (isLoggedIn === false) {
+                showLogin();
             } else {
-                var container = $("#feed-saved").empty();
+                if (feeds.length === 0) {
+                    showEmptyContent();
+                } else {
+                    var container = saved ? $("#feed-saved").empty() : $("#feed").show().empty();
 
-                if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
-                    var partials = { content: $("#feed-content").html() };
+                    if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
+                        var partials = { content: $("#feed-content").html() };
+                    }
+
+                    if (popupGlobal.backgroundPage.appGlobal.options.showCategories) {
+                        renderCategories(container, feeds);
+                    }
+
+                    var partials = $("#feedTemplate").mustache({feeds: feeds}, partials);
+                    retargetLinks(partials.find(".content"));
+                    container.append(partials);
+                    container.find(".timeago").timeago();
+
+                    if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
+                        var timeout = setTimeout(function() {
+                            clearTimeout(timeout); // prevent multiple calls
+                            expandToggleAll();
+                        }, 0);
+                    } else {
+                        var condensedDisplay = popupGlobal.backgroundPage.appGlobal.options.condensedDisplay;
+                        $(".item" + (condensedDisplay ? ":not(.condensed)" : ".condensed"))
+                            .each(function (key, value) {
+                                $(value).toggleClass("condensed", condensedDisplay);
+                            });
+                    }
+
+                    saved ? showSavedFeeds() : showFeeds();
                 }
-
-                if (popupGlobal.backgroundPage.appGlobal.options.showCategories) {
-                    renderCategories(container, feeds);
-                }
-
-                container.append($("#feedTemplate").mustache({feeds: feeds}, partials));
-                container.find(".timeago").timeago();
-
-                if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
-                    container.find(".show-content").click();
-                }
-
-                showSavedFeeds();
             }
-        }
+        });
+    }, 0);
+}
+
+function retargetLinks(container) {
+    //For open new tab without closing popup
+    container.find("a").each(function (key, value) {
+        var link = $(value);
+        link.data("link", link.attr("href"));
+        link.attr("href", "javascript:void(0)");
     });
 }
 
@@ -253,6 +279,7 @@ function markAsRead(feedIds) {
     }
     popupGlobal.backgroundPage.markAsRead(feedIds, function () {
         if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
+            expandToggleAllSetButton(false);
             renderFeeds();
         }
     });
@@ -264,6 +291,23 @@ function markAllAsRead() {
         feedIds.push($(value).data("id"));
     });
     markAsRead(feedIds);
+}
+
+function expandToggleAll() {
+    var expandButton = $("#expand-toggle-all");
+    var isExpand = !expandButton.data("isExpanded");
+    expandToggleAllSetButton(isExpand);
+
+    expandButton.data("running", true)
+    $(".show-content").click();
+    expandButton.removeData("running");
+
+    setPopupExpand(isExpand);
+}
+
+function expandToggleAllSetButton(isExpand) {
+    $("#expand-toggle-all").css("background-position", isExpand ? "-285px -118px" : "-310px -117px")
+                           .data("isExpanded", isExpand)
 }
 
 function renderCategories(container, feeds){

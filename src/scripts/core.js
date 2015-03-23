@@ -19,6 +19,7 @@ var appGlobal = {
         showDesktopNotifications: true,
         hideNotificationDelay: 10, //seconds
         showFullFeedContent: false,
+        condensedDisplay: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
         feedlyUserId: "",
@@ -36,6 +37,7 @@ var appGlobal = {
         oldestFeedsFirst: false,
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
+        customCSS: "",
         showCategories: false,
 
         get updateInterval(){
@@ -251,7 +253,14 @@ function openUrlInNewTab(url, active) {
 function openFeedlyTab() {
     chrome.tabs.query({url: appGlobal.feedlyUrl + "/*"}, function (tabs) {
         if (tabs.length < 1) {
-            chrome.tabs.create({url: appGlobal.feedlyUrl});
+            chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
+                // re-use an active new tab page
+                if (tabs.length && tabs[0].url.match(/^chrome:\/\/newtab\/?$/)) {
+                    chrome.tabs.update({url: appGlobal.feedlyUrl});
+                } else {
+                    chrome.tabs.create({url: appGlobal.feedlyUrl});
+                }
+            });
         } else {
             chrome.tabs.update(tabs[0].id, {active: true});
             chrome.tabs.reload(tabs[0].id);
@@ -581,6 +590,7 @@ function parseFeeds(feedlyResponse) {
             blogIcon: "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed",
             id: item.id,
             content: content,
+            subClass: appGlobal.options.condensedDisplay ? "condensed" : "",
             contentDirection: contentDirection,
             isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
             date: item.crawled ? new Date(item.crawled) : "",
