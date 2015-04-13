@@ -103,9 +103,11 @@ $("#popup-content").on("click", ".show-content", function () {
     if (contentContainer.html() === "") {
         var feeds = $("#feed").is(":visible") ? popupGlobal.feeds : popupGlobal.savedFeeds;
 
+        var template = $("#feed-content").html();
+        Mustache.parse(template);
         for (var i = 0; i < feeds.length; i++) {
             if (feeds[i].id === feedId) {
-                contentContainer.html($("#feed-content").mustache(feeds[i]));
+                contentContainer.html(Mustache.render(template, feeds[i]));
 
                 //For open new tab without closing popup
                 contentContainer.find("a").each(function (key, value) {
@@ -189,7 +191,9 @@ function renderFeeds(forceUpdate) {
                     var partials = { content: $("#feed-content").html() };
                 }
 
-                container.append($("#feedTemplate").mustache({feeds: feeds}, partials));
+                var feedsTemplate = $("#feedTemplate").html();
+                Mustache.parse(feedsTemplate);
+                container.append(Mustache.render(feedsTemplate, {feeds: feeds}, partials));
                 container.find(".timeago").timeago();
 
                 if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
@@ -222,7 +226,9 @@ function renderSavedFeeds(forceUpdate) {
                     renderCategories(container, feeds);
                 }
 
-                container.append($("#feedTemplate").mustache({feeds: feeds}, partials));
+                var feedTemplate = $("#feedTemplate").html();
+                Mustache.parse(feedTemplate);
+                container.append(Mustache.render(feedTemplate, {feeds: feeds}, partials));
                 container.find(".timeago").timeago();
 
                 if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
@@ -269,7 +275,9 @@ function markAllAsRead() {
 function renderCategories(container, feeds){
     $(".categories").remove();
     var categories = getUniqueCategories(feeds);
-    container.append($("#categories-template").mustache({categories: categories}));
+    var template = $("#categories-template").html();
+    Mustache.parse(template);
+    container.append(Mustache.render(template, {categories: categories}));
 }
 
 function getUniqueCategories(feeds){

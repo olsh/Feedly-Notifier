@@ -18,5 +18,6 @@
     "url": "https://github.com/olsh/Feedly-Notifier/issues"
   },
   "sourcePath": "src",
-  "buildPath": "build"
+  "buildPath": "build",
+  "bowerPath": "bower_components"
 }

@@ -1,0 +1,22 @@
+{
+  "name": "Feedly-Notifier",
+  "version": "2.6.2",
+  "homepage": "https://github.com/olsh/Feedly-Notifier",
+  "authors": [
+    "Dmitry Samodov, Oleg Shevchenko"
+  ],
+  "license": "MPL 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3",
+    "mustache": "~2.0.0",
+    "jquery-timeago": "~1.4.1"
+  },
+  "private": true
+}
