@@ -41,9 +41,6 @@
     "General": {
         "message": "Základní"
     },
-    "HideNotifications": {
-        "message": "Skrýt upozornění"
-    },
     "HideNotificationsAfter": {
         "message": "Skrýt oznámení po (sekundy), 0 - neskrývat"
     },
@@ -58,9 +55,6 @@
     },
     "MarkAllAsRead": {
         "message": "Označit vše jako přečtené"
-    },
-    "MarkAllAsReadGlobal": {
-        "message": "Mark all as read (globally)"
     },
     "MarkAsRead": {
         "message": "Označit jako přečtené"
