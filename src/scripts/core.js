@@ -574,7 +574,7 @@ function parseFeeds(feedlyResponse) {
         return {
             title: title,
             titleDirection: titleDirection,
-            url: item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "",
+            url: (item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "") || blogUrl,
             blog: blog,
             blogTitleDirection: blogTitleDirection,
             blogUrl: blogUrl,
