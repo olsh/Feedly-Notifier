@@ -1,0 +1,151 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "提供「收藏」按鈕"
+  },
+  "AutoMarkRead": {
+    "message": "打開摘要時，自動標記為已讀"
+  },
+  "Categories": {
+    "message": "分類"
+  },
+  "CurrentUser": {
+    "message": "目前使用者"
+  },
+  "Email": {
+    "message": "Email"
+  },
+  "EnableBackgroundMode": {
+    "message": "啟用背景模式"
+  },
+  "ExpandedPopupWidth": {
+    "message": "展開寬度"
+  },
+  "ExpandFeeds": {
+    "message": "彈出視窗顯示時，展開所有的摘要"
+  },
+  "ExtensionDescription": {
+    "message": "Feedly 新聞閱讀器擴充功能"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly Notifier 選項"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly 官網"
+  },
+  "Filters": {
+    "message": "過濾"
+  },
+  "ForceUpdateFeeds": {
+    "message": "在彈出視窗打開時強制更新"
+  },
+  "General": {
+    "message": "一般"
+  },
+  "HideNotificationsAfter": {
+    "message": "在幾秒之後隱藏桌面通知（0 代表不要隱藏）"
+  },
+  "IntervalPeriod": {
+    "message": "重整時間"
+  },
+  "Login": {
+    "message": "登入"
+  },
+  "Logout": {
+    "message": "登出"
+  },
+  "many": {
+    "message": "很多"
+  },
+  "MarkAllAsRead": {
+    "message": "全部標記為已讀"
+  },
+  "MarkAsRead": {
+    "message": "標記為已讀"
+  },
+  "MaxNotificationsCount": {
+    "message": "單次最大通知訊息數"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "在彈出視窗中的最多摘要顯示數"
+  },
+  "More": {
+    "message": "更多"
+  },
+  "NewFeeds": {
+    "message": "新摘要"
+  },
+  "NoSavedArticles": {
+    "message": "沒有收藏文章"
+  },
+  "Notifications": {
+    "message": "通知"
+  },
+  "NoUnreadArticles": {
+    "message": "沒有未讀文章"
+  },
+  "OldestFeedsFirst": {
+    "message": "最舊的排在最上方"
+  },
+  "OpenAllFeeds": {
+    "message": "打開所有摘要"
+  },
+  "OpenFeedsInBackground": {
+    "message": "在背景分頁中打開摘要"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "在相同分頁打開摘要"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "點擊圖示時直接打開 Feedly 網站（不秀彈出視窗）"
+  },
+  "OptionsSaved": {
+    "message": "選項已儲存"
+  },
+  "PlaySound": {
+    "message": "有新摘要時播放音效"
+  },
+  "Popup": {
+    "message": "彈出視窗"
+  },
+  "PopupFontSize": {
+    "message": "字體大小（百分比）"
+  },
+  "PopupWidth": {
+    "message": "彈出視窗寬度"
+  },
+  "ResetCounterOnClick": {
+    "message": "點擊圖示後重設未讀數"
+  },
+  "Save": {
+    "message": "儲存"
+  },
+  "ShowCategories": {
+    "message": "在彈出視窗中列出分類"
+  },
+  "ShowCounter": {
+    "message": "顯示未讀數"
+  },
+  "ShowDesktopNotifications": {
+    "message": "顯示桌面通知"
+  },
+  "ShowFullFeedContent": {
+    "message": "在展開的摘要中呈現完整內容（若可能的話）"
+  },
+  "UpdateFeeds": {
+    "message": "更新"
+  },
+  "UpdateFollowingCategories": {
+    "message": "只更新以下分類"
+  },
+  "UseSecureConnection": {
+    "message": "使用安全連線（https）"
+  },
+  "YouHaveNewFeeds": {
+    "message": "你有 $count$ 個新摘要",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  }
+}
