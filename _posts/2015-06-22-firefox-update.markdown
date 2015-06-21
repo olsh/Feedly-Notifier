@@ -7,7 +7,7 @@ categories: site
 
 New:
 
-* Polish translation added (thanks to **?ukasz**)
+* Polish translation added (thanks to **Lukasz**)
 
 ***
 
