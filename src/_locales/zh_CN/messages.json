@@ -1,0 +1,151 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "提供“稍后阅读”按钮"
+  },
+  "AutoMarkRead": {
+    "message": "打开摘要时自动标记为已读"
+  },
+  "Categories": {
+    "message": "分类"
+  },
+  "CurrentUser": {
+    "message": "当前用户"
+  },
+  "Email": {
+    "message": "邮箱"
+  },
+  "EnableBackgroundMode": {
+    "message": "启用后台模式"
+  },
+  "ExpandedPopupWidth": {
+    "message": "扩展弹出窗口宽度"
+  },
+  "ExpandFeeds": {
+    "message": "弹出窗口显示时，展开所有摘要"
+  },
+  "ExtensionDescription": {
+    "message": "Feedly 阅读器扩展"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly 通知设置"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly 网站"
+  },
+  "Filters": {
+    "message": "过滤"
+  },
+  "ForceUpdateFeeds": {
+    "message": "点击图标时强制更新"
+  },
+  "General": {
+    "message": "常规"
+  },
+  "HideNotificationsAfter": {
+    "message": "在数秒之后隐藏桌面通知（0 代表不要隐藏）"
+  },
+  "IntervalPeriod": {
+    "message": "刷新间隔时间（分钟）"
+  },
+  "Login": {
+    "message": "登录"
+  },
+  "Logout": {
+    "message": "注销"
+  },
+  "many": {
+    "message": "很多"
+  },
+  "MarkAllAsRead": {
+    "message": "全部标记为已读"
+  },
+  "MarkAsRead": {
+    "message": "标记为已读"
+  },
+  "MaxNotificationsCount": {
+    "message": "单次最大通知信息数"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "在弹出窗口中最多显示摘要数量"
+  },
+  "More": {
+    "message": "展开"
+  },
+  "NewFeeds": {
+    "message": "新摘要"
+  },
+  "NoSavedArticles": {
+    "message": "没有收藏文章"
+  },
+  "Notifications": {
+    "message": "通知"
+  },
+  "NoUnreadArticles": {
+    "message": "没有未读文章"
+  },
+  "OldestFeedsFirst": {
+    "message": "最旧的排在最上方"
+  },
+  "OpenAllFeeds": {
+    "message": "打开所有摘要"
+  },
+  "OpenFeedsInBackground": {
+    "message": "在后台标签页中打开摘要"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "在同一标签页打开摘要"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "点击Feedly图标时直接打开 Feedly 网站（不弹出扩展窗口）"
+  },
+  "OptionsSaved": {
+    "message": "设置已保存"
+  },
+  "PlaySound": {
+    "message": "有新摘要时播放提示音"
+  },
+  "Popup": {
+    "message": "弹出窗口"
+  },
+  "PopupFontSize": {
+    "message": "字体大小（百分比）"
+  },
+  "PopupWidth": {
+    "message": "弹出窗口宽度"
+  },
+  "ResetCounterOnClick": {
+    "message": "点击图标后重置未读数"
+  },
+  "Save": {
+    "message": "保存"
+  },
+  "ShowCategories": {
+    "message": "在弹出窗口中列出分类"
+  },
+  "ShowCounter": {
+    "message": "显示未读数"
+  },
+  "ShowDesktopNotifications": {
+    "message": "显示桌面通知"
+  },
+  "ShowFullFeedContent": {
+    "message": "在展开的摘要中显示完整內容（如果可能的话）"
+  },
+  "UpdateFeeds": {
+    "message": "更新"
+  },
+  "UpdateFollowingCategories": {
+    "message": "只更新以下分类"
+  },
+  "UseSecureConnection": {
+    "message": "使用安全连接（https）"
+  },
+  "YouHaveNewFeeds": {
+    "message": "你有 $count$ 个新摘要",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  }
+}
