@@ -7,7 +7,7 @@ categories: site
 
 Updated:
 
-* Spanish translation added (thanks to **Daniel Mart?nez**)
+* Spanish translation added (thanks to **Daniel Martínez**)
 
 ***
 
