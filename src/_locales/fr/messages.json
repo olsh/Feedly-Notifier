@@ -84,7 +84,10 @@
         "message": "Oldest feeds first"
     },
     "OpenAllFeeds": {
-        "message": "Open all feeds"
+        "message": "Ouvre tous les feeds"
+    },
+    "OpenAllSavedFeeds": {
+        "message": "Ouvre tous les feeds sauvés et ne les sauve plus"
     },
     "OpenFeedsInBackground": {
         "message": "Open feeds in background tab"

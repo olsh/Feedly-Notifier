@@ -89,6 +89,9 @@
   "OpenAllFeeds": {
     "message": "打開所有摘要"
   },
+  "OpenAllSavedFeeds": {
+        "message": "Open all saved feeds and unsaved them"
+  },
   "OpenFeedsInBackground": {
     "message": "在背景分頁中打開摘要"
   },
