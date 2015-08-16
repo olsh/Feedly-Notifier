@@ -87,7 +87,7 @@
         "message": "Открыть все новости"
     },
     "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsaved them"
+        "message": "Открыть все сохраненные новости и убрать закладку"
     },
     "OpenFeedsInBackground": {
         "message": "Открывать новости в фоновой вкладке"

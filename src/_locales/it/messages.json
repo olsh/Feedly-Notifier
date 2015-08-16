@@ -87,7 +87,7 @@
         "message": "Apri tutti i feed"
     },
     "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsaved them"
+        "message": "Open all saved feeds and unsave them"
     },
     "OpenFeedsInBackground": {
         "message": "Apri i feed in una scheda in sottofondo"

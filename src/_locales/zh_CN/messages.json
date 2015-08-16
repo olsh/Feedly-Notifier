@@ -90,7 +90,7 @@
     "message": "打开所有摘要"
   },
   "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsaved them"
+        "message": "Open all saved feeds and unsave them"
   },
   "OpenFeedsInBackground": {
     "message": "在后台标签页中打开摘要"

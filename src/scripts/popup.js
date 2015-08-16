@@ -85,9 +85,7 @@ $("#popup-content").on("click", "#open-unsaved-all-news", function () {
            var news = $(value);
            chrome.tabs.create({url: news.data("link"), active: false }, function () {});
        });
-       if (popupGlobal.backgroundPage.appGlobal.options.markReadOnClick) {
-           markAllAsUnsaved();
-       }
+        markAllAsUnsaved();
 });
 
 $("#feed").on("click", ".mark-read", function (event) {
