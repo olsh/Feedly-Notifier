@@ -657,16 +657,16 @@ function markAsRead(feedIds, callback) {
 }
 
 /* Save feed or unsave it.
- * feed ID
- * if saveFeed is true, then save feed, else unsafe it
+ * array of the feeds IDs
+ * if saveFeed is true, then save the feeds, else unsafe them
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
-function toggleSavedFeed(feedId, saveFeed, callback) {
+function toggleSavedFeed(feedsIds, saveFeed, callback) {
     if (saveFeed) {
         apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup), {
             method: "PUT",
             body: {
-                entryId: feedId
+                entryIds: feedsIds
             },
             onSuccess: function (response) {
                 if (typeof callback === "function") {
@@ -680,7 +680,7 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
             }
         });
     } else {
-        apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup) + "/" + encodeURIComponent(feedId), {
+        apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup) + "/" + encodeURIComponent(feedsIds), {
             method: "DELETE",
             onSuccess: function (response) {
                 if (typeof callback === "function") {
@@ -696,10 +696,13 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
     }
 
     //Update state in the cache
-    for (var i = 0; i < appGlobal.cachedFeeds.length; i++) {
-        if (appGlobal.cachedFeeds[i].id === feedId) {
-            appGlobal.cachedFeeds[i].isSaved = saveFeed;
-            break;
+    for (var i = 0; i < feedsIds.length; i++) {
+        var feedId = feedsIds[i];
+        for (var j = 0; j < appGlobal.cachedFeeds.length; j++) {
+            if (appGlobal.cachedFeeds[j].id === feedId) {
+                appGlobal.cachedFeeds[j].isSaved = saveFeed;
+                break;
+            }
         }
     }
 }

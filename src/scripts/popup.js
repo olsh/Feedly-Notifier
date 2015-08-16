@@ -155,7 +155,7 @@ $("#popup-content").on("click", ".save-feed", function () {
     var feed = $this.closest(".item");
     var feedId = feed.data("id");
     var saveItem = !$this.data("saved");
-    popupGlobal.backgroundPage.toggleSavedFeed(feedId, saveItem);
+    popupGlobal.backgroundPage.toggleSavedFeed([feedId], saveItem);
     $this.data("saved", saveItem);
     $this.toggleClass("saved");
 });
@@ -277,16 +277,15 @@ function markAsRead(feedIds) {
 }
 
 function markAsUnSaved(feedIds) {
-
     var feedItems = $();
     for (var i = 0; i < feedIds.length; i++) {
         feedItems = feedItems.add(".item[data-id='" + feedIds[i] + "']");
-        popupGlobal.backgroundPage.toggleSavedFeed(feedIds[i], 0);
     }
 
-    feedItems.fadeOut("fast", function(){
-        $(this).remove();
-    });
+    popupGlobal.backgroundPage.toggleSavedFeed(feedIds, false);
+
+    feedItems.data("saved", false);
+    feedItems.find(".saved").removeClass("saved");
 }
 
 function markAllAsRead() {
