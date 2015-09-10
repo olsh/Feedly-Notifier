@@ -1,152 +1,152 @@
 {
     "AbilitySaveFeeds": {
-        "message": "Ability to save feeds"
+        "message": "Haberi kaydetme özelliği"
     },
     "AutoMarkRead": {
-        "message": "Auto mark as read on news open"
+        "message": "Haber açıldığında otomatik okundu işaretlensin"
     },
     "Categories": {
-        "message": "Categories"
+        "message": "Kategoriler"
     },
     "CurrentUser": {
-        "message": "Current user"
+        "message": "Güncel kullanıcı"
     },
     "Email": {
-        "message": "Email"
+        "message": "Eposta"
     },
     "EnableBackgroundMode": {
-        "message": "Enable background mode"
+        "message": "Arkaplan modunu aç"
     },
     "ExpandedPopupWidth": {
-        "message": "Expanded popup width"
+        "message": "Genişletilmiş boyda açılır pencere"
     },
     "ExpandFeeds": {
-        "message": "Expand all feeds when popup is opened"
+        "message": "Pencere açıldığında tüm beslemeleri uzat"
     },
     "ExtensionDescription": {
-        "message": "Extension for Feedly news reader"
+        "message": "Feedly haber okuyucuyu uzat"
     },
     "FeedlyNotifierOptions": {
-        "message": "Feedly Notifier options"
+        "message": "Feedly Notifier Ayarları"
     },
     "FeedlyWebsite": {
-        "message": "Feedly website"
+        "message": "Feedly websitesi"
     },
     "Filters": {
-        "message": "Filters"
+        "message": "Filtreler"
     },
     "ForceUpdateFeeds": {
-        "message": "Force update feeds on popup open"
+        "message": "Pencere açılınca besleme güncellemesi yap"
     },
     "General": {
-        "message": "General"
+        "message": "Genel"
     },
     "HideNotificationsAfter": {
-        "message": "Hide desktop notifications after (sec.), 0 - don't hide"
+        "message": "Masaüstü bildirim penceresini bir süre sonra kapat (san.), 0 - kapanmaz"
     },
     "IntervalPeriod": {
-        "message": "Interval period (min.)"
+        "message": "Güncelleme periyodu (dk.)"
     },
     "Login": {
-        "message": "Login"
+        "message": "Giriş"
     },
     "Logout": {
-        "message": "Logout"
+        "message": "Çıkış"
+    },
+    "many": {
+        "message": "birçoğu"
     },
     "MarkAllAsRead": {
-        "message": "Mark all as read"
+        "message": "Hepsini okundu işaretle"
     },
     "MarkAsRead": {
-        "message": "Mark as read"
+        "message": "Okundu işaretle"
     },
     "MaxNotificationsCount": {
-        "message": "Max notifications count at once"
+        "message": "Maksimum gösterilecek bildirim sayısı"
     },
     "MaxNumberOfFeeds": {
-        "message": "Max number of feeds in the popup"
+        "message": "Pencerede gösterilecek maksimum haber sayısı"
     },
     "More": {
-        "message": "More"
+        "message": "Devamı"
     },
     "NewFeeds": {
-        "message": "New feeds"
+        "message": "Yeni beslemeler"
     },
     "NoSavedArticles": {
-        "message": "No saved articles"
-    },
-    "NoUnreadArticles": {
-        "message": "No unread articles"
+        "message": "Kaydedilen başlık yok"
     },
     "Notifications": {
-        "message": "Notifications"
+        "message": "Bildirimler"
+    },
+    "NoUnreadArticles": {
+        "message": "Okunmamış başlık yok"
     },
     "OldestFeedsFirst": {
-        "message": "Oldest feeds first"
+        "message": "Önce en eski haberler"
     },
     "OpenAllFeeds": {
-        "message": "Open all feeds"
+        "message": "Bütün haberleri aç"
     },
     "OpenFeedsInBackground": {
-        "message": "Open feeds in background tab"
+        "message": "Haberleri arka planda ayrı sekmede aç"
     },
     "OpenFeedsInSameTab": {
-        "message": "Open feeds in the same tab"
+        "message": "Haberleri aynı sekmede aç"
     },
     "OpenSiteOnIconClick": {
-        "message": "Open Feedly site on icon click (don't show popup)"
+        "message": "İkona tıkladığında Feedly açılsın (ayrı pencerede görünmez)"
     },
     "OptionsSaved": {
-        "message": "Options have been saved"
+        "message": "Ayarlarınız kaydedildi"
     },
     "PlaySound": {
-        "message": "Play alert sound on new feeds"
+        "message": "Yeni haber geldiğinde sesli uyarı olsun"
     },
     "Popup": {
-        "message": "Popup"
+        "message": "Ayrı Pencere"
     },
     "PopupFontSize": {
-        "message": "Popup font size in percent"
+        "message": "Penceredeki yazı karakteri uzunluğu"
     },
     "PopupWidth": {
-        "message": "Popup width"
+        "message": "Pencere genişliği"
     },
     "ResetCounterOnClick": {
-        "message": "Reset counter when extension button clicked"
+        "message": "Uzantı butonu tıklandığında sayaç sıfırlansın"
     },
     "Save": {
-        "message": "Save"
+        "message": "Kaydet"
     },
     "ShowCategories": {
-        "message": "Show categories in popup"
+        "message": "Pencerede kategorileri göster"
     },
     "ShowCounter": {
-        "message": "Show counter"
+        "message": "Sayacı göster"
     },
     "ShowDesktopNotifications": {
-        "message": "Show desktop notifications"
+        "message": "Masaüstü bildirimlerini göster"
     },
     "ShowFullFeedContent": {
-        "message": "Show full content of article in the expanded feed (if possible)"
+        "message": "Genişletilmiş özet akışını (mümkünse) göster"
     },
     "UpdateFeeds": {
-        "message": "Update"
+        "message": "Güncelle"
     },
     "UpdateFollowingCategories": {
-        "message": "Update only following categories"
+        "message": "Sadece takip edilen kategorileri güncelle"
     },
     "UseSecureConnection": {
-        "message": "Use secure connection (https)"
+        "message": "Güvenli bağlantı kullan (https)"
     },
     "YouHaveNewFeeds": {
-        "message": "You have $count$ new feeds",
+        "message": "$count$ yeni haber",
         "placeholders": {
             "count": {
                 "content": "$1",
                 "example": "10 or many"
             }
         }
-    },
-    "many": {
-        "message": "many"
     }
 }
