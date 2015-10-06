@@ -68,6 +68,12 @@ body {
     background-position: -237px -21px;
 }
 
+.icon-unsaved {
+    margin-right: 5px;
+
+    background-position: -117px -69px;
+}
+
 .mark-read:hover {
     background-position: -96px -120px;
 }

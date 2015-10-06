@@ -86,6 +86,9 @@
     "OpenAllFeeds": {
         "message": "Otevřít vše"
     },
+    "OpenAllSavedFeeds": {
+        "message": "Open all saved feeds and unsaved them"
+    },
     "OpenFeedsInBackground": {
         "message": "Open feeds in background tab"
     },
