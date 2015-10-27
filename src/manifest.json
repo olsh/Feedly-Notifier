@@ -3,7 +3,7 @@
 
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
-    "version": "2.6.7",
+    "version": "2.6.8",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "default_locale": "en",
 
@@ -16,7 +16,10 @@
     ],
     "optional_permissions": ["background"],
     "browser_action": {
-        "default_icon": "/images/icon_inactive.png",
+        "default_icon": {
+            "19": "/images/icon_inactive.png",
+            "38": "/images/icon_inactive38.png"
+        },
         "default_title": "Feedly Notifier",
         "default_popup": "popup.html"
     },
@@ -32,5 +35,6 @@
     "web_accessible_resources": [
         "/images/icon128.png"
     ],
+    "homepage_url": "http://olsh.github.io/Feedly-Notifier/",
     "minimum_chrome_version": "26"
 }

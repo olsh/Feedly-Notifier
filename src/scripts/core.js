@@ -4,8 +4,14 @@ var appGlobal = {
     feedlyApiClient: new FeedlyApiClient(),
     feedTab: null,
     icons: {
-        default: "/images/icon.png",
-        inactive: "/images/icon_inactive.png",
+        default: {
+            "19": "/images/icon.png",
+            "38": "/images/icon38.png"
+        },
+        inactive: {
+            "19": "/images/icon_inactive.png",
+            "38": "/images/icon_inactive38.png"
+        },
         defaultBig: "/images/icon128.png"
     },
     options: {
