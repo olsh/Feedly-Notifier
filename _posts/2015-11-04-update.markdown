@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "Feedly Notifier for Chrome, Firefox and Opera has been updated"
+date:   2015-11-03 12:00:00
+categories: site
+---
+Fix: 
+
+* Authentication URL was changed
+
+**Opera only**:
+
+New:
+    
+* Icons for HiDPI displays were added
+
+Version for Opera will be approved shortly.
+
+***
+
+[Full changelog Chrome]({{ site.url }}/changelog/chrome/)
+[Full changelog Firefox]({{ site.url }}/changelog/firefox/)
+[Full changelog Opera]({{ site.url }}/changelog/opera/)
+[<img src="{{ site.url }}/images/ChromeWebStore_Badge_v2_206x58.png">](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb/) 
+[Download from AMO](https://addons.mozilla.org/en-US/firefox/addon/feedly-notifier/versions/?page=1#version-2.10.9)
