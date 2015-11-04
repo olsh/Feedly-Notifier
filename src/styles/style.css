@@ -29,6 +29,7 @@ body {
     font-weight: bold;
     line-height: 17px;
 
+    white-space: nowrap;
     -webkit-appearance: none;
 }
 
