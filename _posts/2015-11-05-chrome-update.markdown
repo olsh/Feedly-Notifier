@@ -10,7 +10,7 @@ New:
 
 Fixed
 
-* Loading Brazilian timeago locale was fixed [issue 46](https://github.com/olsh/Feedly-Notifier/issues/46)
+* Brazilian timeago locale loading was fixed [issue 46](https://github.com/olsh/Feedly-Notifier/issues/46)
 
 ***
 
