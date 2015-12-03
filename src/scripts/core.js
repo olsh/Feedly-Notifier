@@ -714,7 +714,7 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
  * then read access token and stores in chrome.storage */
 function getAccessToken() {
     var state = (new Date()).getTime();
-    var redirectUri = "https://olsh.github.io/Feedly-Notifier";
+    var redirectUri = "https://olsh.github.io/Feedly-Notifier/";
     var url = appGlobal.feedlyApiClient.getMethodUrl("auth/auth", {
         response_type: "code",
         client_id: appGlobal.clientId,
