@@ -1,0 +1,152 @@
+{
+    "AbilitySaveFeeds": {
+        "message": "Можливість збереження подач"
+    },
+    "AutoMarkRead": {
+        "message": "Позначати як прочитане коли новини відкриваються"
+    },
+    "Categories": {
+        "message": "Категорії"
+    },
+    "CurrentUser": {
+        "message": "Поточний користувач"
+    },
+    "Email": {
+        "message": "Електронна пошта"
+    },
+    "EnableBackgroundMode": {
+        "message": "Включити фоновий режим"
+    },
+    "ExpandedPopupWidth": {
+        "message": "Ширина розширеного вікна"
+    },
+    "ExpandFeeds": {
+        "message": "Розгорнути всі подачі, коли відкривається вікно"
+    },
+    "ExtensionDescription": {
+        "message": "Розширення для читання новин Feedly"
+    },
+    "FeedlyNotifierOptions": {
+        "message": "Налаштування Feedly Notifier"
+    },
+    "FeedlyWebsite": {
+        "message": "Сайт Feedly"
+    },
+    "Filters": {
+        "message": "Фільтри"
+    },
+    "ForceUpdateFeeds": {
+        "message": "Примусове оновлення подач, коли відкривається вікно"
+    },
+    "General": {
+        "message": "Загальні"
+    },
+    "HideNotificationsAfter": {
+        "message": "Приховати оповіщення після (сек.), 0 - не приховувати"
+    },
+    "IntervalPeriod": {
+        "message": "Проміжок часу (хв.)"
+    },
+    "Login": {
+        "message": "Ввійти"
+    },
+    "Logout": {
+        "message": "Вийти"
+    },
+    "many": {
+        "message": "багато"
+    },
+    "MarkAllAsRead": {
+        "message": "Відзначити всі як прочитані"
+    },
+    "MarkAsRead": {
+        "message": "Відзначити як прочитане"
+    },
+    "MaxNotificationsCount": {
+        "message": "Максимальна кількість повідомлень заразом"
+    },
+    "MaxNumberOfFeeds": {
+        "message": "Максимальна кількість подач у вікні"
+    },
+    "More": {
+        "message": "Більше"
+    },
+    "NewFeeds": {
+        "message": "Нові подачі"
+    },
+    "NoSavedArticles": {
+        "message": "Немає збережених статей"
+    },
+    "Notifications": {
+        "message": "Повідомлення"
+    },
+    "NoUnreadArticles": {
+        "message": "Немає непрочитаних статей"
+    },
+    "OldestFeedsFirst": {
+        "message": "Найстарші подачі на початку"
+    },
+    "OpenAllFeeds": {
+        "message": "Відкрити всі подачі"
+    },
+    "OpenFeedsInBackground": {
+        "message": "Відкриті подачі в фоновій вкладці"
+    },
+    "OpenFeedsInSameTab": {
+        "message": "Відкриті подачі в тій же вкладці"
+    },
+    "OpenSiteOnIconClick": {
+        "message": "Відкрити на сайті Feedly натисненні на значок (не показувати у вікні, що спливає)"
+    },
+    "OptionsSaved": {
+        "message": "Налаштування були збережені"
+    },
+    "PlaySound": {
+        "message": "Грати звуковий сигнал на появу нових подач"
+    },
+    "Popup": {
+        "message": "Налаштування вікна, що спливає"
+    },
+    "PopupFontSize": {
+        "message": "Розмір шрифту у відсотках"
+    },
+    "PopupWidth": {
+        "message": "Ширина вікна"
+    },
+    "ResetCounterOnClick": {
+        "message": "Скидання лічильника при натисканні кнопки розширення"
+    },
+    "Save": {
+        "message": "Зберегти"
+    },
+    "ShowCategories": {
+        "message": "Показати категорії у вікні, що спливає"
+    },
+    "ShowCounter": {
+        "message": "Показати лічильник"
+    },
+    "ShowDesktopNotifications": {
+        "message": "Показати повідомлення на робочому столі"
+    },
+    "ShowFullFeedContent": {
+        "message": "Показати повний зміст статті в розширеній подічі (якщо це можливо)"
+    },
+    "UpdateFeeds": {
+        "message": "Оновлення"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Оновлення тільки наступні категорії"
+    },
+    "UseSecureConnection": {
+        "message": "Використовувати безпечне з'єднання (HTTPS)"
+    },
+    "YouHaveNewFeeds": {
+        "message": "У Вас  $count$ нових подач",
+        "placeholders": {
+            "count": {
+                "content": "$1",
+                "example": "10 or many"
+            }
+        }
+    }
+}
