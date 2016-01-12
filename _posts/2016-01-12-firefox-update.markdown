@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Feedly Notifier for Firefox has been updated"
-date:   2015-01-12 12:00:00
+date:   2016-01-12 12:00:00
 categories: site
 ---
 
