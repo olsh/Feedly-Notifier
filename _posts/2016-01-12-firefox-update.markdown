@@ -5,7 +5,7 @@ date:   2016-01-12 12:00:00
 categories: site
 ---
 
-Updated:
+New:
 
 * Korean translation was added (thanks to **Horaian**)
 
