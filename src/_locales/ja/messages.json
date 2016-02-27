@@ -132,7 +132,7 @@
         "message": "更新"
     },
     "UpdateFollowingCategories": {
-        "message": "更新（フォローしているカテゴリーのみ）"
+        "message": "フォローしているカテゴリーのみ更新する"
     },
     "UseSecureConnection": {
         "message": "HTTPS接続を利用する"
