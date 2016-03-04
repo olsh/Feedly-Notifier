@@ -498,6 +498,7 @@ function setInactiveStatus() {
 
 /* Sets badge as active */
 function setActiveStatus() {
+    chrome.browserAction.setBadgeBackgroundColor({color: "#CF0016"});
     chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {
     });
     appGlobal.isLoggedIn = true;
