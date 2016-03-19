@@ -6,4 +6,4 @@ categories: site
 ---
 
 Version for Safari browser has been released today.
- You can download it [here]({{ site.url }}/files/FeedlyNotifier.safariextz).
+ You can download it [here]({{ site.baseurl }}/files/FeedlyNotifier.safariextz).

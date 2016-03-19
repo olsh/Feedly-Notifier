@@ -14,5 +14,5 @@ Fixed
 
 ***
 
-[Full changelog]({{ site.url }}/changelog/chrome/)  
-[<img src="{{ site.url }}/images/ChromeWebStore_Badge_v2_206x58.png">](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb/)
+[Full changelog]({{ site.baseurl }}/changelog/chrome/)  
+[<img src="{{ site.baseurl }}/images/ChromeWebStore_Badge_v2_206x58.png">](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb/)

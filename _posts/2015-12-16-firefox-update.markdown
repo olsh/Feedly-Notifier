@@ -11,6 +11,6 @@ Updated:
 
 ***
 
-[Full changelog]({{ site.url }}/changelog/firefox/)  
+[Full changelog]({{ site.baseurl }}/changelog/firefox/)  
 [Download from GitHub](https://github.com/olsh/Feedly-Notifier-Firefox/releases/tag/v2.10.10)  
 [Download from AMO](https://addons.mozilla.org/en-US/firefox/addon/feedly-notifier/versions/?page=1#version-2.10.10)

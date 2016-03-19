@@ -7,5 +7,5 @@ categories: site
 
 Today we've launched the new Feedly Notifier website, maybe there will contain news.
 Some people asked to us to create Twitter or Facebook account for the extension.
-But we've just create [RSS]({{ site.url }}/feed.xml) feed for it! :)
-[Subscribe]({{ site.url }}/feed.xml) and get the latest news!
+But we've just create [RSS]({{ site.baseurl }}/feed.xml) feed for it! :)
+[Subscribe]({{ site.baseurl }}/feed.xml) and get the latest news!

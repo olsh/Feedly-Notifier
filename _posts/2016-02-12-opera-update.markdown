@@ -15,5 +15,5 @@ Fixed:
 
 ***
 
-[Full changelog]({{ site.url }}/changelog/opera/)  
+[Full changelog]({{ site.baseurl }}/changelog/opera/)  
 [Download from Opera add-ons](https://addons.opera.com/en/extensions/details/feedly-notifier/)

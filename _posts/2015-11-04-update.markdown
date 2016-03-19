@@ -18,8 +18,8 @@ Version for Opera will be approved shortly.
 
 ***
 
-[Full changelog Chrome]({{ site.url }}/changelog/chrome/)
-[Full changelog Firefox]({{ site.url }}/changelog/firefox/)
-[Full changelog Opera]({{ site.url }}/changelog/opera/)
-[<img src="{{ site.url }}/images/ChromeWebStore_Badge_v2_206x58.png">](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb/) 
+[Full changelog Chrome]({{ site.baseurl }}/changelog/chrome/)
+[Full changelog Firefox]({{ site.baseurl }}/changelog/firefox/)
+[Full changelog Opera]({{ site.baseurl }}/changelog/opera/)
+[<img src="{{ site.baseurl }}/images/ChromeWebStore_Badge_v2_206x58.png">](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb/) 
 [Download from AMO](https://addons.mozilla.org/en-US/firefox/addon/feedly-notifier/versions/?page=1#version-2.10.9)
