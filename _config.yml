@@ -1,6 +1,6 @@
 name: Feedly Notifier
 description: Extension for Feedly news reader
-url: http://olsh.github.io/Feedly-Notifier
+url: https://olsh.github.io/Feedly-Notifier
 markdown: kramdown
 gems:
   - jekyll-feed
