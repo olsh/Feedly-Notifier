@@ -102,6 +102,32 @@ module.exports = function (grunt) {
                     {expand: true, cwd: "<%= pkg.buildPath %>", src: ["*", "!*.zip"]}
                 ]
             }
+        },
+        preprocess: {
+            js: {
+                files: [
+                    {src: ["<%= pkg.buildPath %>/scripts/*.js"]},
+                    {src: ["<%= pkg.buildPath %>/*.json"]}
+                ],
+                options: {
+                    inline: true,
+                    context: {
+                        BROWSER: grunt.option("browser")
+                    },
+                    type: "js"
+                }
+            },
+            html: {
+                files: [
+                    {src: ["<%= pkg.buildPath %>/*.html"]}
+                ],
+                options: {
+                    inline: true,
+                    context: {
+                        BROWSER: grunt.option("browser")
+                    }
+                }
+            }
         }
     });
 
@@ -110,8 +136,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks('grunt-zip');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-preprocess');
 
-    grunt.registerTask("build", ["clean:pre-build", "copy", "string-replace:keys", "uglify", "zip", "clean:build"]);
-    grunt.registerTask("sandbox", ["copy", "string-replace"]);
-    grunt.registerTask("default", ["copy", "string-replace:keys"]);
+    grunt.registerTask("build", ["clean:pre-build", "copy", "string-replace:keys", "preprocess", "uglify", "zip", "clean:build"]);
+    grunt.registerTask("sandbox", ["copy", "string-replace", "preprocess"]);
+    grunt.registerTask("default", ["copy", "string-replace:keys", "preprocess"]);
 };
