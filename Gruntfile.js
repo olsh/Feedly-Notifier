@@ -138,7 +138,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-preprocess');
 
-    grunt.registerTask("build", ["clean:pre-build", "copy", "string-replace:keys", "preprocess", "uglify", "zip", "clean:build"]);
+    grunt.registerTask("build", ["clean:pre-build", "copy", "string-replace:keys", "preprocess", "zip", "clean:build"]);
+    grunt.registerTask("build-uglify", ["clean:pre-build", "copy", "string-replace:keys", "preprocess", "uglify", "zip", "clean:build"]);
     grunt.registerTask("sandbox", ["copy", "string-replace", "preprocess"]);
     grunt.registerTask("default", ["copy", "string-replace:keys", "preprocess"]);
 };
