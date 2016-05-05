@@ -16,7 +16,7 @@ title: Browser extension for reading news from rss aggregator Feedly
 <h1>Translation</h1>
 Help us to translate the extension or improve existing translations.
 <div>
-    <a href="https://poeditor.com/join/project?hash=2fZxqOmDJo" target="_blank" class="btn btn-success">Chrome version</a>
+    <a href="https://poeditor.com/join/project?hash=2fZxqOmDJo" target="_blank" class="btn btn-success">Chrome & Opera version</a>
     <a href="https://poeditor.com/join/project?hash=Ay7A8OaLpF" target="_blank" class="btn btn-success">Firefox version</a>
 </div>
 
@@ -24,7 +24,9 @@ Help us to translate the extension or improve existing translations.
     <h1>News</h1>
     <ul class="posts">
         {% for post in site.posts %}
-        <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></li>
+        <li><span>{{ post.date | date_to_string }}</span> &raquo;
+            <!--suppress HtmlUnknownTarget -->
+            <a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></li>
         {% endfor %}
     </ul>
 </div>
