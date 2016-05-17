@@ -138,7 +138,7 @@
         "message": "Use secure connection (https)"
     },
     "YouHaveNewFeeds": {
-        "message": "You have $count$ new feeds",
+        "message": "You have $count$ new posts",
         "placeholders": {
             "count": {
                 "content": "$1",
