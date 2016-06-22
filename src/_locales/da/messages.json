@@ -1,0 +1,152 @@
+{
+    "AbilitySaveFeeds": {
+        "message": "Mulighed for at gemme feeds"
+    },
+    "AutoMarkRead": {
+        "message": "Marker automatisk som læst ved åbning af nyhed"
+    },
+    "Categories": {
+        "message": "Kategorier"
+    },
+    "CurrentUser": {
+        "message": "Nuværende bruger"
+    },
+    "Email": {
+        "message": "E-mail"
+    },
+    "EnableBackgroundMode": {
+        "message": "Start baggrundstilstand"
+    },
+    "ExpandFeeds": {
+        "message": "Udvid alle feeds når pop op åbnes"
+    },
+    "ExpandedPopupWidth": {
+        "message": "Bredde på udvidet po op vindue"
+    },
+    "ExtensionDescription": {
+        "message": "Udviddelse til Feedly nyhedslæser"
+    },
+    "FeedlyNotifierOptions": {
+        "message": "Feedly Notifier valgmuligheder"
+    },
+    "FeedlyWebsite": {
+        "message": "Feedly Webside"
+    },
+    "Filters": {
+        "message": "Filtre"
+    },
+    "ForceUpdateFeeds": {
+        "message": "Gennemtving opdatering af feeds ved åbning af pop op"
+    },
+    "General": {
+        "message": "Generelt"
+    },
+    "HideNotificationsAfter": {
+        "message": "Skjul skrivebordsnotifikationer efter (sek.) 0 - Skjul ikke"
+    },
+    "IntervalPeriod": {
+        "message": "Interval"
+    },
+    "Login": {
+        "message": "Log ind"
+    },
+    "Logout": {
+        "message": "Log ud"
+    },
+    "MarkAllAsRead": {
+        "message": "Marker alle som læst"
+    },
+    "MarkAsRead": {
+        "message": "Marker som læst"
+    },
+    "MaxNotificationsCount": {
+        "message": "Max antal notifikationer på en gang"
+    },
+    "MaxNumberOfFeeds": {
+        "message": "Max antal feeds der vises i pop-up"
+    },
+    "More": {
+        "message": "Mere"
+    },
+    "NewFeeds": {
+        "message": "Nye feeds"
+    },
+    "NoSavedArticles": {
+        "message": "Ingen gemte artikler"
+    },
+    "NoUnreadArticles": {
+        "message": "Ingen ulæste artikler"
+    },
+    "Notifications": {
+        "message": "Notifikationer"
+    },
+    "OldestFeedsFirst": {
+        "message": "Ældste feeds først"
+    },
+    "OpenAllFeeds": {
+        "message": "Åben alle feeds"
+    },
+    "OpenFeedsInBackground": {
+        "message": "Åben feeds i baggrundsfaneblad"
+    },
+    "OpenFeedsInSameTab": {
+        "message": "Åben feeds i det samme faneblad"
+    },
+    "OpenSiteOnIconClick": {
+        "message": "Åben Feedly-websiden ved klik på ikon"
+    },
+    "OptionsSaved": {
+        "message": "Indstillingerne er gemt"
+    },
+    "PlaySound": {
+        "message": "Afspil lyd ved nye feeds"
+    },
+    "Popup": {
+        "message": "Pop op"
+    },
+    "PopupFontSize": {
+        "message": "Skriftstørrelse i pop op"
+    },
+    "PopupWidth": {
+        "message": "Pop op bredde"
+    },
+    "ResetCounterOnClick": {
+        "message": "Nulstil tæller ved klik på udviddelsesknappen"
+    },
+    "Save": {
+        "message": "Gem"
+    },
+    "ShowCategories": {
+        "message": "Vis kategorier i pop op"
+    },
+    "ShowCounter": {
+        "message": "Vis tæller"
+    },
+    "ShowDesktopNotifications": {
+        "message": "Vis skrivebordsnotifikationer"
+    },
+    "ShowFullFeedContent": {
+        "message": "Vis den fulde artikel i det udvidede feed (hvis muligt)"
+    },
+    "UpdateFeeds": {
+        "message": "Opdater"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Opdater kun de følgende feeds"
+    },
+    "UseSecureConnection": {
+        "message": "Brug sikker forbindelse (HTTPS)"
+    },
+    "YouHaveNewFeeds": {
+        "message": "Du har $count$ nye feeds",
+        "placeholders": {
+            "count": {
+                "content": "$1",
+                "example": "10 nebo více"
+            }
+        }
+    },
+    "many": {
+        "message": "mange"
+    }
+}

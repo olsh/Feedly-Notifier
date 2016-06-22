@@ -1,12 +1,12 @@
 ﻿{
     "AbilitySaveFeeds": {
-        "message": "\"나중에 읽기\" 버튼 제공"
+        "message": "피드 저장 기능"
     },
     "AutoMarkRead": {
-        "message": "요약을 열 때, 자동으로 읽은 상태로 표시"
+        "message": "뉴스 열면, 자동으로 읽은 상태로 표시"
     },
     "Categories": {
-        "message": "분류"
+        "message": "카테고리"
     },
     "CurrentUser": {
         "message": "현재 사용자"
@@ -17,14 +17,14 @@
     "EnableBackgroundMode": {
         "message": "백그라운드 모드 활성화"
     },
+    "ExpandFeeds": {
+        "message": "팝업창 열릴 때 모든 피드 확대"
+    },
     "ExpandedPopupWidth": {
         "message": "확장 팝업 폭"
     },
-    "ExpandFeeds": {
-        "message": "팝업이 열릴 때 모든 피드 확대"
-    },
     "ExtensionDescription": {
-        "message": "feedly 뉴스 리더에 대한 확장"
+        "message": "feedly 뉴스 리더 확장"
     },
     "FeedlyNotifierOptions": {
         "message": "Feedly 알림 옵션"
@@ -36,13 +36,13 @@
         "message": "필터"
     },
     "ForceUpdateFeeds": {
-        "message": "클릭해서 업데이트하기"
+        "message": "팝업창에서 피드 업데이트하기"
     },
     "General": {
         "message": "일반"
     },
     "HideNotificationsAfter": {
-        "message": "몇 초 후 숨기기 바탕 화면 알림 (0은 숨기지 않음)"
+        "message": "바탕 화면 알림 유지 시간(초), - 0은 숨기지 않음"
     },
     "IntervalPeriod": {
         "message": "새로고침 간격 (분.)"
@@ -53,9 +53,6 @@
     "Logout": {
         "message": "로그아웃"
     },
-    "many": {
-        "message": "다수"
-    },
     "MarkAllAsRead": {
         "message": "모두 읽은 상태로 표시"
     },
@@ -63,10 +60,10 @@
         "message": "읽은 상태로 표시"
     },
     "MaxNotificationsCount": {
-        "message": "한 번 알림의 최대 갯수"
+        "message": "1회 알림 최대 갯수"
     },
     "MaxNumberOfFeeds": {
-        "message": "팝업에서 피드의 최대 갯수"
+        "message": "팝업창 피드의 최대 갯수"
     },
     "More": {
         "message": "더 보기"
@@ -77,11 +74,11 @@
     "NoSavedArticles": {
         "message": "저장된 기사 없음"
     },
-    "Notifications": {
-        "message": "알림"
-    },
     "NoUnreadArticles": {
         "message": "읽지 않은 기사 없음"
+    },
+    "Notifications": {
+        "message": "알림"
     },
     "OldestFeedsFirst": {
         "message": "오래된 것부터"
@@ -120,7 +117,7 @@
         "message": "저장"
     },
     "ShowCategories": {
-        "message": "팝업에 분류 표시"
+        "message": "팝업창에 카테고리 표시"
     },
     "ShowCounter": {
         "message": "카운터 표시"
@@ -135,7 +132,7 @@
         "message": "업데이트"
     },
     "UpdateFollowingCategories": {
-        "message": "다음 분류만 업데이트"
+        "message": "다음 카테고리만 업데이트"
     },
     "UseSecureConnection": {
         "message": "보안 연결 사용(https)"
@@ -148,5 +145,8 @@
                 "example": "10 or many"
             }
         }
+    },
+    "many": {
+        "message": "많음"
     }
 }

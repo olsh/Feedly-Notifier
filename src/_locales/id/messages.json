@@ -1,0 +1,152 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Kemampuan untuk menyimpan feed"
+  },
+  "AutoMarkRead": {
+    "message": "Otomatis tandai dibaca pada berita terbuka"
+  },
+  "Categories": {
+    "message": "Kategori"
+  },
+  "CurrentUser": {
+    "message": "Pengguna saat ini"
+  },
+  "Email": {
+    "message": "Email"
+  },
+  "EnableBackgroundMode": {
+    "message": "Aktifkan mode latar belakang"
+  },
+  "ExpandFeeds": {
+    "message": "Perlihatkan seluruh feed ketika popup dibuka"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Lebar popup diperluas"
+  },
+  "ExtensionDescription": {
+    "message": "Ekstensi untuk feedly pembaca berita"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Pilihan notifikasi feedly"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly website"
+  },
+  "Filters": {
+    "message": "Filters"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Pembaruan otomatis ketika feed terbuka"
+  },
+  "General": {
+    "message": "Umum"
+  },
+  "HideNotificationsAfter": {
+    "message": "Menyembunyikan notifikasi setelah (detik), 0 - jangan sembuyikan"
+  },
+  "IntervalPeriod": {
+    "message": "waktu periode (menit.)"
+  },
+  "Login": {
+    "message": "Masuk"
+  },
+  "Logout": {
+    "message": "Keluar"
+  },
+  "MarkAllAsRead": {
+    "message": "Tandai semua yang sudah dibaca"
+  },
+  "MarkAsRead": {
+    "message": "Tandai yang sudah dibaca"
+  },
+  "MaxNotificationsCount": {
+    "message": "Maksimal semua jumlah notifikasi"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "maksimal nomor feed dalam popup"
+  },
+  "More": {
+    "message": "Lebih"
+  },
+  "NewFeeds": {
+    "message": "Feed baru"
+  },
+  "NoSavedArticles": {
+    "message": "tidak menyimpan artikel"
+  },
+  "NoUnreadArticles": {
+    "message": "Artikel tidak dibaca"
+  },
+  "Notifications": {
+    "message": "Notifikasi"
+  },
+  "OldestFeedsFirst": {
+    "message": "Feeds lampau duluan"
+  },
+  "OpenAllFeeds": {
+    "message": "Buka semua feeds"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Buka feeds di tab baru"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Buka feeds ditab ini"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Buka situs Feedly dengan klik icon (jangan menunjukan popup)"
+  },
+  "OptionsSaved": {
+    "message": "Pengaturan telah disimpan"
+  },
+  "PlaySound": {
+    "message": "Bunyikan suara alaram saat ada Feeds baru"
+  },
+  "Popup": {
+    "message": "Popup"
+  },
+  "PopupFontSize": {
+    "message": "Popup ukuran font dalam persen"
+  },
+  "PopupWidth": {
+    "message": "Lebar Popup"
+  },
+  "ResetCounterOnClick": {
+    "message": "Resetar perhitungan apabila tombol ekstensi diklik"
+  },
+  "Save": {
+    "message": "Simpan"
+  },
+  "ShowCategories": {
+    "message": "Melihat kategori dalam popup"
+  },
+  "ShowCounter": {
+    "message": "Menunjukan counter"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Menunjukan notifikasi desktop"
+  },
+  "ShowFullFeedContent": {
+    "message": "Menunjukan semua konten artikel dalam luasan feed (jika memungkinkan)"
+  },
+  "UpdateFeeds": {
+    "message": "Pembaruan"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Pembaruan hanya mengikuti kategori"
+  },
+  "UseSecureConnection": {
+    "message": "mengunakan koneksi (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Kamu punya $count$ feed baru",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  },
+  "many": {
+    "message": "banyak"
+  }
+}

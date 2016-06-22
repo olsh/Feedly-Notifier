@@ -17,11 +17,11 @@
     "EnableBackgroundMode": {
         "message": "Habilitar modo segundo plano"
     },
+    "ExpandFeeds": {
+        "message": "Expandir todos os feeds quando a popup é aberta"
+    },
     "ExpandedPopupWidth": {
         "message": "Expandir largura do popup"
-    },
-    "ExpandFeeds": {
-        "message": "Expandir todos os feeds quando a popup é aberta\n"
     },
     "ExtensionDescription": {
         "message": "Extensão para o leitor de notícias Feedly"
@@ -53,9 +53,6 @@
     "Logout": {
         "message": "Logout"
     },
-    "many": {
-        "message": "muitos"
-    },
     "MarkAllAsRead": {
         "message": "Marcar tudo como lido"
     },
@@ -77,11 +74,11 @@
     "NoSavedArticles": {
         "message": "Não há artigos salvos"
     },
-    "Notifications": {
-        "message": "Notificações"
-    },
     "NoUnreadArticles": {
         "message": "Não há novos artigos"
+    },
+    "Notifications": {
+        "message": "Notificações"
     },
     "OldestFeedsFirst": {
         "message": "Feeds antigos primeiro"
@@ -126,27 +123,24 @@
         "message": "Mostrar contador"
     },
     "ShowDesktopNotifications": {
-        "message": "Mostrar notificações na área de trabalho"
+        "message": "Exibir notificações no Desktop"
     },
     "ShowFullFeedContent": {
-        "message": "Se possível, mostrar conteúdo completo do artigo no feed expandido"
+        "message": "Exibir conteúdo completo do artigo no feed expandido (se possível)"
     },
     "UpdateFeeds": {
-        "message": "Update"
+        "message": "Atualizar"
     },
     "UpdateFollowingCategories": {
-        "message": "Atualizar apenas as seguintes categorias"
+        "message": "Atualizar somente as seguintes categorias"
     },
     "UseSecureConnection": {
-        "message": "Usar conexão segura (https)"
+        "message": "Utilizar conexão segura (https)"
     },
     "YouHaveNewFeeds": {
-        "message": "Vocês tem $count$ novos feeds",
-        "placeholders": {
-            "count": {
-                "content": "$1",
-                "example": "10 or many"
-            }
-        }
+        "message": "Você tem $count$ novos feeds"
+    },
+    "many": {
+        "message": "muitos"
     }
 }
