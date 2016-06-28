@@ -138,7 +138,13 @@
         "message": "Utilizar conexão segura (https)"
     },
     "YouHaveNewFeeds": {
-        "message": "Você tem $count$ novos feeds"
+        "message": "Você tem $count$ novos feeds",
+        "placeholders": {
+            "count": {
+                "content": "$1",
+                "example": "10 or many"
+            }
+        }
     },
     "many": {
         "message": "muitos"
