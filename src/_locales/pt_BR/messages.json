@@ -86,6 +86,9 @@
     "OpenAllFeeds": {
         "message": "Abrir todos feeds"
     },
+    "OpenAllSavedFeeds": {
+        "message": "Open all saved feeds and unsave them"
+    },
     "OpenFeedsInBackground": {
         "message": "Abrir feeds em uma aba em segundo plano"
     },
