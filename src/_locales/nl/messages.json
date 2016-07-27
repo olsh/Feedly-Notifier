@@ -1,0 +1,155 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Mogelijkheid om feeds op te slaan"
+  },
+  "AutoMarkRead": {
+    "message": "Automatisch markeren als gelezen bij het openen van een bericht"
+  },
+  "Categories": {
+    "message": "Categorieën"
+  },
+  "CurrentUser": {
+    "message": "Huidige gebruiker"
+  },
+  "Email": {
+    "message": "E-mail"
+  },
+  "EnableBackgroundMode": {
+    "message": "Achtergrond mode aan"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Uitgebreide popup breedte"
+  },
+  "ExpandFeeds": {
+    "message": "Open het volledige bericht als een popup is geopend"
+  },
+  "ExtensionDescription": {
+    "message": "ExtensionDescription"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "FeedlyNotifierOptions"
+  },
+  "FeedlyWebsite": {
+    "message": "FeedlyWebsite"
+  },
+  "Filters": {
+    "message": "filters"
+  },
+  "ForceUpdateFeeds": {
+    "message": "ForceUpdateFeeds"
+  },
+  "General": {
+    "message": "Algmeen"
+  },
+  "HideNotificationsAfter": {
+    "message": "Verberg desktop notificaties na (sec.), 0 - niet verbergen"
+  },
+  "IntervalPeriod": {
+    "message": "Interval periode (min.)"
+  },
+  "Login": {
+    "message": "Inloggen"
+  },
+  "Logout": {
+    "message": "Uitloggen"
+  },
+  "many": {
+    "message": "veel"
+  },
+  "MarkAllAsRead": {
+    "message": "Markeer alles als gelezen"
+  },
+  "MarkAsRead": {
+    "message": "Markeer als gelezen"
+  },
+  "MaxNotificationsCount": {
+    "message": "MaxNotificationsCount"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "MaxNumberOfFeeds"
+  },
+  "More": {
+    "message": "Meer"
+  },
+  "NewFeeds": {
+    "message": "newfeeds"
+  },
+  "NoSavedArticles": {
+    "message": "NoSavedArticles"
+  },
+  "Notifications": {
+    "message": "meldingen"
+  },
+  "NoUnreadArticles": {
+    "message": "NoUnreadArticles"
+  },
+  "OldestFeedsFirst": {
+    "message": "OldestFeedsFirst"
+  },
+  "OpenAllFeeds": {
+    "message": "OpenAllFeeds"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Open all saved feeds and unsave them"
+  },
+  "OpenFeedsInBackground": {
+    "message": "OpenFeedsInBackground"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "OpenFeedsInSameTab"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "OpenSiteOnIconClick"
+  },
+  "OptionsSaved": {
+    "message": "OptionsSaved"
+  },
+  "PlaySound": {
+    "message": "Geluid afspelen"
+  },
+  "Popup": {
+    "message": "Pop-up"
+  },
+  "PopupFontSize": {
+    "message": "PopupFontSize"
+  },
+  "PopupWidth": {
+    "message": "PopupWidth"
+  },
+  "ResetCounterOnClick": {
+    "message": "ResetCounterOnClick"
+  },
+  "Save": {
+    "message": "Save"
+  },
+  "ShowCategories": {
+    "message": "ShowCategories"
+  },
+  "ShowCounter": {
+    "message": "ShowCounter"
+  },
+  "ShowDesktopNotifications": {
+    "message": "ShowDesktopNotifications"
+  },
+  "ShowFullFeedContent": {
+    "message": "ShowFullFeedContent"
+  },
+  "UpdateFeeds": {
+    "message": "UpdateFeeds"
+  },
+  "UpdateFollowingCategories": {
+    "message": "UpdateFollowingCategories"
+  },
+  "UseSecureConnection": {
+    "message": "UseSecureConnection"
+  },
+  "YouHaveNewFeeds": {
+    "message": "YouHaveNewFeeds",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}
