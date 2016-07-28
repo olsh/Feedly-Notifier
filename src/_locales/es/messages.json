@@ -1,0 +1,152 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Capacidad para guardar fuentes"
+  },
+  "AutoMarkRead": {
+    "message": "Marcar automáticamente como leído al abrir noticias"
+  },
+  "Categories": {
+    "message": "Categorías"
+  },
+  "CurrentUser": {
+    "message": "Usuario actual"
+  },
+  "Email": {
+    "message": "Correo electrónico"
+  },
+  "EnableBackgroundMode": {
+    "message": "Activar modo en segundo plano"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Ventana emergente de anchura expandida"
+  },
+  "ExpandFeeds": {
+    "message": "Expandir todas las fuentes cuando se abra la ventana emergente"
+  },
+  "ExtensionDescription": {
+    "message": "Extensión para Feedly news reader"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Opciones de Feedly Notifier"
+  },
+  "FeedlyWebsite": {
+    "message": "Página web de Feedly"
+  },
+  "Filters": {
+    "message": "Filtros"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Forzar actualización de fuentes al abrir ventana emergente"
+  },
+  "General": {
+    "message": "General"
+  },
+  "HideNotificationsAfter": {
+    "message": "Ocultar notificaciones de escritorio después (seg.), 0 - No ocultar"
+  },
+  "IntervalPeriod": {
+    "message": "Periodo de intervalo (min.)"
+  },
+  "Login": {
+    "message": "Iniciar sesión"
+  },
+  "Logout": {
+    "message": "Cerrar sesión"
+  },
+  "many": {
+    "message": "muchos"
+  },
+  "MarkAllAsRead": {
+    "message": "Marcar todos como leídos"
+  },
+  "MarkAsRead": {
+    "message": "Marcar como leído"
+  },
+  "MaxNotificationsCount": {
+    "message": "Máximas notificaciones contadas de una vez"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Máximo número de fuentes en la ventana emergente"
+  },
+  "More": {
+    "message": "Más"
+  },
+  "NewFeeds": {
+    "message": "Nuevas fuentes"
+  },
+  "NoSavedArticles": {
+    "message": "No hay artículos guardados"
+  },
+  "Notifications": {
+    "message": "Notificaciones"
+  },
+  "NoUnreadArticles": {
+    "message": "No hay artículos no leídos"
+  },
+  "OldestFeedsFirst": {
+    "message": "Primero las fuentes más antiguas"
+  },
+  "OpenAllFeeds": {
+    "message": "Abrir todas las fuentes"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Abrir fuentes en pestaña en segundo plano"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Abrir fuentes en la misma pestaña"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Abrir sitio de Feedly al hacer click en el icono (no mostrar ventana emergente)"
+  },
+  "OptionsSaved": {
+    "message": "Las opciones han sido guardadas"
+  },
+  "PlaySound": {
+    "message": "Reproducir sonido cuando haya nuevas fuentes"
+  },
+  "Popup": {
+    "message": "Ventana emergente"
+  },
+  "PopupFontSize": {
+    "message": "Tamaño de la fuente de la ventana emergente en porcentaje"
+  },
+  "PopupWidth": {
+    "message": "Anchura de la ventana emergente"
+  },
+  "ResetCounterOnClick": {
+    "message": "Reiniciar contador cuando se presione el botón de la extensión"
+  },
+  "Save": {
+    "message": "Guardar"
+  },
+  "ShowCategories": {
+    "message": "Mostrar categorías en ventana emergente"
+  },
+  "ShowCounter": {
+    "message": "Mostrar contador"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Mostrar notificaciones de escritorio"
+  },
+  "ShowFullFeedContent": {
+    "message": "Mostrar el contenido completo de un artículo en la fuente expandida (si es posible)"
+  },
+  "UpdateFeeds": {
+    "message": "Actualizar"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Actualizar sólo las siguientes categorías"
+  },
+  "UseSecureConnection": {
+    "message": "Usar conexión segura (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Tienes $count$ nuevas fuentes",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+    "AbilitySaveFeeds": {
+        "message": "Способност чувања вести"
+    },
+    "AutoMarkRead": {
+        "message": "Аутоматски означи као прочитано приликом отварања вести"
+    },
+    "Categories": {
+        "message": "Категорије"
+    },
+    "CurrentUser": {
+        "message": "Тренутни корисник"
+    },
+    "Email": {
+        "message": "Е-пошта"
+    },
+    "EnableBackgroundMode": {
+        "message": "Омогући рад у позадини"
+    },
+    "ExpandFeeds": {
+        "message": "Рашири све вести приликом отварања искачућег прозора"
+    },
+    "ExpandedPopupWidth": {
+        "message": "Ширина проширеног искачућег прозора"
+    },
+    "ExtensionDescription": {
+        "message": "Проширење за читача вести Feedly"
+    },
+    "FeedlyNotifierOptions": {
+        "message": "Feedly Notifier подешавања"
+    },
+    "FeedlyWebsite": {
+        "message": "Feedly веб сајт"
+    },
+    "Filters": {
+        "message": "Филтери"
+    },
+    "ForceUpdateFeeds": {
+        "message": "Ажурирај вести приликом отварања искачућег прозора"
+    },
+    "General": {
+        "message": "Опште"
+    },
+    "HideNotificationsAfter": {
+        "message": "Сакриј десктоп обавештења после (сек.), 0 - на сакривај"
+    },
+    "IntervalPeriod": {
+        "message": "Интервал провере (у минутима)"
+    },
+    "Login": {
+        "message": "Пријави се"
+    },
+    "Logout": {
+        "message": "Одјави се"
+    },
+    "MarkAllAsRead": {
+        "message": "Означи све као прочитано"
+    },
+    "MarkAsRead": {
+        "message": "Означи као прочитано"
+    },
+    "MaxNotificationsCount": {
+        "message": "Максималан број обавештења одједном"
+    },
+    "MaxNumberOfFeeds": {
+        "message": "Максималан број вести у искачућем прозору"
+    },
+    "More": {
+        "message": "Детаљније"
+    },
+    "NewFeeds": {
+        "message": "Нове вести"
+    },
+    "NoSavedArticles": {
+        "message": "Нема сачуваних вести"
+    },
+    "NoUnreadArticles": {
+        "message": "Нема непрочитаних вести"
+    },
+    "Notifications": {
+        "message": "Обавештења"
+    },
+    "OldestFeedsFirst": {
+        "message": "Прво старије вести"
+    },
+    "OpenAllFeeds": {
+        "message": "Отвори све вести"
+    },
+    "OpenFeedsInBackground": {
+        "message": "Отвори вести у позадинској картици"
+    },
+    "OpenFeedsInSameTab": {
+        "message": "Отвори вести у истој картици"
+    },
+    "OpenSiteOnIconClick": {
+        "message": "Отвори Feedly веб сајт кликом на иконицу (не приказује се искачући прозор)"
+    },
+    "OptionsSaved": {
+        "message": "Подешавања су сачувана"
+    },
+    "PlaySound": {
+        "message": "Пусти звучни сигнал код пријема нових вести"
+    },
+    "Popup": {
+        "message": "Искачући прозор"
+    },
+    "PopupFontSize": {
+        "message": "Величина фонта искачућег прозора у процентима"
+    },
+    "PopupWidth": {
+        "message": "Ширина искачућег прозора"
+    },
+    "ResetCounterOnClick": {
+        "message": "Поништи бројач кликом на иконицу проширења"
+    },
+    "Save": {
+        "message": "Сачувај"
+    },
+    "ShowCategories": {
+        "message": "Прикажи категорије у искачућем прозору"
+    },
+    "ShowCounter": {
+        "message": "Прикажи бројач"
+    },
+    "ShowDesktopNotifications": {
+        "message": "Прикажи десктоп обавештења"
+    },
+    "ShowFullFeedContent": {
+        "message": "Прикажи пун садржај вести у проширеном приказу (ако је могуће)"
+    },
+    "UpdateFeeds": {
+        "message": "Ажурирај"
+    },
+    "UpdateFollowingCategories": {
+        "message": "Ажурирај само следеће категорије"
+    },
+    "UseSecureConnection": {
+        "message": "Користи безбедну везу (https)"
+    },
+    "YouHaveNewFeeds": {
+        "message": "Број нових вести:  $count$",
+        "placeholders": {
+            "count": {
+                "content": "$1",
+                "example": "10 or many"
+            }
+        }
+    },
+    "many": {
+        "message": "10 и више"
+    }
+}

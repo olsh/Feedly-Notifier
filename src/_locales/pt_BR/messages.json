@@ -15,13 +15,13 @@
         "message": "E-mail"
     },
     "EnableBackgroundMode": {
-        "message": "Enable background mode"
-    },
-    "ExpandedPopupWidth": {
-        "message": "Expanded popup width"
+        "message": "Habilitar modo segundo plano"
     },
     "ExpandFeeds": {
-        "message": "Expand all feeds when popup is opened"
+        "message": "Expandir todos os feeds quando a popup é aberta"
+    },
+    "ExpandedPopupWidth": {
+        "message": "Expandir largura do popup"
     },
     "ExtensionDescription": {
         "message": "Extensão para o leitor de notícias Feedly"
@@ -81,19 +81,19 @@
         "message": "Notificações"
     },
     "OldestFeedsFirst": {
-        "message": "Oldest feeds first"
+        "message": "Feeds antigos primeiro"
     },
     "OpenAllFeeds": {
-        "message": "Open all feeds"
+        "message": "Abrir todos feeds"
     },
     "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsaved them"
+        "message": "Open all saved feeds and unsave them"
     },
     "OpenFeedsInBackground": {
-        "message": "Open feeds in background tab"
+        "message": "Abrir feeds em uma aba em segundo plano"
     },
     "OpenFeedsInSameTab": {
-        "message": "Open feeds in the same tab"
+        "message": "Abrir feeds na mesma aba"
     },
     "OpenSiteOnIconClick": {
         "message": "Abrir Feedly ao clicar sobre o ícone (não mostrar popup)"
@@ -102,46 +102,46 @@
         "message": "As configurações foram salvas"
     },
     "PlaySound": {
-        "message": "Play alert sound on new feeds"
+        "message": "Tocar um som quando novos feeds chegarem"
     },
     "Popup": {
         "message": "Popup"
     },
     "PopupFontSize": {
-        "message": "Popup font size in percent"
+        "message": "Tamanho em percentagem da popup"
     },
     "PopupWidth": {
-        "message": "Popup width"
+        "message": "Largura do popup"
     },
     "ResetCounterOnClick": {
-        "message": "Reset counter when extension button clicked"
+        "message": "Resetar contador quando clicado no botão da extenção"
     },
     "Save": {
         "message": "Salvar"
     },
     "ShowCategories": {
-        "message": "Show categories in popup"
+        "message": "Mostrar categorias em popup"
     },
     "ShowCounter": {
         "message": "Mostrar contador"
     },
     "ShowDesktopNotifications": {
-        "message": "Mostrar notificações na área de trabalho"
+        "message": "Exibir notificações no Desktop"
     },
     "ShowFullFeedContent": {
-        "message": "Se possível, mostrar conteúdo completo do artigo no feed expandido"
+        "message": "Exibir conteúdo completo do artigo no feed expandido (se possível)"
     },
     "UpdateFeeds": {
-        "message": "Update"
+        "message": "Atualizar"
     },
     "UpdateFollowingCategories": {
-        "message": "Atualizar apenas as seguintes categorias"
+        "message": "Atualizar somente as seguintes categorias"
     },
     "UseSecureConnection": {
-        "message": "Usar conexão segura (https)"
+        "message": "Utilizar conexão segura (https)"
     },
     "YouHaveNewFeeds": {
-        "message": "Vocês tem $count$ novos feeds",
+        "message": "Você tem $count$ novos feeds",
         "placeholders": {
             "count": {
                 "content": "$1",

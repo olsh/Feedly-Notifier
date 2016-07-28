@@ -87,7 +87,7 @@
         "message": "Open all feeds"
     },
     "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsaved them"
+        "message": "Open all saved feeds and unsave them"
     },
     "OpenFeedsInBackground": {
         "message": "Open feeds in background tab"
@@ -141,7 +141,7 @@
         "message": "Use secure connection (https)"
     },
     "YouHaveNewFeeds": {
-        "message": "You have $count$ new feeds",
+        "message": "You have $count$ new posts",
         "placeholders": {
             "count": {
                 "content": "$1",

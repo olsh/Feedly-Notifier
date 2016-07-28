@@ -2,7 +2,7 @@
 
 var popupGlobal = {
     //Determines lists of supported jQuery.timeago localizations, default localization is en
-    supportedTimeAgoLocales: ["ru", "fr", "pt-BR", "it", "cs", "zh-CN", "zh-TW"],
+    supportedTimeAgoLocales: ["ru", "fr", "pt-br", "it", "cs", "zh-CN", "zh-TW", "tr", "es", "ko", "de", "uk", "sr", "ja", "ar", "id", "da", "nl"],
     feeds: [],
     savedFeeds: [],
     backgroundPage: chrome.extension.getBackgroundPage()
@@ -85,9 +85,7 @@ $("#popup-content").on("click", "#open-unsaved-all-news", function () {
            var news = $(value);
            chrome.tabs.create({url: news.data("link"), active: false }, function () {});
        });
-       if (popupGlobal.backgroundPage.appGlobal.options.markReadOnClick) {
-           markAllAsUnsaved();
-       }
+        markAllAsUnsaved();
 });
 
 $("#feed").on("click", ".mark-read", function (event) {
@@ -155,7 +153,7 @@ $("#popup-content").on("click", ".save-feed", function () {
     var feed = $this.closest(".item");
     var feedId = feed.data("id");
     var saveItem = !$this.data("saved");
-    popupGlobal.backgroundPage.toggleSavedFeed(feedId, saveItem);
+    popupGlobal.backgroundPage.toggleSavedFeed([feedId], saveItem);
     $this.data("saved", saveItem);
     $this.toggleClass("saved");
 });
@@ -277,16 +275,15 @@ function markAsRead(feedIds) {
 }
 
 function markAsUnSaved(feedIds) {
-
     var feedItems = $();
     for (var i = 0; i < feedIds.length; i++) {
         feedItems = feedItems.add(".item[data-id='" + feedIds[i] + "']");
-        popupGlobal.backgroundPage.toggleSavedFeed(feedIds[i], 0);
     }
 
-    feedItems.fadeOut("fast", function(){
-        $(this).remove();
-    });
+    popupGlobal.backgroundPage.toggleSavedFeed(feedIds, false);
+
+    feedItems.data("saved", false);
+    feedItems.find(".saved").removeClass("saved");
 }
 
 function markAllAsRead() {

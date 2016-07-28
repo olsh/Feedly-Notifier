@@ -1,7 +1,11 @@
 @font-face {
     font-family: "Open Sans Condensed";
-
     src: url(opensanscondensed.woff) format("woff");
+}
+
+@font-face {
+    font-family: "Noto Sans KR";
+    src: url(NotoSansKR-Bold.woff) format("woff");
 }
 
 body {
@@ -25,6 +29,7 @@ body {
     font-weight: bold;
     line-height: 17px;
 
+    white-space: nowrap;
     -webkit-appearance: none;
 }
 
@@ -179,7 +184,7 @@ body {
 .title {
     color: #444444;
 
-    font-family: "Open Sans Condensed", serif;
+    font-family: "Open Sans Condensed", "Noto Sans KR", serif;
 }
 
 #feed-empty {
@@ -346,7 +351,7 @@ body {
 }
 
 .blog-title span {
-    font-family: "Open Sans Condensed", serif;
+    font-family: "Open Sans Condensed", "Noto Sans KR", serif;
 }
 
 .blog-title a {

@@ -114,7 +114,9 @@ function saveOptions() {
     });
     options.filters = parseFilters();
 
+    // @if BROWSER='chrome'
     setBackgroundMode($("#enable-background-mode").is(":checked"));
+    // @endif
 
     chrome.storage.sync.set(options, function () {
         alert(chrome.i18n.getMessage("OptionsSaved"));
@@ -122,9 +124,11 @@ function saveOptions() {
 }
 
 function loadOptions() {
+    // @if BROWSER='chrome'
     chrome.permissions.contains(optionsGlobal.backgroundPermission, function (enabled){
         $("#enable-background-mode").prop("checked", enabled);
     });
+    // @endif
 
     chrome.storage.sync.get(null, function (items) {
         var optionsForm = $("#options");
@@ -146,6 +150,7 @@ function loadOptions() {
     });
 }
 
+// @if BROWSER='chrome'
 function setBackgroundMode(enable) {
     if (enable) {
         chrome.permissions.request(optionsGlobal.backgroundPermission, function () {
@@ -155,3 +160,4 @@ function setBackgroundMode(enable) {
         });
     }
 }
+// @endif

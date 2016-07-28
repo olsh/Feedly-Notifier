@@ -18,7 +18,17 @@ var FeedlyApiClient = function (accessToken) {
         for (var parameterName in parameters) {
             queryString += parameterName + "=" + parameters[parameterName] + "&";
         }
-        queryString += "av=c" + extensionVersion;
+
+        var browserPrefix;
+        // @if BROWSER='chrome'
+        browserPrefix = "c";
+        // @endif
+
+        // @if BROWSER='opera'
+        browserPrefix = "o";
+        // @endif
+
+        queryString += "av=" + browserPrefix + extensionVersion;
 
         methodUrl += queryString;
 

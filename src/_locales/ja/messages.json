@@ -1,0 +1,152 @@
+{
+    "AbilitySaveFeeds": {
+        "message": "フィードの保存が可能"
+    },
+    "AutoMarkRead": {
+        "message": "記事を開いた時に自動で既読にする"
+    },
+    "Categories": {
+        "message": "カテゴリー"
+    },
+    "CurrentUser": {
+        "message": "現在のユーザー"
+    },
+    "Email": {
+        "message": "メールアドレス"
+    },
+    "EnableBackgroundMode": {
+        "message": "バックグラウンドモードを有効にする"
+    },
+    "ExpandFeeds": {
+        "message": "ポップアップを開いた際に全てのフィードを展開する"
+    },
+    "ExpandedPopupWidth": {
+        "message": "拡張ポップアップの幅"
+    },
+    "ExtensionDescription": {
+        "message": "Feedly news reader の拡張機能"
+    },
+    "FeedlyNotifierOptions": {
+        "message": "オプション"
+    },
+    "FeedlyWebsite": {
+        "message": "ウェブサイト"
+    },
+    "Filters": {
+        "message": "フィルター"
+    },
+    "ForceUpdateFeeds": {
+        "message": "ポップアップした際に、フィードを強制的に更新する"
+    },
+    "General": {
+        "message": "標準"
+    },
+    "HideNotificationsAfter": {
+        "message": "○秒後にデスクトップ通知を非表示にする（0を指定で非表示にしない）"
+    },
+    "IntervalPeriod": {
+        "message": "更新間隔（分）"
+    },
+    "Login": {
+        "message": "ログイン"
+    },
+    "Logout": {
+        "message": "ログアウト"
+    },
+    "MarkAllAsRead": {
+        "message": "全て既読にする"
+    },
+    "MarkAsRead": {
+        "message": "既読にする"
+    },
+    "MaxNotificationsCount": {
+        "message": "一回当たりの最大の通知数"
+    },
+    "MaxNumberOfFeeds": {
+        "message": "ポップアップの最大数"
+    },
+    "More": {
+        "message": "もっと見る"
+    },
+    "NewFeeds": {
+        "message": "新しいフィード"
+    },
+    "NoSavedArticles": {
+        "message": "保存された記事はありません"
+    },
+    "NoUnreadArticles": {
+        "message": "未読の記事はありません"
+    },
+    "Notifications": {
+        "message": "通知"
+    },
+    "OldestFeedsFirst": {
+        "message": "古いフィードを先頭にする"
+    },
+    "OpenAllFeeds": {
+        "message": "全てのフィードを開く"
+    },
+    "OpenFeedsInBackground": {
+        "message": "フィードをバックグラウンドのタブで開く"
+    },
+    "OpenFeedsInSameTab": {
+        "message": "フィードを同じタブで開く"
+    },
+    "OpenSiteOnIconClick": {
+        "message": "アイコンをクリックした際にFeedlyサイトを開く（ポップアップは表示しない）"
+    },
+    "OptionsSaved": {
+        "message": "オプションは保存されました"
+    },
+    "PlaySound": {
+        "message": "新着フィードに通知音を再生する"
+    },
+    "Popup": {
+        "message": "ポップアップ"
+    },
+    "PopupFontSize": {
+        "message": "ポップアップのフォントサイズ（%指定）"
+    },
+    "PopupWidth": {
+        "message": "ポップアップの幅"
+    },
+    "ResetCounterOnClick": {
+        "message": "拡張機能のボタンクリック時に、カウンターをリセットする"
+    },
+    "Save": {
+        "message": "保存"
+    },
+    "ShowCategories": {
+        "message": "ポップアップにカテゴリーを表示する"
+    },
+    "ShowCounter": {
+        "message": "カウンターを表示する"
+    },
+    "ShowDesktopNotifications": {
+        "message": "デスクトップ通知を表示する"
+    },
+    "ShowFullFeedContent": {
+        "message": "拡張フィードに全てのコンテンツを表示する（可能な場合）"
+    },
+    "UpdateFeeds": {
+        "message": "更新"
+    },
+    "UpdateFollowingCategories": {
+        "message": "フォローしているカテゴリーのみ更新する"
+    },
+    "UseSecureConnection": {
+        "message": "HTTPS接続を利用する"
+    },
+    "YouHaveNewFeeds": {
+        "message": "新着フィード $count$件",
+        "placeholders": {
+            "count": {
+                "content": "$1",
+                "example": "10 or many"
+            }
+        }
+    },
+    "many": {
+        "message": "もっと"
+    }
+}

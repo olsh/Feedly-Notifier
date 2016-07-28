@@ -4,8 +4,14 @@ var appGlobal = {
     feedlyApiClient: new FeedlyApiClient(),
     feedTab: null,
     icons: {
-        default: "/images/icon.png",
-        inactive: "/images/icon_inactive.png",
+        default: {
+            "19": "/images/icon.png",
+            "38": "/images/icon38.png"
+        },
+        inactive: {
+            "19": "/images/icon_inactive.png",
+            "38": "/images/icon_inactive38.png"
+        },
         defaultBig: "/images/icon128.png"
     },
     options: {
@@ -492,6 +498,7 @@ function setInactiveStatus() {
 
 /* Sets badge as active */
 function setActiveStatus() {
+    chrome.browserAction.setBadgeBackgroundColor({color: "#CF0016"});
     chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {
     });
     appGlobal.isLoggedIn = true;
@@ -657,16 +664,16 @@ function markAsRead(feedIds, callback) {
 }
 
 /* Save feed or unsave it.
- * feed ID
- * if saveFeed is true, then save feed, else unsafe it
+ * array of the feeds IDs
+ * if saveFeed is true, then save the feeds, else unsafe them
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
-function toggleSavedFeed(feedId, saveFeed, callback) {
+function toggleSavedFeed(feedsIds, saveFeed, callback) {
     if (saveFeed) {
         apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup), {
             method: "PUT",
             body: {
-                entryId: feedId
+                entryIds: feedsIds
             },
             onSuccess: function (response) {
                 if (typeof callback === "function") {
@@ -680,7 +687,7 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
             }
         });
     } else {
-        apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup) + "/" + encodeURIComponent(feedId), {
+        apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup) + "/" + encodeURIComponent(feedsIds), {
             method: "DELETE",
             onSuccess: function (response) {
                 if (typeof callback === "function") {
@@ -696,10 +703,13 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
     }
 
     //Update state in the cache
-    for (var i = 0; i < appGlobal.cachedFeeds.length; i++) {
-        if (appGlobal.cachedFeeds[i].id === feedId) {
-            appGlobal.cachedFeeds[i].isSaved = saveFeed;
-            break;
+    for (var i = 0; i < feedsIds.length; i++) {
+        var feedId = feedsIds[i];
+        for (var j = 0; j < appGlobal.cachedFeeds.length; j++) {
+            if (appGlobal.cachedFeeds[j].id === feedId) {
+                appGlobal.cachedFeeds[j].isSaved = saveFeed;
+                break;
+            }
         }
     }
 }
@@ -708,10 +718,11 @@ function toggleSavedFeed(feedId, saveFeed, callback) {
  * then read access token and stores in chrome.storage */
 function getAccessToken() {
     var state = (new Date()).getTime();
+    var redirectUri = "https://olsh.github.io/Feedly-Notifier/";
     var url = appGlobal.feedlyApiClient.getMethodUrl("auth/auth", {
         response_type: "code",
         client_id: appGlobal.clientId,
-        redirect_uri: "http://localhost",
+        redirect_uri: redirectUri,
         scope: "https://cloud.feedly.com/subscriptions",
         state: state
     }, appGlobal.options.useSecureConnection);
@@ -734,7 +745,7 @@ function getAccessToken() {
                         code: matches[1],
                         client_id: appGlobal.clientId,
                         client_secret: appGlobal.clientSecret,
-                        redirect_uri: "http://localhost",
+                        redirect_uri: redirectUri,
                         grant_type: "authorization_code"
                     },
                     onSuccess: function (response) {
@@ -745,7 +756,6 @@ function getAccessToken() {
                         }, function () {
                         });
                         chrome.tabs.onUpdated.removeListener(processCode);
-                        chrome.tabs.update(authorizationTab.id, {url: chrome.extension.getURL("options.html")});
                     }
                 });
             }
