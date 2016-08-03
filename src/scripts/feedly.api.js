@@ -28,6 +28,10 @@ var FeedlyApiClient = function (accessToken) {
         browserPrefix = "o";
         // @endif
 
+        // @if BROWSER='firefox'
+        browserPrefix = "f";
+        // @endif
+
         queryString += "av=" + browserPrefix + extensionVersion;
 
         methodUrl += queryString;

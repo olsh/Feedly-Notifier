@@ -100,10 +100,22 @@ var appGlobal = {
     },
     get globalUncategorized(){
         return "user/" + this.options.feedlyUserId + "/category/global.uncategorized";
+    },
+    get syncStorage(){
+        // @if BROWSER='firefox'
+        // Firefox doesn't support sync storage
+        return chrome.storage.local;
+        // @endif
+
+        // @if BROWSER!='firefox'
+        //noinspection UnreachableCodeJS
+        return chrome.storage.sync;
+        // @endif
     }
 };
 
 // #Event handlers
+// @if BROWSER!='firefox'
 chrome.runtime.onInstalled.addListener(function (details) {
     //Trying read old options (mostly access token) if possible
     readOptions(function () {
@@ -111,6 +123,15 @@ chrome.runtime.onInstalled.addListener(function (details) {
         writeOptions(initialize);
     });
 });
+
+chrome.runtime.onStartup.addListener(function () {
+    readOptions(initialize);
+});
+// @endif
+
+// @if BROWSER=='firefox'
+readOptions(initialize);
+// @endif
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
     var callback;
@@ -128,10 +149,6 @@ chrome.tabs.onRemoved.addListener(function(tabId){
     if (appGlobal.feedTab && appGlobal.feedTab.id == tabId) {
         appGlobal.feedTab = null;
     }
-});
-
-chrome.runtime.onStartup.addListener(function () {
-    readOptions(initialize);
 });
 
 /* Listener for adding or removing feeds on the feedly website */
@@ -749,7 +766,7 @@ function getAccessToken() {
                         grant_type: "authorization_code"
                     },
                     onSuccess: function (response) {
-                        chrome.storage.sync.set({
+                        appGlobal.syncStorage.set({
                             accessToken: response.access_token,
                             refreshToken: response.refresh_token,
                             feedlyUserId: response.id
@@ -777,7 +794,7 @@ function refreshAccessToken(){
             grant_type: "refresh_token"
         },
         onSuccess: function (response) {
-            chrome.storage.sync.set({
+            appGlobal.syncStorage.set({
                 accessToken: response.access_token,
                 feedlyUserId: response.id
             }, function () {});
@@ -794,7 +811,7 @@ function writeOptions(callback) {
     for (var option in appGlobal.options) {
         options[option] = appGlobal.options[option];
     }
-    chrome.storage.sync.set(options, function () {
+    appGlobal.syncStorage.set(options, function () {
         if (typeof callback === "function") {
             callback();
         }
@@ -803,7 +820,7 @@ function writeOptions(callback) {
 
 /* Reads all options from chrome storage and runs callback after it */
 function readOptions(callback) {
-    chrome.storage.sync.get(null, function (options) {
+    appGlobal.syncStorage.get(null, function (options) {
         for (var optionName in options) {
             if (typeof appGlobal.options[optionName] === "boolean") {
                 appGlobal.options[optionName] = Boolean(options[optionName]);
