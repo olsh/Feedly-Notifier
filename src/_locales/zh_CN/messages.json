@@ -63,19 +63,19 @@
     "message": "标记为已读"
   },
   "MaxNotificationsCount": {
-    "message": "单次最大通知信息数"
+    "message": "单次最大通知摘要数量"
   },
   "MaxNumberOfFeeds": {
-    "message": "在弹出窗口中最多显示摘要数量"
+    "message": "在弹出窗口中的最大摘要数量"
   },
   "More": {
-    "message": "展开"
+    "message": "更低"
   },
   "NewFeeds": {
     "message": "新摘要"
   },
   "NoSavedArticles": {
-    "message": "没有收藏文章"
+    "message": "没有稍后阅读文章"
   },
   "Notifications": {
     "message": "通知"
@@ -90,10 +90,10 @@
     "message": "打开所有摘要"
   },
   "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsave them"
+    "message": "打开所有稍后阅读文章，并取消保存它们"
   },
   "OpenFeedsInBackground": {
-    "message": "在后台标签页中打开摘要"
+    "message": "后台打开摘要"
   },
   "OpenFeedsInSameTab": {
     "message": "在同一标签页打开摘要"
