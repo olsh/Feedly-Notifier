@@ -89,6 +89,9 @@
   "OpenAllFeeds": {
     "message": "Ouvrir tous les articles"
   },
+  "OpenAllSavedFeeds": {
+    "message": "Ouvrez tous les flux RSS sauvegardés et supprimez-les\n"
+  },
   "OpenFeedsInBackground": {
     "message": "Ouvrir les articles dans un onglet en arrière-plan"
   },
