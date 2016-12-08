@@ -6,7 +6,6 @@
     "version": "2.7.3",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "default_locale": "en",
-
     "permissions": [
         "storage",
         "tabs",
@@ -45,6 +44,13 @@
     "web_accessible_resources": [
         "/images/icon128.png"
     ],
-    "homepage_url": "http://olsh.github.io/Feedly-Notifier/",
-    "minimum_chrome_version": "26"
+    // @if BROWSER!='firefox'
+    "minimum_chrome_version": "26",
+    // @endif
+    // @if BROWSER='firefox'
+    "gecko": {
+        "strict_min_version": "50.0"
+    },
+    // @endif
+    "homepage_url": "http://olsh.github.io/Feedly-Notifier/"
 }
