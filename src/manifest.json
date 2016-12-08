@@ -25,7 +25,15 @@
         "default_title": "Feedly Notifier",
         "default_popup": "popup.html"
     },
+    // @if BROWSER!='firefox'
     "options_page": "options.html",
+    // @endif
+    // @if BROWSER='firefox'
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": true
+    },
+    // @endif
     "background": {
         "scripts": ["scripts/feedly.api.js", "scripts/core.js"]
     },

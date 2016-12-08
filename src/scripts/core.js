@@ -130,7 +130,10 @@ chrome.runtime.onStartup.addListener(function () {
 // @endif
 
 // @if BROWSER=='firefox'
-readOptions(initialize);
+readOptions(function () {
+    //Write all options in chrome storage and initialize application
+    writeOptions(initialize);
+});
 // @endif
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {

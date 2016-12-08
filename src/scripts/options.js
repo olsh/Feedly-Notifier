@@ -23,7 +23,7 @@ $("body").on("click", "#save", function (e) {
 $("body").on("click", "#logout", function () {
     chrome.extension.getBackgroundPage().appGlobal.options.accessToken = "";
     chrome.extension.getBackgroundPage().appGlobal.options.refreshToken = "";
-    chrome.storage.sync.remove(["accessToken", "refreshToken"], function () {});
+    chrome.extension.getBackgroundPage().appGlobal.syncStorage.remove(["accessToken", "refreshToken"], function () {});
     $("#userInfo, #filters-settings").hide();
 });
 
@@ -69,7 +69,7 @@ function loadUserCategories(){
                 appendCategory(element.id, element.label);
             });
             appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalUncategorized, "Uncategorized");
-            chrome.storage.sync.get("filters", function(items){
+            chrome.extension.getBackgroundPage().appGlobal.syncStorage.get("filters", function(items){
                 var filters = items.filters || [];
                 filters.forEach(function(id){
                     $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
@@ -118,7 +118,7 @@ function saveOptions() {
     setBackgroundMode($("#enable-background-mode").is(":checked"));
     // @endif
 
-    chrome.storage.sync.set(options, function () {
+    chrome.extension.getBackgroundPage().appGlobal.syncStorage.set(options, function () {
         alert(chrome.i18n.getMessage("OptionsSaved"));
     });
 }
@@ -130,7 +130,7 @@ function loadOptions() {
     });
     // @endif
 
-    chrome.storage.sync.get(null, function (items) {
+    chrome.extension.getBackgroundPage().appGlobal.syncStorage.get(null, function (items) {
         var optionsForm = $("#options");
         for (var option in items) {
             var optionControl = optionsForm.find("input[data-option-name='" + option + "']");
