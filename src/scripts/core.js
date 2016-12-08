@@ -598,6 +598,8 @@ function parseFeeds(feedlyResponse) {
             });
         }
 
+        var googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed";
+
         return {
             title: title,
             titleDirection: titleDirection,
@@ -605,7 +607,7 @@ function parseFeeds(feedlyResponse) {
             blog: blog,
             blogTitleDirection: blogTitleDirection,
             blogUrl: blogUrl,
-            blogIcon: "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed",
+            blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=32&fallback_icon_url=" + googleFaviconUrl,
             id: item.id,
             content: content,
             contentDirection: contentDirection,
