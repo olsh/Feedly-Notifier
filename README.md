@@ -3,7 +3,7 @@ Feedly-Notifier
 
 **Description**
 
-Google chrome extension for reading news from rss aggregator [Feedly](http://www.feedly.com)
+Google chrome, Firefox and Opera extension for reading news from rss aggregator [Feedly](http://www.feedly.com)
 
 **Changelog**
 
