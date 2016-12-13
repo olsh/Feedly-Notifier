@@ -21,10 +21,7 @@ $(document).ready(function () {
         $("#popup-content").addClass("tabs");
     }
 
-    // Workaround for popup shrinking on mac https://github.com/olsh/Feedly-Notifier/issues/59
-    setTimeout(function () {
-        setPopupExpand(false);
-    }, 50);
+    setPopupExpand(false);
 
     //If we support this localization of timeago, then insert script with it
     if (popupGlobal.supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
@@ -374,8 +371,12 @@ function showSavedFeeds() {
 
 function setPopupExpand(isExpand) {
     if (isExpand) {
-        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
+        setTimeout(function () {
+            $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
+        }, 50);
     } else {
-        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.popupWidth);
+        setTimeout(function () {
+            $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.popupWidth);
+        }, 50);
     }
 }
