@@ -370,6 +370,7 @@ function showSavedFeeds() {
 }
 
 function setPopupExpand(isExpand) {
+    // The timeout is needed to fix https://github.com/olsh/Feedly-Notifier/issues/59
     if (isExpand) {
         setTimeout(function () {
             $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
