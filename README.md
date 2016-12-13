@@ -1,10 +1,19 @@
 Feedly-Notifier
 ===============
 
-**Description**
+## Description
 
-Google chrome, Firefox and Opera extension for reading news from rss aggregator [Feedly](http://www.feedly.com)
+Google chrome, Firefox and Opera extension for reading news from rss aggregator [Feedly](https://feedly.com)
 
-**Changelog**
+## Changelog
 
-Changelog can be found [here](http://olsh.github.io/Feedly-Notifier/).
+Changelog can be found [here](https://olsh.github.io/Feedly-Notifier/).
+
+## Build
+
+1. `npm install`
+2. `bower install`
+3. `sandbox --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3 --browser chrome`
+You can find actual `clientId` and `clientSecret` here https://groups.google.com/forum/#!topic/feedly-cloud/3izrTbT7FDQ
+The browser parameter can be `chrome`, `opera` or `firefox`.
+4. The result of the commands will be in `build` folder, now you can load the extension to browser.
