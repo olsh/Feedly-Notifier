@@ -15,7 +15,7 @@ $(document).ready(function () {
     $("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
     $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
     $("#open-unsaved-all-news>span").text(chrome.i18n.getMessage("OpenAllSavedFeeds"));
-    
+
 
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
@@ -369,10 +369,14 @@ function showSavedFeeds() {
     $("#feedly").show().find("#popup-actions").show().children().filter(".icon-refresh").show();
 }
 
-function setPopupExpand(isExpand){
-    if (isExpand){
-        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
+function setPopupExpand(isExpand) {
+    if (isExpand) {
+        setTimeout(function () {
+            $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
+        }, 50);
     } else {
-        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.popupWidth);
+        setTimeout(function () {
+            $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.popupWidth);
+        }, 50);
     }
 }
