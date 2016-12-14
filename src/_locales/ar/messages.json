@@ -17,11 +17,11 @@
     "EnableBackgroundMode": {
         "message": "تمكين وضع الخلفية"
     },
-    "ExpandedPopupWidth": {
-        "message": "توسيع عرض النوافذ المنبثقة"
-    },
     "ExpandFeeds": {
         "message": "اظهار كل الخلاصات عند الضغط على الايقونة"
+    },
+    "ExpandedPopupWidth": {
+        "message": "توسيع عرض النوافذ المنبثقة"
     },
     "ExtensionDescription": {
         "message": "اضافة لعرض اشعارات قارئ الأخبار Feedly "
@@ -53,9 +53,6 @@
     "Logout": {
         "message": "تسجيل الخروج"
     },
-    "many": {
-        "message": "العديد"
-    },
     "MarkAllAsRead": {
         "message": "تحديد الكل كمقروء"
     },
@@ -77,17 +74,20 @@
     "NoSavedArticles": {
         "message": "لا توجد مقالات محفوظة"
     },
-    "Notifications": {
-        "message": "اشعارات"
-    },
     "NoUnreadArticles": {
         "message": "لا توجد مقالات غير مقروءة"
+    },
+    "Notifications": {
+        "message": "اشعارات"
     },
     "OldestFeedsFirst": {
         "message": "الخلاصات الاقدم أولا"
     },
     "OpenAllFeeds": {
         "message": "افتح كل الخلاصات"
+    },
+    "OpenAllSavedFeeds": {
+        "message": "افتح كل التغذيات المحفوظة ولا تحتفظ بها."
     },
     "OpenFeedsInBackground": {
         "message": "افتح الخلاصات في تبويبة خلفية"
@@ -148,5 +148,8 @@
                 "example": "10 or many"
             }
         }
+    },
+    "many": {
+        "message": "العديد"
     }
 }
