@@ -182,14 +182,9 @@ $("#feedly").on("click", "#feedly-logo", function (event) {
 });
 
 function executeAsync(func) {
-    // There is a problem with async load on mac https://github.com/olsh/Feedly-Notifier/issues/59
-    if (chrome.runtime.PlatformOs === "mac") {
-        func()
-    } else {
-        setTimeout(function () {
-            func();
-        }, 0);
-    }
+    setTimeout(function () {
+        func();
+    }, 0);
 }
 
 function renderFeeds(forceUpdate) {
@@ -375,9 +370,14 @@ function showSavedFeeds() {
 }
 
 function setPopupExpand(isExpand) {
+    // The timeout is needed to fix https://github.com/olsh/Feedly-Notifier/issues/59
     if (isExpand) {
-        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
+        setTimeout(function () {
+            $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
+        }, 300);
     } else {
-        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.popupWidth);
+        setTimeout(function () {
+            $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.popupWidth);
+        }, 300);
     }
 }
