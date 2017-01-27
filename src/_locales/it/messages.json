@@ -15,13 +15,13 @@
         "message": "Email"
     },
     "EnableBackgroundMode": {
-        "message": "Enable background mode"
-    },
-    "ExpandedPopupWidth": {
-        "message": "Larghezza del popup espanso"
+        "message": "Abilita modalità background"
     },
     "ExpandFeeds": {
         "message": "Espandi tutti i feed quando il popup è aperto"
+    },
+    "ExpandedPopupWidth": {
+        "message": "Larghezza del popup espanso"
     },
     "ExtensionDescription": {
         "message": "Estensione per Feedly news reader"
@@ -66,7 +66,7 @@
         "message": "Massimo numero di feed visualizzabili nel popup"
     },
     "More": {
-        "message": "More"
+        "message": "Ancora"
     },
     "NewFeeds": {
         "message": "Nuovi feed"
@@ -87,7 +87,7 @@
         "message": "Apri tutti i feed"
     },
     "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsave them"
+        "message": "Apri tutti i feed salvati e rimuovili"
     },
     "OpenFeedsInBackground": {
         "message": "Apri i feed in una scheda in sottofondo"
@@ -102,7 +102,7 @@
         "message": "Le opzioni sono state salvate"
     },
     "PlaySound": {
-        "message": "Play alert sound on new feeds"
+        "message": "Notifica audio per nuovi feed"
     },
     "Popup": {
         "message": "Popup"
@@ -132,7 +132,7 @@
         "message": "Mostra il contenuto completo dell'articolo quando si espande un feed (se possibile)"
     },
     "UpdateFeeds": {
-        "message": "Update"
+        "message": "Aggiorna"
     },
     "UpdateFollowingCategories": {
         "message": "Aggiorna solo le seguenti categorie"
@@ -145,7 +145,7 @@
         "placeholders": {
             "count": {
                 "content": "$1",
-                "example": "10 o piщ"
+                "example": "10 or many"
             }
         }
     },

@@ -182,16 +182,9 @@ $("#feedly").on("click", "#feedly-logo", function (event) {
 });
 
 function executeAsync(func) {
-    // There is a problem with async load on mac https://github.com/olsh/Feedly-Notifier/issues/59
-    chrome.runtime.getPlatformInfo(function (platformInfo) {
-        if (platformInfo.os === "mac") {
-            func();
-        } else {
-            setTimeout(function () {
-                func();
-            }, 0);
-        }
-    });
+    setTimeout(function () {
+        func();
+    }, 0);
 }
 
 function renderFeeds(forceUpdate) {
