@@ -270,11 +270,11 @@ function markAsRead(feedIds) {
     feedItems.attr("data-is-read", "true");
 
     //Show loader if all feeds were read
-    if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
+    if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
         showLoader();
     }
     popupGlobal.backgroundPage.markAsRead(feedIds, function () {
-        if ($("#feed").find(".item[data-is-read!='true']").size() === 0) {
+        if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
             renderFeeds();
         }
     });
