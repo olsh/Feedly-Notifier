@@ -842,6 +842,7 @@ function readOptions(callback) {
 }
 
 function apiRequestWrapper(methodName, settings) {
+    settings.useSecureConnection = appGlobal.options.useSecureConnection;
     var onSuccess = settings.onSuccess;
     settings.onSuccess = function (response) {
         setActiveStatus();
