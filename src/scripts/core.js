@@ -607,7 +607,7 @@ function parseFeeds(feedlyResponse) {
             blog: blog,
             blogTitleDirection: blogTitleDirection,
             blogUrl: blogUrl,
-            blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=32&fallback_icon_url=" + googleFaviconUrl,
+            blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=16..32..64&fallback_icon_url=" + googleFaviconUrl,
             id: item.id,
             content: content,
             contentDirection: contentDirection,
