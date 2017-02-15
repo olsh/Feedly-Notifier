@@ -1,0 +1,155 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Elemek mentésének lehetősége"
+  },
+  "AutoMarkRead": {
+    "message": "Hír automatikus megjelölése annak megnyitásakor"
+  },
+  "Categories": {
+    "message": "Kategóriák"
+  },
+  "CurrentUser": {
+    "message": "Jelenlegi felhasználó"
+  },
+  "Email": {
+    "message": "Email"
+  },
+  "EnableBackgroundMode": {
+    "message": "Háttérbeli mód engedélyezése"
+  },
+  "ExpandFeeds": {
+    "message": "Elemek kinyitása amikor az ablak nyitva van"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Kinyitott ablak mérete"
+  },
+  "ExtensionDescription": {
+    "message": "Bővítmény a Feedly hírolvasóhoz"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly Értesítő beállításai"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly honlap"
+  },
+  "Filters": {
+    "message": "Szűrők"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Elemek frissítése az ablak megnyitásakor"
+  },
+  "General": {
+    "message": "Általános"
+  },
+  "HideNotificationsAfter": {
+    "message": "Asztali értesítések elrejtése ennyi másodperc után, 0 - ne rejtse el"
+  },
+  "IntervalPeriod": {
+    "message": "Frissítési gyakoriság (perc)"
+  },
+  "Login": {
+    "message": "Bejelentkezés"
+  },
+  "Logout": {
+    "message": "Kijelentkezés"
+  },
+  "MarkAllAsRead": {
+    "message": "Összes megjelölése olvasottként"
+  },
+  "MarkAsRead": {
+    "message": "Megjelölés olvasottként"
+  },
+  "MaxNotificationsCount": {
+    "message": "Értesítések maximum száma egyidőben"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Elemek maximális száma az ablakban"
+  },
+  "More": {
+    "message": "Több"
+  },
+  "NewFeeds": {
+    "message": "Új elemek"
+  },
+  "NoSavedArticles": {
+    "message": "Nincs mentett elemed"
+  },
+  "NoUnreadArticles": {
+    "message": "Nincs olvasatlan elemed"
+  },
+  "Notifications": {
+    "message": "Értesítések"
+  },
+  "OldestFeedsFirst": {
+    "message": "Régebbi elemek előre"
+  },
+  "OpenAllFeeds": {
+    "message": "Összes elem megnyitása"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Összes mentett elem megnyitása és törlése"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Elemek megnyitása egy háttérbeli fülön"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Elemek megnyitása a jelenlegi fülön"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Feedly honlap betöltése az ikonra kattintáskor (ne mutassa az ablakot)"
+  },
+  "OptionsSaved": {
+    "message": "A beállításaid el lettek mentve"
+  },
+  "PlaySound": {
+    "message": "Értesítési hang lejátszása új elemek érkezésekor"
+  },
+  "Popup": {
+    "message": "Ablak"
+  },
+  "PopupFontSize": {
+    "message": "Ablakban lévő betűk mérete százalékban"
+  },
+  "PopupWidth": {
+    "message": "Ablak szélessége"
+  },
+  "ResetCounterOnClick": {
+    "message": "Számláló nullázása ikonra való kilikkeléskor"
+  },
+  "Save": {
+    "message": "Mentés"
+  },
+  "ShowCategories": {
+    "message": "Kategóriák megjelenítése az ablakban"
+  },
+  "ShowCounter": {
+    "message": "Számláló megjelenítése"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Asztali értesítések megjelenítése"
+  },
+  "ShowFullFeedContent": {
+    "message": "Kiterjesztett elem teljes tartalmának megjelenítése (ha lehetséges)"
+  },
+  "UpdateFeeds": {
+    "message": "Frissítés"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Csak ezen kategóriák frissítése"
+  },
+  "UseSecureConnection": {
+    "message": "Biztonságos kapcsolat használata (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "$count$ új elemed van",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  },
+  "many": {
+    "message": "sok"
+  }
+}
