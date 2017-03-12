@@ -209,6 +209,12 @@ function renderFeeds(forceUpdate) {
 
                 var feedsTemplate = $("#feedTemplate").html();
                 Mustache.parse(feedsTemplate);
+
+                // @if BROWSER='firefox'
+                // We should sanitize the content of feeds because of AMO review.
+                sanitizeFeeds(feeds);
+                // @endif
+
                 container.append(Mustache.render(feedsTemplate, {feeds: feeds}, partials));
                 container.find(".timeago").timeago();
 
@@ -244,6 +250,11 @@ function renderSavedFeeds(forceUpdate) {
 
                 var feedTemplate = $("#feedTemplate").html();
                 Mustache.parse(feedTemplate);
+
+                // @if BROWSER='firefox'
+                sanitizeFeeds(feeds);
+                // @endif
+
                 container.append(Mustache.render(feedTemplate, {feeds: feeds}, partials));
                 container.find(".timeago").timeago();
 
@@ -314,6 +325,12 @@ function renderCategories(container, feeds){
     var template = $("#categories-template").html();
     Mustache.parse(template);
     container.append(Mustache.render(template, {categories: categories}));
+}
+
+function sanitizeFeeds(feeds) {
+    for (let feed of feeds) {
+        feed.content = DOMPurify.sanitize(feed.content);
+    }
 }
 
 function getUniqueCategories(feeds){

@@ -13,6 +13,8 @@ module.exports = function (grunt) {
 
                     {src: '<%= pkg.libPath %>/mustache/mustache.min.js', dest: '<%= pkg.buildPath %>/scripts/mustache.min.js'},
 
+                    {src: '<%= pkg.libPath %>/dompurify/dist/purify.min.js', dest: '<%= pkg.buildPath %>/scripts/purify.min.js'},
+
                     {src: '<%= pkg.libPath %>/timeago/jquery.timeago.js', dest: '<%= pkg.buildPath %>/scripts/timeago/jquery.timeago.js'},
                     {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.ar.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.ar.js'},
                     {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.cs.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.cs.js'},
