@@ -115,9 +115,15 @@ $("#popup-content").on("click", ".show-content", function () {
 
         var template = $("#feed-content").html();
         Mustache.parse(template);
-        for (var i = 0; i < feeds.length; i++) {
-            if (feeds[i].id === feedId) {
-                contentContainer.html(Mustache.render(template, feeds[i]));
+        for (let feed of feeds) {
+            if (feed.id === feedId) {
+
+                // @if BROWSER='firefox'
+                // We should sanitize the content of feeds because of AMO review.
+                feed.content = DOMPurify.sanitize(feed.content);
+                // @endif
+
+                contentContainer.html(Mustache.render(template, feed));
 
                 //For open new tab without closing popup
                 contentContainer.find("a").each(function (key, value) {
@@ -210,11 +216,6 @@ function renderFeeds(forceUpdate) {
                 var feedsTemplate = $("#feedTemplate").html();
                 Mustache.parse(feedsTemplate);
 
-                // @if BROWSER='firefox'
-                // We should sanitize the content of feeds because of AMO review.
-                sanitizeFeeds(feeds);
-                // @endif
-
                 container.append(Mustache.render(feedsTemplate, {feeds: feeds}, partials));
                 container.find(".timeago").timeago();
 
@@ -250,10 +251,6 @@ function renderSavedFeeds(forceUpdate) {
 
                 var feedTemplate = $("#feedTemplate").html();
                 Mustache.parse(feedTemplate);
-
-                // @if BROWSER='firefox'
-                sanitizeFeeds(feeds);
-                // @endif
 
                 container.append(Mustache.render(feedTemplate, {feeds: feeds}, partials));
                 container.find(".timeago").timeago();
@@ -325,12 +322,6 @@ function renderCategories(container, feeds){
     var template = $("#categories-template").html();
     Mustache.parse(template);
     container.append(Mustache.render(template, {categories: categories}));
-}
-
-function sanitizeFeeds(feeds) {
-    for (let feed of feeds) {
-        feed.content = DOMPurify.sanitize(feed.content);
-    }
 }
 
 function getUniqueCategories(feeds){

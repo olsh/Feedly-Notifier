@@ -44,7 +44,7 @@
         "/images/icon128.png"
     ],
     // @if BROWSER!='firefox'
-    "minimum_chrome_version": "29",
+    "minimum_chrome_version": "38",
     // @endif
     // @if BROWSER='firefox'
     "gecko": {
