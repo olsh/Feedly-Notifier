@@ -3,7 +3,7 @@
     "message": "Possibilité d'enregistrer les articles"
   },
   "AutoMarkRead": {
-    "message": "Marquer automatiquement comme lu à l'ouverture d'un article"
+    "message": "Marquer comme lu automatiquement à l'ouverture d'un article"
   },
   "Categories": {
     "message": "Catégories"
@@ -17,11 +17,11 @@
   "EnableBackgroundMode": {
     "message": "Activer le mode en arrière-plan"
   },
-  "ExpandedPopupWidth": {
-    "message": "Largeur de la fenêtre étendue"
-  },
   "ExpandFeeds": {
     "message": "Étendre tous les articles à l'ouverture de la fenêtre"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Largeur de la fenêtre étendue"
   },
   "ExtensionDescription": {
     "message": "Extension pour le lecteur de flux Feedly"
@@ -53,9 +53,6 @@
   "Logout": {
     "message": "Déconnexion"
   },
-  "many": {
-    "message": "plusieurs"
-  },
   "MarkAllAsRead": {
     "message": "Tout marquer comme lu"
   },
@@ -77,11 +74,11 @@
   "NoSavedArticles": {
     "message": "Aucun article enregistré"
   },
-  "Notifications": {
-    "message": "Notifications"
-  },
   "NoUnreadArticles": {
     "message": "Aucun article à lire"
+  },
+  "Notifications": {
+    "message": "Notifications"
   },
   "OldestFeedsFirst": {
     "message": "Anciens articles en premier"
@@ -123,10 +120,10 @@
     "message": "Enregistrer"
   },
   "ShowCategories": {
-    "message": "Montrer les catégories dans la fenêtre"
+    "message": "Afficher les catégories dans la fenêtre"
   },
   "ShowCounter": {
-    "message": "Montrer le compteur"
+    "message": "Afficher le compteur"
   },
   "ShowDesktopNotifications": {
     "message": "Afficher les notifications de bureau"
@@ -141,7 +138,7 @@
     "message": "Actualiser uniquement ces catégories"
   },
   "UseSecureConnection": {
-    "message": "Utiliser une connection sécurisée (https)"
+    "message": "Utiliser une connexion sécurisée (https)"
   },
   "YouHaveNewFeeds": {
     "message": "Vous avez $count$ nouveaux articles",
@@ -151,5 +148,8 @@
         "example": "10 or many"
       }
     }
+  },
+  "many": {
+    "message": "plusieurs"
   }
 }
