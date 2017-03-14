@@ -188,9 +188,18 @@ $("#feedly").on("click", "#feedly-logo", function (event) {
 });
 
 function executeAsync(func) {
-    setTimeout(function () {
-        func();
-    }, 0);
+    chrome.runtime.getPlatformInfo(function (platformInfo) {
+        let timeout = 0;
+
+        // Workaround for the bug: https://bugs.chromium.org/p/chromium/issues/detail?id=307912
+        if (platformInfo.os === "mac") {
+            timeout = 150;
+        }
+
+        setTimeout(function () {
+            func();
+        }, timeout);
+    });
 }
 
 function renderFeeds(forceUpdate) {
