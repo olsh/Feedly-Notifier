@@ -16,3 +16,8 @@ Changelog can be found [here](https://olsh.github.io/Feedly-Notifier/).
 You can find actual `clientId` and `clientSecret` here https://groups.google.com/forum/#!topic/feedly-cloud/3izrTbT7FDQ
 The browser parameter can be `chrome`, `opera` or `firefox`.
 3. The result of the commands will be in `build` folder, now you can load the extension to browser.
+
+## Acknowledgments
+
+Made with  
+[![WebStorm](https://github.com/olsh/Feedly-Notifier/raw/master/logos/ws-logo.svg)](https://www.jetbrains.com/webstorm/)
