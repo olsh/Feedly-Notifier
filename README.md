@@ -20,4 +20,4 @@ The browser parameter can be `chrome`, `opera` or `firefox`.
 ## Acknowledgments
 
 Made with  
-[![WebStorm](https://github.com/olsh/Feedly-Notifier/raw/master/logos/ws-logo.svg)](https://www.jetbrains.com/webstorm/)
+[![WebStorm](https://github.com/olsh/Feedly-Notifier/raw/master/logos/ws-logo.png)](https://www.jetbrains.com/webstorm/)
