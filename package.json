@@ -2,7 +2,7 @@
   "name": "Feedly-Notifier",
   "description": "Feedly notifier is a tiny extension that keeps you up to date with your feedly subscriptions.",
   "devDependencies": {
-    "grunt": "~0.4.1",
+    "grunt": "^1.0.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-preprocess": "^5.1.0",

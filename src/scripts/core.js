@@ -23,7 +23,6 @@ var appGlobal = {
         accessToken: "",
         refreshToken: "",
         showDesktopNotifications: true,
-        hideNotificationDelay: 10, //seconds
         showFullFeedContent: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
@@ -84,6 +83,7 @@ var appGlobal = {
     criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled", "showCounter", "oldestFeedsFirst", "resetCounterOnClick"],
     cachedFeeds: [],
     cachedSavedFeeds: [],
+    notifications: {},
     isLoggedIn: false,
     intervalIds: [],
     clientId: "",
@@ -211,47 +211,47 @@ function stopSchedule() {
     appGlobal.intervalIds = [];
 }
 
+chrome.notifications.onClicked.addListener(function (notificationId) {
+    chrome.notifications.clear(notificationId);
+
+    if (appGlobal.notifications[notificationId]) {
+        openUrlInNewTab(appGlobal.notifications[notificationId], true);
+        if (appGlobal.options.markReadOnClick) {
+            markAsRead([notificationId]);
+        }
+    }
+
+    appGlobal.notifications[notificationId] = undefined;
+});
+
 /* Sends desktop notifications */
 function sendDesktopNotification(feeds) {
-    var notifications = [];
+
     //if notifications too many, then to show only count
     if (feeds.length > appGlobal.options.maxNotificationsCount) {
         //We can detect only limit count of new feeds at time, but actually count of feeds may be more
         var count = feeds.length === appGlobal.options.maxNumberOfFeeds ? chrome.i18n.getMessage("many") : feeds.length.toString();
-        var notification = new Notification(chrome.i18n.getMessage("NewFeeds"), {
-                body: chrome.i18n.getMessage("YouHaveNewFeeds", count),
-                icon: appGlobal.icons.defaultBig
-            });
-        notifications.push(notification);
+
+        chrome.notifications.create({
+            type: 'basic',
+            title: chrome.i18n.getMessage("NewFeeds"),
+            message: chrome.i18n.getMessage("YouHaveNewFeeds", count),
+            iconUrl: appGlobal.icons.defaultBig
+        });
     } else {
         for (var i = 0; i < feeds.length; i++) {
-            notification = new Notification(feeds[i].blog,{
-                body: feeds[i].title,
-                icon: feeds[i].blogIcon
+
+            var id = feeds[i].id;
+
+            chrome.notifications.create(id, {
+                type: 'basic',
+                title: feeds[i].blog,
+                message: feeds[i].title,
+                iconUrl: appGlobal.icons.defaultBig
             });
 
-            //Open new tab on click and close notification
-            notification.url = feeds[i].url;
-            notification.feedId = feeds[i].id;
-            notification.onclick = function (e) {
-                var target = e.target;
-                target.close();
-                openUrlInNewTab(target.url, true);
-                if (appGlobal.options.markReadOnClick) {
-                    markAsRead([target.feedId]);
-                }
-            };
-            notifications.push(notification);
+            appGlobal.notifications[id] = feeds[i].url;
         }
-    }
-
-    //Hide notifications after delay
-    if (appGlobal.options.hideNotificationDelay > 0) {
-        setTimeout(function () {
-            for (i = 0; i < notifications.length; i++) {
-                notifications[i].close();
-            }
-        }, appGlobal.options.hideNotificationDelay * 1000);
     }
 }
 
