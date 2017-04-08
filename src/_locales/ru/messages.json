@@ -17,11 +17,11 @@
     "EnableBackgroundMode": {
         "message": "Включить фоновый режим"
     },
-    "ExpandedPopupWidth": {
-        "message": "Ширина всплывающего окна в раскрытом режиме"
-    },
     "ExpandFeeds": {
         "message": "Раскрывать все новости при открытии всплывающего окна"
+    },
+    "ExpandedPopupWidth": {
+        "message": "Ширина всплывающего окна в раскрытом режиме"
     },
     "ExtensionDescription": {
         "message": "Расширение для чтения новостных лент с Feedly"
@@ -40,6 +40,9 @@
     },
     "General": {
         "message": "Общие"
+    },
+    "GrayIconColorIfNoUnread": {
+        "message": "Серая иконка если нет непрочитанных"
     },
     "HideNotificationsAfter": {
         "message": "Скрывать уведомления после (сек.), 0 - не скрывать"
