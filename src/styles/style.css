@@ -103,7 +103,7 @@ body {
     padding: 2px 0 2px 0;
 
     /* Workaround for https://github.com/olsh/Feedly-Notifier/issues/73#issuecomment-292728526 */
-    background-color: #fff
+    background-color: #fff;
 }
 
 .item:hover {
@@ -354,7 +354,7 @@ body {
 }
 
 .blog-title span {
-    font-family: "Open Sans Condensed", "Noto Sans KR", serif;
+    font-family: "Open Sans Condensed", "Noto Sans KR", serif, "MS Gothic";
 }
 
 .blog-title a {
