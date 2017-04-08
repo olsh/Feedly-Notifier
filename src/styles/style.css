@@ -101,6 +101,9 @@ body {
 .item {
     width: 100%;
     padding: 2px 0 2px 0;
+
+    /* Workaround for https://github.com/olsh/Feedly-Notifier/issues/73#issuecomment-292728526 */
+    background-color: #fff
 }
 
 .item:hover {
