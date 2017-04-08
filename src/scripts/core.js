@@ -42,6 +42,7 @@ var appGlobal = {
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
         showCategories: false,
+        grayIconColorIfNoUnread: false,
 
         get updateInterval(){
             var minimumInterval = 10;
@@ -364,15 +365,23 @@ function setBadgeCounter(unreadFeedsCount) {
     } else {
         chrome.browserAction.setBadgeText({ text: ""});
     }
+
+    if (unreadFeedsCount === 0 && appGlobal.options.grayIconColorIfNoUnread) {
+        chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
+        });
+    } else {
+        chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {
+        });
+    }
 }
 
 /* Runs feeds update and stores unread feeds in cache
  * Callback will be started after function complete
  * */
 function updateCounter() {
-    if(appGlobal.options.resetCounterOnClick){
-        chrome.storage.local.get("lastCounterResetTime", function(options){
-            if (options.lastCounterResetTime){
+    if (appGlobal.options.resetCounterOnClick) {
+        chrome.storage.local.get("lastCounterResetTime", function (options) {
+            if (options.lastCounterResetTime) {
                 var parameters = {
                     newerThan: options.lastCounterResetTime
                 };
@@ -380,60 +389,60 @@ function updateCounter() {
             makeMarkersRequest(parameters);
         });
     } else {
-        chrome.storage.local.set({ lastCounterResetTime: new Date(0).getTime() });
+        chrome.storage.local.set({lastCounterResetTime: new Date(0).getTime()});
         makeMarkersRequest();
     }
+}
 
-    function makeMarkersRequest(parameters){
-        apiRequestWrapper("markers/counts", {
-            parameters: parameters,
-            onSuccess: function (response) {
-                var unreadCounts = response.unreadcounts;
-                var unreadFeedsCount = 0;
+function makeMarkersRequest(parameters){
+    apiRequestWrapper("markers/counts", {
+        parameters: parameters,
+        onSuccess: function (response) {
+            var unreadCounts = response.unreadcounts;
+            var unreadFeedsCount = 0;
 
-                if (appGlobal.options.isFiltersEnabled) {
-                    apiRequestWrapper("subscriptions", {
-                        onSuccess: function (response) {
-                            unreadCounts.forEach(function (element) {
-                                if (appGlobal.options.filters.indexOf(element.id) !== -1) {
-                                    unreadFeedsCount += element.count;
+            if (appGlobal.options.isFiltersEnabled) {
+                apiRequestWrapper("subscriptions", {
+                    onSuccess: function (response) {
+                        unreadCounts.forEach(function (element) {
+                            if (appGlobal.options.filters.indexOf(element.id) !== -1) {
+                                unreadFeedsCount += element.count;
+                            }
+                        });
+
+                        // When feed consists in more than one category, we remove feed which was counted twice or more
+                        response.forEach(function (feed) {
+                            var numberOfDupesCategories = 0;
+                            feed.categories.forEach(function(category){
+                                if(appGlobal.options.filters.indexOf(category.id) !== -1){
+                                    numberOfDupesCategories++;
                                 }
                             });
-
-                            // When feed consists in more than one category, we remove feed which was counted twice or more
-                            response.forEach(function (feed) {
-                                var numberOfDupesCategories = 0;
-                                feed.categories.forEach(function(category){
-                                    if(appGlobal.options.filters.indexOf(category.id) !== -1){
-                                        numberOfDupesCategories++;
-                                    }
-                                });
-                                if(numberOfDupesCategories > 1){
-                                    for (var i = 0; i < unreadCounts.length; i++) {
-                                        if (feed.id === unreadCounts[i].id) {
-                                            unreadFeedsCount -= unreadCounts[i].count * --numberOfDupesCategories;
-                                            break;
-                                        }
+                            if(numberOfDupesCategories > 1){
+                                for (var i = 0; i < unreadCounts.length; i++) {
+                                    if (feed.id === unreadCounts[i].id) {
+                                        unreadFeedsCount -= unreadCounts[i].count * --numberOfDupesCategories;
+                                        break;
                                     }
                                 }
-                            });
+                            }
+                        });
 
-                            setBadgeCounter(unreadFeedsCount);
-                        }
-                    });
-                } else {
-                    for (var i = 0; i < unreadCounts.length; i++) {
-                        if (appGlobal.globalGroup === unreadCounts[i].id) {
-                            unreadFeedsCount = unreadCounts[i].count;
-                            break;
-                        }
+                        setBadgeCounter(unreadFeedsCount);
                     }
-
-                    setBadgeCounter(unreadFeedsCount);
+                });
+            } else {
+                for (var i = 0; i < unreadCounts.length; i++) {
+                    if (appGlobal.globalGroup === unreadCounts[i].id) {
+                        unreadFeedsCount = unreadCounts[i].count;
+                        break;
+                    }
                 }
+
+                setBadgeCounter(unreadFeedsCount);
             }
-        });
-    }
+        }
+    });
 }
 
 /* Runs feeds update and stores unread feeds in cache
