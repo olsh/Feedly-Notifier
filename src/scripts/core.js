@@ -225,6 +225,21 @@ chrome.notifications.onClicked.addListener(function (notificationId) {
     appGlobal.notifications[notificationId] = undefined;
 });
 
+chrome.notifications.onButtonClicked.addListener(function(notificationId, button) {
+    if (button !== 0) {
+        // Unknown button index
+        return;
+    }
+
+    // The "Mark as read button has been clicked"
+    if (appGlobal.notifications[notificationId]) {
+        markAsRead([notificationId]);
+        chrome.notifications.clear(notificationId);
+    }
+
+    appGlobal.notifications[notificationId] = undefined;
+});
+
 /* Sends desktop notifications */
 function sendDesktopNotification(feeds) {
 
@@ -248,7 +263,12 @@ function sendDesktopNotification(feeds) {
                 type: 'basic',
                 title: feeds[i].blog,
                 message: feeds[i].title,
-                iconUrl: feeds[i].blogIcon
+                iconUrl: feeds[i].blogIcon,
+                buttons: [
+                    {
+                        title: chrome.i18n.getMessage("MarkAsRead")
+                    }
+                ]
             });
 
             appGlobal.notifications[id] = feeds[i].url;
