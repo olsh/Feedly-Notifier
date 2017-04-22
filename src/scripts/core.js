@@ -263,7 +263,7 @@ function sendDesktopNotification(feeds) {
                 type: 'basic',
                 title: feeds[i].blog,
                 message: feeds[i].title,
-                iconUrl: appGlobal.icons.defaultBig,
+                iconUrl: feeds[i].blogIcon,
                 buttons: [
                     {
                         title: chrome.i18n.getMessage("MarkAsRead")
