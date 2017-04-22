@@ -10,7 +10,7 @@
         "tabs",
         "notifications",
         "webRequest",
-        "*://*.feedly.com/"
+        "<all_urls>"
     ],
     // @if BROWSER='chrome'
     "optional_permissions": ["background"],
