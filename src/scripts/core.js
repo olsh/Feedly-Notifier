@@ -81,7 +81,9 @@ var appGlobal = {
         }
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick", "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled", "showCounter", "oldestFeedsFirst", "resetCounterOnClick"],
+    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick",
+        "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled",
+        "showCounter", "oldestFeedsFirst", "resetCounterOnClick", "grayIconColorIfNoUnread"],
     cachedFeeds: [],
     cachedSavedFeeds: [],
     notifications: {},
@@ -386,7 +388,7 @@ function setBadgeCounter(unreadFeedsCount) {
         chrome.browserAction.setBadgeText({ text: ""});
     }
 
-    if (unreadFeedsCount === 0 && appGlobal.options.grayIconColorIfNoUnread) {
+    if (!unreadFeedsCount && appGlobal.options.grayIconColorIfNoUnread) {
         chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
         });
     } else {
@@ -548,8 +550,6 @@ function setInactiveStatus() {
 /* Sets badge as active */
 function setActiveStatus() {
     chrome.browserAction.setBadgeBackgroundColor({color: "#CF0016"});
-    chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {
-    });
     appGlobal.isLoggedIn = true;
 }
 
