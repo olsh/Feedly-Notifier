@@ -17,11 +17,11 @@
     "EnableBackgroundMode": {
         "message": "백그라운드 모드 활성화"
     },
-    "ExpandFeeds": {
-        "message": "팝업창 열릴 때 모든 피드 확대"
-    },
     "ExpandedPopupWidth": {
         "message": "확장 팝업 폭"
+    },
+    "ExpandFeeds": {
+        "message": "팝업창 열릴 때 모든 피드 확대"
     },
     "ExtensionDescription": {
         "message": "feedly 뉴스 리더 확장"
@@ -41,6 +41,9 @@
     "General": {
         "message": "일반"
     },
+    "GrayIconColorIfNoUnread": {
+        "message": "읽지 않은 경우 회색 아이콘으로 표시"
+    },
     "HideNotificationsAfter": {
         "message": "바탕 화면 알림 유지 시간(초), - 0은 숨기지 않음"
     },
@@ -52,6 +55,9 @@
     },
     "Logout": {
         "message": "로그아웃"
+    },
+    "many": {
+        "message": "많음"
     },
     "MarkAllAsRead": {
         "message": "모두 읽은 상태로 표시"
@@ -74,17 +80,20 @@
     "NoSavedArticles": {
         "message": "저장된 기사 없음"
     },
-    "NoUnreadArticles": {
-        "message": "읽지 않은 기사 없음"
-    },
     "Notifications": {
         "message": "알림"
+    },
+    "NoUnreadArticles": {
+        "message": "읽지 않은 기사 없음"
     },
     "OldestFeedsFirst": {
         "message": "오래된 것부터"
     },
     "OpenAllFeeds": {
         "message": "모든 피드 열기"
+    },
+    "OpenAllSavedFeeds": {
+        "message": "저장된 피드를 모두 열고 저장하지 않습니다."
     },
     "OpenFeedsInBackground": {
         "message": "백그라운드 탭에서 피드 열기"
@@ -145,8 +154,5 @@
                 "example": "10 or many"
             }
         }
-    },
-    "many": {
-        "message": "많음"
     }
 }
