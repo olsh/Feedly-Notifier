@@ -122,6 +122,9 @@
     "Save": {
         "message": "Save"
     },
+    "ShowBlogIconInNotifications": {
+        "message": "Show site favicon in notifications"
+    },
     "ShowCategories": {
         "message": "Show categories in popup"
     },

@@ -3,6 +3,9 @@
 var optionsGlobal = {
     backgroundPermission: {
         permissions: ["background"]
+    },
+    allSitesPermission: {
+        origins: ["<all_urls>"]
     }
 };
 
@@ -118,8 +121,10 @@ function saveOptions() {
     setBackgroundMode($("#enable-background-mode").is(":checked"));
     // @endif
 
-    chrome.extension.getBackgroundPage().appGlobal.syncStorage.set(options, function () {
-        alert(chrome.i18n.getMessage("OptionsSaved"));
+    setAllSitesPermission($("#showBlogIconInNotifications").is(":checked"), options, function () {
+        chrome.extension.getBackgroundPage().appGlobal.syncStorage.set(options, function () {
+            alert(chrome.i18n.getMessage("OptionsSaved"));
+        });
     });
 }
 
@@ -140,7 +145,12 @@ function loadOptions() {
                 optionControl.val(items[option]);
             }
         }
-        optionsForm.find("input").trigger("change");
+
+        chrome.permissions.contains(optionsGlobal.allSitesPermission, function (enabled){
+            $("#showBlogIconInNotifications").prop("checked", enabled && items.showBlogIconInNotifications);
+
+            optionsForm.find("input").trigger("change");
+        });
     });
     $("#header").text(chrome.i18n.getMessage("FeedlyNotifierOptions"));
     $("#options").find("[data-locale-value]").each(function () {
@@ -161,3 +171,15 @@ function setBackgroundMode(enable) {
     }
 }
 // @endif
+
+function setAllSitesPermission(enable, options, callback) {
+    if (enable) {
+        chrome.permissions.request(optionsGlobal.allSitesPermission, function (granted) {
+            $("#showBlogIconInNotifications").prop('checked', granted);
+            options.showBlogIconInNotifications = granted;
+            callback();
+        });
+    } else {
+        callback();
+    }
+}

@@ -43,6 +43,7 @@ var appGlobal = {
         popupFontSize: 100, //percent
         showCategories: false,
         grayIconColorIfNoUnread: false,
+        showBlogIconInNotifications: false,
 
         get updateInterval(){
             var minimumInterval = 10;
@@ -257,24 +258,34 @@ function sendDesktopNotification(feeds) {
             iconUrl: appGlobal.icons.defaultBig
         });
     } else {
-        for (var i = 0; i < feeds.length; i++) {
+        chrome.permissions.contains({
+            origins: ["<all_urls>"]
+        }, function (result) {
+            var showBlogIcons = false;
 
-            var id = feeds[i].id;
+            if (appGlobal.options.showBlogIconInNotifications && result) {
+                showBlogIcons = true;
+            }
 
-            chrome.notifications.create(id, {
-                type: 'basic',
-                title: feeds[i].blog,
-                message: feeds[i].title,
-                iconUrl: feeds[i].blogIcon,
-                buttons: [
-                    {
-                        title: chrome.i18n.getMessage("MarkAsRead")
-                    }
-                ]
-            });
+            for (var i = 0; i < feeds.length; i++) {
 
-            appGlobal.notifications[id] = feeds[i].url;
-        }
+                var id = feeds[i].id;
+
+                chrome.notifications.create(id, {
+                    type: 'basic',
+                    title: feeds[i].blog,
+                    message: feeds[i].title,
+                    iconUrl: showBlogIcons ? feeds[i].blogIcon : appGlobal.icons.defaultBig,
+                    buttons: [
+                        {
+                            title: chrome.i18n.getMessage("MarkAsRead")
+                        }
+                    ]
+                });
+
+                appGlobal.notifications[id] = feeds[i].url;
+            }
+        });
     }
 }
 
