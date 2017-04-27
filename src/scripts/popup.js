@@ -106,7 +106,7 @@ $("#feedly").on("click", "#btn-feeds", function () {
     renderFeeds();
 });
 
-$("#popup-content").on("click", ".show-content", function () {
+$("#popup-content").on("click", ".item", function () {
     var $this = $(this);
     var feed = $this.closest(".item");
     var contentContainer = feed.find(".content");
@@ -143,6 +143,10 @@ $("#popup-content").on("click", ".show-content", function () {
             setPopupExpand(false);
         }
     });
+});
+
+$("#popup-content").on("click", ".blog-title", function (event) {
+  event.stopPropagation();
 });
 
 /* Manually feeds update */
