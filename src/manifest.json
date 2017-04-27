@@ -12,12 +12,12 @@
         "webRequest",
         "*://*.feedly.com/"
     ],
-    // @if BROWSER='chrome'
     "optional_permissions": [
+        // @if BROWSER='chrome'
         "background",
+        // @endif
         "<all_urls>"
     ],
-    // @endif
     "browser_action": {
         "default_icon": {
             "19": "/images/icon_inactive.png",
