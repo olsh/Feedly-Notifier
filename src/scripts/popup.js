@@ -111,7 +111,8 @@ $("#popup-content").on("click", ".show-content", function () {
     var feed = $this.closest(".item");
     var contentContainer = feed.find(".content");
     var feedId = feed.data("id");
-    if (contentContainer.html() === "") {
+
+    if (!contentContainer.html()) {
         var feeds = $("#feed").is(":visible") ? popupGlobal.feeds : popupGlobal.savedFeeds;
 
         var template = $("#feed-content").html();
@@ -219,21 +220,17 @@ function renderFeeds(forceUpdate) {
                     renderCategories(container, feeds);
                 }
 
-                if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
-                    var partials = { content: $("#feed-content").html() };
-                }
-
                 var feedsTemplate = $("#feedTemplate").html();
                 Mustache.parse(feedsTemplate);
 
-                container.append(Mustache.render(feedsTemplate, {feeds: feeds}, partials));
+                container.append(Mustache.render(feedsTemplate, {feeds: feeds}));
                 container.find(".timeago").timeago();
+
+                showFeeds();
 
                 if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
                     container.find(".show-content").click();
                 }
-
-                showFeeds();
             }
         }
     });
@@ -251,10 +248,6 @@ function renderSavedFeeds(forceUpdate) {
             } else {
                 var container = $("#feed-saved").empty();
 
-                if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
-                    var partials = { content: $("#feed-content").html() };
-                }
-
                 if (popupGlobal.backgroundPage.appGlobal.options.showCategories) {
                     renderCategories(container, feeds);
                 }
@@ -262,14 +255,14 @@ function renderSavedFeeds(forceUpdate) {
                 var feedTemplate = $("#feedTemplate").html();
                 Mustache.parse(feedTemplate);
 
-                container.append(Mustache.render(feedTemplate, {feeds: feeds}, partials));
+                container.append(Mustache.render(feedTemplate, {feeds: feeds}));
                 container.find(".timeago").timeago();
+
+                showSavedFeeds();
 
                 if (popupGlobal.backgroundPage.appGlobal.options.expandFeeds) {
                     container.find(".show-content").click();
                 }
-
-                showSavedFeeds();
             }
         }
     });
