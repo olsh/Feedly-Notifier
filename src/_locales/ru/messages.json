@@ -123,7 +123,7 @@
         "message": "Сохранить"
     },
     "ShowThumbnailInNotifications": {
-        "message": "Показывать превью новости в уведомления"
+        "message": "Показывать превью новости в уведомления (если возможно)"
     },
     "ShowBlogIconInNotifications": {
         "message": "Показывать иконку сайта в уведомлениях"

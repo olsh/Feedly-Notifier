@@ -126,7 +126,7 @@
         "message": "Show site favicon in notifications"
     },
     "ShowThumbnailInNotifications": {
-        "message": "Show preview image in notifications"
+        "message": "Show preview image in notifications (if possible)"
     },
     "ShowCategories": {
         "message": "Show categories in popup"

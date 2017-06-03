@@ -30,16 +30,19 @@
         "message": "オプション"
     },
     "FeedlyWebsite": {
-        "message": "ウェブサイト"
+        "message": "Feedlyサイトへ"
     },
     "Filters": {
         "message": "フィルター"
     },
     "ForceUpdateFeeds": {
-        "message": "ポップアップした際に、フィードを強制的に更新する"
+        "message": "ポップアップした際にフィードを強制的に更新する"
     },
     "General": {
         "message": "標準"
+    },
+    "GrayIconColorIfNoUnread": {
+        "message": "未読が無い場合グレーのアイコンにする"
     },
     "HideNotificationsAfter": {
         "message": "○秒後にデスクトップ通知を非表示にする（0を指定で非表示にしない）"
@@ -86,6 +89,9 @@
     "OpenAllFeeds": {
         "message": "全てのフィードを開く"
     },
+    "OpenAllSavedFeeds": {
+        "message": "Open all saved feeds and unsave them"
+    },
     "OpenFeedsInBackground": {
         "message": "フィードをバックグラウンドのタブで開く"
     },
@@ -116,6 +122,9 @@
     "Save": {
         "message": "保存"
     },
+    "ShowBlogIconInNotifications": {
+        "message": "通知にサイトのファビコンを表示"
+    },
     "ShowCategories": {
         "message": "ポップアップにカテゴリーを表示する"
     },
@@ -127,6 +136,9 @@
     },
     "ShowFullFeedContent": {
         "message": "拡張フィードに全てのコンテンツを表示する（可能な場合）"
+    },
+    "ShowThumbnailInNotifications": {
+        "message": "Show preview image in notifications (if possible)"
     },
     "UpdateFeeds": {
         "message": "更新"
