@@ -260,12 +260,13 @@ function sendDesktopNotification(feeds) {
             iconUrl: appGlobal.icons.defaultBig
         });
     } else {
+        let showBlogIcons = false;
+        let showThumbnails = false;
+
+        // @if BROWSER!='firefox'
         chrome.permissions.contains({
             origins: ["<all_urls>"]
         }, function (result) {
-            let showBlogIcons = false;
-            let showThumbnails = false;
-
             if (appGlobal.options.showBlogIconInNotifications && result) {
                 showBlogIcons = true;
             }
@@ -274,23 +275,34 @@ function sendDesktopNotification(feeds) {
                 showThumbnails = true;
             }
 
-            for (let feed of feeds) {
-                chrome.notifications.create(feed.id, {
-                    type: showThumbnails && feed.thumbnail ? 'image' : 'basic',
-                    title: feed.blog,
-                    message: feed.title,
-                    iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig,
-                    imageUrl: showThumbnails ? feed.thumbnail : null,
-                    buttons: [
-                        {
-                            title: chrome.i18n.getMessage("MarkAsRead")
-                        }
-                    ]
-                });
-
-                appGlobal.notifications[feed.id] = feed.url;
-            }
+            createNotifications(feeds, showBlogIcons, showThumbnails);
         });
+        // @endif
+
+        // @if BROWSER='firefox'
+        // Firefox doesn't support optional permissions
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1197420
+        createNotifications(feeds, showBlogIcons, showThumbnails);
+        // @endif
+    }
+
+    function createNotifications(feeds, showBlogIcons, showThumbnails) {
+        for (let feed of feeds) {
+            chrome.notifications.create(feed.id, {
+                type: showThumbnails && feed.thumbnail ? 'image' : 'basic',
+                title: feed.blog,
+                message: feed.title,
+                iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig,
+                imageUrl: showThumbnails ? feed.thumbnail : null,
+                buttons: [
+                    {
+                        title: chrome.i18n.getMessage("MarkAsRead")
+                    }
+                ]
+            });
+
+            appGlobal.notifications[feed.id] = feed.url;
+        }
     }
 }
 
