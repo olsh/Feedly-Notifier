@@ -47,8 +47,8 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
         var isFeed = link.hasClass("title") && $("#feed").is(":visible");
         var url = link.data("link");
 
-        if (isFeed && popupGlobal.backgroundPage.appGlobal.feedTab && popupGlobal.backgroundPage.appGlobal.options.openFeedsInSameTab) {
-            chrome.tabs.update(popupGlobal.backgroundPage.appGlobal.feedTab.id,{url: url}, function(tab) {
+        if (isFeed && popupGlobal.backgroundPage.appGlobal.feedTabId && popupGlobal.backgroundPage.appGlobal.options.openFeedsInSameTab) {
+            chrome.tabs.update(popupGlobal.backgroundPage.appGlobal.feedTabId, {url: url}, function(tab) {
                 onOpenCallback(isFeed, tab);
             })
         } else {
@@ -60,7 +60,7 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
 
     function onOpenCallback(isFeed, tab) {
         if (isFeed) {
-            popupGlobal.backgroundPage.appGlobal.feedTab = tab;
+            popupGlobal.backgroundPage.appGlobal.feedTabId = tab.id;
 
             if (popupGlobal.backgroundPage.appGlobal.options.markReadOnClick) {
                 markAsRead([link.closest(".item").data("id")]);

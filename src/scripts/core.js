@@ -153,8 +153,8 @@ chrome.storage.onChanged.addListener(function (changes, areaName) {
 });
 
 chrome.tabs.onRemoved.addListener(function(tabId){
-    if (appGlobal.feedTab && appGlobal.feedTab.id === tabId) {
-        appGlobal.feedTab = null;
+    if (appGlobal.feedTabId && appGlobal.feedTabId === tabId) {
+        appGlobal.feedTabId = null;
     }
 });
 
