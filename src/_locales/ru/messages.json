@@ -122,6 +122,9 @@
     "Save": {
         "message": "Сохранить"
     },
+    "ShowThumbnailInNotifications": {
+        "message": "Показывать превью новости в уведомления"
+    },
     "ShowBlogIconInNotifications": {
         "message": "Показывать иконку сайта в уведомлениях"
     },

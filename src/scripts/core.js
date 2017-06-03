@@ -44,6 +44,7 @@ var appGlobal = {
         showCategories: false,
         grayIconColorIfNoUnread: false,
         showBlogIconInNotifications: false,
+        showThumbnailInNotifications: false,
 
         get updateInterval(){
             let minimumInterval = 10;
@@ -250,7 +251,7 @@ function sendDesktopNotification(feeds) {
     //if notifications too many, then to show only count
     if (feeds.length > appGlobal.options.maxNotificationsCount) {
         //We can detect only limit count of new feeds at time, but actually count of feeds may be more
-        var count = feeds.length === appGlobal.options.maxNumberOfFeeds ? chrome.i18n.getMessage("many") : feeds.length.toString();
+        let count = feeds.length === appGlobal.options.maxNumberOfFeeds ? chrome.i18n.getMessage("many") : feeds.length.toString();
 
         chrome.notifications.create({
             type: 'basic',
@@ -262,21 +263,24 @@ function sendDesktopNotification(feeds) {
         chrome.permissions.contains({
             origins: ["<all_urls>"]
         }, function (result) {
-            var showBlogIcons = false;
+            let showBlogIcons = false;
+            let showThumbnails = false;
 
             if (appGlobal.options.showBlogIconInNotifications && result) {
                 showBlogIcons = true;
             }
 
-            for (var i = 0; i < feeds.length; i++) {
+            if (appGlobal.options.showThumbnailInNotifications && result) {
+                showThumbnails = true;
+            }
 
-                var id = feeds[i].id;
-
-                chrome.notifications.create(id, {
-                    type: 'basic',
-                    title: feeds[i].blog,
-                    message: feeds[i].title,
-                    iconUrl: showBlogIcons ? feeds[i].blogIcon : appGlobal.icons.defaultBig,
+            for (let feed of feeds) {
+                chrome.notifications.create(feed.id, {
+                    type: showThumbnails && feed.thumbnail ? 'image' : 'basic',
+                    title: feed.blog,
+                    message: feed.title,
+                    iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig,
+                    imageUrl: showThumbnails ? feed.thumbnail : null,
                     buttons: [
                         {
                             title: chrome.i18n.getMessage("MarkAsRead")
@@ -284,7 +288,7 @@ function sendDesktopNotification(feeds) {
                     ]
                 });
 
-                appGlobal.notifications[id] = feeds[i].url;
+                appGlobal.notifications[feed.id] = feed.url;
             }
         });
     }
@@ -670,7 +674,7 @@ function parseFeeds(feedlyResponse) {
                     blog: blog,
                     blogTitleDirection: blogTitleDirection,
                     blogUrl: blogUrl,
-                    blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=16..32..64&fallback_icon_url=" + googleFaviconUrl,
+                    blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=16..64..300&fallback_icon_url=" + googleFaviconUrl,
                     id: item.id,
                     content: content,
                     contentDirection: contentDirection,
@@ -678,7 +682,8 @@ function parseFeeds(feedlyResponse) {
                     date: item.crawled ? new Date(item.crawled) : "",
                     isSaved: isSaved,
                     categories: categories,
-                    author: item.author
+                    author: item.author,
+                    thumbnail: item.thumbnail && item.thumbnail.length > 0 && item.thumbnail[0].url ? item.thumbnail[0].url : null
                 };
             });
         });

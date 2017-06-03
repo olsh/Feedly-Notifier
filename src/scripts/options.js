@@ -118,7 +118,8 @@ function saveOptions() {
     setBackgroundMode($("#enable-background-mode").is(":checked"));
     // @endif
 
-    setAllSitesPermission($("#showBlogIconInNotifications").is(":checked"), options, function () {
+    setAllSitesPermission($("#showBlogIconInNotifications").is(":checked")
+        || $("#showThumbnailInNotifications").is(":checked"), options, function () {
         chrome.extension.getBackgroundPage().appGlobal.syncStorage.set(options, function () {
             alert(chrome.i18n.getMessage("OptionsSaved"));
         });
@@ -145,6 +146,7 @@ function loadOptions() {
 
         chrome.permissions.contains(optionsGlobal.allSitesPermission, function (enabled){
             $("#showBlogIconInNotifications").prop("checked", enabled && items.showBlogIconInNotifications);
+            $("#showThumbnailInNotifications").prop("checked", enabled && items.showThumbnailInNotifications);
 
             optionsForm.find("input").trigger("change");
         });
@@ -172,8 +174,16 @@ function setBackgroundMode(enable) {
 function setAllSitesPermission(enable, options, callback) {
     if (enable) {
         chrome.permissions.request(optionsGlobal.allSitesPermission, function (granted) {
-            $("#showBlogIconInNotifications").prop('checked', granted);
-            options.showBlogIconInNotifications = granted;
+            if ($("#showThumbnailInNotifications").is(":checked")) {
+                $("#showThumbnailInNotifications").prop('checked', granted);
+                options.showThumbnailInNotifications = granted;
+            }
+
+            if ($("#showBlogIconInNotifications").is(":checked")) {
+                $("#showBlogIconInNotifications").prop('checked', granted);
+                options.showBlogIconInNotifications = granted;
+            }
+
             callback();
         });
     } else {

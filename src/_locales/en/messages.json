@@ -125,6 +125,9 @@
     "ShowBlogIconInNotifications": {
         "message": "Show site favicon in notifications"
     },
+    "ShowThumbnailInNotifications": {
+        "message": "Show preview image in notifications"
+    },
     "ShowCategories": {
         "message": "Show categories in popup"
     },
