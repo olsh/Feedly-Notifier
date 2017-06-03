@@ -493,7 +493,7 @@ function makeMarkersRequest(parameters){
                     return unreadFeedsCount;
                 })
                 .catch(function () {
-                    console.warn("Unable to load subscriptions.");
+                    console.info("Unable to load subscriptions.");
                 });
         } else {
             for (let unreadCount of unreadCounts) {
@@ -507,7 +507,7 @@ function makeMarkersRequest(parameters){
         }
     }).then(setBadgeCounter)
     .catch(function () {
-        console.warn("Unable to load counters.");
+        console.info("Unable to load counters.");
     });
 }
 
@@ -581,7 +581,7 @@ function updateFeeds(silentUpdate) {
             }
         })
         .catch(function () {
-            console.warn("Unable to update feeds.");
+            console.info("Unable to update feeds.");
 
             return Promise.resolve();
         });
