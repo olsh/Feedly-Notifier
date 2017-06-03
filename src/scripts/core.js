@@ -249,7 +249,14 @@ chrome.notifications.onButtonClicked.addListener(function(notificationId, button
 function sendDesktopNotification(feeds) {
 
     //if notifications too many, then to show only count
-    if (feeds.length > appGlobal.options.maxNotificationsCount) {
+    let maxNotifications = appGlobal.options.maxNotificationsCount;
+    // @if BROWSER='firefox'
+    // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/notifications/create
+    // If you call notifications.create() more than once in rapid succession,
+    // Firefox may end up not displaying any notification at all.
+    maxNotifications = 1;
+    // @endif
+    if (feeds.length > maxNotifications) {
         //We can detect only limit count of new feeds at time, but actually count of feeds may be more
         let count = feeds.length === appGlobal.options.maxNumberOfFeeds ? chrome.i18n.getMessage("many") : feeds.length.toString();
 
@@ -292,13 +299,15 @@ function sendDesktopNotification(feeds) {
                 type: showThumbnails && feed.thumbnail ? 'image' : 'basic',
                 title: feed.blog,
                 message: feed.title,
-                iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig,
-                imageUrl: showThumbnails ? feed.thumbnail : null,
+                iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig
+                // @if BROWSER!='firefox'
+                ,imageUrl: showThumbnails ? feed.thumbnail : null,
                 buttons: [
                     {
                         title: chrome.i18n.getMessage("MarkAsRead")
                     }
                 ]
+                // @endif
             });
 
             appGlobal.notifications[feed.id] = feed.url;
