@@ -93,6 +93,7 @@ var appGlobal = {
     clientId: "",
     clientSecret: "",
     tokenRefreshingPromise: null,
+    getUserSubscriptionsPromise: null,
     get feedlyUrl(){
         return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com"
     },
@@ -162,6 +163,7 @@ chrome.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "POST" || details.method === "DELETE") {
         updateCounter();
         updateFeeds();
+        appGlobal.getUserSubscriptionsPromise = null;
     }
 }, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
@@ -309,7 +311,7 @@ function openUrlInNewTab(url, active) {
 /* Opens new Feedly tab, if tab was already opened, then switches on it and reload. */
 function openFeedlyTab() {
     browser.tabs.query({url: appGlobal.feedlyUrl + "/*"})
-        .then(function () {
+        .then(function (tabs) {
             if (tabs.length < 1) {
                 chrome.tabs.create({url: appGlobal.feedlyUrl});
             } else {
@@ -379,14 +381,17 @@ function resetCounter(){
     chrome.storage.local.set({ lastCounterResetTime: new Date().getTime() });
 }
 
-/* Update saved feeds and stores its in cache */
-function updateSavedFeeds(callback) {
-    apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents")
+/**
+ * Updates saved feeds and stores them in cache.
+ * @returns {Promise}
+ */
+function updateSavedFeeds() {
+    return apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents")
         .then(function (response) {
-            appGlobal.cachedSavedFeeds = parseFeeds(response);
-            if (typeof callback === "function") {
-                callback();
-            }
+            return parseFeeds(response);
+        })
+        .then(function (feeds) {
+            appGlobal.cachedSavedFeeds = feeds;
         });
 }
 
@@ -414,7 +419,7 @@ function updateCounter() {
     if (appGlobal.options.resetCounterOnClick) {
         chrome.storage.local.get("lastCounterResetTime", function (options) {
             if (options.lastCounterResetTime) {
-                var parameters = {
+                let parameters = {
                     newerThan: options.lastCounterResetTime
                 };
             }
@@ -434,7 +439,7 @@ function makeMarkersRequest(parameters){
         let unreadFeedsCount = 0;
 
         if (appGlobal.options.isFiltersEnabled) {
-            return apiRequestWrapper("subscriptions")
+            return getUserSubscriptions()
                 .then(function (response) {
                     unreadCounts.forEach(function (element) {
                         if (appGlobal.options.filters.indexOf(element.id) !== -1) {
@@ -485,7 +490,7 @@ function makeMarkersRequest(parameters){
  * Callback will be started after function complete
  * If silentUpdate is true, then notifications will not be shown
  *  */
-function updateFeeds(callback, silentUpdate) {
+function updateFeeds(silentUpdate) {
     appGlobal.cachedFeeds = [];
     appGlobal.options.filters = appGlobal.options.filters || [];
 
@@ -506,10 +511,15 @@ function updateFeeds(callback, silentUpdate) {
         promises.push(promise);
     }
 
-    Promise.all(promises)
+    return Promise.all(promises)
         .then(function (responses) {
-            for (let response of responses) {
-                appGlobal.cachedFeeds = appGlobal.cachedFeeds.concat(parseFeeds(response));
+            let parsePromises = responses.map(response => parseFeeds(response));
+
+            return Promise.all(parsePromises);
+        })
+        .then(function (parsedFeeds) {
+            for (let parsedFeed of parsedFeeds) {
+                appGlobal.cachedFeeds = appGlobal.cachedFeeds.concat(parsedFeed);
             }
 
             // Remove duplicates
@@ -544,15 +554,11 @@ function updateFeeds(callback, silentUpdate) {
                     }
                 });
             }
-
-            if (typeof callback === "function") {
-                callback();
-            }
         })
         .catch(function () {
-            if (typeof callback === "function") {
-                callback();
-            }
+            console.warn("Unable to update feeds.");
+
+            return Promise.resolve();
         });
 }
 
@@ -575,99 +581,107 @@ function setActiveStatus() {
 
 /* Converts feedly response to feeds */
 function parseFeeds(feedlyResponse) {
-    var feeds = feedlyResponse.items.map(function (item) {
 
-        var blogUrl;
-        try {
-            blogUrl = item.origin.htmlUrl.match(/http(?:s)?:\/\/[^/]+/i).pop();
-        } catch (exception) {
-            blogUrl = "#";
-        }
+    return getUserSubscriptions()
+        .then(function (subscriptionResponse) {
 
-        //Set content
-        var content;
-        var contentDirection;
-        if (appGlobal.options.showFullFeedContent) {
-            if (item.content !== undefined) {
-                content = item.content.content;
-                contentDirection = item.content.direction;
-            }
-        }
+            let subscriptionsMap = {};
+            subscriptionResponse.forEach(item => { subscriptionsMap[item.id] = item.title; });
 
-        if (!content) {
-            if (item.summary !== undefined) {
-                content = item.summary.content;
-                contentDirection = item.summary.direction;
-            }
-        }
+            return feedlyResponse.items.map(function (item) {
 
-        //Set title
-        var title;
-        var titleDirection;
-        if (item.title) {
-            if (item.title.indexOf("direction:rtl") !== -1) {
-                //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
-                title = item.title.replace(/<\/?div.*?>/gi, "");
-                titleDirection = "rtl";
-            } else {
-                title = item.title;
-            }
-        }
-
-        var isSaved;
-        if (item.tags) {
-            for (var i = 0; i < item.tags.length; i++) {
-                if (item.tags[i].id.search(/global\.saved$/i) !== -1) {
-                    isSaved = true;
-                    break;
+                let blogUrl;
+                try {
+                    blogUrl = item.origin.htmlUrl.match(/http(?:s)?:\/\/[^/]+/i).pop();
+                } catch (exception) {
+                    blogUrl = "#";
                 }
-            }
-        }
 
-        var blog;
-        var blogTitleDirection;
-        if (item.origin && item.origin.title) {
-            if (item.origin.title.indexOf("direction:rtl") !== -1) {
-                //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
-                blog = item.origin.title.replace(/<\/?div.*?>/gi, "");
-                blogTitleDirection = "rtl";
-            } else {
-                blog = item.origin.title;
-            }
-        }
+                //Set content
+                let content;
+                let contentDirection;
+                if (appGlobal.options.showFullFeedContent) {
+                    if (item.content !== undefined) {
+                        content = item.content.content;
+                        contentDirection = item.content.direction;
+                    }
+                }
 
-        var categories = [];
-        if (item.categories) {
-            categories = item.categories.map(function (category){
+                if (!content) {
+                    if (item.summary !== undefined) {
+                        content = item.summary.content;
+                        contentDirection = item.summary.direction;
+                    }
+                }
+
+                //Set title
+                let title;
+                let titleDirection;
+                if (item.title) {
+                    if (item.title.indexOf("direction:rtl") !== -1) {
+                        //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
+                        title = item.title.replace(/<\/?div.*?>/gi, "");
+                        titleDirection = "rtl";
+                    } else {
+                        title = item.title;
+                    }
+                }
+
+                let isSaved;
+                if (item.tags) {
+                    for (let tag of item.tags) {
+                        if (tag.id.search(/global\.saved$/i) !== -1) {
+                            isSaved = true;
+                            break;
+                        }
+                    }
+                }
+
+                let blog;
+                let blogTitleDirection;
+                if (item.origin) {
+                    // Trying to get the user defined name of the stream
+                    blog = subscriptionsMap[item.origin.streamId] || item.origin.title;
+
+                    if (blog.indexOf("direction:rtl") !== -1) {
+                        //Feedly wraps rtl titles in div, we remove div because desktopNotifications support only text
+                        blog = item.origin.title.replace(/<\/?div.*?>/gi, "");
+                        blogTitleDirection = "rtl";
+                    }
+                }
+
+                let categories = [];
+                if (item.categories) {
+                    categories = item.categories.map(function (category){
+                        return {
+                            id: category.id,
+                            encodedId: encodeURI(category.id),
+                            label: category.label
+                        };
+                    });
+                }
+
+                let googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed";
+
                 return {
-                    id: category.id,
-                    encodedId: encodeURI(category.id),
-                    label: category.label
+                    title: title,
+                    titleDirection: titleDirection,
+                    url: (item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "") || blogUrl,
+                    blog: blog,
+                    blogTitleDirection: blogTitleDirection,
+                    blogUrl: blogUrl,
+                    blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=16..32..64&fallback_icon_url=" + googleFaviconUrl,
+                    id: item.id,
+                    content: content,
+                    contentDirection: contentDirection,
+                    isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
+                    date: item.crawled ? new Date(item.crawled) : "",
+                    isSaved: isSaved,
+                    categories: categories,
+                    author: item.author
                 };
             });
-        }
-
-        var googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed";
-
-        return {
-            title: title,
-            titleDirection: titleDirection,
-            url: (item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "") || blogUrl,
-            blog: blog,
-            blogTitleDirection: blogTitleDirection,
-            blogUrl: blogUrl,
-            blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=16..32..64&fallback_icon_url=" + googleFaviconUrl,
-            id: item.id,
-            content: content,
-            contentDirection: contentDirection,
-            isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
-            date: item.crawled ? new Date(item.crawled) : "",
-            isSaved: isSaved,
-            categories: categories,
-            author: item.author
-        };
-    });
-    return feeds;
+        });
 }
 
 /* Returns feeds from the cache.
@@ -678,9 +692,10 @@ function getFeeds(forceUpdate, callback) {
     if (appGlobal.cachedFeeds.length > 0 && !forceUpdate) {
         callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
     } else {
-        updateFeeds(function () {
-            callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
-        }, true);
+        updateFeeds(true)
+            .then(function () {
+                callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
+            });
         updateCounter();
     }
 }
@@ -693,10 +708,33 @@ function getSavedFeeds(forceUpdate, callback) {
     if (appGlobal.cachedSavedFeeds.length > 0 && !forceUpdate) {
         callback(appGlobal.cachedSavedFeeds.slice(0), appGlobal.isLoggedIn);
     } else {
-        updateSavedFeeds(function () {
-            callback(appGlobal.cachedSavedFeeds.slice(0), appGlobal.isLoggedIn);
-        }, true);
+        updateSavedFeeds()
+            .then(function () {
+                callback(appGlobal.cachedSavedFeeds.slice(0), appGlobal.isLoggedIn);
+            });
     }
+}
+
+function getUserSubscriptions(updateCache) {
+    if (updateCache) {
+        appGlobal.getUserSubscriptionsPromise = null;
+    }
+
+    appGlobal.getUserSubscriptionsPromise = appGlobal.getUserSubscriptionsPromise || apiRequestWrapper("subscriptions")
+        .then(function (response) {
+            if (!response) {
+                appGlobal.getUserSubscriptionsPromise = null;
+                return Promise.reject();
+            }
+
+            return response;
+        },function () {
+            appGlobal.getUserSubscriptionsPromise = null;
+
+            return Promise.reject();
+        });
+
+    return appGlobal.getUserSubscriptionsPromise;
 }
 
 /* Marks feed as read, remove it from the cache and decrement badge.

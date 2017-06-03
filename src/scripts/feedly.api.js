@@ -66,12 +66,12 @@ let FeedlyApiClient = function (accessToken) {
         }
 
         let requestParameters = {
-            method: verb === "GET" ? "get" : "post",
+            method: verb,
             headers: headers
         };
 
         if (settings.body) {
-            requestParameters.body = settings.body;
+            requestParameters.body = JSON.stringify(settings.body);
         }
 
         return fetch(url, requestParameters)
