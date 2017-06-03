@@ -36,7 +36,7 @@
     },
     // @endif
     "background": {
-        "scripts": ["scripts/feedly.api.js", "scripts/core.js"]
+        "scripts": [ "scripts/browser-polyfill.min.js", "scripts/feedly.api.js", "scripts/core.js"]
     },
     "icons": {
         "16": "/images/icon16.png",
@@ -47,7 +47,7 @@
         "/images/icon128.png"
     ],
     // @if BROWSER!='firefox'
-    "minimum_chrome_version": "38",
+    "minimum_chrome_version": "45",
     // @endif
     // @if BROWSER='firefox'
     "gecko": {

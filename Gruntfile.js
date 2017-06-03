@@ -11,6 +11,8 @@ module.exports = function (grunt) {
                 files: [
                     {src: '<%= pkg.libPath %>/jquery/dist/jquery.min.js', dest: '<%= pkg.buildPath %>/scripts/jquery.min.js'},
 
+                    {src: '<%= pkg.libPath %>/webextension-polyfill/dist/browser-polyfill.min.js', dest: '<%= pkg.buildPath %>/scripts/browser-polyfill.min.js'},
+
                     {src: '<%= pkg.libPath %>/mustache/mustache.min.js', dest: '<%= pkg.buildPath %>/scripts/mustache.min.js'},
 
                     {src: '<%= pkg.libPath %>/dompurify/dist/purify.min.js', dest: '<%= pkg.buildPath %>/scripts/purify.min.js'},

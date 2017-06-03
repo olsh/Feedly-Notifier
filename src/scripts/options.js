@@ -46,40 +46,37 @@ $("#options").on("change", "input", function (e) {
 
 function loadProfileData() {
     chrome.extension.getBackgroundPage().apiRequestWrapper("profile", {
-        useSecureConnection: chrome.extension.getBackgroundPage().appGlobal.options.useSecureConnection,
-        onSuccess: function (result) {
-            var userInfo = $("#userInfo");
-            userInfo.find("[data-locale-value]").each(function () {
-                var textBox = $(this);
-                var localValue = textBox.data("locale-value");
-                textBox.text(chrome.i18n.getMessage(localValue));
-            });
-            userInfo.show();
-            for (var profileData in result) {
-                userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
-            }
-        },
-        onAuthorizationRequired: function () {
-            $("#userInfo, #filters-settings").hide();
+        useSecureConnection: chrome.extension.getBackgroundPage().appGlobal.options.useSecureConnection
+    }).then(function (result) {
+        var userInfo = $("#userInfo");
+        userInfo.find("[data-locale-value]").each(function () {
+            var textBox = $(this);
+            var localValue = textBox.data("locale-value");
+            textBox.text(chrome.i18n.getMessage(localValue));
+        });
+        userInfo.show();
+        for (var profileData in result) {
+            userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
         }
+    }, function () {
+        $("#userInfo, #filters-settings").hide();
     });
 }
 
 function loadUserCategories(){
-    chrome.extension.getBackgroundPage().apiRequestWrapper("categories", {
-        onSuccess: function (result) {
+    chrome.extension.getBackgroundPage().apiRequestWrapper("categories")
+        .then(function (result) {
             result.forEach(function(element){
                 appendCategory(element.id, element.label);
             });
             appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalUncategorized, "Uncategorized");
             chrome.extension.getBackgroundPage().appGlobal.syncStorage.get("filters", function(items){
-                var filters = items.filters || [];
+                let filters = items.filters || [];
                 filters.forEach(function(id){
                     $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
                 });
             });
-        }
-    });
+        });
 }
 
 function appendCategory(id, label){
