@@ -7,7 +7,7 @@ Google chrome, Firefox and Opera extension for reading news from rss aggregator 
 
 ## Changelog
 
-Changelog can be found [here](https://olsh.github.io/Feedly-Notifier/).
+Changelog can be found [here](https://github.com/olsh/Feedly-Notifier/releases).
 
 ## Build
 
