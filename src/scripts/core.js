@@ -443,8 +443,9 @@ function setBadgeCounter(unreadFeedsCount) {
 function updateCounter() {
     if (appGlobal.options.resetCounterOnClick) {
         chrome.storage.local.get("lastCounterResetTime", function (options) {
-            if (options.lastCounterResetTime) {
-                let parameters = {
+            let parameters = null;
+            if (!options.lastCounterResetTime) {
+                parameters = {
                     newerThan: options.lastCounterResetTime
                 };
             }
