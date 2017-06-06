@@ -444,7 +444,7 @@ function updateCounter() {
     if (appGlobal.options.resetCounterOnClick) {
         chrome.storage.local.get("lastCounterResetTime", function (options) {
             let parameters = null;
-            if (!options.lastCounterResetTime) {
+            if (options.lastCounterResetTime) {
                 parameters = {
                     newerThan: options.lastCounterResetTime
                 };

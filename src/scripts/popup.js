@@ -168,6 +168,9 @@ $("#popup-content").on("click", ".save-feed", function () {
 
 $("#popup-content").on("click", "#website", function(){
     popupGlobal.backgroundPage.openFeedlyTab();
+
+    // Close the popup since the user wants to see Feedly website anyway
+    window.close();
 });
 
 $("#popup-content").on("click", ".categories > span", function (){
