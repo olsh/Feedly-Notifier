@@ -954,6 +954,10 @@ function readOptions(callback) {
 
 function apiRequestWrapper(methodName, settings) {
     if (!appGlobal.options.accessToken) {
+        if (appGlobal.isLoggedIn) {
+            setInactiveStatus();
+        }
+
         return Promise.reject();
     }
 
