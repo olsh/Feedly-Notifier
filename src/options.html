@@ -94,10 +94,14 @@
                 <!-- @if BROWSER!='firefox' -->
                 <label for="showBlogIconInNotifications" class="label" data-locale-value="ShowBlogIconInNotifications"></label>
                 <input id="showBlogIconInNotifications" type="checkbox" data-enable-parent="showDesktopNotifications" data-option-name="showBlogIconInNotifications" /><br>
+                <!-- @endif -->
 
+                <!-- @if BROWSER='chrome' -->
                 <label for="showThumbnailInNotifications" class="label" data-locale-value="ShowThumbnailInNotifications"></label>
                 <input id="showThumbnailInNotifications" type="checkbox" data-enable-parent="showDesktopNotifications" data-option-name="showThumbnailInNotifications" /><br>
+                <!-- @endif -->
 
+                <!-- @if BROWSER!='firefox' -->
                 <label for="maxNotificationsCount" class="label" data-locale-value="MaxNotificationsCount"></label>
                 <input id="maxNotificationsCount" type="number" data-enable-parent="showDesktopNotifications" min="1" max="100" data-option-name="maxNotificationsCount" /><br>
                 <!-- @endif -->

@@ -295,14 +295,21 @@ function sendDesktopNotification(feeds) {
 
     function createNotifications(feeds, showBlogIcons, showThumbnails) {
         for (let feed of feeds) {
+            let notificationType = 'basic';
+            // @if BROWSER='crhome'
+            if (showThumbnails && feed.thumbnail) {
+                notificationType = 'image';
+            }
+            // @endif
+
             chrome.notifications.create(feed.id, {
-                type: showThumbnails && feed.thumbnail ? 'image' : 'basic',
+                type: notificationType,
                 title: feed.blog,
                 message: feed.title,
                 iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig
-                // @if BROWSER!='firefox'
-                ,imageUrl: showThumbnails ? feed.thumbnail : null,
-                buttons: [
+                // @if BROWSER='crhome'
+                ,imageUrl: showThumbnails ? feed.thumbnail : null
+                ,buttons: [
                     {
                         title: chrome.i18n.getMessage("MarkAsRead")
                     }
