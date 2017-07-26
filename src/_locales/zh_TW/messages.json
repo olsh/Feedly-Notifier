@@ -17,14 +17,14 @@
   "EnableBackgroundMode": {
     "message": "啟用背景模式"
   },
-  "ExpandedPopupWidth": {
-    "message": "展開寬度"
-  },
   "ExpandFeeds": {
     "message": "彈出視窗顯示時，展開所有的摘要"
   },
+  "ExpandedPopupWidth": {
+    "message": "展開寬度"
+  },
   "ExtensionDescription": {
-    "message": "Feedly 新聞閱讀器擴充功能"
+    "message": "Feedly 新聞閱讀器擴充套件"
   },
   "FeedlyNotifierOptions": {
     "message": "Feedly Notifier 選項"
@@ -41,20 +41,20 @@
   "General": {
     "message": "一般"
   },
+  "GrayIconColorIfNoUnread": {
+    "message": "未讀訊息圖示以灰色表示"
+  },
   "HideNotificationsAfter": {
     "message": "在幾秒之後隱藏桌面通知（0 代表不要隱藏）"
   },
   "IntervalPeriod": {
-    "message": "重整時間"
+    "message": "重整時間 (分)"
   },
   "Login": {
     "message": "登入"
   },
   "Logout": {
     "message": "登出"
-  },
-  "many": {
-    "message": "很多"
   },
   "MarkAllAsRead": {
     "message": "全部標記為已讀"
@@ -77,11 +77,11 @@
   "NoSavedArticles": {
     "message": "沒有收藏文章"
   },
-  "Notifications": {
-    "message": "通知"
-  },
   "NoUnreadArticles": {
     "message": "沒有未讀文章"
+  },
+  "Notifications": {
+    "message": "通知"
   },
   "OldestFeedsFirst": {
     "message": "最舊的排在最上方"
@@ -90,7 +90,7 @@
     "message": "打開所有摘要"
   },
   "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsave them"
+    "message": "Open all saved feeds and unsave them"
   },
   "OpenFeedsInBackground": {
     "message": "在背景分頁中打開摘要"
@@ -122,6 +122,9 @@
   "Save": {
     "message": "儲存"
   },
+  "ShowBlogIconInNotifications": {
+    "message": "於彈出視窗中顯示網站圖示"
+  },
   "ShowCategories": {
     "message": "在彈出視窗中列出分類"
   },
@@ -133,6 +136,9 @@
   },
   "ShowFullFeedContent": {
     "message": "在展開的摘要中呈現完整內容（若可能的話）"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "於彈出視窗中顯示預覽圖片"
   },
   "UpdateFeeds": {
     "message": "更新"
@@ -150,5 +156,8 @@
         "content": "$1"
       }
     }
+  },
+  "many": {
+    "message": "很多"
   }
 }
