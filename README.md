@@ -1,7 +1,8 @@
 Feedly-Notifier
 ===============
 
-## Description
+[![Dependency Status](https://gemnasium.com/badges/github.com/olsh/Feedly-Notifier.svg)](https://gemnasium.com/github.com/olsh/Feedly-Notifier)
+[![Code Climate](https://codeclimate.com/github/olsh/Feedly-Notifier/badges/gpa.svg)](https://codeclimate.com/github/olsh/Feedly-Notifier)
 
 Google chrome, Firefox and Opera extension for reading news from rss aggregator [Feedly](https://feedly.com)
 

@@ -66,7 +66,7 @@ module.exports = function (grunt) {
                     replacements: [
                         {
                             pattern: /http(?:s)?:\/\/(?:www\.)?cloud\.feedly\.com/gi,
-                            replacement: "http://sandbox.feedly.com"
+                            replacement: "http://sandbox7.feedly.com"
                         }
                     ]
                 }
@@ -79,7 +79,7 @@ module.exports = function (grunt) {
                     replacements: [
                         {
                             pattern: /http(?:s)?:\/\/(?:www\.)?feedly\.com/gi,
-                            replacement: "http://sandbox.feedly.com"
+                            replacement: "http://sandbox7.feedly.com"
                         },
                         {
                             pattern: /var\s+redirectUri\s+=\s+[^;]*/gi,
