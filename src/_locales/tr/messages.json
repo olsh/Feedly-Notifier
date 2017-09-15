@@ -41,6 +41,9 @@
     "General": {
         "message": "Genel"
     },
+    "GrayIconColorIfNoUnread": {
+        "message": "Okunmamış yoksa gri ikon rengi"
+    },
     "HideNotificationsAfter": {
         "message": "Masaüstü bildirim penceresini bir süre sonra kapat (san.), 0 - kapanmaz"
     },
@@ -89,6 +92,9 @@
     "OpenAllFeeds": {
         "message": "Bütün haberleri aç"
     },
+    "OpenAllSavedFeeds": {
+        "message": "Kayıtlı tüm beslemeleri aç ve onları sil"
+    },
     "OpenFeedsInBackground": {
         "message": "Haberleri arka planda ayrı sekmede aç"
     },
@@ -119,6 +125,9 @@
     "Save": {
         "message": "Kaydet"
     },
+    "ShowBlogIconInNotifications": {
+        "message": "Bİldirimlerde site simgesini göster"
+    },
     "ShowCategories": {
         "message": "Pencerede kategorileri göster"
     },
@@ -130,6 +139,9 @@
     },
     "ShowFullFeedContent": {
         "message": "Genişletilmiş özet akışını (mümkünse) göster"
+    },
+    "ShowThumbnailInNotifications": {
+        "message": "Bildirimlerde önizleme görüntüsünü göster (mümkünse)"
     },
     "UpdateFeeds": {
         "message": "Güncelle"
