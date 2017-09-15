@@ -21,10 +21,10 @@
   "buildPath": "build",
   "libPath": "node_modules",
   "dependencies": {
-    "dompurify": "^1.0.1",
-    "jquery": "~3.2.1",
-    "mustache": "~2.3.0",
-    "timeago": "~1.6.1",
-    "webextension-polyfill": "~0.1.1"
+    "dompurify": "^1.0.2",
+    "jquery": "^3.2.1",
+    "mustache": "^2.3.0",
+    "timeago": "^1.6.1",
+    "webextension-polyfill": "^0.1.1"
   }
 }
