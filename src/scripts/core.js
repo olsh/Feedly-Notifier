@@ -51,7 +51,7 @@ var appGlobal = {
             return this._updateInterval >= minimumInterval ? this._updateInterval : minimumInterval;
         },
         set updateInterval(value) {
-            return this._updateInterval = value;
+            this._updateInterval = value;
         },
         get popupWidth() {
             let maxValue = 750;
