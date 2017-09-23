@@ -267,11 +267,11 @@ body {
     font-size: 11px;
 }
 
-#popup-actions > i > span {
+#popup-actions > em > span {
     display: none;
 }
 
-#popup-actions > i {
+#popup-actions > em {
     padding: 3px;
 
     cursor: pointer;
@@ -280,11 +280,11 @@ body {
     border-radius: 3px;
 }
 
-#popup-actions > i:hover {
+#popup-actions > em:hover {
     background-color: #eaeaea;
 }
 
-#popup-actions > i:hover > span {
+#popup-actions > em:hover > span {
     position: absolute;
     top: 40px;
     right: 0;
