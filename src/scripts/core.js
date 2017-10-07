@@ -296,7 +296,7 @@ function sendDesktopNotification(feeds) {
     function createNotifications(feeds, showBlogIcons, showThumbnails) {
         for (let feed of feeds) {
             let notificationType = 'basic';
-            // @if BROWSER='crhome'
+            // @if BROWSER='chrome'
             if (showThumbnails && feed.thumbnail) {
                 notificationType = 'image';
             }
@@ -307,7 +307,7 @@ function sendDesktopNotification(feeds) {
                 title: feed.blog,
                 message: feed.title,
                 iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig
-                // @if BROWSER='crhome'
+                // @if BROWSER='chrome'
                 ,imageUrl: showThumbnails ? feed.thumbnail : null
                 ,buttons: [
                     {
