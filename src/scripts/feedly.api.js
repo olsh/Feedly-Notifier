@@ -1,3 +1,5 @@
+"use strict";
+
 let FeedlyApiClient = function(accessToken) {
 
     this.accessToken = accessToken;

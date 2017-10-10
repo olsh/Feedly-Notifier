@@ -1,3 +1,5 @@
+"use strict";
+
 import browser from 'webextension-polyfill';
 import FeedlyApiClient from './feedly.api.js';
 
