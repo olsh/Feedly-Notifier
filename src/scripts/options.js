@@ -33,7 +33,7 @@ $("body").on("click", "#logout", function () {
     $("#userInfo, #filters-settings").hide();
 });
 
-$("#options").on("change", "input", function (e) {
+$("#options").on("change", "input", function () {
     $("[data-disable-parent]").each(function(key, value){
         var child = $(value);
         var parent = $("input[data-option-name='" + child.data("disable-parent") + "']");
@@ -84,10 +84,10 @@ function loadUserCategories(){
 
 function appendCategory(id, label){
     var categories = $("#categories");
-    var label = $("<label for='" + id + "' class='label' />").text(label);
-    var checkbox = $("<input id='" + id + "' type='checkbox' />").attr("data-id", id);
-    categories.append(label);
-    categories.append(checkbox);
+    var $label = $("<label for='" + id + "' class='label' />").text(label);
+    var $checkbox = $("<input id='" + id + "' type='checkbox' />").attr("data-id", id);
+    categories.append($label);
+    categories.append($checkbox);
     categories.append("<br/>");
 }
 

@@ -97,6 +97,9 @@ var options = {
                                 }
                             ]
                         })
+                    },
+                    {
+                        loader: "eslint-loader"
                     }
                 ]
             },

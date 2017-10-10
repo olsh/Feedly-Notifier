@@ -1,7 +1,7 @@
 "use strict";
 
 import * as $ from 'jquery';
-import timeago from 'timeago';
+import 'timeago';
 import DOMPurify from 'dompurify';
 import Mustache from 'mustache';
 
@@ -94,7 +94,7 @@ $("#popup-content").on("click", "#open-unsaved-all-news", function () {
         markAllAsUnsaved();
 });
 
-$("#feed").on("click", ".mark-read", function (event) {
+$("#feed").on("click", ".mark-read", function () {
     var feed = $(this).closest(".item");
     markAsRead([feed.data("id")]);
 });

@@ -92,8 +92,10 @@ var appGlobal = {
     notifications: {},
     isLoggedIn: false,
     intervalIds: [],
+    /* eslint-disable no-undef */
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
+    /* eslint-disable no-undef */
     tokenRefreshingPromise: null,
     getUserSubscriptionsPromise: null,
     get feedlyUrl(){
@@ -115,15 +117,16 @@ var appGlobal = {
         // @endif
 
         // @if BROWSER!='firefox'
-        //noinspection UnreachableCodeJS
+        /* eslint-disable no-unreachable */
         return chrome.storage.sync;
+        /* eslint-enable no-unreachable */
         // @endif
     }
 };
 
 // #Event handlers
 // @if BROWSER!='firefox'
-chrome.runtime.onInstalled.addListener(function (details) {
+chrome.runtime.onInstalled.addListener(function () {
     readOptions(function () {
         //Write all options in chrome storage and initialize application
         writeOptions(initialize);
@@ -142,7 +145,7 @@ readOptions(function () {
 });
 // @endif
 
-chrome.storage.onChanged.addListener(function (changes, areaName) {
+chrome.storage.onChanged.addListener(function (changes) {
     var callback;
 
     for (var optionName in changes) {
@@ -502,7 +505,9 @@ function makeMarkersRequest(parameters){
                     return unreadFeedsCount;
                 })
                 .catch(function () {
+                    /* eslint-disable no-console */
                     console.info("Unable to load subscriptions.");
+                    /* eslint-enable no-console */
                 });
         } else {
             for (let unreadCount of unreadCounts) {
@@ -516,7 +521,9 @@ function makeMarkersRequest(parameters){
         }
     }).then(setBadgeCounter)
     .catch(function () {
+        /* eslint-disable no-console */
         console.info("Unable to load counters.");
+        /* eslint-enable no-console */
     });
 }
 
@@ -590,8 +597,6 @@ function updateFeeds(silentUpdate) {
             }
         })
         .catch(function () {
-            console.info("Unable to update feeds.");
-
             return Promise.resolve();
         });
 }
@@ -868,7 +873,7 @@ function getAccessToken() {
 
     browser.tabs.create({url: url})
         .then(function () {
-            chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
+            chrome.tabs.onUpdated.addListener(function processCode(tabId, information) {
                 let checkStateRegex = new RegExp("state=" + state);
                 if (!checkStateRegex.test(information.url)) {
                     return;
