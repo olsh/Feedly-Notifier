@@ -1,7 +1,14 @@
 {
-  "name": "chrome-extension-webpack",
-  "version": "0.0.1",
-  "description": "A boilerplate to chrome extension with webpack",
+  "name": "feedly-notifier",
+  "description": "Feedly notifier is a tiny extension that keeps you up to date with your feedly subscriptions.",
+  "author": "Dmitriy Samodov, Oleg Shevchenko",
+  "bugs": {
+    "url": "https://github.com/olsh/Feedly-Notifier/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olsh/Feedly-Notifier.git"
+  },
   "scripts": {
     "build": "set NODE_ENV=production&& node utils/build.js",
     "start": "node utils/webserver.js",
