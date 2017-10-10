@@ -1003,5 +1003,6 @@ window.Extension = {
     getFeeds: getFeeds,
     getSavedFeeds: getSavedFeeds,    
     markAsRead: markAsRead,
-    resetCounter: resetCounter
+    resetCounter: resetCounter,
+    apiRequestWrapper: apiRequestWrapper
 };
