@@ -920,6 +920,16 @@ function logout() {
 }
 
 /**
+ * Retrieves authenticated user profile info
+ * @returns {Promise}
+ */
+function getProfileInfo() {
+    return apiRequestWrapper("profile", {
+        useSecureConnection: appGlobal.options.useSecureConnection
+    });
+}
+
+/**
  * Refreshes the access token.
  */
 function refreshAccessToken(){
@@ -1023,5 +1033,7 @@ window.Extension = {
     getSavedFeeds: getSavedFeeds,    
     markAsRead: markAsRead,
     resetCounter: resetCounter,
-    apiRequestWrapper: apiRequestWrapper
+    apiRequestWrapper: apiRequestWrapper,
+
+    getProfileInfo: getProfileInfo
 };

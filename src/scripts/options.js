@@ -47,9 +47,7 @@ $("#options").on("change", "input", function () {
 });
 
 function loadProfileData() {
-    optionsGlobal.backgroundPage.apiRequestWrapper("profile", {
-        useSecureConnection: optionsGlobal.backgroundPage.appGlobal.options.useSecureConnection
-    }).then(function (result) {
+    optionsGlobal.backgroundPage.getProfileInfo().then(function (result) {
         var userInfo = $("#userInfo");
         userInfo.find("[data-locale-value]").each(function () {
             var textBox = $(this);
