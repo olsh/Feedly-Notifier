@@ -6,6 +6,7 @@ var webpack = require("webpack"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     WriteFilePlugin = require("write-file-webpack-plugin"),
     CopyWebpackPlugin = require('copy-webpack-plugin'),
+    StringReplacePlugin = require("string-replace-webpack-plugin"),
     ZipWebpackPlugin = require('zip-webpack-plugin');
 
 // load the secrets
@@ -20,12 +21,12 @@ if (fileSystem.existsSync(secretsPath)) {
 }
 
 var plugins = [
-    // expose and write the allowed env vars on the compiled bundle
+    new StringReplacePlugin(),
     new webpack.DefinePlugin({
         "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV),
         "BROWSER": JSON.stringify(argv.browser),
         "CLIENT_ID": JSON.stringify(argv.clientId),
-        "CLIENT_SECRET": JSON.stringify(argv.clientSecret),
+        "CLIENT_SECRET": JSON.stringify(argv.clientSecret)
     }),
     new HtmlWebpackPlugin({
         template: path.join(__dirname, "src", "popup.html"),
@@ -60,8 +61,6 @@ var plugins = [
     }
 })] : []);
 
-console.log(env.BROWSER);
-
 var options = {
     entry: {
         popup: path.join(__dirname, "src", "scripts", "popup.js"),
@@ -78,14 +77,26 @@ var options = {
                 test: /.js$/,
                 exclude: /node_modules/,
                 use: [
-                    {
-                        loader: "echo-loader",
-                    },
+                    // {
+                    //     loader: "echo-loader",
+                    // },
                     {
                         loader: 'preprocess-loader',
                         options: {
                             BROWSER: argv.browser
                         }
+                    },
+                    {
+                        loader: StringReplacePlugin.replace({
+                            replacements: [
+                                {
+                                    pattern: /http(?:s)?:\/\/(?:www\.)?cloud\.feedly\.com/gi,
+                                    replacement: function (match, p1, offset, string) {
+                                        return argv.sandbox ? "http://sandbox7.feedly.com" : match;
+                                    }
+                                }
+                            ]
+                        })
                     }
                 ]
             },
@@ -103,9 +114,9 @@ var options = {
                 test: /\.html$/,
                 exclude: /node_modules/,
                 use: [
-                    {
-                        loader: "echo-loader",
-                    },
+                    // {
+                    //     loader: "echo-loader",
+                    // },
                     {
                         loader: 'preprocess-loader',
                         options: {
