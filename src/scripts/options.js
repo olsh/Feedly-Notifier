@@ -27,20 +27,19 @@ $("body").on("click", "#save", function (e) {
 });
 
 $("body").on("click", "#logout", function () {
-    optionsGlobal.backgroundPage.appGlobal.options.accessToken = "";
-    optionsGlobal.backgroundPage.appGlobal.options.refreshToken = "";
-    optionsGlobal.backgroundPage.appGlobal.syncStorage.remove(["accessToken", "refreshToken"], function () {});
-    $("#userInfo, #filters-settings").hide();
+    optionsGlobal.backgroundPage.logout().then(function () {
+        $("#userInfo, #filters-settings").hide();
+    });
 });
 
 $("#options").on("change", "input", function () {
-    $("[data-disable-parent]").each(function(key, value){
+    $("[data-disable-parent]").each(function (key, value) {
         var child = $(value);
         var parent = $("input[data-option-name='" + child.data("disable-parent") + "']");
         parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
     });
 
-    $("[data-enable-parent]").each(function(key, value){
+    $("[data-enable-parent]").each(function (key, value) {
         var child = $(value);
         var parent = $("input[data-option-name='" + child.data("enable-parent") + "']");
         !parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
@@ -66,23 +65,23 @@ function loadProfileData() {
     });
 }
 
-function loadUserCategories(){
+function loadUserCategories() {
     optionsGlobal.backgroundPage.apiRequestWrapper("categories")
         .then(function (result) {
-            result.forEach(function(element){
+            result.forEach(function (element) {
                 appendCategory(element.id, element.label);
             });
             appendCategory(optionsGlobal.backgroundPage.appGlobal.globalUncategorized, "Uncategorized");
-            optionsGlobal.backgroundPage.appGlobal.syncStorage.get("filters", function(items){
+            optionsGlobal.backgroundPage.appGlobal.syncStorage.get("filters", function (items) {
                 let filters = items.filters || [];
-                filters.forEach(function(id){
-                    $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
+                filters.forEach(function (id) {
+                    $("#categories").find("input[data-id='" + id + "']").attr("checked", "checked");
                 });
             });
         });
 }
 
-function appendCategory(id, label){
+function appendCategory(id, label) {
     var categories = $("#categories");
     var $label = $("<label for='" + id + "' class='label' />").text(label);
     var $checkbox = $("<input id='" + id + "' type='checkbox' />").attr("data-id", id);
@@ -123,15 +122,15 @@ function saveOptions() {
 
     setAllSitesPermission($("#showBlogIconInNotifications").is(":checked")
         || $("#showThumbnailInNotifications").is(":checked"), options, function () {
-        optionsGlobal.backgroundPage.appGlobal.syncStorage.set(options, function () {
-            alert(chrome.i18n.getMessage("OptionsSaved"));
+            optionsGlobal.backgroundPage.appGlobal.syncStorage.set(options, function () {
+                alert(chrome.i18n.getMessage("OptionsSaved"));
+            });
         });
-    });
 }
 
 function loadOptions() {
     // @if BROWSER='chrome'
-    chrome.permissions.contains(optionsGlobal.backgroundPermission, function (enabled){
+    chrome.permissions.contains(optionsGlobal.backgroundPermission, function (enabled) {
         $("#enable-background-mode").prop("checked", enabled);
     });
     // @endif
@@ -148,7 +147,7 @@ function loadOptions() {
         }
 
         // @if BROWSER!='firefox'
-        chrome.permissions.contains(optionsGlobal.allSitesPermission, function (enabled){
+        chrome.permissions.contains(optionsGlobal.allSitesPermission, function (enabled) {
             $("#showBlogIconInNotifications").prop("checked", enabled && items.showBlogIconInNotifications);
             $("#showThumbnailInNotifications").prop("checked", enabled && items.showThumbnailInNotifications);
 

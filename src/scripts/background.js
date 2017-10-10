@@ -906,6 +906,18 @@ function getAccessToken() {
 }
 
 /**
+ * Logout authenticated user
+ * @returns {Promise}
+ */
+function logout() {
+    appGlobal.options.accessToken = "";
+    appGlobal.options.refreshToken = "";
+    appGlobal.syncStorage.remove(["accessToken", "refreshToken"], function () {});
+
+    return Promise.resolve();
+}
+
+/**
  * Refreshes the access token.
  */
 function refreshAccessToken(){
@@ -955,6 +967,7 @@ function readOptions(callback) {
                 appGlobal.options[optionName] = Boolean(options[optionName]);
             } else if (typeof appGlobal.options[optionName] === "number") {
                 appGlobal.options[optionName] = Number(options[optionName]);
+
             } else {
                 appGlobal.options[optionName] = options[optionName];
             }
@@ -995,13 +1008,18 @@ function apiRequestWrapper(methodName, settings) {
         });
 }
 
+// public API for popup and options
 window.Extension = {
     appGlobal: appGlobal,
-    getAccessToken: getAccessToken,
+
+    login: getAccessToken,
+    logout: logout,
+
     toggleSavedFeed: toggleSavedFeed,
     openFeedlyTab: openFeedlyTab,
     getFeeds: getFeeds,
     getSavedFeeds: getSavedFeeds,    
     markAsRead: markAsRead,
-    resetCounter: resetCounter
+    resetCounter: resetCounter,
+    apiRequestWrapper: apiRequestWrapper
 };

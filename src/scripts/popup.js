@@ -41,7 +41,7 @@ $(document).ready(function () {
 });
 
 $("#login").click(function () {
-    popupGlobal.backgroundPage.getAccessToken();
+    popupGlobal.backgroundPage.login();
 });
 
 //using "mousedown" instead of "click" event to process middle button click.
