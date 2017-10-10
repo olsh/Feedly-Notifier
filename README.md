@@ -15,9 +15,9 @@ Changelog can be found [here](https://github.com/olsh/Feedly-Notifier/releases).
 
 1. `yarn`
 2. build extension
-* run `dev:chrome --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Google Chrome
-* run `dev:firefox --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Firefox
-* run `dev:opera --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Firefox
+* run `yarn run dev:chrome --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Google Chrome
+* run `yarn run dev:firefox --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Firefox
+* run `yarn run dev:opera --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Firefox
 
 > You can find actual `clientId` and `clientSecret` here https://groups.google.com/forum/#!topic/feedly-cloud/3izrTbT7FDQ
 
