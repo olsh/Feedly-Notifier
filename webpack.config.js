@@ -16,6 +16,8 @@ var secretsPath = path.join(__dirname, ("secrets." + env.NODE_ENV + ".js"));
 
 var fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf", "woff", "woff2"];
 
+var sandboxUrl = "http://sandbox7.feedly.com";
+
 if (fileSystem.existsSync(secretsPath)) {
     alias["secrets"] = secretsPath;
 }
@@ -74,6 +76,34 @@ var options = {
     module: {
         rules: [
             {
+                test: /feedly\.api\.js/,
+                exclude: /node_modules/,
+                loader: StringReplacePlugin.replace({
+                    replacements: [
+                        {
+                            pattern: /http(?:s)?:\/\/(?:www\.)?cloud\.feedly\.com/gi,
+                            replacement: function (match, p1, offset, string) {
+                                return argv.sandbox ? sandboxUrl : match;
+                            }
+                        }
+                    ]
+                })
+            },
+            {
+                test: /background\.js/,
+                exclude: /node_modules/,
+                loader: StringReplacePlugin.replace({
+                    replacements: [
+                        {
+                            pattern: /http(?:s)?:\/\/(?:www\.)?feedly\.com/gi,
+                            replacement: function (match, p1, offset, string) {
+                                return argv.sandbox ? sandboxUrl : match;
+                            }
+                        }
+                    ]
+                })
+            },
+            {
                 test: /.js$/,
                 exclude: /node_modules/,
                 use: [
@@ -85,18 +115,6 @@ var options = {
                         options: {
                             BROWSER: argv.browser
                         }
-                    },
-                    {
-                        loader: StringReplacePlugin.replace({
-                            replacements: [
-                                {
-                                    pattern: /http(?:s)?:\/\/(?:www\.)?cloud\.feedly\.com/gi,
-                                    replacement: function (match, p1, offset, string) {
-                                        return argv.sandbox ? "http://sandbox7.feedly.com" : match;
-                                    }
-                                }
-                            ]
-                        })
                     },
                     {
                         loader: "eslint-loader"

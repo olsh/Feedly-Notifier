@@ -13,9 +13,9 @@
     "build": "set NODE_ENV=production&& node utils/build.js",
     "start": "node utils/webserver.js",
     "sandbox": "npm run start -- --sandbox",
-    "dev:chrome": "npm run start -- --browser=chrome",
-    "dev:firefox": "npm run start -- --browser=firefox",
-    "dev:opera": "npm run start -- --browser=opera"
+    "dev:chrome": "npm run sandbox -- --browser=chrome",
+    "dev:firefox": "npm run sandbox -- --browser=firefox",
+    "dev:opera": "npm run sandbox -- --browser=opera"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.1.1",
