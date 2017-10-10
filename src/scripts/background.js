@@ -923,10 +923,18 @@ function logout() {
  * Retrieves authenticated user profile info
  * @returns {Promise}
  */
-function getProfileInfo() {
+function getUserInfo() {
     return apiRequestWrapper("profile", {
         useSecureConnection: appGlobal.options.useSecureConnection
     });
+}
+
+/**
+ * Retrieves user categories
+ * @returns {Promise}
+ */
+function getUserCategories() {
+    return apiRequestWrapper("categories");
 }
 
 /**
@@ -1033,7 +1041,7 @@ window.Extension = {
     getSavedFeeds: getSavedFeeds,    
     markAsRead: markAsRead,
     resetCounter: resetCounter,
-    apiRequestWrapper: apiRequestWrapper,
 
-    getProfileInfo: getProfileInfo
+    getUserInfo: getUserInfo,
+    getUserCategories: getUserCategories
 };

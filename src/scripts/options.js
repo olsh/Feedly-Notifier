@@ -47,7 +47,7 @@ $("#options").on("change", "input", function () {
 });
 
 function loadProfileData() {
-    optionsGlobal.backgroundPage.getProfileInfo().then(function (result) {
+    optionsGlobal.backgroundPage.getUserInfo().then(function (result) {
         var userInfo = $("#userInfo");
         userInfo.find("[data-locale-value]").each(function () {
             var textBox = $(this);
@@ -64,7 +64,7 @@ function loadProfileData() {
 }
 
 function loadUserCategories() {
-    optionsGlobal.backgroundPage.apiRequestWrapper("categories")
+    optionsGlobal.backgroundPage.getUserCategories()
         .then(function (result) {
             result.forEach(function (element) {
                 appendCategory(element.id, element.label);
