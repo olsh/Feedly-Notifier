@@ -1,12 +1,15 @@
 "use strict";
 
+import * as $ from 'jquery';
+
 var optionsGlobal = {
     backgroundPermission: {
         permissions: ["background"]
     },
     allSitesPermission: {
         origins: ["<all_urls>"]
-    }
+    },
+    backgroundPage: chrome.extension.getBackgroundPage().Extension
 };
 
 $(document).ready(function () {
@@ -24,9 +27,9 @@ $("body").on("click", "#save", function (e) {
 });
 
 $("body").on("click", "#logout", function () {
-    chrome.extension.getBackgroundPage().appGlobal.options.accessToken = "";
-    chrome.extension.getBackgroundPage().appGlobal.options.refreshToken = "";
-    chrome.extension.getBackgroundPage().appGlobal.syncStorage.remove(["accessToken", "refreshToken"], function () {});
+    optionsGlobal.backgroundPage.appGlobal.options.accessToken = "";
+    optionsGlobal.backgroundPage.appGlobal.options.refreshToken = "";
+    optionsGlobal.backgroundPage.appGlobal.syncStorage.remove(["accessToken", "refreshToken"], function () {});
     $("#userInfo, #filters-settings").hide();
 });
 
@@ -45,8 +48,8 @@ $("#options").on("change", "input", function (e) {
 });
 
 function loadProfileData() {
-    chrome.extension.getBackgroundPage().apiRequestWrapper("profile", {
-        useSecureConnection: chrome.extension.getBackgroundPage().appGlobal.options.useSecureConnection
+    optionsGlobal.backgroundPage.apiRequestWrapper("profile", {
+        useSecureConnection: optionsGlobal.backgroundPage.appGlobal.options.useSecureConnection
     }).then(function (result) {
         var userInfo = $("#userInfo");
         userInfo.find("[data-locale-value]").each(function () {
@@ -64,13 +67,13 @@ function loadProfileData() {
 }
 
 function loadUserCategories(){
-    chrome.extension.getBackgroundPage().apiRequestWrapper("categories")
+    optionsGlobal.backgroundPage.apiRequestWrapper("categories")
         .then(function (result) {
             result.forEach(function(element){
                 appendCategory(element.id, element.label);
             });
-            appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalUncategorized, "Uncategorized");
-            chrome.extension.getBackgroundPage().appGlobal.syncStorage.get("filters", function(items){
+            appendCategory(optionsGlobal.backgroundPage.appGlobal.globalUncategorized, "Uncategorized");
+            optionsGlobal.backgroundPage.appGlobal.syncStorage.get("filters", function(items){
                 let filters = items.filters || [];
                 filters.forEach(function(id){
                     $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
@@ -120,7 +123,7 @@ function saveOptions() {
 
     setAllSitesPermission($("#showBlogIconInNotifications").is(":checked")
         || $("#showThumbnailInNotifications").is(":checked"), options, function () {
-        chrome.extension.getBackgroundPage().appGlobal.syncStorage.set(options, function () {
+        optionsGlobal.backgroundPage.appGlobal.syncStorage.set(options, function () {
             alert(chrome.i18n.getMessage("OptionsSaved"));
         });
     });
@@ -133,7 +136,7 @@ function loadOptions() {
     });
     // @endif
 
-    chrome.extension.getBackgroundPage().appGlobal.syncStorage.get(null, function (items) {
+    optionsGlobal.backgroundPage.appGlobal.syncStorage.get(null, function (items) {
         var optionsForm = $("#options");
         for (var option in items) {
             var optionControl = optionsForm.find("input[data-option-name='" + option + "']");

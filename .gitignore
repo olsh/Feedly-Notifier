@@ -1,5 +1,3 @@
-.idea
 node_modules
 build
-bower_components
-*.orig
+secrets.*.js

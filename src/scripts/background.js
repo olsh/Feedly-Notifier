@@ -1,4 +1,5 @@
-"use strict";
+import browser from 'webextension-polyfill';
+import FeedlyApiClient from './feedly.api.js';
 
 var appGlobal = {
     feedlyApiClient: new FeedlyApiClient(),
@@ -91,12 +92,12 @@ var appGlobal = {
     notifications: {},
     isLoggedIn: false,
     intervalIds: [],
-    clientId: "",
-    clientSecret: "",
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
     tokenRefreshingPromise: null,
     getUserSubscriptionsPromise: null,
     get feedlyUrl(){
-        return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com"
+        return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com";
     },
     get savedGroup(){
         return "user/" + this.options.feedlyUserId + "/tag/global.saved";
@@ -108,7 +109,7 @@ var appGlobal = {
         return "user/" + this.options.feedlyUserId + "/category/global.uncategorized";
     },
     get syncStorage(){
-        // @if BROWSER='firefox'
+        // @if BROWSER=='firefox'
         // Firefox doesn't support sync storage
         return chrome.storage.local;
         // @endif
@@ -250,7 +251,7 @@ function sendDesktopNotification(feeds) {
 
     //if notifications too many, then to show only count
     let maxNotifications = appGlobal.options.maxNotificationsCount;
-    // @if BROWSER='firefox'
+    // @if BROWSER=='firefox'
     // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/notifications/create
     // If you call notifications.create() more than once in rapid succession,
     // Firefox may end up not displaying any notification at all.
@@ -286,7 +287,7 @@ function sendDesktopNotification(feeds) {
         });
         // @endif
 
-        // @if BROWSER='firefox'
+        // @if BROWSER=='firefox'
         // Firefox doesn't support optional permissions
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1197420
         createNotifications(feeds, showBlogIcons, showThumbnails);
@@ -296,7 +297,7 @@ function sendDesktopNotification(feeds) {
     function createNotifications(feeds, showBlogIcons, showThumbnails) {
         for (let feed of feeds) {
             let notificationType = 'basic';
-            // @if BROWSER='crhome'
+            // @if BROWSER=='chrome'
             if (showThumbnails && feed.thumbnail) {
                 notificationType = 'image';
             }
@@ -307,7 +308,7 @@ function sendDesktopNotification(feeds) {
                 title: feed.blog,
                 message: feed.title,
                 iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig
-                // @if BROWSER='crhome'
+                // @if BROWSER=='chrome'
                 ,imageUrl: showThumbnails ? feed.thumbnail : null
                 ,buttons: [
                     {
@@ -988,3 +989,14 @@ function apiRequestWrapper(methodName, settings) {
             return Promise.reject();
         });
 }
+
+window.Extension = {
+    appGlobal: appGlobal,
+    getAccessToken: getAccessToken,
+    toggleSavedFeed: toggleSavedFeed,
+    openFeedlyTab: openFeedlyTab,
+    getFeeds: getFeeds,
+    getSavedFeeds: getSavedFeeds,    
+    markAsRead: markAsRead,
+    resetCounter: resetCounter
+};
