@@ -14,9 +14,13 @@ Changelog can be found [here](https://github.com/olsh/Feedly-Notifier/releases).
 ## Build
 
 1. `yarn`
-2. `grunt sandbox --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3 --browser=chrome`
-You can find actual `clientId` and `clientSecret` here https://groups.google.com/forum/#!topic/feedly-cloud/3izrTbT7FDQ
-The browser parameter can be `chrome`, `opera` or `firefox`.
+2. build extension
+* run `yarn run dev:chrome --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Google Chrome
+* run `yarn run dev:firefox --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Firefox
+* run `yarn run dev:opera --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3` to debug extension in Firefox
+
+> You can find actual `clientId` and `clientSecret` here https://groups.google.com/forum/#!topic/feedly-cloud/3izrTbT7FDQ
+
 3. The result of the commands will be in `build` folder, now you can load the extension to browser.
 
 ## Acknowledgments

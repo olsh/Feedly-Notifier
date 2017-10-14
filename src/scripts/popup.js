@@ -1,12 +1,17 @@
 "use strict";
 
+import * as $ from 'jquery';
+import 'timeago';
+import DOMPurify from 'dompurify';
+import Mustache from 'mustache';
+
 var popupGlobal = {
     //Determines lists of supported jQuery.timeago localizations, default localization is en
     supportedTimeAgoLocales: ["ru", "fr", "pt-br", "it", "cs", "zh-CN", "zh-TW", "tr", "es", "ko", "de",
         "uk", "sr", "ja", "ar", "id", "da", "hu", "pt"],
     feeds: [],
     savedFeeds: [],
-    backgroundPage: chrome.extension.getBackgroundPage()
+    backgroundPage: chrome.extension.getBackgroundPage().Extension
 };
 
 $(document).ready(function () {
@@ -36,7 +41,7 @@ $(document).ready(function () {
 });
 
 $("#login").click(function () {
-    popupGlobal.backgroundPage.getAccessToken();
+    popupGlobal.backgroundPage.login();
 });
 
 //using "mousedown" instead of "click" event to process middle button click.
@@ -89,7 +94,7 @@ $("#popup-content").on("click", "#open-unsaved-all-news", function () {
         markAllAsUnsaved();
 });
 
-$("#feed").on("click", ".mark-read", function (event) {
+$("#feed").on("click", ".mark-read", function () {
     var feed = $(this).closest(".item");
     markAsRead([feed.data("id")]);
 });

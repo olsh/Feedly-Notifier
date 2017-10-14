@@ -1,5 +1,8 @@
 "use strict";
 
+import browser from 'webextension-polyfill';
+import FeedlyApiClient from './feedly.api.js';
+
 var appGlobal = {
     feedlyApiClient: new FeedlyApiClient(),
     feedTab: null,
@@ -91,12 +94,14 @@ var appGlobal = {
     notifications: {},
     isLoggedIn: false,
     intervalIds: [],
-    clientId: "",
-    clientSecret: "",
+    /* eslint-disable no-undef */
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+    /* eslint-disable no-undef */
     tokenRefreshingPromise: null,
     getUserSubscriptionsPromise: null,
     get feedlyUrl(){
-        return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com"
+        return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com";
     },
     get savedGroup(){
         return "user/" + this.options.feedlyUserId + "/tag/global.saved";
@@ -108,21 +113,22 @@ var appGlobal = {
         return "user/" + this.options.feedlyUserId + "/category/global.uncategorized";
     },
     get syncStorage(){
-        // @if BROWSER='firefox'
+        // @if BROWSER=='firefox'
         // Firefox doesn't support sync storage
         return chrome.storage.local;
         // @endif
 
         // @if BROWSER!='firefox'
-        //noinspection UnreachableCodeJS
+        /* eslint-disable no-unreachable */
         return chrome.storage.sync;
+        /* eslint-enable no-unreachable */
         // @endif
     }
 };
 
 // #Event handlers
 // @if BROWSER!='firefox'
-chrome.runtime.onInstalled.addListener(function (details) {
+chrome.runtime.onInstalled.addListener(function () {
     readOptions(function () {
         //Write all options in chrome storage and initialize application
         writeOptions(initialize);
@@ -141,7 +147,7 @@ readOptions(function () {
 });
 // @endif
 
-chrome.storage.onChanged.addListener(function (changes, areaName) {
+chrome.storage.onChanged.addListener(function (changes) {
     var callback;
 
     for (var optionName in changes) {
@@ -250,7 +256,7 @@ function sendDesktopNotification(feeds) {
 
     //if notifications too many, then to show only count
     let maxNotifications = appGlobal.options.maxNotificationsCount;
-    // @if BROWSER='firefox'
+    // @if BROWSER=='firefox'
     // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/notifications/create
     // If you call notifications.create() more than once in rapid succession,
     // Firefox may end up not displaying any notification at all.
@@ -286,7 +292,7 @@ function sendDesktopNotification(feeds) {
         });
         // @endif
 
-        // @if BROWSER='firefox'
+        // @if BROWSER=='firefox'
         // Firefox doesn't support optional permissions
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1197420
         createNotifications(feeds, showBlogIcons, showThumbnails);
@@ -296,7 +302,7 @@ function sendDesktopNotification(feeds) {
     function createNotifications(feeds, showBlogIcons, showThumbnails) {
         for (let feed of feeds) {
             let notificationType = 'basic';
-            // @if BROWSER='chrome'
+            // @if BROWSER=='chrome'
             if (showThumbnails && feed.thumbnail) {
                 notificationType = 'image';
             }
@@ -307,7 +313,7 @@ function sendDesktopNotification(feeds) {
                 title: feed.blog,
                 message: feed.title,
                 iconUrl: showBlogIcons ? feed.blogIcon : appGlobal.icons.defaultBig
-                // @if BROWSER='chrome'
+                // @if BROWSER=='chrome'
                 ,imageUrl: showThumbnails ? feed.thumbnail : null
                 ,buttons: [
                     {
@@ -501,7 +507,9 @@ function makeMarkersRequest(parameters){
                     return unreadFeedsCount;
                 })
                 .catch(function () {
+                    /* eslint-disable no-console */
                     console.info("Unable to load subscriptions.");
+                    /* eslint-enable no-console */
                 });
         } else {
             for (let unreadCount of unreadCounts) {
@@ -515,7 +523,9 @@ function makeMarkersRequest(parameters){
         }
     }).then(setBadgeCounter)
     .catch(function () {
+        /* eslint-disable no-console */
         console.info("Unable to load counters.");
+        /* eslint-enable no-console */
     });
 }
 
@@ -589,8 +599,6 @@ function updateFeeds(silentUpdate) {
             }
         })
         .catch(function () {
-            console.info("Unable to update feeds.");
-
             return Promise.resolve();
         });
 }
@@ -867,7 +875,7 @@ function getAccessToken() {
 
     browser.tabs.create({url: url})
         .then(function () {
-            chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
+            chrome.tabs.onUpdated.addListener(function processCode(tabId, information) {
                 let checkStateRegex = new RegExp("state=" + state);
                 if (!checkStateRegex.test(information.url)) {
                     return;
@@ -897,6 +905,36 @@ function getAccessToken() {
                 }
             });
         });
+}
+
+/**
+ * Logout authenticated user
+ * @returns {Promise}
+ */
+function logout() {
+    appGlobal.options.accessToken = "";
+    appGlobal.options.refreshToken = "";
+    appGlobal.syncStorage.remove(["accessToken", "refreshToken"], function () {});
+
+    return Promise.resolve();
+}
+
+/**
+ * Retrieves authenticated user profile info
+ * @returns {Promise}
+ */
+function getUserInfo() {
+    return apiRequestWrapper("profile", {
+        useSecureConnection: appGlobal.options.useSecureConnection
+    });
+}
+
+/**
+ * Retrieves user categories
+ * @returns {Promise}
+ */
+function getUserCategories() {
+    return apiRequestWrapper("categories");
 }
 
 /**
@@ -949,6 +987,7 @@ function readOptions(callback) {
                 appGlobal.options[optionName] = Boolean(options[optionName]);
             } else if (typeof appGlobal.options[optionName] === "number") {
                 appGlobal.options[optionName] = Number(options[optionName]);
+
             } else {
                 appGlobal.options[optionName] = options[optionName];
             }
@@ -988,3 +1027,21 @@ function apiRequestWrapper(methodName, settings) {
             return Promise.reject();
         });
 }
+
+// public API for popup and options
+window.Extension = {
+    appGlobal: appGlobal,
+
+    login: getAccessToken,
+    logout: logout,
+
+    toggleSavedFeed: toggleSavedFeed,
+    openFeedlyTab: openFeedlyTab,
+    getFeeds: getFeeds,
+    getSavedFeeds: getSavedFeeds,    
+    markAsRead: markAsRead,
+    resetCounter: resetCounter,
+
+    getUserInfo: getUserInfo,
+    getUserCategories: getUserCategories
+};

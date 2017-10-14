@@ -1,6 +1,6 @@
 "use strict";
 
-let FeedlyApiClient = function (accessToken) {
+let FeedlyApiClient = function(accessToken) {
 
     this.accessToken = accessToken;
 
@@ -42,14 +42,14 @@ let FeedlyApiClient = function (accessToken) {
     this.request = function (methodName, settings) {
         function status(response) {
             if (response.status === 200) {
-                return Promise.resolve(response)
+                return Promise.resolve(response);
             } else {
-                return Promise.reject(new Error(response.statusText))
+                return Promise.reject(new Error(response.statusText));
             }
         }
 
         function json(response) {
-            return response.json()
+            return response.json();
         }
 
         let url = this.getMethodUrl(methodName, settings.parameters, settings.useSecureConnection);
@@ -79,3 +79,5 @@ let FeedlyApiClient = function (accessToken) {
             .then(json);
     };
 };
+
+export default FeedlyApiClient;
