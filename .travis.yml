@@ -8,6 +8,8 @@ addons:
       secure: "AcDRRBafrgp6QW1jPtCvCRtVOOadURM7EJuhsH7ta0gPBBL+w/5L2aoUhGIGPhrEFloByJs1ti27M4pO3Ijdz3vHtsFt6hYBM6JU7DKQ9H321DTWBZ6bve1vYtFDAoF3ef5B5Ey3KivIl7rpA9E+jmjeV9oAmhBrCvhxXj+M3Vs="
 jdk:
   - oraclejdk8
+before_script:
+  - yarn
 script:
   - sonar-scanner
   - yarn run build
