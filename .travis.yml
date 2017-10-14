@@ -10,6 +10,7 @@ jdk:
   - oraclejdk8
 script:
   - sonar-scanner
+  - yarn run build
 cache:
   directories:
     - '$HOME/.sonar/cache'

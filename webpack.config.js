@@ -117,7 +117,11 @@ var options = {
                         }
                     },
                     {
-                        loader: "eslint-loader"
+                        loader: "eslint-loader",
+                        options: {
+                            failOnError: true,
+                            failOnWarning: true
+                        }
                     }
                 ]
             },
