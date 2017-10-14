@@ -1038,7 +1038,7 @@ window.Extension = {
     toggleSavedFeed: toggleSavedFeed,
     openFeedlyTab: openFeedlyTab,
     getFeeds: getFeeds,
-    getSavedFeeds: getSavedFeeds,    
+    getSavedFeeds: getSavedFeeds,
     markAsRead: markAsRead,
     resetCounter: resetCounter,
 
