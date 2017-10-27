@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
-    "version": "2.15.5",
+    "version": "2.15.6",
     "default_locale": "en",
     "permissions": [
         "storage",

@@ -98,7 +98,6 @@ var appGlobal = {
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     /* eslint-disable no-undef */
-    tokenRefreshingPromise: null,
     getUserSubscriptionsPromise: null,
     get feedlyUrl(){
         return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com";
@@ -610,7 +609,6 @@ function setInactiveStatus() {
     chrome.browserAction.setBadgeText({ text: ""});
     appGlobal.cachedFeeds = [];
     appGlobal.isLoggedIn = false;
-    appGlobal.options.feedlyUserId = "";
     stopSchedule();
 }
 
@@ -942,7 +940,6 @@ function getUserCategories() {
  */
 function refreshAccessToken(){
     if(!appGlobal.options.refreshToken) {
-        appGlobal.tokenIsRefreshing = false;
         return Promise.reject();
     }
 
@@ -960,9 +957,6 @@ function refreshAccessToken(){
             accessToken: response.access_token,
             feedlyUserId: response.id
         });
-        appGlobal.tokenIsRefreshing = false;
-    }, function () {
-        appGlobal.tokenIsRefreshing = false;
     });
 }
 
@@ -1000,9 +994,7 @@ function readOptions(callback) {
 
 function apiRequestWrapper(methodName, settings) {
     if (!appGlobal.options.accessToken) {
-        if (appGlobal.isLoggedIn) {
-            setInactiveStatus();
-        }
+        setInactiveStatus();
 
         return Promise.reject();
     }
@@ -1015,10 +1007,16 @@ function apiRequestWrapper(methodName, settings) {
             setActiveStatus();
 
             return response;
-        }, function () {
-            appGlobal.tokenRefreshingPromise = appGlobal.tokenRefreshingPromise || refreshAccessToken();
+        }, function (response) {
 
-            return appGlobal.tokenRefreshingPromise;
+// eslint-disable-next-line no-console
+            console.log(response);
+
+            if (response && response.status === 401) {
+                return refreshAccessToken();
+            }
+
+            return Promise.reject();
         }).catch(function () {
             if (appGlobal.isLoggedIn) {
                 setInactiveStatus();
