@@ -42,9 +42,9 @@ let FeedlyApiClient = function (accessToken) {
     this.request = function (methodName, settings) {
         function status(response) {
             if (response.status === 200) {
-                return Promise.resolve(response)
+                return Promise.resolve(response);
             } else {
-                return Promise.reject(new Error(response.statusText))
+                return Promise.reject(response);
             }
         }
 
