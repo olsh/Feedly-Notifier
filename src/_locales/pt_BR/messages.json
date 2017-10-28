@@ -15,7 +15,7 @@
         "message": "E-mail"
     },
     "EnableBackgroundMode": {
-        "message": "Habilitar modo segundo plano"
+        "message": "Habilitar modo de segundo plano"
     },
     "ExpandFeeds": {
         "message": "Expandir todos os feeds quando a popup é aberta"
@@ -41,6 +41,9 @@
     "General": {
         "message": "Geral"
     },
+    "GrayIconColorIfNoUnread": {
+        "message": "Tornar ícone cinza quando não houver artigos não lidos"
+    },
     "HideNotificationsAfter": {
         "message": "Ocultar notificações na área de trabalho após (segundos); 0 – não ocultar"
     },
@@ -48,10 +51,10 @@
         "message": "Checar novos artigos a cada (min.)"
     },
     "Login": {
-        "message": "Login"
+        "message": "Entrar"
     },
     "Logout": {
-        "message": "Logout"
+        "message": "Sair"
     },
     "MarkAllAsRead": {
         "message": "Marcar tudo como lido"
@@ -81,13 +84,13 @@
         "message": "Notificações"
     },
     "OldestFeedsFirst": {
-        "message": "Feeds antigos primeiro"
+        "message": "Feeds mais antigos primeiro"
     },
     "OpenAllFeeds": {
         "message": "Abrir todos feeds"
     },
     "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsave them"
+        "message": "Abrir todos os feeds salvos e remover eles da lista de salvos"
     },
     "OpenFeedsInBackground": {
         "message": "Abrir feeds em uma aba em segundo plano"
@@ -108,25 +111,31 @@
         "message": "Popup"
     },
     "PopupFontSize": {
-        "message": "Tamanho em percentagem da popup"
+        "message": "Tamanho em porcentagem do popup"
     },
     "PopupWidth": {
         "message": "Largura do popup"
     },
     "ResetCounterOnClick": {
-        "message": "Resetar contador quando clicado no botão da extenção"
+        "message": "Resetar contador ao clicar no botão da extensão"
     },
     "Save": {
         "message": "Salvar"
     },
+    "ShowBlogIconInNotifications": {
+        "message": "Mostrar o favicon do site nas notificações"
+    },
+    "ShowThumbnailInNotifications": {
+        "message": "Mostrar pré-visualização da imagem nas notificações (se possível)"
+    },
     "ShowCategories": {
-        "message": "Mostrar categorias em popup"
+        "message": "Mostrar categorias no popup"
     },
     "ShowCounter": {
         "message": "Mostrar contador"
     },
     "ShowDesktopNotifications": {
-        "message": "Exibir notificações no Desktop"
+        "message": "Mostrar notificações na área de trabalho"
     },
     "ShowFullFeedContent": {
         "message": "Exibir conteúdo completo do artigo no feed expandido (se possível)"
@@ -141,11 +150,11 @@
         "message": "Utilizar conexão segura (https)"
     },
     "YouHaveNewFeeds": {
-        "message": "Você tem $count$ novos feeds",
+        "message": "Você tem $count$ feeds novos",
         "placeholders": {
             "count": {
                 "content": "$1",
-                "example": "10 or many"
+                "example": "10 ou mais"
             }
         }
     },
