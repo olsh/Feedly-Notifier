@@ -3,8 +3,8 @@
 
 
 abbrev@1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
 
 ansi-regex@^2.0.0:
   version "2.1.1"
@@ -199,14 +199,14 @@ grunt-cli@~1.2.0:
     nopt "~3.0.6"
     resolve "~1.1.0"
 
-grunt-contrib-clean@~1.1.0:
+grunt-contrib-clean@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/grunt-contrib-clean/-/grunt-contrib-clean-1.1.0.tgz#564abf2d0378a983a15b9e3f30ee75b738c40638"
   dependencies:
     async "^1.5.2"
     rimraf "^2.5.1"
 
-grunt-contrib-copy@~1.0.0:
+grunt-contrib-copy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/grunt-contrib-copy/-/grunt-contrib-copy-1.0.0.tgz#7060c6581e904b8ab0d00f076e0a8f6e3e7c3573"
   dependencies:
@@ -246,7 +246,7 @@ grunt-legacy-util@~1.0.0:
     underscore.string "~3.2.3"
     which "~1.2.1"
 
-grunt-preprocess@~5.1.0:
+grunt-preprocess@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/grunt-preprocess/-/grunt-preprocess-5.1.0.tgz#5c9529375e30431b0c4b26047a793e382172208f"
   dependencies:
@@ -257,21 +257,21 @@ grunt-retro@~0.6.0:
   version "0.6.4"
   resolved "https://registry.yarnpkg.com/grunt-retro/-/grunt-retro-0.6.4.tgz#f26a848f6a4797a5ff7e850e60220c0de6be8e72"
 
-grunt-string-replace@~1.3.1:
+grunt-string-replace@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/grunt-string-replace/-/grunt-string-replace-1.3.1.tgz#633a03bc78482a0e0e1f9df7f645811fc1fbb162"
   dependencies:
     async "^2.0.0"
     chalk "^1.0.0"
 
-grunt-zip@~0.17.1:
+grunt-zip@^0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/grunt-zip/-/grunt-zip-0.17.1.tgz#218afa37351c46f79b9fb1d6a2fc3c84519a52d0"
   dependencies:
     grunt-retro "~0.6.0"
     jszip "~2.5.0"
 
-grunt@~1.0.1:
+grunt@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/grunt/-/grunt-1.0.1.tgz#e8778764e944b18f32bb0f10b9078475c9dfb56b"
   dependencies:
@@ -307,8 +307,8 @@ hosted-git-info@^2.1.4:
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.5.0.tgz#6d60e34b3abbc8313062c3b798ef8d901a07af3c"
 
 iconv-lite@~0.4.13:
-  version "0.4.18"
-  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.18.tgz#23d8656b16aae6742ac29732ea8f0336a4789cf2"
+  version "0.4.19"
+  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
 indent-string@^2.1.0:
   version "2.1.0"
@@ -540,8 +540,8 @@ resolve@~1.1.0:
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
 rimraf@^2.5.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
     glob "^7.0.5"
 
@@ -618,9 +618,9 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
 
-webextension-polyfill@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/webextension-polyfill/-/webextension-polyfill-0.2.0.tgz#507aa8a3ebf7d78b9f7ed3d9fb5db326a2ddebe0"
+webextension-polyfill@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/webextension-polyfill/-/webextension-polyfill-0.2.1.tgz#cdfc9126033039f1713553157d35beff1d4d6f4a"
 
 which@~1.2.1:
   version "1.2.14"
