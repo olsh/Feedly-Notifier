@@ -514,6 +514,8 @@ function makeMarkersRequest(parameters){
         }
     }).then(setBadgeCounter)
     .catch(function () {
+        setBadgeCounter(0);
+
         console.info("Unable to load counters.");
     });
 }
@@ -590,7 +592,7 @@ function updateFeeds(silentUpdate) {
         .catch(function () {
             console.info("Unable to update feeds.");
 
-            return Promise.resolve();
+            return Promise.reject();
         });
 }
 
@@ -902,6 +904,8 @@ function getAccessToken() {
  */
 function refreshAccessToken(){
     if(!appGlobal.options.refreshToken) {
+        setInactiveStatus();
+
         return Promise.reject();
     }
 
@@ -919,6 +923,13 @@ function refreshAccessToken(){
             accessToken: response.access_token,
             feedlyUserId: response.id
         });
+    }, function (response) {
+        // If the refresh token is invalid
+        if (response && response.status === 403) {
+            setInactiveStatus();
+        }
+
+        return Promise.reject();
     });
 }
 
@@ -971,12 +982,6 @@ function apiRequestWrapper(methodName, settings) {
         }, function (response) {
             if (response && response.status === 401) {
                 return refreshAccessToken();
-            }
-
-            return Promise.reject();
-        }).catch(function () {
-            if (appGlobal.isLoggedIn) {
-                setInactiveStatus();
             }
 
             return Promise.reject();
