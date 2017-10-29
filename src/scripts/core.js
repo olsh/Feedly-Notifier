@@ -514,7 +514,7 @@ function makeMarkersRequest(parameters){
         }
     }).then(setBadgeCounter)
     .catch(function () {
-        setBadgeCounter(0);
+        chrome.browserAction.setBadgeText({ text: ""});
 
         console.info("Unable to load counters.");
     });
@@ -591,8 +591,6 @@ function updateFeeds(silentUpdate) {
         })
         .catch(function () {
             console.info("Unable to update feeds.");
-
-            return Promise.reject();
         });
 }
 
