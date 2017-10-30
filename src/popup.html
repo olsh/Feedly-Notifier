@@ -50,6 +50,9 @@
 
         <div class="blog-title {{blogTitleDirection}}">
             <img class="blog-icon" src="{{blogIcon}}"/>
+            {{#showEngagement}}
+            <span class="engagement {{#isEngagementHot}}hot{{/isEngagementHot}} {{#isEngagementOnFire}}on-fire{{/isEngagementOnFire}}">{{engagement}}{{engagementPostfix}}</span>
+            {{/showEngagement}}
             <a data-link="{{blogUrl}}" href="javascript:void(0)">{{blog}}</a>,
             <span class="timeago" title="{{isoDate}}"></span>
         </div>

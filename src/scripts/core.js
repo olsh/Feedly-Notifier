@@ -710,7 +710,12 @@ function parseFeeds(feedlyResponse) {
                     isSaved: isSaved,
                     categories: categories,
                     author: item.author,
-                    thumbnail: item.thumbnail && item.thumbnail.length > 0 && item.thumbnail[0].url ? item.thumbnail[0].url : null
+                    thumbnail: item.thumbnail && item.thumbnail.length > 0 && item.thumbnail[0].url ? item.thumbnail[0].url : null,
+                    showEngagement: item.engagement > 0,
+                    engagement: item.engagement > 1000 ? Math.trunc(item.engagement / 1000) : item.engagement,
+                    engagementPostfix: item.engagement > 1000 ? "K" : "",
+                    isEngagementHot: item.engagement >= 5000 && item.engagement < 100000,
+                    isEngagementOnFire: item.engagement >= 100000
                 };
             });
         });
