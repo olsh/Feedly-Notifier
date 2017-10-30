@@ -1,0 +1,164 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Δυνατότητα αποθήκευσης των feeds"
+  },
+  "AutoMarkRead": {
+    "message": "Αυτόματη σημείωση ως αναγνωσμένου κατά το άνοιγμα"
+  },
+  "Categories": {
+    "message": "Κατηγορίες"
+  },
+  "CurrentUser": {
+    "message": "Τρέχων χρήστης"
+  },
+  "Email": {
+    "message": "Ηλεκτρονικό Ταχυδρομείο"
+  },
+  "EnableBackgroundMode": {
+    "message": "Ενεργοποίηση ενέργειας στο background"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Μέγεθος εξωτερικού παραθύρου"
+  },
+  "ExpandFeeds": {
+    "message": "Ανοιγμα εξωτερικών παραθύρων κατα την επιλογη του popup"
+  },
+  "ExtensionDescription": {
+    "message": "Επέκταση του Feedly"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Επιλογές των ειδοποιήσεων του Feedly"
+  },
+  "FeedlyWebsite": {
+    "message": "Ιστοσελίδα του Feedly"
+  },
+  "Filters": {
+    "message": "Φίλτρα"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Ανανέωση feeds κατά το άνοιγμα του παραθύρου"
+  },
+  "General": {
+    "message": "Γενικά"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Γκρίζο χρώμα εικονιδίου επέκτασης αν δεν υπάρχουν μη αναγνωσμένα"
+  },
+  "HideNotificationsAfter": {
+    "message": "Απόκρυψη των ειδοποιήσεων του desktop μετα απο (sec.),0 Χωρις απόκρυψη"
+  },
+  "IntervalPeriod": {
+    "message": "Χρονικό περιθώριο (λεπτά)"
+  },
+  "Login": {
+    "message": "Σύνδεση"
+  },
+  "Logout": {
+    "message": "Αποσυνδέση"
+  },
+  "many": {
+    "message": "Πολλά"
+  },
+  "MarkAllAsRead": {
+    "message": "Σημείωση όλων ως διαβασμένα"
+  },
+  "MarkAsRead": {
+    "message": "Σημείωση ως διαβασμένο"
+  },
+  "MaxNotificationsCount": {
+    "message": "Ανώτατος αριθμός ταυτόχρονων ειδοποιήσεων στο Desktop"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Μέγιστος αριθμός εμφάνισης feeds στο αναδυόμενο παράθυρο"
+  },
+  "More": {
+    "message": "Περισσότερα"
+  },
+  "NewFeeds": {
+    "message": "Νέα feeds"
+  },
+  "NoSavedArticles": {
+    "message": "Δεν υπάρχουν αποθηκευμένα άρθρα"
+  },
+  "Notifications": {
+    "message": "Ειδοποιήσεις"
+  },
+  "NoUnreadArticles": {
+    "message": "Δεν υπάρχουν μη αναγνωσμένα άρθρα"
+  },
+  "OldestFeedsFirst": {
+    "message": "Τα παλαιότερα feeds πρώτα"
+  },
+  "OpenAllFeeds": {
+    "message": "Άνοιγμα όλων"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Άνοιγμα και κατάργηση όλων των αποθηκευμένων ροών"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Άνοιγμα στο παρασκήνιο"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Άνοιγμα στην ίδια καρτέλα"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Άνοιγμα ιστοσελίδας Feedly κατά το πάτημα του εικονιδίου (μην εμφανίσεις αναδυόμενο παράθυρο)"
+  },
+  "OptionsSaved": {
+    "message": "Οι επιλογές αποθηκεύθηκαν"
+  },
+  "PlaySound": {
+    "message": "Αναπαραγωγή ήχου όταν υπάρχουν νέα"
+  },
+  "Popup": {
+    "message": "Αναδυόμενο"
+  },
+  "PopupFontSize": {
+    "message": "Μέγεθος γραμματοσειράς αναδυομένου σε ποσοστό τις εκατό"
+  },
+  "PopupWidth": {
+    "message": "Πλάτος αναδυομένου"
+  },
+  "ResetCounterOnClick": {
+    "message": "Μηδενισμός μετρητή μη αναγνωσμένων κατά το πάτημα του εικονιδίου επέκτασης"
+  },
+  "Save": {
+    "message": "Αποθήκευση"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Εμφάνιση εικονιδίoυ (favicon) ιστοσελίδας πηγής"
+  },
+  "ShowCategories": {
+    "message": "Εμφάνιση κατηγοριών στο αναδυόμενο"
+  },
+  "ShowCounter": {
+    "message": "Εμφάνιση μετρητή"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Εμφάνιση ειδοποιήσεων επιφανείας εργασίας"
+  },
+  "ShowFullFeedContent": {
+    "message": "Εμφάνιση συνολικού περιεχομένου άρθρου σε ανεπτυγμένη μορφή feed (αν είναι δυνατό)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Εμφάνιση εικόνας προεπισκόπησης στις ειδοποιήσεις (αν είναι δυνατό)"
+  },
+  "UpdateFeeds": {
+    "message": "Ενημέρωση"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Ενημέρωση μόνο των παρακάτω κατηγοριών"
+  },
+  "UseSecureConnection": {
+    "message": "Χρήση ασφαλούς σύνδεσης (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Υπάρχουν $count$ νέα άρθρα",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}
