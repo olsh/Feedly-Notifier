@@ -15,13 +15,13 @@
     "message": "Ηλεκτρονικό Ταχυδρομείο"
   },
   "EnableBackgroundMode": {
-    "message": "Ενεργοποίηση ενέργειας στο background"
+    "message": "Ενεργοποίηση ενέργειας στο παρασκήνιο"
   },
   "ExpandedPopupWidth": {
-    "message": "Μέγεθος εξωτερικού παραθύρου"
+    "message": "Εκτεταμένο πλάτος αναδυομένου"
   },
   "ExpandFeeds": {
-    "message": "Ανοιγμα εξωτερικών παραθύρων κατα την επιλογη του popup"
+    "message": "Εκτεταμένη εμφάνιση feeds κατά το άνοιγμα του παραθύρου"
   },
   "ExtensionDescription": {
     "message": "Επέκταση του Feedly"
@@ -36,7 +36,7 @@
     "message": "Φίλτρα"
   },
   "ForceUpdateFeeds": {
-    "message": "Ανανέωση feeds κατά το άνοιγμα του παραθύρου"
+    "message": "Υποχρεωτική ανανέωση feeds κατά το άνοιγμα του παραθύρου"
   },
   "General": {
     "message": "Γενικά"
