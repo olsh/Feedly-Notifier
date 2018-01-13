@@ -41,9 +41,9 @@
   "General": {
     "message": "General"
   },
-    "GrayIconColorIfNoUnread": {
-        "message": "Icono de color gris si no está leído"
-    },
+  "GrayIconColorIfNoUnread": {
+    "message": "Icono de color gris si no está leído"
+  },
   "HideNotificationsAfter": {
     "message": "Ocultar notificaciones de escritorio después (seg.), 0 - No ocultar"
   },
@@ -55,6 +55,9 @@
   },
   "Logout": {
     "message": "Cerrar sesión"
+  },
+  "many": {
+    "message": "muchos"
   },
   "MarkAllAsRead": {
     "message": "Marcar todos como leídos"
@@ -77,17 +80,20 @@
   "NoSavedArticles": {
     "message": "No hay artículos guardados"
   },
-  "NoUnreadArticles": {
-    "message": "No hay artículos no leídos"
-  },
   "Notifications": {
     "message": "Notificaciones"
+  },
+  "NoUnreadArticles": {
+    "message": "No hay artículos no leídos"
   },
   "OldestFeedsFirst": {
     "message": "Primero las fuentes más antiguas"
   },
   "OpenAllFeeds": {
     "message": "Abrir todas las fuentes"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Open all saved feeds and unsave them"
   },
   "OpenFeedsInBackground": {
     "message": "Abrir fuentes en pestaña en segundo plano"
@@ -116,15 +122,12 @@
   "ResetCounterOnClick": {
     "message": "Reiniciar contador cuando se presione el botón de la extensión"
   },
-    "Save": {
-        "message": "Guardar"
-    },
-    "ShowBlogIconInNotifications": {
-        "message": "Mostrar favicon del sitio en las notificationes"
-    },
-    "ShowThumbnailInNotifications": {
-        "message": "Mostrar vista previa de la imagen en las notificationes (si es posible)"
-    },
+  "Save": {
+    "message": "Guardar"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Mostrar favicon del sitio en las notificationes"
+  },
   "ShowCategories": {
     "message": "Mostrar categorías en ventana emergente"
   },
@@ -136,6 +139,9 @@
   },
   "ShowFullFeedContent": {
     "message": "Mostrar el contenido completo de un artículo en la fuente expandida (si es posible)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Mostrar vista previa de la imagen en las notificationes (si es posible)"
   },
   "UpdateFeeds": {
     "message": "Actualizar"
@@ -153,8 +159,6 @@
         "content": "$1",
         "example": "10 or many"
       }
-    },
-    "many": {
-        "message": "muchos"
     }
+  }
 }

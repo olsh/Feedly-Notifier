@@ -1,158 +1,164 @@
 ﻿{
-    "AbilitySaveFeeds": {
-        "message": "피드 저장 기능"
-    },
-    "AutoMarkRead": {
-        "message": "뉴스 열면, 자동으로 읽은 상태로 표시"
-    },
-    "Categories": {
-        "message": "카테고리"
-    },
-    "CurrentUser": {
-        "message": "현재 사용자"
-    },
-    "Email": {
-        "message": "Email"
-    },
-    "EnableBackgroundMode": {
-        "message": "백그라운드 모드 활성화"
-    },
-    "ExpandedPopupWidth": {
-        "message": "확장 팝업 폭"
-    },
-    "ExpandFeeds": {
-        "message": "팝업창 열릴 때 모든 피드 확대"
-    },
-    "ExtensionDescription": {
-        "message": "feedly 뉴스 리더 확장"
-    },
-    "FeedlyNotifierOptions": {
-        "message": "Feedly 알림 옵션"
-    },
-    "FeedlyWebsite": {
-        "message": "Feedly 웹사이트"
-    },
-    "Filters": {
-        "message": "필터"
-    },
-    "ForceUpdateFeeds": {
-        "message": "팝업창에서 피드 업데이트하기"
-    },
-    "General": {
-        "message": "일반"
-    },
-    "GrayIconColorIfNoUnread": {
-        "message": "읽지 않은 경우 회색 아이콘으로 표시"
-    },
-    "HideNotificationsAfter": {
-        "message": "바탕 화면 알림 유지 시간(초), - 0은 숨기지 않음"
-    },
-    "IntervalPeriod": {
-        "message": "새로고침 간격 (분.)"
-    },
-    "Login": {
-        "message": "로그인"
-    },
-    "Logout": {
-        "message": "로그아웃"
-    },
-    "many": {
-        "message": "많음"
-    },
-    "MarkAllAsRead": {
-        "message": "모두 읽은 상태로 표시"
-    },
-    "MarkAsRead": {
-        "message": "읽은 상태로 표시"
-    },
-    "MaxNotificationsCount": {
-        "message": "1회 알림 최대 갯수"
-    },
-    "MaxNumberOfFeeds": {
-        "message": "팝업창 피드의 최대 갯수"
-    },
-    "More": {
-        "message": "더 보기"
-    },
-    "NewFeeds": {
-        "message": "새로운 피드"
-    },
-    "NoSavedArticles": {
-        "message": "저장된 기사 없음"
-    },
-    "Notifications": {
-        "message": "알림"
-    },
-    "NoUnreadArticles": {
-        "message": "읽지 않은 기사 없음"
-    },
-    "OldestFeedsFirst": {
-        "message": "오래된 것부터"
-    },
-    "OpenAllFeeds": {
-        "message": "모든 피드 열기"
-    },
-    "OpenAllSavedFeeds": {
-        "message": "저장된 피드를 모두 열고 저장하지 않습니다."
-    },
-    "OpenFeedsInBackground": {
-        "message": "백그라운드 탭에서 피드 열기"
-    },
-    "OpenFeedsInSameTab": {
-        "message": "같은 탭에서 피드 열기"
-    },
-    "OpenSiteOnIconClick": {
-        "message": "아이콘 클릭해서 Feedly 사이트 열기(팝업 보이지 않기)"
-    },
-    "OptionsSaved": {
-        "message": "옵션이 저장되었습니다."
-    },
-    "PlaySound": {
-        "message": "새로운 피드 있을 때 소리 재생"
-    },
-    "Popup": {
-        "message": "팝업"
-    },
-    "PopupFontSize": {
-        "message": "팝업 글꼴 크기 백분율"
-    },
-    "PopupWidth": {
-        "message": "팝업 폭"
-    },
-    "ResetCounterOnClick": {
-        "message": "클릭했을 때 읽지 않은 상태로 재설정"
-    },
-    "Save": {
-        "message": "저장"
-    },
-    "ShowCategories": {
-        "message": "팝업창에 카테고리 표시"
-    },
-    "ShowCounter": {
-        "message": "카운터 표시"
-    },
-    "ShowDesktopNotifications": {
-        "message": "바탕화면 알림 표시"
-    },
-    "ShowFullFeedContent": {
-        "message": "확장된 피드에서 기사의 전체 내용 보기(가능한 경우)"
-    },
-    "UpdateFeeds": {
-        "message": "업데이트"
-    },
-    "UpdateFollowingCategories": {
-        "message": "다음 카테고리만 업데이트"
-    },
-    "UseSecureConnection": {
-        "message": "보안 연결 사용(https)"
-    },
-    "YouHaveNewFeeds": {
-        "message": "새로운 피드 $count$개",
-        "placeholders": {
-            "count": {
-                "content": "$1",
-                "example": "10 or many"
-            }
-        }
+  "AbilitySaveFeeds": {
+    "message": "피드 저장 기능"
+  },
+  "AutoMarkRead": {
+    "message": "뉴스 열면, 자동으로 읽은 상태로 표시"
+  },
+  "Categories": {
+    "message": "카테고리"
+  },
+  "CurrentUser": {
+    "message": "현재 사용자"
+  },
+  "Email": {
+    "message": "Email"
+  },
+  "EnableBackgroundMode": {
+    "message": "백그라운드 모드 활성화"
+  },
+  "ExpandedPopupWidth": {
+    "message": "확장 팝업 폭"
+  },
+  "ExpandFeeds": {
+    "message": "팝업창 열릴 때 모든 피드 확대"
+  },
+  "ExtensionDescription": {
+    "message": "feedly 뉴스 리더 확장"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly 알림 옵션"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly 웹사이트"
+  },
+  "Filters": {
+    "message": "필터"
+  },
+  "ForceUpdateFeeds": {
+    "message": "팝업창에서 피드 업데이트하기"
+  },
+  "General": {
+    "message": "일반"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "읽지 않은 경우 회색 아이콘으로 표시"
+  },
+  "HideNotificationsAfter": {
+    "message": "바탕 화면 알림 유지 시간(초), - 0은 숨기지 않음"
+  },
+  "IntervalPeriod": {
+    "message": "새로고침 간격 (분.)"
+  },
+  "Login": {
+    "message": "로그인"
+  },
+  "Logout": {
+    "message": "로그아웃"
+  },
+  "many": {
+    "message": "많음"
+  },
+  "MarkAllAsRead": {
+    "message": "모두 읽은 상태로 표시"
+  },
+  "MarkAsRead": {
+    "message": "읽은 상태로 표시"
+  },
+  "MaxNotificationsCount": {
+    "message": "1회 알림 최대 갯수"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "팝업창 피드의 최대 갯수"
+  },
+  "More": {
+    "message": "더 보기"
+  },
+  "NewFeeds": {
+    "message": "새로운 피드"
+  },
+  "NoSavedArticles": {
+    "message": "저장된 기사 없음"
+  },
+  "Notifications": {
+    "message": "알림"
+  },
+  "NoUnreadArticles": {
+    "message": "읽지 않은 기사 없음"
+  },
+  "OldestFeedsFirst": {
+    "message": "오래된 것부터"
+  },
+  "OpenAllFeeds": {
+    "message": "모든 피드 열기"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "저장된 피드를 모두 열고 저장하지 않습니다."
+  },
+  "OpenFeedsInBackground": {
+    "message": "백그라운드 탭에서 피드 열기"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "같은 탭에서 피드 열기"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "아이콘 클릭해서 Feedly 사이트 열기(팝업 보이지 않기)"
+  },
+  "OptionsSaved": {
+    "message": "옵션이 저장되었습니다."
+  },
+  "PlaySound": {
+    "message": "새로운 피드 있을 때 소리 재생"
+  },
+  "Popup": {
+    "message": "팝업"
+  },
+  "PopupFontSize": {
+    "message": "팝업 글꼴 크기 백분율"
+  },
+  "PopupWidth": {
+    "message": "팝업 폭"
+  },
+  "ResetCounterOnClick": {
+    "message": "클릭했을 때 읽지 않은 상태로 재설정"
+  },
+  "Save": {
+    "message": "저장"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "파비콘을 알림에서 보기"
+  },
+  "ShowCategories": {
+    "message": "팝업창에 카테고리 표시"
+  },
+  "ShowCounter": {
+    "message": "카운터 표시"
+  },
+  "ShowDesktopNotifications": {
+    "message": "바탕화면 알림 표시"
+  },
+  "ShowFullFeedContent": {
+    "message": "확장된 피드에서 기사의 전체 내용 보기(가능한 경우)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "프리뷰 이미지를 알림에서 보기"
+  },
+  "UpdateFeeds": {
+    "message": "업데이트"
+  },
+  "UpdateFollowingCategories": {
+    "message": "다음 카테고리만 업데이트"
+  },
+  "UseSecureConnection": {
+    "message": "보안 연결 사용(https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "새로운 피드 $count$개",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
     }
+  }
 }

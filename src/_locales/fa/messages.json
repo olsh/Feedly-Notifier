@@ -1,0 +1,164 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "قابلیت ذخیره فید"
+  },
+  "AutoMarkRead": {
+    "message": "نشان‌گذاری به خوانده شده در زمان بازشدن اخبار"
+  },
+  "Categories": {
+    "message": "دسته‌بندی‌ها"
+  },
+  "CurrentUser": {
+    "message": "کاربر جاری"
+  },
+  "Email": {
+    "message": "ایمیل"
+  },
+  "EnableBackgroundMode": {
+    "message": "فعال سازی حالت پس‌زمینه"
+  },
+  "ExpandedPopupWidth": {
+    "message": "اضافه کردن پهنای پنجره شناور"
+  },
+  "ExpandFeeds": {
+    "message": "گستردن تمام فیدها هنگام باز شدن پنجره بالاپر"
+  },
+  "ExtensionDescription": {
+    "message": "افزونه ای برای خبرخوان فیدلی"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "تنظیمات آگاه‌سازی"
+  },
+  "FeedlyWebsite": {
+    "message": "سایت فیدلی"
+  },
+  "Filters": {
+    "message": "فیلترها"
+  },
+  "ForceUpdateFeeds": {
+    "message": "فیدها هنگام بازشدن به روز شود"
+  },
+  "General": {
+    "message": "کلی"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "خاکستری کردن رنگ آیکون در صورت عدم وجود فید خوانده نشده"
+  },
+  "HideNotificationsAfter": {
+    "message": "مخفی کردن پیان بعد از (ثانیه)"
+  },
+  "IntervalPeriod": {
+    "message": "بازه زمانی (دقیقه)"
+  },
+  "Login": {
+    "message": "ورود"
+  },
+  "Logout": {
+    "message": "خروج"
+  },
+  "many": {
+    "message": "زیاد"
+  },
+  "MarkAllAsRead": {
+    "message": "نشان‌گذاری همه به خوانده شده"
+  },
+  "MarkAsRead": {
+    "message": "نشان‌گذاری به خوانده شده"
+  },
+  "MaxNotificationsCount": {
+    "message": "بیشینه تعداد آگاه سازی های همزمان"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "بیشینه تعداد فیدها در پنجره بالاپر"
+  },
+  "More": {
+    "message": "بیشتر"
+  },
+  "NewFeeds": {
+    "message": "فیدهای جدید"
+  },
+  "NoSavedArticles": {
+    "message": "مقاله ذخیره شده ای وجود ندارد"
+  },
+  "Notifications": {
+    "message": "آگهی ها"
+  },
+  "NoUnreadArticles": {
+    "message": "مقاله خوانده نشده ای وجود ندارد"
+  },
+  "OldestFeedsFirst": {
+    "message": "ابتدا فیدهای قدیمی تر"
+  },
+  "OpenAllFeeds": {
+    "message": "باز کردن تمام فیدها"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "باز کردن تمام فیدهای ذخیره شده و عدم ذخیره آن ها"
+  },
+  "OpenFeedsInBackground": {
+    "message": "باز کردن فیدها در زبانه پس زمینه"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "باز کردن فیدها در همین زبانه"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "باز کردن سایت فیدلی با کلیک بر روی آیکون (پنجره بالاپر را نشان نده)"
+  },
+  "OptionsSaved": {
+    "message": "تنظمیات ذخیره شدند"
+  },
+  "PlaySound": {
+    "message": "صدای هشدار را برای فیدهای جدید اجرا کن"
+  },
+  "Popup": {
+    "message": "پنجره بالاپر"
+  },
+  "PopupFontSize": {
+    "message": "اندازه فونت پنجره بالاپر به درصد"
+  },
+  "PopupWidth": {
+    "message": "عرض پنجره بالاپر"
+  },
+  "ResetCounterOnClick": {
+    "message": "صفر کردن شمارنده با کلیک بر دکمه افزونه"
+  },
+  "Save": {
+    "message": "ذخیره کردن"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "نمایش آیکون سایت در آگاه سازی ها"
+  },
+  "ShowCategories": {
+    "message": "نمایش دسته ها در پنجره بالاپر"
+  },
+  "ShowCounter": {
+    "message": "نمایش شمارنده"
+  },
+  "ShowDesktopNotifications": {
+    "message": "نمایش آگاه سازی های رومیزی"
+  },
+  "ShowFullFeedContent": {
+    "message": "نمایش محتوای کامل مقالات در فید گسترش یافته (در صورت امکان)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "نشان دادن تصویر پیش نمایش در آگاه سازی ها (در صورت وجود)"
+  },
+  "UpdateFeeds": {
+    "message": "بروزرسانی"
+  },
+  "UpdateFollowingCategories": {
+    "message": "بروزسانی دسته های دنبال شده"
+  },
+  "UseSecureConnection": {
+    "message": "استفاده از ارتباط امن (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "شما $count$ فید جدید دارید",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}

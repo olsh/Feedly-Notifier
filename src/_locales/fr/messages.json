@@ -17,11 +17,11 @@
   "EnableBackgroundMode": {
     "message": "Activer le mode en arrière-plan"
   },
-  "ExpandFeeds": {
-    "message": "Étendre tous les articles à l'ouverture de la fenêtre"
-  },
   "ExpandedPopupWidth": {
     "message": "Largeur de la fenêtre étendue"
+  },
+  "ExpandFeeds": {
+    "message": "Étendre tous les articles à l'ouverture de la fenêtre"
   },
   "ExtensionDescription": {
     "message": "Extension pour le lecteur de flux Feedly"
@@ -41,6 +41,9 @@
   "General": {
     "message": "Général"
   },
+  "GrayIconColorIfNoUnread": {
+    "message": "Icône gris si aucun article à lire"
+  },
   "HideNotificationsAfter": {
     "message": "Masquer les notifications de bureau après (en secondes). 0 pour ne pas masquer"
   },
@@ -52,6 +55,9 @@
   },
   "Logout": {
     "message": "Déconnexion"
+  },
+  "many": {
+    "message": "plusieurs"
   },
   "MarkAllAsRead": {
     "message": "Tout marquer comme lu"
@@ -74,11 +80,11 @@
   "NoSavedArticles": {
     "message": "Aucun article enregistré"
   },
-  "NoUnreadArticles": {
-    "message": "Aucun article à lire"
-  },
   "Notifications": {
     "message": "Notifications"
+  },
+  "NoUnreadArticles": {
+    "message": "Aucun article à lire"
   },
   "OldestFeedsFirst": {
     "message": "Anciens articles en premier"
@@ -96,7 +102,7 @@
     "message": "Ouvrir les articles dans le même onglet"
   },
   "OpenSiteOnIconClick": {
-    "message": "Ouvrir le site de Feedly lors du clique sur l'icone (Désactive la fenêtre)"
+    "message": "Ouvrir le site de Feedly lors du clique sur l'icône (Désactive la fenêtre)"
   },
   "OptionsSaved": {
     "message": "Les options ont été enregistrées"
@@ -114,10 +120,13 @@
     "message": "Largeur de la fenêtre"
   },
   "ResetCounterOnClick": {
-    "message": "Réinitialiser le compteur quand le bouton de l'extension est cliqué"
+    "message": "Réinitialiser le compteur en cliquant sur l'icône"
   },
   "Save": {
     "message": "Enregistrer"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Afficher l'icône du site dans les notifications"
   },
   "ShowCategories": {
     "message": "Afficher les catégories dans la fenêtre"
@@ -130,6 +139,9 @@
   },
   "ShowFullFeedContent": {
     "message": "Afficher le contenu complet dans la vue développée (si possible)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Afficher une image de prévisualisation dans les notifications (si disponible)"
   },
   "UpdateFeeds": {
     "message": "Actualiser"
@@ -148,8 +160,5 @@
         "example": "10 or many"
       }
     }
-  },
-  "many": {
-    "message": "plusieurs"
   }
 }
