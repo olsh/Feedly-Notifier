@@ -40,7 +40,7 @@
     {{#feeds}}
     <div class="item" data-id="{{id}}" data-categories="{{#categories}}{{encodedId}} {{/categories}}">
         <span class="article-title {{titleDirection}}">
-            <a data-link="{{url}}" class="title">{{title}}</a>
+            <a data-link="{{url}}" class="title">{{{title}}}</a>
         </span>
         <span class="article-menu">
             <span class="save-feed {{#isSaved}} saved {{/isSaved}}" data-saved="{{isSaved}}"></span>

@@ -122,6 +122,7 @@ $("#popup-content").on("click", ".show-content", function () {
 
                 // @if BROWSER='firefox'
                 // We should sanitize the content of feeds because of AMO review.
+                feed.title = DOMPurify.sanitize(feed.title);
                 feed.content = DOMPurify.sanitize(feed.content);
                 // @endif
 
