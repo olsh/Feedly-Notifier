@@ -13,6 +13,11 @@ body {
     overflow-x: hidden;
 }
 
+#feedly-logo {
+  width: 19px;
+  height: 19px;
+}
+
 .button {
     margin: 0;
     padding: 5px 15px;
@@ -37,8 +42,8 @@ body {
 .mark-read,
 .show-content,
 .save-feed,
-[class^="icon-"],
-[class*=" icon-"] {
+.icon
+ {
     display: inline-block;
 
     width: 14px;
@@ -46,42 +51,13 @@ body {
     margin-top: 1px;
 
     vertical-align: text-top;
-
-    background: url("glyphicons-halflings.png") no-repeat -120px -120px;
-
     line-height: 14px;
-}
-
-.icon-ok {
     margin-right: 5px;
 
-    background-position: -285px 2px;
 }
 
-.icon-share {
-    margin-right: 5px;
-
-    background-position: -117px -69px;
-}
-
-.icon-refresh {
-    margin-right: 5px;
-
-    background-position: -237px -21px;
-}
-
-.icon-unsaved {
-    margin-right: 5px;
-
-    background-position: -117px -69px;
-}
-
-.mark-read:hover {
-    background-position: -96px -120px;
-}
-
-.show-content {
-    background-position: -313px -119px;
+.glyphicon-eye-open:hover:before {
+  content: "\e106";
 }
 
 .save-feed {
