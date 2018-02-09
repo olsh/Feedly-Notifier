@@ -39,9 +39,6 @@ body {
     -webkit-appearance: none;
 }
 
-.mark-read,
-.show-content,
-.save-feed,
 .icon
  {
     display: inline-block;
@@ -60,12 +57,8 @@ body {
   content: "\e106";
 }
 
-.save-feed {
-    background: url(save.png) no-repeat 0 0;
-}
-
 .saved {
-    background-position: -14px 0;
+    color: rgb(108, 198, 85);
 }
 
 #login,
@@ -289,6 +282,7 @@ body {
     text-align: right;
 
     border-top: 1px solid #6cc655;
+
 }
 
 #popup-actions > i:hover > div {

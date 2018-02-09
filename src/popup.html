@@ -17,8 +17,8 @@
         <div id="popup-actions">
             <em class="glyphicon glyphicon-share" id="open-all-news"><div class="arrow-up"></div><span></span></em>
             <em class="glyphicon glyphicon-ok" id="mark-all-read"><div class="arrow-up"></div><span></span></em>
-            <em class="glyphicon glyphicon-refresh" id="update-feeds"><div class="arrow-up"></div><span></span></em>
-            <em class="icon-unsaved" id="open-unsaved-all-news"><div class="arrow-up"></div><span></span></em>
+            <em class="glyphicon glyphicon-refresh icon-refresh" id="update-feeds"><div class="arrow-up"></div><span></span></em>
+            <em class="glyphicon glyphicon-share icon-unsaved" id="open-unsaved-all-news"><div class="arrow-up"></div><span></span></em>
         </div>
         <div class="clear"></div>
         <div id="tabs-container">
@@ -44,7 +44,7 @@
             <a data-link="{{url}}" class="title">{{{title}}}</a>
         </span>
         <span class="article-menu">
-            <span class="save-feed {{#isSaved}} saved {{/isSaved}}" data-saved="{{isSaved}}"></span>
+            <span class="glyphicon glyphicon-bookmark save-feed {{#isSaved}} saved {{/isSaved}}" data-saved="{{isSaved}}"></span>
             <span class="glyphicon glyphicon-eye-open" title="Mark as read"></span>
             <span class="glyphicon glyphicon-chevron-down show-content" title="Show content"></span>
         </span>
