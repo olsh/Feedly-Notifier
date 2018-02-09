@@ -138,7 +138,8 @@ $("#popup-content").on("click", ".show-content", function () {
         }
     }
     contentContainer.slideToggle("fast", function () {
-        $this.css("background-position", contentContainer.is(":visible") ? "-288px -120px" : "-313px -119px");
+        $this.toggleClass("glyphicon-chevron-down");
+        $this.toggleClass("glyphicon-chevron-up");
         if ($(".content").is(":visible")) {
             setPopupExpand(true);
         } else {
