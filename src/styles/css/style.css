@@ -1,11 +1,11 @@
 @font-face {
     font-family: "Open Sans Condensed";
-    src: url(opensanscondensed.woff) format("woff");
+    src: url(../fonts/opensanscondensed.woff) format("woff");
 }
 
 @font-face {
     font-family: "Noto Sans KR";
-    src: url(NotoSansKR-Bold.woff) format("woff");
+    src: url(../fonts/NotoSansKR-Bold.woff) format("woff");
 }
 
 body {
@@ -43,8 +43,8 @@ body {
   content: "\e106";
 }
 
-.glyphicon {
-    font-size: 14px;
+.glyphicon:before {
+    font-size: 13px;
 }
 
 .saved {
