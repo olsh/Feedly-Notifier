@@ -139,6 +139,14 @@ body {
     direction: rtl;
 }
 
+.article-menu > * {
+    height: 14px;
+    margin-top: 1px;
+    vertical-align: text-top;
+    line-height: 14px;
+    width: 14px;
+ }
+
 .article-menu,
 .article-title {
     display: inline-block;
@@ -220,8 +228,8 @@ body {
 
 .arrow-up {
     position: absolute;
-    top: 36px;
-    right: 1px;
+    top: 24px;
+    right: 4px;
 
     display: none;
 
@@ -256,14 +264,23 @@ body {
     border-radius: 3px;
 }
 
+#popup-actions > em > span{
+  font-family: sans-serif;
+  line-height: 14px;
+}
+
 #popup-actions > em:hover {
     background-color: #eaeaea;
 }
 
+#popup-actions > em:hover > .arrow-up{
+    display: inline-block;
+}
+
 #popup-actions > em:hover > span {
-    position: absolute;
-    top: 40px;
-    right: 0;
+  position: fixed;
+  top: 40px;
+  right: 13px;
 
     display: inline-block;
 
