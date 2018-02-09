@@ -2,10 +2,10 @@ Feedly notifier è una piccola estensione che ti tiene aggiornato con il tuo abb
 
 **Funzionalità**
 
-- numero news non lette
+- contatore di news non lette
 - titolo delle news non lette (con link diretto al sito della news) nella finestra popup
 - anteprima del articolo nella finestra popup
-- possibilità di fissare  le categorie per gli aggiornamenti
+- possibilità di fissare  le categorie per gli aggiornamenti delle news
 - supporto per HTTPS
 - possibilità di segnare le notizie come lette
 - possibilità di salvare gli articoli per leggerli dopo
