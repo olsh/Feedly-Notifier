@@ -13,6 +13,11 @@ body {
     overflow-x: hidden;
 }
 
+#feedly-logo {
+  width: 19px;
+  height: 19px;
+}
+
 .button {
     margin: 0;
     padding: 5px 15px;
@@ -34,11 +39,8 @@ body {
     -webkit-appearance: none;
 }
 
-.mark-read,
-.show-content,
-.save-feed,
-[class^="icon-"],
-[class*=" icon-"] {
+.icon
+ {
     display: inline-block;
 
     width: 14px;
@@ -46,50 +48,17 @@ body {
     margin-top: 1px;
 
     vertical-align: text-top;
-
-    background: url("glyphicons-halflings.png") no-repeat -120px -120px;
-
     line-height: 14px;
-}
-
-.icon-ok {
     margin-right: 5px;
 
-    background-position: -285px 2px;
 }
 
-.icon-share {
-    margin-right: 5px;
-
-    background-position: -117px -69px;
-}
-
-.icon-refresh {
-    margin-right: 5px;
-
-    background-position: -237px -21px;
-}
-
-.icon-unsaved {
-    margin-right: 5px;
-
-    background-position: -117px -69px;
-}
-
-.mark-read:hover {
-    background-position: -96px -120px;
-}
-
-.show-content {
-    background-position: -313px -119px;
-}
-
-.save-feed {
-    background: url(save.png) no-repeat 0 0;
+.glyphicon-eye-open:hover:before {
+  content: "\e106";
 }
 
 .saved {
-    background-position: -14px 0;
+    color: rgb(108, 198, 85);
 }
 
 #login,
@@ -162,6 +131,14 @@ body {
 
     direction: rtl;
 }
+
+.article-menu > * {
+    height: 14px;
+    margin-top: 1px;
+    vertical-align: text-top;
+    line-height: 14px;
+    width: 14px;
+ }
 
 .article-menu,
 .article-title {
@@ -244,8 +221,8 @@ body {
 
 .arrow-up {
     position: absolute;
-    top: 36px;
-    right: 1px;
+    top: 24px;
+    right: 4px;
 
     display: none;
 
@@ -280,14 +257,23 @@ body {
     border-radius: 3px;
 }
 
+#popup-actions > em > span{
+  font-family: sans-serif;
+  line-height: 14px;
+}
+
 #popup-actions > em:hover {
     background-color: #eaeaea;
 }
 
+#popup-actions > em:hover > .arrow-up{
+    display: inline-block;
+}
+
 #popup-actions > em:hover > span {
-    position: absolute;
-    top: 40px;
-    right: 0;
+  position: fixed;
+  top: 40px;
+  right: 13px;
 
     display: inline-block;
 
@@ -296,6 +282,7 @@ body {
     text-align: right;
 
     border-top: 1px solid #6cc655;
+
 }
 
 #popup-actions > i:hover > div {
