@@ -1,9 +1,6 @@
 "use strict";
 
 var popupGlobal = {
-    //Determines lists of supported jQuery.timeago localizations, default localization is en
-    supportedTimeAgoLocales: ["ru", "fr", "pt-br", "it", "cs", "zh-CN", "zh-TW", "tr", "es", "ko", "de",
-        "uk", "sr", "ja", "ar", "id", "da", "hu", "pt", "el", "fa"],
     feeds: [],
     savedFeeds: [],
     backgroundPage: chrome.extension.getBackgroundPage()
@@ -24,15 +21,7 @@ $(document).ready(function () {
 
     setPopupExpand(false);
 
-    //If we support this localization of timeago, then insert script with it
-    if (popupGlobal.supportedTimeAgoLocales.indexOf(window.navigator.language) !== -1) {
-        //Trying load localization for jQuery.timeago
-        $.getScript("/scripts/timeago/locales/jquery.timeago." + window.navigator.language + ".js", function () {
-            executeAsync(renderFeeds);
-        });
-    } else {
-        executeAsync(renderFeeds);
-    }
+    executeAsync(renderFeeds);
 });
 
 $("#login").click(function () {
@@ -229,7 +218,7 @@ function renderFeeds(forceUpdate) {
                 Mustache.parse(feedsTemplate);
 
                 container.append(Mustache.render(feedsTemplate, {feeds: feeds}));
-                container.find(".timeago").timeago();
+                renderTimeAgo(container);
 
                 showFeeds();
 
@@ -261,7 +250,7 @@ function renderSavedFeeds(forceUpdate) {
                 Mustache.parse(feedTemplate);
 
                 container.append(Mustache.render(feedTemplate, {feeds: feeds}));
-                container.find(".timeago").timeago();
+                renderTimeAgo(container);
 
                 showSavedFeeds();
 
@@ -330,6 +319,12 @@ function renderCategories(container, feeds){
     var template = $("#categories-template").html();
     Mustache.parse(template);
     container.append(Mustache.render(template, {categories: categories}));
+}
+
+function renderTimeAgo(container) {
+    let timeagoInstance = timeago();
+    let timeagoNodes = document.querySelectorAll(".timeago");
+    timeagoInstance.render(timeagoNodes, window.navigator.language);
 }
 
 function getUniqueCategories(feeds){

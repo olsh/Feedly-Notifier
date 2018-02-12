@@ -55,7 +55,7 @@
             <span class="engagement {{#isEngagementHot}}hot{{/isEngagementHot}} {{#isEngagementOnFire}}on-fire{{/isEngagementOnFire}}">{{engagement}}{{engagementPostfix}}</span>
             {{/showEngagement}}
             <a data-link="{{blogUrl}}" href="javascript:void(0)">{{blog}}</a>,
-            <span class="timeago" title="{{isoDate}}"></span>
+            <span class="timeago" datetime="{{isoDate}}"></span>
         </div>
         <div class="content">{{>content}}</div>
     </div>
@@ -75,7 +75,8 @@
         {{{content}}}
     </div>
 </script>
-<script src="scripts/timeago/jquery.timeago.js"></script>
+<script src="scripts/timeago.min.js"></script>
+<script src="scripts/timeago.locales.min.js"></script>
 <script src="scripts/purify.min.js"></script>
 <script src="scripts/popup.js"></script>
 </html>

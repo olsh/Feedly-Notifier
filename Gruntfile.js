@@ -17,28 +17,8 @@ module.exports = function (grunt) {
 
                     {src: '<%= pkg.libPath %>/dompurify/dist/purify.min.js', dest: '<%= pkg.buildPath %>/scripts/purify.min.js'},
 
-                    {src: '<%= pkg.libPath %>/timeago/jquery.timeago.js', dest: '<%= pkg.buildPath %>/scripts/timeago/jquery.timeago.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.ar.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.ar.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.cs.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.cs.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.da.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.da.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.de.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.de.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.el.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.el.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.es.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.es.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.fa.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.fa.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.fr.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.fr.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.ja.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.ja.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.hu.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.hu.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.id.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.id.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.it.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.it.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.ko.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.ko.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.pt.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.pt.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.pt-br.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.pt-br.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.ru.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.ru.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.sr.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.sr.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.tr.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.tr.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.uk.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.uk.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.zh-CN.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.zh-CN.js'},
-                    {src: '<%= pkg.libPath %>/timeago/locales/jquery.timeago.zh-TW.js', dest: '<%= pkg.buildPath %>/scripts/timeago/locales/jquery.timeago.zh-TW.js'}
+                    {src: '<%= pkg.libPath %>/timeago.js/dist/timeago.min.js', dest: '<%= pkg.buildPath %>/scripts/timeago.min.js'},
+                    {src: '<%= pkg.libPath %>/timeago.js/dist/timeago.locales.min.js', dest: '<%= pkg.buildPath %>/scripts/timeago.locales.min.js'},
                 ]
             }
         },
