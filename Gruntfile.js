@@ -64,8 +64,8 @@ module.exports = function (grunt) {
                             replacement: "http://sandbox7.feedly.com"
                         },
                         {
-                            pattern: /var\s+redirectUri\s+=\s+[^;]*/gi,
-                            replacement: "var redirectUri = 'http://localhost'"
+                            pattern: /let\s+redirectUri\s+=\s+[^;]*/gi,
+                            replacement: "let redirectUri = 'http://localhost'"
                         }
                     ]
                 }
