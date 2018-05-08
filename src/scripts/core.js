@@ -207,7 +207,7 @@ function initialize() {
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
 
-    browser.chrome.getPlatformInfo(function (platformInfo) {
+    chrome.runtime.getPlatformInfo(function (platformInfo) {
         appGlobal.environment.os = platformInfo.os; 
     })
     startSchedule(appGlobal.options.updateInterval);
