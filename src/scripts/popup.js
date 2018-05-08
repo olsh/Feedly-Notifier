@@ -18,9 +18,9 @@ $(document).ready(function () {
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
     }
-
-    setPopupExpand(false);
-
+    
+    setPopupWidth(false);
+    
     executeAsync(renderFeeds);
 });
 
@@ -129,11 +129,9 @@ $("#popup-content").on("click", ".show-content", function () {
     contentContainer.slideToggle("fast", function () {
         $this.toggleClass("glyphicon-chevron-down");
         $this.toggleClass("glyphicon-chevron-up");
-        if ($(".content").is(":visible")) {
-            setPopupExpand(true);
-        } else {
-            setPopupExpand(false);
-        }
+
+        var expanded = $(".content").is(":visible");
+        setPopupWidth(expanded);
     });
 });
 
@@ -184,18 +182,10 @@ $("#feedly").on("click", "#feedly-logo", function (event) {
 });
 
 function executeAsync(func) {
-    chrome.runtime.getPlatformInfo(function (platformInfo) {
-        let timeout = 0;
-
-        // Workaround for the bug: https://bugs.chromium.org/p/chromium/issues/detail?id=307912
-        if (platformInfo.os === "mac") {
-            timeout = 150;
-        }
-
-        setTimeout(function () {
-            func();
-        }, timeout);
-    });
+    const timeout = popupGlobal.backgroundPage.appGlobal.environment.os === "mac" ? 500 : 0;
+    setTimeout(function () {
+        func();
+    }, timeout);
 }
 
 function renderFeeds(forceUpdate) {
@@ -380,10 +370,10 @@ function showSavedFeeds() {
     $("#feedly").show().find("#popup-actions").show().children().filter(".icon-refresh").show();
 }
 
-function setPopupExpand(isExpand) {
-    if (isExpand) {
-        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth);
-    } else {
-        $("#feed, #feed-saved").width(popupGlobal.backgroundPage.appGlobal.options.popupWidth);
-    }
+function setPopupWidth(expanded) {    
+    var width = expanded 
+        ? popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth
+        : popupGlobal.backgroundPage.appGlobal.options.popupWidth;
+
+    $("#feed, #feed-saved").width(width);
 }

@@ -2,7 +2,6 @@
 
 var appGlobal = {
     feedlyApiClient: new FeedlyApiClient(),
-    feedTab: null,
     icons: {
         default: {
             "19": "/images/icon.png",
@@ -83,9 +82,20 @@ var appGlobal = {
         }
     },
     //Names of options after changes of which scheduler will be initialized
-    criticalOptionNames: ["updateInterval", "accessToken", "showFullFeedContent", "openSiteOnIconClick",
-        "maxNumberOfFeeds", "abilitySaveFeeds", "filters", "isFiltersEnabled",
-        "showCounter", "oldestFeedsFirst", "resetCounterOnClick", "grayIconColorIfNoUnread"],
+    criticalOptionNames: [
+        "updateInterval", 
+        "accessToken", 
+        "showFullFeedContent", 
+        "openSiteOnIconClick",
+        "maxNumberOfFeeds", 
+        "abilitySaveFeeds", 
+        "filters", 
+        "isFiltersEnabled",
+        "showCounter", 
+        "oldestFeedsFirst", 
+        "resetCounterOnClick", 
+        "grayIconColorIfNoUnread"
+    ],
     cachedFeeds: [],
     cachedSavedFeeds: [],
     notifications: {},
@@ -94,6 +104,9 @@ var appGlobal = {
     clientId: "",
     clientSecret: "",
     getUserSubscriptionsPromise: null,
+    environment: {
+        os: ""
+    },
     get feedlyUrl(){
         return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com"
     },
@@ -194,6 +207,9 @@ function initialize() {
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
 
+    browser.chrome.getPlatformInfo(function (platformInfo) {
+        appGlobal.environment.os = platformInfo.os; 
+    })
     startSchedule(appGlobal.options.updateInterval);
 }
 
