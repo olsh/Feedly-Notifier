@@ -1,6 +1,8 @@
 Feedly-Notifier
 ===============
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/olsh/Feedly-Notifier.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/olsh/Feedly-Notifier.svg?branch=master)](https://travis-ci.org/olsh/Feedly-Notifier)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=feedly-notifier)](https://sonarqube.com/dashboard/index/feedly-notifier)
 [![Dependency Status](https://gemnasium.com/badges/github.com/olsh/Feedly-Notifier.svg)](https://gemnasium.com/github.com/olsh/Feedly-Notifier)
