@@ -2,8 +2,8 @@ Feedly-Notifier
 ===============
 
 [![Build Status](https://travis-ci.org/olsh/Feedly-Notifier.svg?branch=master)](https://travis-ci.org/olsh/Feedly-Notifier)
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=feedly-notifier)](https://sonarqube.com/dashboard/index/feedly-notifier)
-[![Dependency Status](https://gemnasium.com/badges/github.com/olsh/Feedly-Notifier.svg)](https://gemnasium.com/github.com/olsh/Feedly-Notifier)
+[![Maintainability](https://api.codeclimate.com/v1/badges/cc043ddadb231bfaa48b/maintainability)](https://codeclimate.com/github/olsh/Feedly-Notifier/maintainability)
+[![Known Vulnerabilities](https://snyk.io/test/github/olsh/Feedly-Notifier/badge.svg)](https://snyk.io/test/github/olsh/Feedly-Notifier)
 
 Google chrome, Firefox and Opera extension for reading news from rss aggregator [Feedly](https://feedly.com)
 
