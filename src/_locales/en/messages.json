@@ -62,6 +62,9 @@
     "MarkAsRead": {
         "message": "Mark as read"
     },
+    "MarkAsReadEngagement": {
+        "message": "Mark as read if no engagement"
+    },
     "MaxNotificationsCount": {
         "message": "Max notifications count at once"
     },

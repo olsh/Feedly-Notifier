@@ -10,6 +10,7 @@ $(document).ready(function () {
     $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
     $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
     $("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
+    $("#mark-read-engagement>span").text(chrome.i18n.getMessage("MarkAsReadEngagement"));
     $("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
     $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
     $("#open-unsaved-all-news>span").text(chrome.i18n.getMessage("OpenAllSavedFeeds"));
@@ -59,6 +60,8 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
 });
 
 $("#popup-content").on("click", "#mark-all-read", markAllAsRead);
+
+$("#popup-content").on("click", "#mark-read-engagement", markAsReadEngagement);
 
 $("#popup-content").on("click", "#open-all-news", function () {
     $("#feed").find("a.title[data-link]").filter(":visible").each(function (key, value) {
@@ -291,6 +294,16 @@ function markAllAsRead() {
     var feedIds = [];
     $(".item:visible").each(function (key, value) {
         feedIds.push($(value).data("id"));
+    });
+    markAsRead(feedIds);
+}
+
+function markAsReadEngagement() {
+    var feedIds = [];
+    $(".item:visible").each(function (key, value) {
+        if($(value).find("span.engagement").length == 0) {
+            feedIds.push($(value).data("id"));
+        }
     });
     markAsRead(feedIds);
 }

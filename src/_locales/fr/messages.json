@@ -65,6 +65,9 @@
   "MarkAsRead": {
     "message": "Marquer comme lu"
   },
+  "MarkAsReadEngagement": {
+    "message": "Marquer comme lu si pas de popularité"
+  },
   "MaxNotificationsCount": {
     "message": "Nombre maximum de notifications simultanées"
   },
