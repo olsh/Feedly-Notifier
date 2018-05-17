@@ -116,6 +116,12 @@
                     <fieldset data-enable-parent="isFiltersEnabled" id="categories">
                         <legend data-locale-value="Categories"></legend>
                     </fieldset>
+                    
+                    <label for="showEngagementFilter" class="label" data-locale-value="ShowEngagementFilter"></label>
+                    <input id="showEngagementFilter" type="checkbox" data-option-name="showEngagementFilter" /><br>
+                    
+                    <label for="engagementFilterLimit" class="label" data-locale-value="EngagementFilterLimit"></label>
+                    <input id="engagementFilterLimit" type="number" data-enable-parent="showEngagementFilter"  min="0" max="10000" data-option-name="engagementFilterLimit" /><br>
                 </div>
             </div>
             <button type="submit" id="save" data-locale-value="Save" class="button">Save</button>

@@ -32,6 +32,7 @@ var appGlobal = {
         useSecureConnection: true,
         expandFeeds: false,
         isFiltersEnabled: false,
+        showEngagementFilter: false,
         openFeedsInSameTab: false,
         openFeedsInBackground: true,
         filters: [],

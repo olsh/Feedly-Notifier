@@ -301,7 +301,8 @@ function markAllAsRead() {
 function markAsReadEngagement() {
     var feedIds = [];
     $(".item:visible").each(function (key, value) {
-        if($(value).find("span.engagement").length == 0) {
+        var engagement = $(value).find("span.engagement").text() || 0; //default value if no engagement: 0
+        if(engagement <= popupGlobal.backgroundPage.appGlobal.options.engagementFilterLimit) {
             feedIds.push($(value).data("id"));
         }
     });
@@ -370,8 +371,11 @@ function showFeeds() {
     $("#feedly").show().find("#popup-actions").show().children().show();
     $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
     $(".show-content").attr("title", chrome.i18n.getMessage("More"));
-    $("#feedly").show().find("#popup-actions").show().children().filter(".icon-unsaved").hide();
+    $("#feedly").show().find("#popup-actions").show().children().filter(".icon-unsaved, #mark-read-engagement").hide();
 
+    if (popupGlobal.backgroundPage.appGlobal.options.showEngagementFilter) {
+        $("#mark-read-engagement").show();
+    }
 }
 
 function showSavedFeeds() {

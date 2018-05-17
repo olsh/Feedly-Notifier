@@ -17,6 +17,9 @@
   "EnableBackgroundMode": {
     "message": "Activer le mode en arrière-plan"
   },
+  "EngagementFilterLimit": {
+    "message": "Article à cacher si popularité inférieur à"
+  },
   "ExpandedPopupWidth": {
     "message": "Largeur de la fenêtre étendue"
   },
@@ -139,6 +142,9 @@
   },
   "ShowDesktopNotifications": {
     "message": "Afficher les notifications de bureau"
+  },
+  "ShowEngagementFilter": {
+    "message": "Afficher le bouton pour filtrer par popularité"
   },
   "ShowFullFeedContent": {
     "message": "Afficher le contenu complet dans la vue développée (si possible)"
