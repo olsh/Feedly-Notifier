@@ -153,6 +153,10 @@ readOptions(function () {
     //Write all options in chrome storage and initialize application
     writeOptions(initialize);
 });
+
+browser.notifications.onShown.addListener(() => {
+    browser.runtime.sendMessage("@notification-sound", "new-notification");
+});
 // @endif
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
