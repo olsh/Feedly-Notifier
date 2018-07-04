@@ -10,6 +10,7 @@ $(document).ready(function () {
     $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
     $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
     $("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
+    $("#mark-read-engagement>span").text(chrome.i18n.getMessage("MarkAsReadEngagement"));
     $("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
     $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
     $("#open-unsaved-all-news>span").text(chrome.i18n.getMessage("OpenAllSavedFeeds"));
@@ -59,6 +60,8 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
 });
 
 $("#popup-content").on("click", "#mark-all-read", markAllAsRead);
+
+$("#popup-content").on("click", "#mark-read-engagement", markAsReadEngagement);
 
 $("#popup-content").on("click", "#open-all-news", function () {
     $("#feed").find("a.title[data-link]").filter(":visible").each(function (key, value) {
@@ -295,6 +298,17 @@ function markAllAsRead() {
     markAsRead(feedIds);
 }
 
+function markAsReadEngagement() {
+    var feedIds = [];
+    $(".item:visible").each(function (key, value) {
+        var engagement = $(value).find("span.engagement").text() || 0; //default value if no engagement: 0
+        if(engagement < popupGlobal.backgroundPage.appGlobal.options.engagementFilterLimit) {
+            feedIds.push($(value).data("id"));
+        }
+    });
+    markAsRead(feedIds);
+}
+
 function markAllAsUnsaved() {
     var feedIds = [];
     $(".item:visible").each(function (key, value) {
@@ -357,8 +371,11 @@ function showFeeds() {
     $("#feedly").show().find("#popup-actions").show().children().show();
     $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
     $(".show-content").attr("title", chrome.i18n.getMessage("More"));
-    $("#feedly").show().find("#popup-actions").show().children().filter(".icon-unsaved").hide();
+    $("#feedly").show().find("#popup-actions").show().children().filter(".icon-unsaved, #mark-read-engagement").hide();
 
+    if (popupGlobal.backgroundPage.appGlobal.options.showEngagementFilter) {
+        $("#mark-read-engagement").show();
+    }
 }
 
 function showSavedFeeds() {
