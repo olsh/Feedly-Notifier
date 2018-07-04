@@ -18,7 +18,7 @@
         "message": "Enable background mode"
     },
     "EngagementFilterLimit": {
-      "message": "Article to hide if engagement less than"
+      "message": "Mark articles as read if engagement less than"
     },
     "ExpandedPopupWidth": {
         "message": "Expanded popup width"
@@ -66,7 +66,7 @@
         "message": "Mark as read"
     },
     "MarkAsReadEngagement": {
-        "message": "Mark as read if engagement less than the configuration"
+        "message": "Mark as read by engagement filter"
     },
     "MaxNotificationsCount": {
         "message": "Max notifications count at once"
@@ -144,7 +144,7 @@
         "message": "Show desktop notifications"
     },
     "ShowEngagementFilter": {
-      "message": "Show button to filter by engagement"
+      "message": "Show filter by engagement button"
     },
     "ShowFullFeedContent": {
         "message": "Show full content of article in the expanded feed (if possible)"

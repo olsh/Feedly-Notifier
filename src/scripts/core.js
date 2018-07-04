@@ -33,7 +33,7 @@ var appGlobal = {
         expandFeeds: false,
         isFiltersEnabled: false,
         showEngagementFilter: false,
-        engagementFilterLimit: 0,
+        engagementFilterLimit: 1,
         openFeedsInSameTab: false,
         openFeedsInBackground: true,
         filters: [],

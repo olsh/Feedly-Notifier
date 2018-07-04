@@ -301,7 +301,7 @@ function markAllAsRead() {
 function markAsReadEngagement() {
     var feedIds = [];
     $(".item:visible").each(function (key, value) {
-        var engagement = $(value).find("span.engagement").text() || 0; //default value if no engagement: 0
+        var engagement = +$(value).find(".engagement").text();
         if(engagement < popupGlobal.backgroundPage.appGlobal.options.engagementFilterLimit) {
             feedIds.push($(value).data("id"));
         }
