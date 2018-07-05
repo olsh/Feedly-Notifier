@@ -17,6 +17,9 @@
   "EnableBackgroundMode": {
     "message": "Activar modo en segundo plano"
   },
+  "EngagementFilterLimit": {
+    "message": "Mark articles as read if engagement less than"
+  },
   "ExpandedPopupWidth": {
     "message": "Ventana emergente de anchura expandida"
   },
@@ -30,7 +33,7 @@
     "message": "Opciones de Feedly Notifier"
   },
   "FeedlyWebsite": {
-    "message": "Página web de Feedly"
+    "message": "Sitio web de Feedly"
   },
   "Filters": {
     "message": "Filtros"
@@ -65,6 +68,9 @@
   "MarkAsRead": {
     "message": "Marcar como leído"
   },
+  "MarkAsReadEngagement": {
+    "message": "Mark as read by engagement filter"
+  },
   "MaxNotificationsCount": {
     "message": "Máximas notificaciones contadas de una vez"
   },
@@ -93,7 +99,7 @@
     "message": "Abrir todas las fuentes"
   },
   "OpenAllSavedFeeds": {
-    "message": "Open all saved feeds and unsave them"
+    "message": "Abrir todas las fuentes sin guardarlas"
   },
   "OpenFeedsInBackground": {
     "message": "Abrir fuentes en pestaña en segundo plano"
@@ -136,6 +142,9 @@
   },
   "ShowDesktopNotifications": {
     "message": "Mostrar notificaciones de escritorio"
+  },
+  "ShowEngagementFilter": {
+    "message": "Show filter by engagement button"
   },
   "ShowFullFeedContent": {
     "message": "Mostrar el contenido completo de un artículo en la fuente expandida (si es posible)"

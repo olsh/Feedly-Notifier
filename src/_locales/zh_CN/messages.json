@@ -17,6 +17,9 @@
   "EnableBackgroundMode": {
     "message": "启用后台模式"
   },
+  "EngagementFilterLimit": {
+    "message": "Mark articles as read if engagement less than"
+  },
   "ExpandedPopupWidth": {
     "message": "扩展弹出窗口宽度"
   },
@@ -41,6 +44,9 @@
   "General": {
     "message": "常规"
   },
+  "GrayIconColorIfNoUnread": {
+    "message": "如果不是未读，图标颜色变灰"
+  },
   "HideNotificationsAfter": {
     "message": "在数秒之后隐藏桌面通知（0 代表不要隐藏）"
   },
@@ -61,6 +67,9 @@
   },
   "MarkAsRead": {
     "message": "标记为已读"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Mark as read by engagement filter"
   },
   "MaxNotificationsCount": {
     "message": "单次最大通知摘要数量"
@@ -122,6 +131,9 @@
   "Save": {
     "message": "保存"
   },
+  "ShowBlogIconInNotifications": {
+    "message": "在通知中显示站点图标"
+  },
   "ShowCategories": {
     "message": "在弹出窗口中列出分类"
   },
@@ -131,8 +143,14 @@
   "ShowDesktopNotifications": {
     "message": "显示桌面通知"
   },
+  "ShowEngagementFilter": {
+    "message": "Show filter by engagement button"
+  },
   "ShowFullFeedContent": {
     "message": "在展开的摘要中显示完整內容（如果可能的话）"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "在通知中显示预览图像（如果可能的话）"
   },
   "UpdateFeeds": {
     "message": "更新"
@@ -147,7 +165,8 @@
     "message": "你有 $count$ 个新摘要",
     "placeholders": {
       "count": {
-        "content": "$1"
+        "content": "$1",
+        "example": "10 or many"
       }
     }
   }
