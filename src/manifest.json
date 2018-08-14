@@ -36,6 +36,15 @@
         "page": "options.html",
         "open_in_tab": true
     },
+    "sidebar_action": {
+	"default_icon": {
+            "19": "/images/icon.png",
+            "38": "/images/icon38.png"
+        },
+	"default_title": "Feedly Notifier",
+	"default_panel": "popup.html",
+	"open_at_install": false
+    },
     // @endif
     "background": {
         "scripts": [ "scripts/browser-polyfill.min.js", "scripts/feedly.api.js", "scripts/core.js"]
