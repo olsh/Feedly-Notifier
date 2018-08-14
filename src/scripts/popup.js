@@ -26,7 +26,9 @@ $(document).ready(function () {
 });
 
 $("#login").click(function () {
-    popupGlobal.backgroundPage.getAccessToken();
+    popupGlobal.backgroundPage.getAccessToken(function() {
+	setTimeout(renderFeeds, 500);
+    });
 });
 
 //using "mousedown" instead of "click" event to process middle button click.
@@ -40,7 +42,7 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
         if (isFeed && popupGlobal.backgroundPage.appGlobal.feedTabId && popupGlobal.backgroundPage.appGlobal.options.openFeedsInSameTab) {
             chrome.tabs.update(popupGlobal.backgroundPage.appGlobal.feedTabId, {url: url}, function(tab) {
                 onOpenCallback(isFeed, tab);
-            })
+            });
         } else {
             chrome.tabs.create({url: url, active: isActiveTab }, function(tab) {
                 onOpenCallback(isFeed, tab);

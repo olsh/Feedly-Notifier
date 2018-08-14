@@ -63,7 +63,8 @@
     // @if BROWSER='firefox'
     "applications": {
         "gecko": {
-            "strict_min_version": "51.0"
+            "strict_min_version": "51.0",
+	    "id": "@feedly-notifier"
         }
     },
     // @endif
