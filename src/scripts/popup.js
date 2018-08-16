@@ -21,6 +21,9 @@ $(document).ready(async function () {
     }
 
     popupGlobal.isSidebar = browser && browser.sidebarAction && await browser.sidebarAction.isOpen({});
+    if (popupGlobal.isSidebar) {
+	$(document.body).css("font-size", "12pt");
+    }
     setPopupWidth(false);
     
     executeAsync(renderFeeds);
