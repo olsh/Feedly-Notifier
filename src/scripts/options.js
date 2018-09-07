@@ -175,19 +175,20 @@ function setBackgroundMode(enable) {
 
 function setAllSitesPermission(enable, options, callback) {
     if (enable) {
-        chrome.permissions.request(optionsGlobal.allSitesPermission, function (granted) {
-            if ($("#showThumbnailInNotifications").is(":checked")) {
-                $("#showThumbnailInNotifications").prop('checked', granted);
-                options.showThumbnailInNotifications = granted;
-            }
+        browser.permissions.request(optionsGlobal.allSitesPermission)
+            .then(function (granted) {
+                if ($("#showThumbnailInNotifications").is(":checked")) {
+                    $("#showThumbnailInNotifications").prop('checked', granted);
+                    options.showThumbnailInNotifications = granted;
+                }
 
-            if ($("#showBlogIconInNotifications").is(":checked")) {
-                $("#showBlogIconInNotifications").prop('checked', granted);
-                options.showBlogIconInNotifications = granted;
-            }
+                if ($("#showBlogIconInNotifications").is(":checked")) {
+                    $("#showBlogIconInNotifications").prop('checked', granted);
+                    options.showBlogIconInNotifications = granted;
+                }
 
-            callback();
-        });
+                callback();
+            });
     } else {
         callback();
     }
