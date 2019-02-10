@@ -122,15 +122,7 @@ var appGlobal = {
         return "user/" + this.options.feedlyUserId + "/category/global.uncategorized";
     },
     get syncStorage(){
-        // @if BROWSER='firefox'
-        // Firefox doesn't support sync storage
-        return chrome.storage.local;
-        // @endif
-
-        // @if BROWSER!='firefox'
-        //noinspection UnreachableCodeJS
         return chrome.storage.sync;
-        // @endif
     }
 };
 

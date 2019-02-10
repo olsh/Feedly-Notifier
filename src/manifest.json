@@ -54,7 +54,8 @@
     // @if BROWSER='firefox'
     "applications": {
         "gecko": {
-            "strict_min_version": "51.0"
+            "id": "feedly-notifier@local-development.com",
+            "strict_min_version": "53.0"
         }
     },
     // @endif
