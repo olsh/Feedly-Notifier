@@ -3,7 +3,7 @@
 
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
-    "version": "2.20.0",
+    "version": "2.21.0",
     "default_locale": "en",
     "permissions": [
         "storage",
@@ -36,6 +36,15 @@
         "page": "options.html",
         "open_in_tab": true
     },
+    "sidebar_action": {
+	      "default_icon": {
+            "19": "/images/icon.png",
+            "38": "/images/icon38.png"
+        },
+      "default_title": "Feedly Notifier",
+      "default_panel": "popup.html",
+      "open_at_install": false
+    },
     // @endif
     "background": {
         "scripts": [ "scripts/browser-polyfill.min.js", "scripts/feedly.api.js", "scripts/core.js"]
@@ -54,8 +63,8 @@
     // @if BROWSER='firefox'
     "applications": {
         "gecko": {
-            "id": "jid1-BOjn8b0IM7kH2w@jetpack",
-            "strict_min_version": "53.0"
+            "strict_min_version": "53.0",
+	    "id": "@feedly-notifier"
         }
     },
     // @endif

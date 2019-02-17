@@ -3,10 +3,11 @@
 var popupGlobal = {
     feeds: [],
     savedFeeds: [],
-    backgroundPage: chrome.extension.getBackgroundPage()
+    backgroundPage: chrome.extension.getBackgroundPage(),
+    isSidebar: false
 };
 
-$(document).ready(function () {
+$(document).ready(async function () {
     $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
     $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
     $("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
@@ -15,18 +16,23 @@ $(document).ready(function () {
     $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
     $("#open-unsaved-all-news>span").text(chrome.i18n.getMessage("OpenAllSavedFeeds"));
 
-
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
     }
-    
+
+    popupGlobal.isSidebar = browser && browser.sidebarAction && await browser.sidebarAction.isOpen({});
+    if (popupGlobal.isSidebar) {
+	$(document.body).css("font-size", "12pt");
+    }
     setPopupWidth(false);
     
     executeAsync(renderFeeds);
 });
 
 $("#login").click(function () {
-    popupGlobal.backgroundPage.getAccessToken();
+    popupGlobal.backgroundPage.getAccessToken(function() {
+	setTimeout(renderFeeds, 500);
+    });
 });
 
 //using "mousedown" instead of "click" event to process middle button click.
@@ -40,7 +46,7 @@ $("#feed, #feed-saved").on("mousedown", "a", function (event) {
         if (isFeed && popupGlobal.backgroundPage.appGlobal.feedTabId && popupGlobal.backgroundPage.appGlobal.options.openFeedsInSameTab) {
             chrome.tabs.update(popupGlobal.backgroundPage.appGlobal.feedTabId, {url: url}, function(tab) {
                 onOpenCallback(isFeed, tab);
-            })
+            });
         } else {
             chrome.tabs.create({url: url, active: isActiveTab }, function(tab) {
                 onOpenCallback(isFeed, tab);
@@ -119,6 +125,8 @@ $("#popup-content").on("click", ".show-content", function () {
                 // @endif
 
                 contentContainer.html(Mustache.render(template, feed));
+		if (popupGlobal.isSidebar)
+		    contentContainer.css({width: "95%", marginLeft: 5});
 
                 //For open new tab without closing popup
                 contentContainer.find("a").each(function (key, value) {
@@ -387,10 +395,12 @@ function showSavedFeeds() {
     $("#feedly").show().find("#popup-actions").show().children().filter(".icon-refresh").show();
 }
 
-function setPopupWidth(expanded) {    
-    var width = expanded 
-        ? popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth
-        : popupGlobal.backgroundPage.appGlobal.options.popupWidth;
+function setPopupWidth(expanded) {
+    if (! popupGlobal.isSidebar) {
+	var width = expanded 
+            ? popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth
+            : popupGlobal.backgroundPage.appGlobal.options.popupWidth;
 
-    $("#feed, #feed-saved").width(width);
+	$("#feed, #feed-saved").width(width);
+    }
 }

@@ -110,7 +110,7 @@ var appGlobal = {
         os: ""
     },
     get feedlyUrl(){
-        return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com"
+        return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com";
     },
     get savedGroup(){
         return "user/" + this.options.feedlyUserId + "/tag/global.saved";
@@ -203,7 +203,7 @@ function initialize() {
 
     chrome.runtime.getPlatformInfo(function (platformInfo) {
         appGlobal.environment.os = platformInfo.os; 
-    })
+    });
     startSchedule(appGlobal.options.updateInterval);
 }
 
@@ -867,7 +867,7 @@ function toggleSavedFeed(feedsIds, saveFeed, callback) {
 /**
  * Authenticates the user and stores the access token to browser storage.
  */
-function getAccessToken() {
+function getAccessToken(callback) {
     let state = (new Date()).getTime();
     let redirectUri = "https://olsh.github.io/Feedly-Notifier/";
     let url = appGlobal.feedlyApiClient.getMethodUrl("auth/auth", {
@@ -906,6 +906,8 @@ function getAccessToken() {
                             feedlyUserId: response.id
                         });
                         chrome.tabs.onUpdated.removeListener(processCode);
+			if (callback)
+			    callback();
                     });
                 }
             });
