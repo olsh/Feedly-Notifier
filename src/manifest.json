@@ -64,7 +64,7 @@
     "applications": {
         "gecko": {
             "strict_min_version": "53.0",
-	    "id": "@feedly-notifier"
+	        "id": "jid1-BOjn8b0IM7kH2w@jetpack"
         }
     },
     // @endif

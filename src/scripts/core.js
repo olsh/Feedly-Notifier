@@ -950,8 +950,13 @@ function refreshAccessToken(){
 
 /* Writes all application options in chrome storage and runs callback after it */
 function writeOptions(callback) {
-    var options = {};
-    for (var option in appGlobal.options) {
+    let options = {};
+    for (let option in appGlobal.options) {
+        // Do not store private fields in the options
+        if (option.startsWith("_")) {
+            continue;
+        }
+
         options[option] = appGlobal.options[option];
     }
     appGlobal.syncStorage.set(options, function () {
@@ -964,7 +969,12 @@ function writeOptions(callback) {
 /* Reads all options from chrome storage and runs callback after it */
 function readOptions(callback) {
     appGlobal.syncStorage.get(null, function (options) {
-        for (var optionName in options) {
+        for (let optionName in options) {
+            // Do not read private fields in the options
+            if (optionName.startsWith("_")) {
+                continue;
+            }
+
             if (typeof appGlobal.options[optionName] === "boolean") {
                 appGlobal.options[optionName] = Boolean(options[optionName]);
             } else if (typeof appGlobal.options[optionName] === "number") {
