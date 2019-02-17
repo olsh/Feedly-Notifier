@@ -1,0 +1,167 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Възможност за запазване а емисии"
+  },
+  "AutoMarkRead": {
+    "message": "Автоматично маркиране като прочетено в новините"
+  },
+  "Categories": {
+    "message": "Категории"
+  },
+  "CurrentUser": {
+    "message": "Текущ потребител"
+  },
+  "Email": {
+    "message": "Електронна поща"
+  },
+  "EnableBackgroundMode": {
+    "message": "Активирай на заден план"
+  },
+  "EngagementFilterLimit": {
+    "message": "Маркирайте статиите като прочетени, ако сортирането е по-малко от\n"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Разреши изкачащи прозорци"
+  },
+  "ExpandFeeds": {
+    "message": "Разгънете всички емисии при отваряне на изскачащия прозорец"
+  },
+  "ExtensionDescription": {
+    "message": "Разширение на Feedly за четец на новини "
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Опции на Feedly Notifier"
+  },
+  "FeedlyWebsite": {
+    "message": "Уебсайт на Feedly"
+  },
+  "Filters": {
+    "message": "Филтри"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Актуализиране на емисиите при отворен прозорец"
+  },
+  "General": {
+    "message": "Общи"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Сив цвят на иконата, ако не е непрочетена\n"
+  },
+  "HideNotificationsAfter": {
+    "message": "Скриване на известията на работния плот след (сек.), 0 - не скривай"
+  },
+  "IntervalPeriod": {
+    "message": "Интервал (мин.)"
+  },
+  "Login": {
+    "message": "Влез"
+  },
+  "Logout": {
+    "message": "Излез"
+  },
+  "many": {
+    "message": "много"
+  },
+  "MarkAllAsRead": {
+    "message": "Маркирай всички като прочетени"
+  },
+  "MarkAsRead": {
+    "message": "Маркирай като прочетено"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Маркирай като прочетено чрез филтъра за сортиране"
+  },
+  "MaxNotificationsCount": {
+    "message": "Максимален брой нотификации на веднъж"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Максимален брой емисии в изскачащия прозорец"
+  },
+  "More": {
+    "message": "Повече"
+  },
+  "NewFeeds": {
+    "message": "Нови емисии"
+  },
+  "NoSavedArticles": {
+    "message": "Няма запазени статии"
+  },
+  "Notifications": {
+    "message": "Известия"
+  },
+  "NoUnreadArticles": {
+    "message": "Няма непрочетени статии"
+  },
+  "OldestFeedsFirst": {
+    "message": "Първо най-старите емисии"
+  },
+  "OpenAllFeeds": {
+    "message": "Отворете всички емисии"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Отворете всички запазени емисии и ги запазете\n"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Отваряне на емисиите на заден фон в раздела"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Отваряне на емисиите в същия раздел"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Отваряне на сайта на Feedly, като кликвате върху икона (не се показва в изскачащ прозорец)"
+  },
+  "OptionsSaved": {
+    "message": "Опциите са запазени"
+  },
+  "PlaySound": {
+    "message": "Пуснете звуков сигнал за нови емисии\n"
+  },
+  "Popup": {
+    "message": "Изкачащ прозорец"
+  },
+  "PopupFontSize": {
+    "message": "Размер на шрифта в изкачащия прозореца в проценти\n"
+  },
+  "PopupWidth": {
+    "message": "Ширина на изкачащия прозорец"
+  },
+  "ResetCounterOnClick": {
+    "message": "Изчистване на брояча при натискане върху бутона на добавката"
+  },
+  "Save": {
+    "message": "Запази"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Показване с икона на сайта в известията\n"
+  },
+  "ShowCategories": {
+    "message": "Показване на категориите в изскачащ прозорец\n"
+  },
+  "ShowCounter": {
+    "message": "Покажи брояча"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Показване на известията на работния плот"
+  },
+  "ShowEngagementFilter": {
+    "message": "Покажи бутона на филтъра за сортиране"
+  },
+  "ShowFullFeedContent": {
+    "message": "Показване на цялото съдържание на статията в разширената емисия (ако е възможно)\n"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Показване на изображение в известията (ако е възможно)"
+  },
+  "UpdateFeeds": {
+    "message": "Актуализация"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Актуализиране само на следните категории"
+  },
+  "UseSecureConnection": {
+    "message": "Използвайте защитена връзка (https)\n"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Имате $ броя $ нови емисии"
+  }
+}

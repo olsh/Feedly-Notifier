@@ -17,6 +17,9 @@
   "EnableBackgroundMode": {
     "message": "Включити фоновий режим"
   },
+  "EngagementFilterLimit": {
+    "message": "Позначити новини як прочитані, якщо популярність їх менша за"
+  },
   "ExpandedPopupWidth": {
     "message": "Ширина розширеного вікна"
   },
@@ -64,6 +67,9 @@
   },
   "MarkAsRead": {
     "message": "Позначити як прочитане"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Позначити як прочитане за фільтром популярності"
   },
   "MaxNotificationsCount": {
     "message": "Максимальна кількість повідомлень заразом"
@@ -136,6 +142,9 @@
   },
   "ShowDesktopNotifications": {
     "message": "Відрображати сповіщення на робочому столі"
+  },
+  "ShowEngagementFilter": {
+    "message": "Встановити фільтр популярності"
   },
   "ShowFullFeedContent": {
     "message": "Показувати повну статтю у розширеній подачі (за можливістю)"
