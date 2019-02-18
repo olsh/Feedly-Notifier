@@ -20,7 +20,7 @@ $(document).ready(async function () {
         $("#popup-content").addClass("tabs");
     }
 
-    popupGlobal.isSidebar = browser && browser.sidebarAction && await browser.sidebarAction.isOpen({});
+    popupGlobal.isSidebar = (typeof browser !== "undefined") && browser.sidebarAction && await browser.sidebarAction.isOpen({});
     if (popupGlobal.isSidebar) {
 	$(document.body).css("font-size", "12pt");
     }
