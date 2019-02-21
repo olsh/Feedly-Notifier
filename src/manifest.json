@@ -3,7 +3,7 @@
 
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
-    "version": "2.21.0",
+    "version": "2.21.2",
     "default_locale": "en",
     "permissions": [
         "storage",
@@ -63,7 +63,7 @@
     // @if BROWSER='firefox'
     "applications": {
         "gecko": {
-            "strict_min_version": "53.0",
+            "strict_min_version": "54.0",
 	        "id": "jid1-BOjn8b0IM7kH2w@jetpack"
         }
     },

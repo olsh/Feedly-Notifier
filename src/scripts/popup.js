@@ -20,10 +20,13 @@ $(document).ready(async function () {
         $("#popup-content").addClass("tabs");
     }
 
-    popupGlobal.isSidebar = (typeof browser !== "undefined") && browser.sidebarAction && await browser.sidebarAction.isOpen({});
+    // @if BROWSER='firefox'
+    popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
     if (popupGlobal.isSidebar) {
-	$(document.body).css("font-size", "12pt");
+	    $(document.body).css("font-size", "12pt");
     }
+    // @endif
+
     setPopupWidth(false);
     
     executeAsync(renderFeeds);
@@ -397,10 +400,10 @@ function showSavedFeeds() {
 
 function setPopupWidth(expanded) {
     if (! popupGlobal.isSidebar) {
-	var width = expanded 
+        const width = expanded
             ? popupGlobal.backgroundPage.appGlobal.options.expandedPopupWidth
             : popupGlobal.backgroundPage.appGlobal.options.popupWidth;
 
-	$("#feed, #feed-saved").width(width);
+        $("#feed, #feed-saved").width(width);
     }
 }
