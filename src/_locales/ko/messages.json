@@ -86,9 +86,6 @@
   "NoUnreadArticles": {
     "message": "읽지 않은 기사 없음"
   },
-  "OldestFeedsFirst": {
-    "message": "오래된 것부터"
-  },
   "OpenAllFeeds": {
     "message": "모든 피드 열기"
   },

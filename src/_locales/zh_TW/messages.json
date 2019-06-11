@@ -83,9 +83,6 @@
   "Notifications": {
     "message": "通知"
   },
-  "OldestFeedsFirst": {
-    "message": "最舊的排在最上方"
-  },
   "OpenAllFeeds": {
     "message": "打開所有摘要"
   },

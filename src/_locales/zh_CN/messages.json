@@ -92,9 +92,6 @@
   "NoUnreadArticles": {
     "message": "没有未读文章"
   },
-  "OldestFeedsFirst": {
-    "message": "最旧的排在最上方"
-  },
   "OpenAllFeeds": {
     "message": "打开所有摘要"
   },

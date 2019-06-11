@@ -86,9 +86,6 @@
   "NoUnreadArticles": {
     "message": "Δεν υπάρχουν μη αναγνωσμένα άρθρα"
   },
-  "OldestFeedsFirst": {
-    "message": "Τα παλαιότερα feeds πρώτα"
-  },
   "OpenAllFeeds": {
     "message": "Άνοιγμα όλων"
   },

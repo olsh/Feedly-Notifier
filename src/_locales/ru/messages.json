@@ -20,6 +20,9 @@
   "EngagementFilterLimit": {
     "message": "Пометить новости как прочитанные если популярность меньше чем"
   },
+  "EngagementRate": {
+    "message": "По популярности"
+  },
   "ExpandedPopupWidth": {
     "message": "Ширина всплывающего окна в раскрытом режиме"
   },
@@ -80,6 +83,9 @@
   "More": {
     "message": "Подробнее"
   },
+  "NewestFirst": {
+    "message": "Сначала новые"
+  },
   "NewFeeds": {
     "message": "Новые записи"
   },
@@ -92,8 +98,8 @@
   "NoUnreadArticles": {
     "message": "Нет непрочитанных новостей"
   },
-  "OldestFeedsFirst": {
-    "message": "Показывать старые записи первыми"
+  "OldestFirst": {
+    "message": "Сначала старые"
   },
   "OpenAllFeeds": {
     "message": "Открыть все новости"
@@ -152,6 +158,9 @@
   "ShowThumbnailInNotifications": {
     "message": "Показывать превью новости в уведомления (если возможно)"
   },
+  "Sorting": {
+    "message": "Сортировка"
+  },
   "UpdateFeeds": {
     "message": "Обновить"
   },
@@ -162,12 +171,6 @@
     "message": "Использовать защищенное соединение (https)"
   },
   "YouHaveNewFeeds": {
-    "message": "У вас $count$ новых записей",
-    "placeholders": {
-      "count": {
-        "content": "$1",
-        "example": "10 or many"
-      }
-    }
+    "message": "У вас $count$ новых записей"
   }
 }

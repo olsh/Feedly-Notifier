@@ -39,7 +39,7 @@ var appGlobal = {
         filters: [],
         showCounter: true,
         playSound: false,
-        oldestFeedsFirst: false,
+        sortBy: "newest",
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
         showCategories: false,
@@ -94,9 +94,9 @@ var appGlobal = {
         "filters", 
         "isFiltersEnabled",
         "showCounter", 
-        "oldestFeedsFirst", 
-        "resetCounterOnClick", 
-        "grayIconColorIfNoUnread"
+        "resetCounterOnClick",
+        "grayIconColorIfNoUnread",
+        "sortBy"
     ],
     cachedFeeds: [],
     cachedSavedFeeds: [],
@@ -548,7 +548,7 @@ function updateFeeds(silentUpdate) {
             parameters: {
                 unreadOnly: true,
                 count: appGlobal.options.maxNumberOfFeeds,
-                ranked: appGlobal.options.oldestFeedsFirst ? "oldest" : "newest"
+                ranked: appGlobal.options.sortBy
             }
         });
 
@@ -577,12 +577,33 @@ function updateFeeds(silentUpdate) {
             });
 
             appGlobal.cachedFeeds = appGlobal.cachedFeeds.sort(function (a, b) {
-                if (a.date > b.date) {
-                    return appGlobal.options.oldestFeedsFirst ? 1 : -1;
-                } else if (a.date < b.date) {
-                    return appGlobal.options.oldestFeedsFirst ? -1 : 1;
+                if (appGlobal.options.sortBy === "newest") {
+                    if (a.date > b.date) {
+                        return -1;
+                    } else if (a.date < b.date){
+                        return 1;
+                    } else {
+                        return 0;
+                    }
                 }
-                return 0;
+
+                if (appGlobal.options.sortBy === "oldest") {
+                    if (a.date > b.date) {
+                        return 1;
+                    } else if (a.date < b.date){
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+
+                if (a.engagementRate < b.engagementRate) {
+                    return 1;
+                } else if (a.engagementRate > b.engagementRate){
+                    return -1;
+                } else {
+                    return 0;
+                }
             });
 
             appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
@@ -724,6 +745,7 @@ function parseFeeds(feedlyResponse) {
                     showEngagement: item.engagement > 0,
                     engagement: item.engagement > 1000 ? Math.trunc(item.engagement / 1000) : item.engagement,
                     engagementPostfix: item.engagement > 1000 ? "K" : "",
+                    engagementRate: item.engagementRate || 0,
                     isEngagementHot: item.engagement >= 5000 && item.engagement < 100000,
                     isEngagementOnFire: item.engagement >= 100000
                 };

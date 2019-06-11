@@ -24,7 +24,7 @@
         <form id="options">
             <div class="options-section">
                 <h3 data-locale-value="General"></h3>
-                <label for="updateInterval" class="label" data-locale-value="IntervalPeriod"></label>:
+                <label for="updateInterval" class="label" data-locale-value="IntervalPeriod"></label>
                 <input id="updateInterval" type="number" min="10" max="120" data-option-name="updateInterval" /><br>
 
                 <label for="markReadOnClick" class="label" data-locale-value="AutoMarkRead"></label>
@@ -57,11 +57,15 @@
                 <label for="abilitySaveFeeds" class="label" data-locale-value="AbilitySaveFeeds"></label>
                 <input id="abilitySaveFeeds" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="abilitySaveFeeds" /><br>
 
-                <label for="maxNumberOfFeeds" class="label" data-locale-value="MaxNumberOfFeeds"></label>:
+                <label for="maxNumberOfFeeds" class="label" data-locale-value="MaxNumberOfFeeds"></label>
                 <input id="maxNumberOfFeeds" type="number" data-disable-parent="openSiteOnIconClick" min="1" max="60" data-option-name="maxNumberOfFeeds" /><br>
 
-                <label for="oldestFeedsFirst" class="label" data-locale-value="OldestFeedsFirst"></label>
-                <input id="oldestFeedsFirst" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="oldestFeedsFirst" /><br>
+                <label for="sortBy" class="label" data-locale-value="Sorting"></label>
+                <select id="sortBy" data-disable-parent="openSiteOnIconClick" data-option-name="sortBy">
+                    <option value="newest" data-locale-value="NewestFirst"></option>
+                    <option value="oldest" data-locale-value="OldestFirst"></option>
+                    <option value="engagement" data-locale-value="EngagementRate"></option>
+                </select><br>
 
                 <label for="popupFontSize" class="label" data-locale-value="PopupFontSize"></label>
                 <input id="popupFontSize" type="number" data-disable-parent="openSiteOnIconClick" min="70" max="150" data-option-name="popupFontSize" /><br>

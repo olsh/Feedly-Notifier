@@ -100,7 +100,7 @@ function parseFilters() {
 /* Save all option in the chrome storage */
 function saveOptions() {
     var options = {};
-    $("#options").find("input[data-option-name]").each(function (optionName, value) {
+    $("#options").find("[data-option-name]").each(function (optionName, value) {
         var optionControl = $(value);
         var optionValue;
         if (optionControl.attr("type") === "checkbox") {
@@ -136,7 +136,7 @@ function loadOptions() {
     chrome.extension.getBackgroundPage().appGlobal.syncStorage.get(null, function (items) {
         var optionsForm = $("#options");
         for (var option in items) {
-            var optionControl = optionsForm.find("input[data-option-name='" + option + "']");
+            var optionControl = optionsForm.find("[data-option-name='" + option + "']");
             if (optionControl.attr("type") === "checkbox") {
                 optionControl.attr("checked", items[option]);
             } else {

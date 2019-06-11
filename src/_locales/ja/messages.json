@@ -86,9 +86,6 @@
   "NoUnreadArticles": {
     "message": "未読の記事はありません"
   },
-  "OldestFeedsFirst": {
-    "message": "古いフィードを先頭にする"
-  },
   "OpenAllFeeds": {
     "message": "全てのフィードを開く"
   },

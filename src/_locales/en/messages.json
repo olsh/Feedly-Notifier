@@ -17,6 +17,9 @@
     "EnableBackgroundMode": {
         "message": "Enable background mode"
     },
+    "EngagementRate": {
+      "message": "Engagement rate (popularity)"
+    },
     "EngagementFilterLimit": {
       "message": "Mark articles as read if engagement less than"
     },
@@ -77,6 +80,9 @@
     "More": {
         "message": "More"
     },
+    "NewestFirst": {
+      "message": "Newest first"
+    },
     "NewFeeds": {
         "message": "New feeds"
     },
@@ -89,8 +95,8 @@
     "Notifications": {
         "message": "Notifications"
     },
-    "OldestFeedsFirst": {
-        "message": "Oldest feeds first"
+    "OldestFirst": {
+        "message": "Oldest first"
     },
     "OpenAllFeeds": {
         "message": "Open all feeds"
@@ -148,6 +154,9 @@
     },
     "ShowFullFeedContent": {
         "message": "Show full content of article in the expanded feed (if possible)"
+    },
+    "Sorting": {
+        "message": "Sorting"
     },
     "UpdateFeeds": {
         "message": "Update"
