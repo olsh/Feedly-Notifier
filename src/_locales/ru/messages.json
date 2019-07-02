@@ -171,6 +171,13 @@
     "message": "Использовать защищенное соединение (https)"
   },
   "YouHaveNewFeeds": {
-    "message": "У вас $count$ новых записей"
+    "message": "У вас $count$ новых записей",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
   }
+}
 }
