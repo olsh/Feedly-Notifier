@@ -63,7 +63,7 @@
     // @if BROWSER='firefox'
     "applications": {
         "gecko": {
-            "strict_min_version": "54.0",
+            "strict_min_version": "62.0",
 	        "id": "jid1-BOjn8b0IM7kH2w@jetpack"
         }
     },
