@@ -3,7 +3,6 @@ Feedly-Notifier
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/cc043ddadb231bfaa48b/maintainability)](https://codeclimate.com/github/olsh/Feedly-Notifier/maintainability)
 [![Known Vulnerabilities](https://snyk.io/test/github/olsh/Feedly-Notifier/badge.svg)](https://snyk.io/test/github/olsh/Feedly-Notifier)
-
 ---
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/egikgfbhipinieabdmcpigejkaomgjgb)
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/egikgfbhipinieabdmcpigejkaomgjgb)
