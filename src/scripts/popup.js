@@ -337,9 +337,8 @@ function renderCategories(container, feeds){
 }
 
 function renderTimeAgo(container) {
-    let timeagoInstance = timeago();
     let timeagoNodes = document.querySelectorAll(".timeago");
-    timeagoInstance.render(timeagoNodes, window.navigator.language);
+    timeago.render(timeagoNodes, popupGlobal.backgroundPage.appGlobal.options.currentUiLanguage);
 }
 
 function getUniqueCategories(feeds){

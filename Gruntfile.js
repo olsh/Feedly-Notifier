@@ -17,8 +17,7 @@ module.exports = function (grunt) {
 
                     {src: '<%= pkg.libPath %>/dompurify/dist/purify.min.js', dest: '<%= pkg.buildPath %>/scripts/purify.min.js'},
 
-                    {src: '<%= pkg.libPath %>/timeago.js/dist/timeago.min.js', dest: '<%= pkg.buildPath %>/scripts/timeago.min.js'},
-                    {src: '<%= pkg.libPath %>/timeago.js/dist/timeago.locales.min.js', dest: '<%= pkg.buildPath %>/scripts/timeago.locales.min.js'},
+                    {src: '<%= pkg.libPath %>/timeago.js/dist/timeago.full.min.js', dest: '<%= pkg.buildPath %>/scripts/timeago.full.min.js'},
                 ]
             }
         },

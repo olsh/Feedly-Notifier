@@ -46,6 +46,7 @@ var appGlobal = {
         grayIconColorIfNoUnread: false,
         showBlogIconInNotifications: false,
         showThumbnailInNotifications: false,
+        currentUiLanguage: "en",
 
         get updateInterval(){
             let minimumInterval = 10;
@@ -620,8 +621,8 @@ function updateFeeds(silentUpdate) {
                 });
             }
         })
-        .catch(function () {
-            console.info("Unable to update feeds.");
+        .catch(function (e) {
+            console.info("Unable to update feeds.", e);
         });
 }
 
@@ -703,7 +704,7 @@ function parseFeeds(feedlyResponse) {
                 let blogTitleDirection;
                 if (item.origin) {
                     // Trying to get the user defined name of the stream
-                    blog = subscriptionsMap[item.origin.streamId] || item.origin.title;
+                    blog = subscriptionsMap[item.origin.streamId] || item.origin.title || "";
 
                     if (blog.indexOf("direction:rtl") !== -1) {
                         //Feedly wraps rtl titles in div, we remove div because desktopNotifications support only text
@@ -1005,6 +1006,9 @@ function readOptions(callback) {
                 appGlobal.options[optionName] = options[optionName];
             }
         }
+
+        appGlobal.options.currentUiLanguage = browser.i18n.getUILanguage();
+
         if (typeof callback === "function") {
             callback();
         }

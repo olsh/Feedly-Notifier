@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@types/jquery@^2.0.40":
-  version "2.0.48"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.48.tgz#3e90d8cde2d29015e5583017f7830cb3975b2eef"
-
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -24,9 +20,10 @@ ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-argparse@^1.0.2:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.9.tgz#73d83bc263f86e97f8cc4f6bae1b0e90a7d22c86"
+argparse@^1.0.7:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
+  integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
   dependencies:
     sprintf-js "~1.0.2"
 
@@ -134,10 +131,10 @@ decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
-dompurify@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-1.0.9.tgz#9d5623df2ec670853e37ff11a5e19bc8990b3b22"
-  integrity sha512-lt9f3A3RO1OCNaWdA+s/k7YVn0Typ5MbAKmX94PLCZbs8wLNccX3Bj4xXA7GLKOoDb/MeVoAoeIJarZD1JUnjg==
+dompurify@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.0.7.tgz#f8266ad38fe1602fb5b3222f31eedbf5c16c4fd5"
+  integrity sha512-S3O0lk6rFJtO01ZTzMollCOGg+WAtCwS3U5E2WSDY/x/sy7q70RjEC4Dmrih5/UqzLLB9XoKJ8KqwBxaNvBu4A==
 
 error-ex@^1.2.0:
   version "1.3.1"
@@ -149,9 +146,10 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-esprima@^2.6.0:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/esprima/-/esprima-2.7.3.tgz#96e3b70d5779f6ad49cd032673d1c312767ba581"
+esprima@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
+  integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
 
 eventemitter2@~0.4.13:
   version "0.4.14"
@@ -312,16 +310,18 @@ grunt-string-replace@^1.3.1:
     async "^2.0.0"
     chalk "^1.0.0"
 
-grunt-zip@^0.18.1:
-  version "0.18.1"
-  resolved "https://registry.yarnpkg.com/grunt-zip/-/grunt-zip-0.18.1.tgz#cd90bd8d6773e23f133901334b273ed8dc12d0c2"
+grunt-zip@^0.18.2:
+  version "0.18.2"
+  resolved "https://registry.yarnpkg.com/grunt-zip/-/grunt-zip-0.18.2.tgz#eb943f58a388d51604fb3d9e88043bacc0e08691"
+  integrity sha512-9o0Fmft+7C9jBqqqQRAbon1Qaz4HHqHpNrDmrWVQy9nxC9/q8budlx+J6y9ZaCs3ioAKIJl7lfXWqoOJCMnXcQ==
   dependencies:
     grunt-retro "~0.6.0"
     jszip "~2.5.0"
 
-grunt@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/grunt/-/grunt-1.0.3.tgz#b3c99260c51d1b42835766e796527b60f7bba374"
+grunt@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/grunt/-/grunt-1.0.4.tgz#c799883945a53a3d07622e0737c8f70bfe19eb38"
+  integrity sha512-PYsMOrOC+MsdGEkFVwMaMyc6Ob7pKmq+deg1Sjr+vvMWp35sztfwKE7qoN51V+UEtHsyNuMcGdgMLFkBHvMxHQ==
   dependencies:
     coffeescript "~1.10.0"
     dateformat "~1.0.12"
@@ -334,7 +334,7 @@ grunt@^1.0.3:
     grunt-legacy-log "~2.0.0"
     grunt-legacy-util "~1.1.1"
     iconv-lite "~0.4.13"
-    js-yaml "~3.5.2"
+    js-yaml "~3.13.0"
     minimatch "~3.0.2"
     mkdirp "~0.5.1"
     nopt "~3.0.6"
@@ -404,16 +404,18 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
 
-jquery@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+jquery@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
-js-yaml@~3.5.2:
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.5.5.tgz#0377c38017cabc7322b0d1fbcd25a491641f2fbe"
+js-yaml@~3.13.0:
+  version "3.13.1"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
+  integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
   dependencies:
-    argparse "^1.0.2"
-    esprima "^2.6.0"
+    argparse "^1.0.7"
+    esprima "^4.0.0"
 
 jszip@~2.5.0:
   version "2.5.0"
@@ -490,10 +492,10 @@ mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mustache@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/mustache/-/mustache-3.0.1.tgz#873855f23aa8a95b150fb96d9836edbc5a1d248a"
-  integrity sha512-jFI/4UVRsRYdUbuDTKT7KzfOp7FiD5WzYmmwNwXyUVypC0xjoTL78Fqc0jHUPIvvGD+6DQSPHIt1NE7D1ArsqA==
+mustache@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/mustache/-/mustache-3.1.0.tgz#9fba26e7aefc5709f07ff585abb7e0abced6c372"
+  integrity sha512-3Bxq1R5LBZp7fbFPZzFe5WN4s0q3+gxZaZuZVY+QctYJiCiVgXHOTIC0/HgZuOPFt/6BQcx5u0H2CUOxT/RoGQ==
 
 nopt@~3.0.6:
   version "3.0.6"
@@ -675,11 +677,10 @@ supports-color@^5.3.0:
   dependencies:
     has-flag "^3.0.0"
 
-timeago.js@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/timeago.js/-/timeago.js-3.0.2.tgz#32a67e7c0d887ea42ca588d3aae26f77de5e76cc"
-  dependencies:
-    "@types/jquery" "^2.0.40"
+timeago.js@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/timeago.js/-/timeago.js-4.0.1.tgz#4be4aa19565ceaeb0da31fe14e01ce6ca4742da6"
+  integrity sha512-ePzZuMoJqUc44hJbUYtY1qtzU7IammxooDCcFKogLkS5Nj+iCabR0ZlmNOFX8Dm1r5EpvR5q/PotOJli/mEPew==
 
 trim-newlines@^1.0.0:
   version "1.0.0"
@@ -703,10 +704,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
 
-webextension-polyfill@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/webextension-polyfill/-/webextension-polyfill-0.4.0.tgz#9cc5a60f0f2bf907a6b349fdd7e61701f54956f9"
-  integrity sha512-oreMp+EoAo1pzRMigx4jB5jInIpx6NTCySPSjGyLLee/dCIPiRqowCEfbFP8o20wz9SOtNwSsfkaJ9D/tRgpag==
+webextension-polyfill@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/webextension-polyfill/-/webextension-polyfill-0.5.0.tgz#795e0bf6a2b8eadcdb6edaecd169e9228c747519"
+  integrity sha512-aFrl38x43t1bTboX/paCT8I97+idzX/TY0+fuM52hrIkCpYfROEF9kSn0BXuEIi3J9LTYt2ZZKkhx9NB1qF3nA==
 
 which@~1.3.0:
   version "1.3.1"
