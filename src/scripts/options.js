@@ -69,7 +69,8 @@ function loadUserCategories(){
             result.forEach(function(element){
                 appendCategory(element.id, element.label);
             });
-            appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalUncategorized, "Uncategorized");
+            appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalFavorites, "Global Favorites");
+            appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalUncategorized, "Global Uncategorized");
             chrome.extension.getBackgroundPage().appGlobal.syncStorage.get("filters", function(items){
                 let filters = items.filters || [];
                 filters.forEach(function(id){

@@ -122,6 +122,9 @@ var appGlobal = {
     get globalUncategorized(){
         return "user/" + this.options.feedlyUserId + "/category/global.uncategorized";
     },
+    get globalFavorites(){
+        return "user/" + this.options.feedlyUserId + "/category/global.must";
+    },
     get syncStorage(){
         return chrome.storage.sync;
     }
@@ -510,8 +513,8 @@ function makeMarkersRequest(parameters){
 
                     return unreadFeedsCount;
                 })
-                .catch(function () {
-                    console.info("Unable to load subscriptions.");
+                .catch(function (e) {
+                    console.info("Unable to load subscriptions.", e);
                 });
         } else {
             for (let unreadCount of unreadCounts) {
@@ -524,10 +527,10 @@ function makeMarkersRequest(parameters){
             return unreadFeedsCount;
         }
     }).then(setBadgeCounter)
-    .catch(function () {
+    .catch(function (e) {
         chrome.browserAction.setBadgeText({ text: ""});
 
-        console.info("Unable to load counters.");
+        console.info("Unable to load counters.", e);
     });
 }
 
