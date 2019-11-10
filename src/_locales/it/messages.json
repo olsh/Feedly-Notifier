@@ -17,6 +17,12 @@
   "EnableBackgroundMode": {
     "message": "Abilita modalità background"
   },
+  "EngagementFilterLimit": {
+    "message": "Segna come letti gli articoli con un interesse minore di"
+  },
+  "EngagementRate": {
+    "message": "Fattore d'interesse (popolarità)"
+  },
   "ExpandedPopupWidth": {
     "message": "Larghezza del popup espanso"
   },
@@ -65,6 +71,9 @@
   "MarkAsRead": {
     "message": "Segna come letto"
   },
+  "MarkAsReadEngagement": {
+    "message": "Segna come lette secondo il filtro di interesse"
+  },
   "MaxNotificationsCount": {
     "message": "Numero massimo di notifiche per volta"
   },
@@ -73,6 +82,9 @@
   },
   "More": {
     "message": "Ancora"
+  },
+  "NewestFirst": {
+    "message": "Più nuovi prima"
   },
   "NewFeeds": {
     "message": "Nuovi feed"
@@ -85,6 +97,9 @@
   },
   "NoUnreadArticles": {
     "message": "Non ci sono articoli non letti"
+  },
+  "OldestFirst": {
+    "message": "Più vecchi prima"
   },
   "OpenAllFeeds": {
     "message": "Apri tutti i feed"
@@ -134,11 +149,17 @@
   "ShowDesktopNotifications": {
     "message": "Mostra le notifiche desktop"
   },
+  "ShowEngagementFilter": {
+    "message": "Mostra il pulsante per il filtro per interesse"
+  },
   "ShowFullFeedContent": {
     "message": "Mostra il contenuto completo dell'articolo quando si espande un feed (se possibile)"
   },
   "ShowThumbnailInNotifications": {
     "message": "Mostra un'anteprima nelle notifiche (se possibile)"
+  },
+  "Sorting": {
+    "message": "Ordine"
   },
   "UpdateFeeds": {
     "message": "Aggiorna"
