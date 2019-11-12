@@ -4,13 +4,13 @@ Feedly-Notifier
 [![Maintainability](https://api.codeclimate.com/v1/badges/cc043ddadb231bfaa48b/maintainability)](https://codeclimate.com/github/olsh/Feedly-Notifier/maintainability)
 [![Known Vulnerabilities](https://snyk.io/test/github/olsh/Feedly-Notifier/badge.svg)](https://snyk.io/test/github/olsh/Feedly-Notifier)
 ---
-![Chrome Web Store](https://img.shields.io/chrome-web-store/v/egikgfbhipinieabdmcpigejkaomgjgb)
-![Chrome Web Store](https://img.shields.io/chrome-web-store/users/egikgfbhipinieabdmcpigejkaomgjgb)
-![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/egikgfbhipinieabdmcpigejkaomgjgb)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/egikgfbhipinieabdmcpigejkaomgjgb)](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/egikgfbhipinieabdmcpigejkaomgjgb)](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/egikgfbhipinieabdmcpigejkaomgjgb)](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb)
 ---
-![Mozilla Add-on](https://img.shields.io/amo/v/feedly-notifier)
-![Mozilla Add-on](https://img.shields.io/amo/users/feedly-notifier)
-![Mozilla Add-on](https://img.shields.io/amo/rating/feedly-notifier)
+[![Mozilla Add-on](https://img.shields.io/amo/v/feedly-notifier)](https://addons.mozilla.org/en-US/firefox/addon/feedly-notifier/)
+[![Mozilla Add-on](https://img.shields.io/amo/users/feedly-notifier)](https://addons.mozilla.org/en-US/firefox/addon/feedly-notifier/)
+[![Mozilla Add-on](https://img.shields.io/amo/rating/feedly-notifier)](https://addons.mozilla.org/en-US/firefox/addon/feedly-notifier/)
 ---
 
 
