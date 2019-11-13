@@ -1,8 +1,9 @@
 name: Feedly Notifier
-description: Extension for Feedly news reader
+title: Feedly Notifier
+description: Browser extension for reading news from RSS aggregator Feedly
 url: https://olsh.github.io
 enforce_ssl: olsh.github.io
 baseurl: /Feedly-Notifier
 markdown: kramdown
-gems:
-  - jekyll-feed
+theme: jekyll-theme-cayman
+show_downloads: false
