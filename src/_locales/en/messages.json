@@ -8,6 +8,9 @@
     "Categories": {
         "message": "Categories"
     },
+    "ClosePopupWhenLastFeedIsRead": {
+        "message": "Close popup when the last feed is read"
+    },
     "CurrentUser": {
         "message": "Current user"
     },

@@ -280,7 +280,11 @@ function markAsRead(feedIds) {
 
     //Show loader if all feeds were read
     if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
-        showLoader();
+        if (popupGlobal.backgroundPage.appGlobal.options.closePopupWhenLastFeedIsRead) {
+            window.close();
+        } else {
+            showLoader();
+        }
     }
     popupGlobal.backgroundPage.markAsRead(feedIds, function () {
         if ($("#feed").find(".item[data-is-read!='true']").length === 0) {

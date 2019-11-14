@@ -47,6 +47,7 @@ var appGlobal = {
         showBlogIconInNotifications: false,
         showThumbnailInNotifications: false,
         currentUiLanguage: "en",
+        closePopupWhenLastFeedIsRead: false,
 
         get updateInterval(){
             let minimumInterval = 10;
