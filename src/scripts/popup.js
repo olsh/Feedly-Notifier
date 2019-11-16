@@ -278,15 +278,16 @@ function markAsRead(feedIds) {
 
     feedItems.attr("data-is-read", "true");
 
+    const closePopup = popupGlobal.backgroundPage.appGlobal.options.closePopupWhenLastFeedIsRead;
     //Show loader if all feeds were read
     if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
-        if (popupGlobal.backgroundPage.appGlobal.options.closePopupWhenLastFeedIsRead) {
+        if (closePopup) {
             window.close();
         } else {
             showLoader();
         }
     }
-    popupGlobal.backgroundPage.markAsRead(feedIds, function () {
+    popupGlobal.backgroundPage.markAsRead(feedIds, closePopup ? null : function () {
         if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
             renderFeeds();
         }
@@ -306,7 +307,7 @@ function markAsUnSaved(feedIds) {
 }
 
 function markAllAsRead() {
-    var feedIds = [];
+    let feedIds = [];
     $(".item:visible").each(function (key, value) {
         feedIds.push($(value).data("id"));
     });
