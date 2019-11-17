@@ -119,9 +119,11 @@ function saveOptions() {
     setBackgroundMode($("#enable-background-mode").is(":checked"));
     // @endif
 
+    const appGlobal = chrome.extension.getBackgroundPage().appGlobal;
     setAllSitesPermission($("#showBlogIconInNotifications").is(":checked")
         || $("#showThumbnailInNotifications").is(":checked"), options, function () {
-        chrome.extension.getBackgroundPage().appGlobal.syncStorage.set(options, function () {
+        appGlobal.options.disableOptionsSync = $("#disableOptionsSync").is(":checked");
+        appGlobal.syncStorage.set(options, function () {
             alert(chrome.i18n.getMessage("OptionsSaved"));
         });
     });

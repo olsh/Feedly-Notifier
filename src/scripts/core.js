@@ -48,6 +48,7 @@ var appGlobal = {
         showThumbnailInNotifications: false,
         currentUiLanguage: "en",
         closePopupWhenLastFeedIsRead: false,
+        disableOptionsSync: false,
 
         get updateInterval(){
             let minimumInterval = 10;
@@ -127,6 +128,9 @@ var appGlobal = {
         return "user/" + this.options.feedlyUserId + "/category/global.must";
     },
     get syncStorage(){
+        if (this.options.disableOptionsSync) {
+            return chrome.storage.local;
+        }
         return chrome.storage.sync;
     }
 };

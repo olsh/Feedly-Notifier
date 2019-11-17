@@ -8,8 +8,14 @@
   "Categories": {
     "message": "Категории"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Закрывать всплывающее окно при прочтении последней новости"
+  },
   "CurrentUser": {
     "message": "Текущий пользователь"
+  },
+  "DisableOptionsSync": {
+    "message": "Отключить синхронизацию настроек расширения"
   },
   "Email": {
     "message": "Email"
