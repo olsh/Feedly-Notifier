@@ -38,7 +38,7 @@ var appGlobal = {
         openFeedsInBackground: true,
         filters: [],
         showCounter: true,
-        playSound: false,
+        playSound: true,
         sortBy: "newest",
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
@@ -274,6 +274,8 @@ function sendDesktopNotification(feeds) {
     // Firefox may end up not displaying any notification at all.
     maxNotifications = 1;
     // @endif
+
+    const isSoundEnabled = appGlobal.options.playSound && feeds.length > 0;
     if (feeds.length > maxNotifications) {
         //We can detect only limit count of new feeds at time, but actually count of feeds may be more
         let count = feeds.length === appGlobal.options.maxNumberOfFeeds ? chrome.i18n.getMessage("many") : feeds.length.toString();
@@ -282,13 +284,15 @@ function sendDesktopNotification(feeds) {
             type: 'basic',
             title: chrome.i18n.getMessage("NewFeeds"),
             message: chrome.i18n.getMessage("YouHaveNewFeeds", count),
-            iconUrl: appGlobal.icons.defaultBig
+            iconUrl: appGlobal.icons.defaultBig,
+            // @if BROWSER!='firefox'
+            silent: !isSoundEnabled
+            // @endif
         });
     } else {
         let showBlogIcons = false;
         let showThumbnails = false;
 
-        // @if BROWSER!='firefox'
         chrome.permissions.contains({
             origins: ["<all_urls>"]
         }, function (result) {
@@ -300,18 +304,18 @@ function sendDesktopNotification(feeds) {
                 showThumbnails = true;
             }
 
-            createNotifications(feeds, showBlogIcons, showThumbnails);
+            createNotifications(feeds, showBlogIcons, showThumbnails, isSoundEnabled);
         });
-        // @endif
-
-        // @if BROWSER='firefox'
-        // Firefox doesn't support optional permissions
-        // https://bugzilla.mozilla.org/show_bug.cgi?id=1197420
-        createNotifications(feeds, showBlogIcons, showThumbnails);
-        // @endif
     }
 
-    function createNotifications(feeds, showBlogIcons, showThumbnails) {
+    // @if BROWSER='firefox'
+    // Firefox doesn't support silent notifications, so we need to play custom audio file
+    if (isSoundEnabled) {
+        playSound();
+    }
+    // @endif
+
+    function createNotifications(feeds, showBlogIcons, showThumbnails, isSoundEnabled) {
         for (let feed of feeds) {
             let notificationType = 'basic';
             // @if BROWSER='chrome'
@@ -331,7 +335,8 @@ function sendDesktopNotification(feeds) {
                     {
                         title: chrome.i18n.getMessage("MarkAsRead")
                     }
-                ]
+                ],
+                silent: !isSoundEnabled
                 // @endif
             });
 
@@ -616,16 +621,9 @@ function updateFeeds(silentUpdate) {
             });
 
             appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
-            if (!silentUpdate
-                && (appGlobal.options.showDesktopNotifications || appGlobal.options.playSound)) {
-
+            if (!silentUpdate && (appGlobal.options.showDesktopNotifications)) {
                 filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
-                    if (appGlobal.options.showDesktopNotifications) {
-                        sendDesktopNotification(newFeeds);
-                    }
-                    if (appGlobal.options.playSound && newFeeds.length > 0) {
-                        playSound();
-                    }
+                    sendDesktopNotification(appGlobal.cachedFeeds.splice(newFeeds));
                 });
             }
         })

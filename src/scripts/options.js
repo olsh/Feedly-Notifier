@@ -147,14 +147,12 @@ function loadOptions() {
             }
         }
 
-        // @if BROWSER!='firefox'
         chrome.permissions.contains(optionsGlobal.allSitesPermission, function (enabled){
             $("#showBlogIconInNotifications").prop("checked", enabled && items.showBlogIconInNotifications);
             $("#showThumbnailInNotifications").prop("checked", enabled && items.showThumbnailInNotifications);
 
             optionsForm.find("input").trigger("change");
         });
-        // @endif
     });
     $("#header").text(chrome.i18n.getMessage("FeedlyNotifierOptions"));
     $("#options").find("[data-locale-value]").each(function () {

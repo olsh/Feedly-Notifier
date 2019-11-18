@@ -12,14 +12,12 @@
         "webRequest",
         "*://*.feedly.com/"
     ],
-    // @if BROWSER!='firefox'
     "optional_permissions": [
         // @if BROWSER='chrome'
         "background",
         // @endif
         "<all_urls>"
     ],
-    // @endif
     "browser_action": {
         "default_icon": {
             "19": "/images/icon_inactive.png",
@@ -58,7 +56,7 @@
         "/images/icon128.png"
     ],
     // @if BROWSER!='firefox'
-    "minimum_chrome_version": "45",
+    "minimum_chrome_version": "70",
     // @endif
     // @if BROWSER='firefox'
     "applications": {
