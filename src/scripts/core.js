@@ -623,7 +623,7 @@ function updateFeeds(silentUpdate) {
             appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
             if (!silentUpdate && (appGlobal.options.showDesktopNotifications)) {
                 filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
-                    sendDesktopNotification(appGlobal.cachedFeeds.splice(newFeeds));
+                    sendDesktopNotification(newFeeds);
                 });
             }
         })
