@@ -818,21 +818,30 @@ function getUserSubscriptions(updateCache) {
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
 function markAsRead(feedIds, callback) {
+
+    // We should copy the array due to aggressive GC in Firefox
+    // When the popup is closed Firefox destroys all objects created there
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Dead_object
+    let copyArray = [];
+    for (let i = 0; i < feedIds.length; i++) {
+        copyArray.push(feedIds[i]);
+    }
+
     apiRequestWrapper("markers", {
         body: {
             action: "markAsRead",
             type: "entries",
-            entryIds: feedIds
+            entryIds: copyArray
         },
         method: "POST"
     }).then(function () {
-        for (let i = 0; i < feedIds.length; i++) {
-            removeFeedFromCache(feedIds[i]);
+        for (let i = 0; i < copyArray.length; i++) {
+            removeFeedFromCache(copyArray[i]);
         }
         chrome.browserAction.getBadgeText({}, function (feedsCount) {
             feedsCount = +feedsCount;
             if (feedsCount > 0) {
-                feedsCount -= feedIds.length;
+                feedsCount -= copyArray.length;
                 setBadgeCounter(feedsCount);
             }
         });
