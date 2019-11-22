@@ -1006,28 +1006,33 @@ function writeOptions(callback) {
 
 /* Reads all options from chrome storage and runs callback after it */
 function readOptions(callback) {
-    appGlobal.syncStorage.get(null, function (options) {
-        for (let optionName in options) {
-            // Do not read private fields in the options
-            if (optionName.startsWith("_")) {
-                continue;
-            }
+    browser.storage.local.get(null)
+        .then(function (options) {
+            appGlobal.options.disableOptionsSync = options.disableOptionsSync || false;
 
-            if (typeof appGlobal.options[optionName] === "boolean") {
-                appGlobal.options[optionName] = Boolean(options[optionName]);
-            } else if (typeof appGlobal.options[optionName] === "number") {
-                appGlobal.options[optionName] = Number(options[optionName]);
-            } else {
-                appGlobal.options[optionName] = options[optionName];
-            }
-        }
+            appGlobal.syncStorage.get(null, function (options) {
+                for (let optionName in options) {
+                    // Do not read private fields in the options
+                    if (optionName.startsWith("_")) {
+                        continue;
+                    }
 
-        appGlobal.options.currentUiLanguage = browser.i18n.getUILanguage();
+                    if (typeof appGlobal.options[optionName] === "boolean") {
+                        appGlobal.options[optionName] = Boolean(options[optionName]);
+                    } else if (typeof appGlobal.options[optionName] === "number") {
+                        appGlobal.options[optionName] = Number(options[optionName]);
+                    } else {
+                        appGlobal.options[optionName] = options[optionName];
+                    }
+                }
 
-        if (typeof callback === "function") {
-            callback();
-        }
-    });
+                appGlobal.options.currentUiLanguage = browser.i18n.getUILanguage();
+
+                if (typeof callback === "function") {
+                    callback();
+                }
+            });
+        });
 }
 
 function apiRequestWrapper(methodName, settings) {
