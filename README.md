@@ -1,4 +1,4 @@
-Feedly-Notifier
+Feedly Notifier
 ===============
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/cc043ddadb231bfaa48b/maintainability)](https://codeclimate.com/github/olsh/Feedly-Notifier/maintainability)
@@ -14,7 +14,7 @@ Feedly-Notifier
 ---
 
 
-Google chrome, Firefox and Opera extension for reading news from rss aggregator [Feedly](https://feedly.com)
+Google Chrome, Firefox, Opera and Microsoft Edge extension for reading news from RSS aggregator [Feedly](https://feedly.com/)
 
 ## Changelog
 
