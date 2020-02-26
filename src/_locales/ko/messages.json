@@ -1,4 +1,4 @@
-﻿{
+{
   "AbilitySaveFeeds": {
     "message": "피드 저장 기능"
   },
@@ -10,9 +10,6 @@
   },
   "CurrentUser": {
     "message": "현재 사용자"
-  },
-  "Email": {
-    "message": "Email"
   },
   "EnableBackgroundMode": {
     "message": "백그라운드 모드 활성화"

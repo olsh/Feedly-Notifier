@@ -1,4 +1,4 @@
-﻿{
+{
   "AbilitySaveFeeds": {
     "message": "Capacidade para guardar os feeds"
   },
@@ -11,17 +11,14 @@
   "CurrentUser": {
     "message": "Utilizador atual"
   },
-  "Email": {
-    "message": "Email"
-  },
   "EnableBackgroundMode": {
     "message": "Permite o funcionamento em fundo"
   },
-  "ExpandFeeds": {
-    "message": "Expande todos os feeds quando a janela popup é aberta"
-  },
   "ExpandedPopupWidth": {
     "message": "Comprimento da janela popup"
+  },
+  "ExpandFeeds": {
+    "message": "Expande todos os feeds quando a janela popup é aberta"
   },
   "ExtensionDescription": {
     "message": "Extensão para o leitor de notícias Feedly"
@@ -50,11 +47,8 @@
   "IntervalPeriod": {
     "message": "Período do intervalo (min.)"
   },
-  "Login": {
-    "message": "Login"
-  },
-  "Logout": {
-    "message": "Logout"
+  "many": {
+    "message": "muitos"
   },
   "MarkAllAsRead": {
     "message": "Marca tudo com lido"
@@ -77,11 +71,11 @@
   "NoSavedArticles": {
     "message": "Não há artigos guardados"
   },
-  "NoUnreadArticles": {
-    "message": "Não há artigos por ler"
-  },
   "Notifications": {
     "message": "Notificações"
+  },
+  "NoUnreadArticles": {
+    "message": "Não há artigos por ler"
   },
   "OpenAllFeeds": {
     "message": "Abre todos os feeds"
@@ -103,9 +97,6 @@
   },
   "PlaySound": {
     "message": "Som de alerta com novos feeds"
-  },
-  "Popup": {
-    "message": "Popup"
   },
   "PopupFontSize": {
     "message": "Tamanho do tipo de letra, no popup, em %"
@@ -148,8 +139,5 @@
         "example": "10 or many"
       }
     }
-  },
-  "many": {
-    "message": "muitos"
   }
 }

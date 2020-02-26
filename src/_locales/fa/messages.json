@@ -74,6 +74,9 @@
   "More": {
     "message": "بیشتر"
   },
+  "NewestFirst": {
+    "message": "جدیدترین اول"
+  },
   "NewFeeds": {
     "message": "فیدهای جدید"
   },
@@ -85,6 +88,9 @@
   },
   "NoUnreadArticles": {
     "message": "مقاله خوانده نشده ای وجود ندارد"
+  },
+  "OldestFirst": {
+    "message": "قدیمی‌ترین اول"
   },
   "OpenAllFeeds": {
     "message": "باز کردن تمام فیدها"
@@ -139,6 +145,9 @@
   },
   "ShowThumbnailInNotifications": {
     "message": "نشان دادن تصویر پیش نمایش در آگاه سازی ها (در صورت وجود)"
+  },
+  "Sorting": {
+    "message": "مرتب سازی"
   },
   "UpdateFeeds": {
     "message": "بروزرسانی"

@@ -11,14 +11,11 @@
   "CurrentUser": {
     "message": "Người dùng hiện tại"
   },
-  "Email": {
-    "message": "Email"
-  },
   "EnableBackgroundMode": {
     "message": "Cho phép chạy ngầm"
   },
   "EngagementFilterLimit": {
-    "message": "Đánh dấu đã đọc nếu tương tác ít hơn"
+    "message": "Đánh dấu đã đọc nếu độ tương tác ít hơn"
   },
   "ExpandedPopupWidth": {
     "message": "Chiều rộng tăng thêm của popup"
@@ -69,7 +66,7 @@
     "message": "Đánh dấu đã đọc"
   },
   "MarkAsReadEngagement": {
-    "message": "Đánh dấu đã đọc bằng bộ lọc tương tác"
+    "message": "Đánh dấu đã đọc theo độ tương tác"
   },
   "MaxNotificationsCount": {
     "message": "Số đếm thông báo hiển thị tối đa"
@@ -113,9 +110,6 @@
   "PlaySound": {
     "message": "Báo âm thanh khi có feed mới"
   },
-  "Popup": {
-    "message": "Popup"
-  },
   "PopupFontSize": {
     "message": "Cỡ chữ popup (%)"
   },
@@ -141,7 +135,7 @@
     "message": "Thông báo trên màn hình"
   },
   "ShowEngagementFilter": {
-    "message": "Hiện bộ lọc bằng nút tương tác"
+    "message": "Hiện bộ lọc theo độ tương tác"
   },
   "ShowFullFeedContent": {
     "message": "Hiện nội dung bài viết trong feed mở rộng (nếu được)"

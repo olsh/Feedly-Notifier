@@ -11,29 +11,20 @@
   "CurrentUser": {
     "message": "Pengguna saat ini"
   },
-  "Email": {
-    "message": "Email"
-  },
   "EnableBackgroundMode": {
     "message": "Aktifkan mode latar belakang"
   },
-  "ExpandFeeds": {
-    "message": "Perlihatkan seluruh feed ketika popup dibuka"
-  },
   "ExpandedPopupWidth": {
     "message": "Lebar popup diperluas"
+  },
+  "ExpandFeeds": {
+    "message": "Perlihatkan seluruh feed ketika popup dibuka"
   },
   "ExtensionDescription": {
     "message": "Ekstensi untuk feedly pembaca berita"
   },
   "FeedlyNotifierOptions": {
     "message": "Pilihan notifikasi feedly"
-  },
-  "FeedlyWebsite": {
-    "message": "Feedly website"
-  },
-  "Filters": {
-    "message": "Filters"
   },
   "ForceUpdateFeeds": {
     "message": "Pembaruan otomatis ketika feed terbuka"
@@ -52,6 +43,9 @@
   },
   "Logout": {
     "message": "Keluar"
+  },
+  "many": {
+    "message": "banyak"
   },
   "MarkAllAsRead": {
     "message": "Tandai semua yang sudah dibaca"
@@ -74,11 +68,11 @@
   "NoSavedArticles": {
     "message": "tidak menyimpan artikel"
   },
-  "NoUnreadArticles": {
-    "message": "Artikel tidak dibaca"
-  },
   "Notifications": {
     "message": "Notifikasi"
+  },
+  "NoUnreadArticles": {
+    "message": "Artikel tidak dibaca"
   },
   "OpenAllFeeds": {
     "message": "Buka semua feeds"
@@ -97,9 +91,6 @@
   },
   "PlaySound": {
     "message": "Bunyikan suara alaram saat ada Feeds baru"
-  },
-  "Popup": {
-    "message": "Popup"
   },
   "PopupFontSize": {
     "message": "Popup ukuran font dalam persen"
@@ -142,8 +133,5 @@
         "example": "10 or many"
       }
     }
-  },
-  "many": {
-    "message": "banyak"
   }
 }

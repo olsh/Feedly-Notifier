@@ -11,17 +11,14 @@
   "CurrentUser": {
     "message": "目前使用者"
   },
-  "Email": {
-    "message": "Email"
-  },
   "EnableBackgroundMode": {
     "message": "啟用背景模式"
   },
-  "ExpandFeeds": {
-    "message": "彈出視窗顯示時，展開所有的摘要"
-  },
   "ExpandedPopupWidth": {
     "message": "展開寬度"
+  },
+  "ExpandFeeds": {
+    "message": "彈出視窗顯示時，展開所有的摘要"
   },
   "ExtensionDescription": {
     "message": "Feedly 新聞閱讀器擴充套件"
@@ -56,6 +53,9 @@
   "Logout": {
     "message": "登出"
   },
+  "many": {
+    "message": "很多"
+  },
   "MarkAllAsRead": {
     "message": "全部標記為已讀"
   },
@@ -77,17 +77,14 @@
   "NoSavedArticles": {
     "message": "沒有收藏文章"
   },
-  "NoUnreadArticles": {
-    "message": "沒有未讀文章"
-  },
   "Notifications": {
     "message": "通知"
   },
+  "NoUnreadArticles": {
+    "message": "沒有未讀文章"
+  },
   "OpenAllFeeds": {
     "message": "打開所有摘要"
-  },
-  "OpenAllSavedFeeds": {
-    "message": "Open all saved feeds and unsave them"
   },
   "OpenFeedsInBackground": {
     "message": "在背景分頁中打開摘要"
@@ -150,11 +147,9 @@
     "message": "你有 $count$ 個新摘要",
     "placeholders": {
       "count": {
-        "content": "$1"
+        "content": "$1",
+        "example": "10 or many"
       }
     }
-  },
-  "many": {
-    "message": "很多"
   }
 }

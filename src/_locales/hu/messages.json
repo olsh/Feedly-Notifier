@@ -11,17 +11,14 @@
   "CurrentUser": {
     "message": "Jelenlegi felhasználó"
   },
-  "Email": {
-    "message": "Email"
-  },
   "EnableBackgroundMode": {
     "message": "Háttérbeli mód engedélyezése"
   },
-  "ExpandFeeds": {
-    "message": "Elemek kinyitása amikor az ablak nyitva van"
-  },
   "ExpandedPopupWidth": {
     "message": "Kinyitott ablak mérete"
+  },
+  "ExpandFeeds": {
+    "message": "Elemek kinyitása amikor az ablak nyitva van"
   },
   "ExtensionDescription": {
     "message": "Bővítmény a Feedly hírolvasóhoz"
@@ -53,6 +50,9 @@
   "Logout": {
     "message": "Kijelentkezés"
   },
+  "many": {
+    "message": "sok"
+  },
   "MarkAllAsRead": {
     "message": "Összes megjelölése olvasottként"
   },
@@ -74,11 +74,11 @@
   "NoSavedArticles": {
     "message": "Nincs mentett elemed"
   },
-  "NoUnreadArticles": {
-    "message": "Nincs olvasatlan elemed"
-  },
   "Notifications": {
     "message": "Értesítések"
+  },
+  "NoUnreadArticles": {
+    "message": "Nincs olvasatlan elemed"
   },
   "OpenAllFeeds": {
     "message": "Összes elem megnyitása"
@@ -145,8 +145,5 @@
         "example": "10 or many"
       }
     }
-  },
-  "many": {
-    "message": "sok"
   }
 }

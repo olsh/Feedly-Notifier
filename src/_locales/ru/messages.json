@@ -17,9 +17,6 @@
   "DisableOptionsSync": {
     "message": "Отключить синхронизацию настроек расширения"
   },
-  "Email": {
-    "message": "Email"
-  },
   "EnableBackgroundMode": {
     "message": "Включить фоновый режим"
   },

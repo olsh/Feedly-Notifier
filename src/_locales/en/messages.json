@@ -1,188 +1,188 @@
 {
-    "AbilitySaveFeeds": {
-        "message": "Ability to save feeds"
-    },
-    "AutoMarkRead": {
-        "message": "Auto mark as read on news open"
-    },
-    "Categories": {
-        "message": "Categories"
-    },
-    "ClosePopupWhenLastFeedIsRead": {
-        "message": "Close popup when the last feed is read"
-    },
-    "CurrentUser": {
-        "message": "Current user"
-    },
-    "DisableOptionsSync": {
-        "message": "Disable synchronization of the extension options"
-    },
-    "Email": {
-        "message": "Email"
-    },
-    "EnableBackgroundMode": {
-        "message": "Enable background mode"
-    },
-    "EngagementRate": {
-      "message": "Engagement rate (popularity)"
-    },
-    "EngagementFilterLimit": {
-      "message": "Mark articles as read if engagement less than"
-    },
-    "ExpandedPopupWidth": {
-        "message": "Expanded popup width"
-    },
-    "ExpandFeeds": {
-        "message": "Expand all feeds when popup is opened"
-    },
-    "ExtensionDescription": {
-        "message": "Extension for Feedly news reader"
-    },
-    "FeedlyNotifierOptions": {
-        "message": "Feedly Notifier options"
-    },
-    "FeedlyWebsite": {
-        "message": "Feedly website"
-    },
-    "Filters": {
-        "message": "Filters"
-    },
-    "ForceUpdateFeeds": {
-        "message": "Force update feeds on popup open"
-    },
-    "General": {
-        "message": "General"
-    },
-    "GrayIconColorIfNoUnread": {
-        "message": "Gray icon color if no unread"
-    },
-    "HideNotificationsAfter": {
-        "message": "Hide desktop notifications after (sec.), 0 - don't hide"
-    },
-    "IntervalPeriod": {
-        "message": "Interval period (min.)"
-    },
-    "Login": {
-        "message": "Login"
-    },
-    "Logout": {
-        "message": "Logout"
-    },
-    "MarkAllAsRead": {
-        "message": "Mark all as read"
-    },
-    "MarkAsRead": {
-        "message": "Mark as read"
-    },
-    "MarkAsReadEngagement": {
-        "message": "Mark as read by engagement filter"
-    },
-    "MaxNotificationsCount": {
-        "message": "Max notifications count at once"
-    },
-    "MaxNumberOfFeeds": {
-        "message": "Max number of feeds in the popup"
-    },
-    "More": {
-        "message": "More"
-    },
-    "NewestFirst": {
-      "message": "Newest first"
-    },
-    "NewFeeds": {
-        "message": "New feeds"
-    },
-    "NoSavedArticles": {
-        "message": "No saved articles"
-    },
-    "NoUnreadArticles": {
-        "message": "No unread articles"
-    },
-    "Notifications": {
-        "message": "Notifications"
-    },
-    "OldestFirst": {
-        "message": "Oldest first"
-    },
-    "OpenAllFeeds": {
-        "message": "Open all feeds"
-    },
-    "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsave them"
-    },
-    "OpenFeedsInBackground": {
-        "message": "Open feeds in background tab"
-    },
-    "OpenFeedsInSameTab": {
-        "message": "Open feeds in the same tab"
-    },
-    "OpenSiteOnIconClick": {
-        "message": "Open Feedly site on icon click (don't show popup)"
-    },
-    "OptionsSaved": {
-        "message": "Options have been saved"
-    },
-    "PlaySound": {
-        "message": "Play alert sound on new feeds"
-    },
-    "Popup": {
-        "message": "Popup"
-    },
-    "PopupFontSize": {
-        "message": "Popup font size in percent"
-    },
-    "PopupWidth": {
-        "message": "Popup width"
-    },
-    "ResetCounterOnClick": {
-        "message": "Reset counter when extension button clicked"
-    },
-    "Save": {
-        "message": "Save"
-    },
-    "ShowBlogIconInNotifications": {
-        "message": "Show site favicon in notifications"
-    },
-    "ShowThumbnailInNotifications": {
-        "message": "Show preview image in notifications (if possible)"
-    },
-    "ShowCategories": {
-        "message": "Show categories in popup"
-    },
-    "ShowCounter": {
-        "message": "Show counter"
-    },
-    "ShowDesktopNotifications": {
-        "message": "Show desktop notifications"
-    },
-    "ShowEngagementFilter": {
-      "message": "Show filter by engagement button"
-    },
-    "ShowFullFeedContent": {
-        "message": "Show full content of article in the expanded feed (if possible)"
-    },
-    "Sorting": {
-        "message": "Sorting"
-    },
-    "UpdateFeeds": {
-        "message": "Update"
-    },
-    "UpdateFollowingCategories": {
-        "message": "Update only following categories"
-    },
-    "UseSecureConnection": {
-        "message": "Use secure connection (https)"
-    },
-    "YouHaveNewFeeds": {
-        "message": "You have $count$ new posts",
-        "placeholders": {
-            "count": {
-                "content": "$1",
-                "example": "10 or many"
-            }
-        }
-    },
-    "many": {
-        "message": "many"
+  "AbilitySaveFeeds": {
+    "message": "Ability to save feeds"
+  },
+  "AutoMarkRead": {
+    "message": "Auto mark as read on news open"
+  },
+  "Categories": {
+    "message": "Categories"
+  },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Close popup when the last feed is read"
+  },
+  "CurrentUser": {
+    "message": "Current user"
+  },
+  "DisableOptionsSync": {
+    "message": "Disable synchronization of the extension options"
+  },
+  "Email": {
+    "message": "Email"
+  },
+  "EnableBackgroundMode": {
+    "message": "Enable background mode"
+  },
+  "EngagementFilterLimit": {
+    "message": "Mark articles as read if engagement less than"
+  },
+  "EngagementRate": {
+    "message": "Engagement rate (popularity)"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Expanded popup width"
+  },
+  "ExpandFeeds": {
+    "message": "Expand all feeds when popup is opened"
+  },
+  "ExtensionDescription": {
+    "message": "Extension for Feedly news reader"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly Notifier options"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly website"
+  },
+  "Filters": {
+    "message": "Filters"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Force update feeds on popup open"
+  },
+  "General": {
+    "message": "General"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Gray icon color if no unread"
+  },
+  "HideNotificationsAfter": {
+    "message": "Hide desktop notifications after (sec.), 0 - don't hide"
+  },
+  "IntervalPeriod": {
+    "message": "Interval period (min.)"
+  },
+  "Login": {
+    "message": "Login"
+  },
+  "Logout": {
+    "message": "Logout"
+  },
+  "many": {
+    "message": "many"
+  },
+  "MarkAllAsRead": {
+    "message": "Mark all as read"
+  },
+  "MarkAsRead": {
+    "message": "Mark as read"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Mark as read by engagement filter"
+  },
+  "MaxNotificationsCount": {
+    "message": "Max notifications count at once"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Max number of feeds in the popup"
+  },
+  "More": {
+    "message": "More"
+  },
+  "NewestFirst": {
+    "message": "Newest first"
+  },
+  "NewFeeds": {
+    "message": "New feeds"
+  },
+  "NoSavedArticles": {
+    "message": "No saved articles"
+  },
+  "Notifications": {
+    "message": "Notifications"
+  },
+  "NoUnreadArticles": {
+    "message": "No unread articles"
+  },
+  "OldestFirst": {
+    "message": "Oldest first"
+  },
+  "OpenAllFeeds": {
+    "message": "Open all feeds"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Open all saved feeds and unsave them"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Open feeds in background tab"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Open feeds in the same tab"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Open Feedly site on icon click (don't show popup)"
+  },
+  "OptionsSaved": {
+    "message": "Options have been saved"
+  },
+  "PlaySound": {
+    "message": "Play alert sound on new feeds"
+  },
+  "Popup": {
+    "message": "Popup"
+  },
+  "PopupFontSize": {
+    "message": "Popup font size in percent"
+  },
+  "PopupWidth": {
+    "message": "Popup width"
+  },
+  "ResetCounterOnClick": {
+    "message": "Reset counter when extension button clicked"
+  },
+  "Save": {
+    "message": "Save"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Show site favicon in notifications"
+  },
+  "ShowCategories": {
+    "message": "Show categories in popup"
+  },
+  "ShowCounter": {
+    "message": "Show counter"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Show desktop notifications"
+  },
+  "ShowEngagementFilter": {
+    "message": "Show filter by engagement button"
+  },
+  "ShowFullFeedContent": {
+    "message": "Show full content of article in the expanded feed (if possible)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Show preview image in notifications (if possible)"
+  },
+  "Sorting": {
+    "message": "Sorting"
+  },
+  "UpdateFeeds": {
+    "message": "Update"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Update only following categories"
+  },
+  "UseSecureConnection": {
+    "message": "Use secure connection (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "You have $count$ new posts",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
     }
+  }
 }

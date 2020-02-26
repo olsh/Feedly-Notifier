@@ -1,152 +1,155 @@
 {
-    "AbilitySaveFeeds": {
-        "message": "القدرة على حفظ الخلاصات"
-    },
-    "AutoMarkRead": {
-        "message": "تلقائيا علم الأخبار المفتوحة كمقروء"
-    },
-    "Categories": {
-        "message": "أقسام"
-    },
-    "CurrentUser": {
-        "message": "المستخدم الحالي"
-    },
-    "Email": {
-        "message": "البريد الالكتروني"
-    },
-    "EnableBackgroundMode": {
-        "message": "تمكين وضع الخلفية"
-    },
-    "ExpandFeeds": {
-        "message": "اظهار كل الخلاصات عند الضغط على الايقونة"
-    },
-    "ExpandedPopupWidth": {
-        "message": "توسيع عرض النوافذ المنبثقة"
-    },
-    "ExtensionDescription": {
-        "message": "اضافة لعرض اشعارات قارئ الأخبار Feedly "
-    },
-    "FeedlyNotifierOptions": {
-        "message": "خيارات الاشعارات"
-    },
-    "FeedlyWebsite": {
-        "message": "موقع Feedly"
-    },
-    "Filters": {
-        "message": "مرشحات"
-    },
-    "ForceUpdateFeeds": {
-        "message": "تحديث القائمة عند فتحها"
-    },
-    "General": {
-        "message": "عام"
-    },
-    "HideNotificationsAfter": {
-        "message": "اخفاء اشعارات سطح المكتب بعد (ثانية)، 0 - عدم اخفاء"
-    },
-    "IntervalPeriod": {
-        "message": "تحديث القائمة دوريا (بالدقائق.)"
-    },
-    "Login": {
-        "message": "تسجيل الدخول"
-    },
-    "Logout": {
-        "message": "تسجيل الخروج"
-    },
-    "MarkAllAsRead": {
-        "message": "تحديد الكل كمقروء"
-    },
-    "MarkAsRead": {
-        "message": "تحديد كمقروء"
-    },
-    "MaxNotificationsCount": {
-        "message": "الحد الاقصى للاشعارات في وقت واحد"
-    },
-    "MaxNumberOfFeeds": {
-        "message": "الحد الاقصى من الخلاصات في القائمة المنبثقة"
-    },
-    "More": {
-        "message": "أكثر"
-    },
-    "NewFeeds": {
-        "message": "خلاصات جديدة"
-    },
-    "NoSavedArticles": {
-        "message": "لا توجد مقالات محفوظة"
-    },
-    "NoUnreadArticles": {
-        "message": "لا توجد مقالات غير مقروءة"
-    },
-    "Notifications": {
-        "message": "اشعارات"
-    },
-    "OpenAllFeeds": {
-        "message": "افتح كل الخلاصات"
-    },
-    "OpenAllSavedFeeds": {
-        "message": "افتح كل التغذيات المحفوظة ولا تحتفظ بها."
-    },
-    "OpenFeedsInBackground": {
-        "message": "افتح الخلاصات في تبويبة خلفية"
-    },
-    "OpenFeedsInSameTab": {
-        "message": "افتح الخلاصات في نفس التبويبة"
-    },
-    "OpenSiteOnIconClick": {
-        "message": "افتح موقع Feedly عند الضغط على الايقونة (لا تظهر القائمة المنبثقة)"
-    },
-    "OptionsSaved": {
-        "message": "تم حفظ الإعدادات"
-    },
-    "PlaySound": {
-        "message": "تشغيل صوت التنبيه للاشعارات الجديدة"
-    },
-    "Popup": {
-        "message": "نافذة منبثقة"
-    },
-    "PopupFontSize": {
-        "message": "حجم الخط الحالي."
-    },
-    "PopupWidth": {
-        "message": "عرض النافذة المنبثقة"
-    },
-    "ResetCounterOnClick": {
-        "message": "ابدأ العد من جديد عند النقر على زر الإضافة"
-    },
-    "Save": {
-        "message": "حفظ"
-    },
-    "ShowCategories": {
-        "message": "أظهر الأقسام في النافذة المنبقة"
-    },
-    "ShowCounter": {
-        "message": "أظهر العدّاد"
-    },
-    "ShowDesktopNotifications": {
-        "message": "تفعيل تنبيهات سطح المكتب"
-    },
-    "ShowFullFeedContent": {
-        "message": "اظهر المحتوى الكامل للمقال (إن كان ممكنا)"
-    },
-    "UpdateFeeds": {
-        "message": "تحديث"
-    },
-    "UpdateFollowingCategories": {
-        "message": "تحديث أقسام معينة فقط"
-    },
-    "UseSecureConnection": {
-        "message": "استخدم اتصالا آمنا (https)"
-    },
-    "YouHaveNewFeeds": {
-        "message": "لديك  $count$ اشعارا جديدا",
-        "placeholders": {
-            "count": {
-                "content": "$1",
-                "example": "10 or many"
-            }
-        }
-    },
-    "many": {
-        "message": "العديد"
+  "AbilitySaveFeeds": {
+    "message": "القدرة على حفظ الخلاصات"
+  },
+  "AutoMarkRead": {
+    "message": "تلقائيا علم الأخبار المفتوحة كمقروء"
+  },
+  "Categories": {
+    "message": "أقسام"
+  },
+  "CurrentUser": {
+    "message": "المستخدم الحالي"
+  },
+  "Email": {
+    "message": "البريد الالكتروني"
+  },
+  "EnableBackgroundMode": {
+    "message": "تمكين وضع الخلفية"
+  },
+  "ExpandedPopupWidth": {
+    "message": "توسيع عرض النوافذ المنبثقة"
+  },
+  "ExpandFeeds": {
+    "message": "اظهار كل الخلاصات عند الضغط على الايقونة"
+  },
+  "ExtensionDescription": {
+    "message": "اضافة لعرض اشعارات قارئ الأخبار Feedly "
+  },
+  "FeedlyNotifierOptions": {
+    "message": "خيارات الاشعارات"
+  },
+  "FeedlyWebsite": {
+    "message": "موقع Feedly"
+  },
+  "Filters": {
+    "message": "مرشحات"
+  },
+  "ForceUpdateFeeds": {
+    "message": "تحديث القائمة عند فتحها"
+  },
+  "General": {
+    "message": "عام"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "أيقونة رمادية إذا كان غير مقروء"
+  },
+  "HideNotificationsAfter": {
+    "message": "اخفاء اشعارات سطح المكتب بعد (ثانية)، 0 - عدم اخفاء"
+  },
+  "IntervalPeriod": {
+    "message": "تحديث القائمة دوريا (بالدقائق.)"
+  },
+  "Login": {
+    "message": "تسجيل الدخول"
+  },
+  "Logout": {
+    "message": "تسجيل الخروج"
+  },
+  "many": {
+    "message": "العديد"
+  },
+  "MarkAllAsRead": {
+    "message": "تحديد الكل كمقروء"
+  },
+  "MarkAsRead": {
+    "message": "تحديد كمقروء"
+  },
+  "MaxNotificationsCount": {
+    "message": "الحد الاقصى للاشعارات في وقت واحد"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "الحد الاقصى من الخلاصات في القائمة المنبثقة"
+  },
+  "More": {
+    "message": "أكثر"
+  },
+  "NewFeeds": {
+    "message": "خلاصات جديدة"
+  },
+  "NoSavedArticles": {
+    "message": "لا توجد مقالات محفوظة"
+  },
+  "Notifications": {
+    "message": "اشعارات"
+  },
+  "NoUnreadArticles": {
+    "message": "لا توجد مقالات غير مقروءة"
+  },
+  "OpenAllFeeds": {
+    "message": "افتح كل الخلاصات"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "افتح كل التغذيات المحفوظة ولا تحتفظ بها."
+  },
+  "OpenFeedsInBackground": {
+    "message": "افتح الخلاصات في تبويبة خلفية"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "افتح الخلاصات في نفس التبويبة"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "افتح موقع Feedly عند الضغط على الايقونة (لا تظهر القائمة المنبثقة)"
+  },
+  "OptionsSaved": {
+    "message": "تم حفظ الإعدادات"
+  },
+  "PlaySound": {
+    "message": "تشغيل صوت التنبيه للاشعارات الجديدة"
+  },
+  "Popup": {
+    "message": "نافذة منبثقة"
+  },
+  "PopupFontSize": {
+    "message": "حجم الخط الحالي."
+  },
+  "PopupWidth": {
+    "message": "عرض النافذة المنبثقة"
+  },
+  "ResetCounterOnClick": {
+    "message": "ابدأ العد من جديد عند النقر على زر الإضافة"
+  },
+  "Save": {
+    "message": "حفظ"
+  },
+  "ShowCategories": {
+    "message": "أظهر الأقسام في النافذة المنبقة"
+  },
+  "ShowCounter": {
+    "message": "أظهر العدّاد"
+  },
+  "ShowDesktopNotifications": {
+    "message": "تفعيل تنبيهات سطح المكتب"
+  },
+  "ShowFullFeedContent": {
+    "message": "اظهر المحتوى الكامل للمقال (إن كان ممكنا)"
+  },
+  "UpdateFeeds": {
+    "message": "تحديث"
+  },
+  "UpdateFollowingCategories": {
+    "message": "تحديث أقسام معينة فقط"
+  },
+  "UseSecureConnection": {
+    "message": "استخدم اتصالا آمنا (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "لديك  $count$ اشعارا جديدا",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
     }
+  }
 }

@@ -1,6 +1,6 @@
-﻿{
+{
   "AbilitySaveFeeds": {
-    "message": "Possibilità di salvare i feed"
+    "message": "Possibilitа di salvare i feed"
   },
   "AutoMarkRead": {
     "message": "Segna il feed automaticamente come letto quando si visualizza la notizia"
@@ -10,9 +10,6 @@
   },
   "CurrentUser": {
     "message": "Utente corrente"
-  },
-  "Email": {
-    "message": "Email"
   },
   "EnableBackgroundMode": {
     "message": "Abilita modalità background"
@@ -121,9 +118,6 @@
   },
   "PlaySound": {
     "message": "Notifica audio per nuovi feed"
-  },
-  "Popup": {
-    "message": "Popup"
   },
   "PopupFontSize": {
     "message": "Altezza font del popup in percentuale"

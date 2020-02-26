@@ -1,149 +1,170 @@
 {
-    "AbilitySaveFeeds": {
-        "message": "Möglichkeit Feeds zu speichern"
-    },
-    "AutoMarkRead": {
-        "message": "Automatisch als gelesen markieren wenn Neuigkeiten geöffnet werden"
-    },
-    "Categories": {
-        "message": "Kategorien"
-    },
-    "CurrentUser": {
-        "message": "Aktueller Benutzer"
-    },
-    "Email": {
-        "message": "E-Mail"
-    },
-    "EnableBackgroundMode": {
-        "message": "Hintergrund Modus aktivieren"
-    },
-    "ExpandedPopupWidth": {
-        "message": "Erweiterte Popup Breite"
-    },
-    "ExpandFeeds": {
-        "message": "Alle Feeds erweitern wenn Popup geöffnet ist"
-    },
-    "ExtensionDescription": {
-        "message": "Erweiterung für den Feedly News Reader"
-    },
-    "FeedlyNotifierOptions": {
-        "message": "Feedly Benachrichtigungs Optionen"
-    },
-    "FeedlyWebsite": {
-        "message": "Feedly Webseite"
-    },
-    "Filters": {
-        "message": "Filter"
-    },
-    "ForceUpdateFeeds": {
-        "message": "Erzwinge Aktualisierung der Feeds wenn Popup geöffnet ist"
-    },
-    "General": {
-        "message": "Allgemein"
-    },
-    "HideNotificationsAfter": {
-        "message": "Desktop Benachrichtigungen ausblenden nach (Sek.), 0 - Nicht ausblenden"
-    },
-    "IntervalPeriod": {
-        "message": "Zeitspannen Dauer (Min.)"
-    },
-    "Login": {
-        "message": "Einloggen"
-    },
-    "Logout": {
-        "message": "Ausloggen"
-    },
-    "many": {
-        "message": "viele"
-    },
-    "MarkAllAsRead": {
-        "message": "Alle als gelesen markieren"
-    },
-    "MarkAsRead": {
-        "message": "Als gelesen markieren"
-    },
-    "MaxNotificationsCount": {
-        "message": "Maximale gleichzeitige Benachrichtigungsanzahl"
-    },
-    "MaxNumberOfFeeds": {
-        "message": "Maximale Anzahl an Feeds im Popup"
-    },
-    "More": {
-        "message": "Mehr"
-    },
-    "NewFeeds": {
-        "message": "Neue Feeds"
-    },
-    "NoSavedArticles": {
-        "message": "Keine gespeicherten Artikel"
-    },
-    "Notifications": {
-        "message": "Benachrichtigungen"
-    },
-    "NoUnreadArticles": {
-        "message": "Keine ungelesenen Artikel"
-    },
-    "OpenAllFeeds": {
-        "message": "Alle Feeds öffnen"
-    },
-    "OpenFeedsInBackground": {
-        "message": "Feeds im Hintergrund Tab öffnen"
-    },
-    "OpenFeedsInSameTab": {
-        "message": "Feeds im selben Tab öffnen"
-    },
-    "OpenSiteOnIconClick": {
-        "message": "Feedly Webseite beim klicken auf das Icon öffnen (Popup nicht anzeigen)"
-    },
-    "OptionsSaved": {
-        "message": "Einstellungen wurden gespeichert"
-    },
-    "PlaySound": {
-        "message": "Benachrichtigungston bei neuen Feeds abspielen"
-    },
-    "Popup": {
-        "message": "Popup"
-    },
-    "PopupFontSize": {
-        "message": "Popup Schriftgröße in Prozent"
-    },
-    "PopupWidth": {
-        "message": "Popup Breite"
-    },
-    "ResetCounterOnClick": {
-        "message": "Zähler zurücksetzen wenn Erweiterungs Button gedrückt wurde"
-    },
-    "Save": {
-        "message": "Speichern"
-    },
-    "ShowCategories": {
-        "message": "Zeige Kategorien im Popup"
-    },
-    "ShowCounter": {
-        "message": "Zähler anzeigen"
-    },
-    "ShowDesktopNotifications": {
-        "message": "Desktop Benachrichtigungen anzeigen"
-    },
-    "ShowFullFeedContent": {
-        "message": "Den gesamten Inhalt eines Artikels in der erweiterten Ansicht anzeigen (falls möglich)"
-    },
-    "UpdateFeeds": {
-        "message": "Aktualisieren"
-    },
-    "UpdateFollowingCategories": {
-        "message": "Nur folgende Kategorien aktualisieren"
-    },
-    "UseSecureConnection": {
-        "message": "Sichere Verbindung verwenden (https)"
-    },
-    "YouHaveNewFeeds": {
-        "message": "Du hast $count$ neue Feeds",
-        "placeholders": {
-            "count": {
-                "content": "$1",
-                "example": "10 or many"
-            }
-        }
+  "AbilitySaveFeeds": {
+    "message": "Möglichkeit Feeds zu speichern"
+  },
+  "AutoMarkRead": {
+    "message": "Automatisch als gelesen markieren wenn Neuigkeiten geöffnet werden"
+  },
+  "Categories": {
+    "message": "Kategorien"
+  },
+  "CurrentUser": {
+    "message": "Aktueller Benutzer"
+  },
+  "Email": {
+    "message": "E-Mail"
+  },
+  "EnableBackgroundMode": {
+    "message": "Hintergrund Modus aktivieren"
+  },
+  "EngagementRate": {
+    "message": "Beliebtheit"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Erweiterte Popup Breite"
+  },
+  "ExpandFeeds": {
+    "message": "Alle Feeds erweitern wenn Popup geöffnet ist"
+  },
+  "ExtensionDescription": {
+    "message": "Erweiterung für den Feedly News Reader"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly Benachrichtigungs Optionen"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly Webseite"
+  },
+  "Filters": {
+    "message": "Filter"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Erzwinge Aktualisierung der Feeds wenn Popup geöffnet ist"
+  },
+  "General": {
+    "message": "Allgemein"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Graue Symbolfarbe, wenn ungelesen"
+  },
+  "HideNotificationsAfter": {
+    "message": "Desktop Benachrichtigungen ausblenden nach (Sek.), 0 - Nicht ausblenden"
+  },
+  "IntervalPeriod": {
+    "message": "Zeitspannen Dauer (Min.)"
+  },
+  "Login": {
+    "message": "Einloggen"
+  },
+  "Logout": {
+    "message": "Ausloggen"
+  },
+  "many": {
+    "message": "viele"
+  },
+  "MarkAllAsRead": {
+    "message": "Alle als gelesen markieren"
+  },
+  "MarkAsRead": {
+    "message": "Als gelesen markieren"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Markiert als gelesen"
+  },
+  "MaxNotificationsCount": {
+    "message": "Maximale gleichzeitige Benachrichtigungsanzahl"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Maximale Anzahl an Feeds im Popup"
+  },
+  "More": {
+    "message": "Mehr"
+  },
+  "NewestFirst": {
+    "message": "Neueste zuerst"
+  },
+  "NewFeeds": {
+    "message": "Neue Feeds"
+  },
+  "NoSavedArticles": {
+    "message": "Keine gespeicherten Artikel"
+  },
+  "Notifications": {
+    "message": "Benachrichtigungen"
+  },
+  "NoUnreadArticles": {
+    "message": "Keine ungelesenen Artikel"
+  },
+  "OldestFirst": {
+    "message": "Älteste zuerst"
+  },
+  "OpenAllFeeds": {
+    "message": "Alle Feeds öffnen"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Öffnet alle gespeicherten Feeds"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Feeds im Hintergrund Tab öffnen"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Feeds im selben Tab öffnen"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Feedly Webseite beim klicken auf das Icon öffnen (Popup nicht anzeigen)"
+  },
+  "OptionsSaved": {
+    "message": "Einstellungen wurden gespeichert"
+  },
+  "PlaySound": {
+    "message": "Benachrichtigungston bei neuen Feeds abspielen"
+  },
+  "PopupFontSize": {
+    "message": "Popup Schriftgröße in Prozent"
+  },
+  "PopupWidth": {
+    "message": "Popup Breite"
+  },
+  "ResetCounterOnClick": {
+    "message": "Zähler zurücksetzen wenn Erweiterungs Button gedrückt wurde"
+  },
+  "Save": {
+    "message": "Speichern"
+  },
+  "ShowCategories": {
+    "message": "Zeige Kategorien im Popup"
+  },
+  "ShowCounter": {
+    "message": "Zähler anzeigen"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Desktop Benachrichtigungen anzeigen"
+  },
+  "ShowFullFeedContent": {
+    "message": "Den gesamten Inhalt eines Artikels in der erweiterten Ansicht anzeigen (falls möglich)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Vorschaubild in Benachrichtigungen anzeigen (falls möglich)"
+  },
+  "Sorting": {
+    "message": "Sortieren"
+  },
+  "UpdateFeeds": {
+    "message": "Aktualisieren"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Nur folgende Kategorien aktualisieren"
+  },
+  "UseSecureConnection": {
+    "message": "Sichere Verbindung verwenden (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Du hast $count$ neue Feeds",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
     }
+  }
 }

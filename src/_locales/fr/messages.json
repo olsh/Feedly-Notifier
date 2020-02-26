@@ -18,7 +18,10 @@
     "message": "Activer le mode en arrière-plan"
   },
   "EngagementFilterLimit": {
-    "message": "Article à cacher si popularité inférieur à"
+    "message": "Marqué les articles comme Lu si moins d'actif que"
+  },
+  "EngagementRate": {
+    "message": "Taux d'actif (popularité)"
   },
   "ExpandedPopupWidth": {
     "message": "Largeur de la fenêtre étendue"
@@ -69,7 +72,7 @@
     "message": "Marquer comme lu"
   },
   "MarkAsReadEngagement": {
-    "message": "Marquer comme lu si popularité inférieur à la configuration"
+    "message": "Marqué comme Lu avec le filtre actif"
   },
   "MaxNotificationsCount": {
     "message": "Nombre maximum de notifications simultanées"
@@ -80,17 +83,20 @@
   "More": {
     "message": "Plus"
   },
+  "NewestFirst": {
+    "message": "Nouveau en premier"
+  },
   "NewFeeds": {
     "message": "Nouveaux articles"
   },
   "NoSavedArticles": {
     "message": "Aucun article enregistré"
   },
-  "Notifications": {
-    "message": "Notifications"
-  },
   "NoUnreadArticles": {
     "message": "Aucun article à lire"
+  },
+  "OldestFirst": {
+    "message": "Ancien en premier"
   },
   "OpenAllFeeds": {
     "message": "Ouvrir tous les articles"
@@ -141,13 +147,16 @@
     "message": "Afficher les notifications de bureau"
   },
   "ShowEngagementFilter": {
-    "message": "Afficher le bouton pour filtrer par popularité"
+    "message": "Voir le filtre avec le bouton d'activation"
   },
   "ShowFullFeedContent": {
     "message": "Afficher le contenu complet dans la vue développée (si possible)"
   },
   "ShowThumbnailInNotifications": {
     "message": "Afficher une image de prévisualisation dans les notifications (si disponible)"
+  },
+  "Sorting": {
+    "message": "Tri"
   },
   "UpdateFeeds": {
     "message": "Actualiser"

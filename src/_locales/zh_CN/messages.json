@@ -18,7 +18,10 @@
     "message": "启用后台模式"
   },
   "EngagementFilterLimit": {
-    "message": "Mark articles as read if engagement less than"
+    "message": "将文章标记为已读，在参与度小于"
+  },
+  "EngagementRate": {
+    "message": "参与率（受欢迎程度）"
   },
   "ExpandedPopupWidth": {
     "message": "扩展弹出窗口宽度"
@@ -45,7 +48,7 @@
     "message": "常规"
   },
   "GrayIconColorIfNoUnread": {
-    "message": "如果不是未读，图标颜色变灰"
+    "message": "如果没有未读摘要，图标颜色变灰"
   },
   "HideNotificationsAfter": {
     "message": "在数秒之后隐藏桌面通知（0 代表不要隐藏）"
@@ -69,7 +72,7 @@
     "message": "标记为已读"
   },
   "MarkAsReadEngagement": {
-    "message": "Mark as read by engagement filter"
+    "message": "通过参与度的过滤条件，标记为已读"
   },
   "MaxNotificationsCount": {
     "message": "单次最大通知摘要数量"
@@ -79,6 +82,9 @@
   },
   "More": {
     "message": "更低"
+  },
+  "NewestFirst": {
+    "message": "最新的在前"
   },
   "NewFeeds": {
     "message": "新摘要"
@@ -91,6 +97,9 @@
   },
   "NoUnreadArticles": {
     "message": "没有未读文章"
+  },
+  "OldestFirst": {
+    "message": "最早的在前"
   },
   "OpenAllFeeds": {
     "message": "打开所有摘要"
@@ -141,13 +150,16 @@
     "message": "显示桌面通知"
   },
   "ShowEngagementFilter": {
-    "message": "Show filter by engagement button"
+    "message": "点击参与度按钮，显示过滤条件"
   },
   "ShowFullFeedContent": {
     "message": "在展开的摘要中显示完整內容（如果可能的话）"
   },
   "ShowThumbnailInNotifications": {
     "message": "在通知中显示预览图像（如果可能的话）"
+  },
+  "Sorting": {
+    "message": "排序"
   },
   "UpdateFeeds": {
     "message": "更新"

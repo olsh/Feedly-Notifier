@@ -159,6 +159,12 @@
     "message": "Използвайте защитена връзка (https)\n"
   },
   "YouHaveNewFeeds": {
-    "message": "Имате $ броя $ нови емисии"
+    "message": "Имате $count$ нови емисии",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
   }
 }

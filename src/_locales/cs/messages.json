@@ -1,152 +1,152 @@
 {
-    "AbilitySaveFeeds": {
-        "message": "Možnost uložit zdroje"
-    },
-    "AutoMarkRead": {
-        "message": "Automaticky označit jako přečteno po otevření zprávy"
-    },
-    "Categories": {
-        "message": "Kategorie"
-    },
-    "CurrentUser": {
-        "message": "Aktuální uživatel"
-    },
-    "Email": {
-        "message": "Email"
-    },
-    "EnableBackgroundMode": {
-        "message": "Povolit background mód"
-    },
-    "ExpandedPopupWidth": {
-        "message": "Expanded popup width"
-    },
-    "ExpandFeeds": {
-        "message": "Expand all feeds when popup is opened"
-    },
-    "ExtensionDescription": {
-        "message": "Rozšíření pro Feddly"
-    },
-    "FeedlyNotifierOptions": {
-        "message": "Feedly Notifier nastavení"
-    },
-    "FeedlyWebsite": {
-        "message": "stránky Feedly"
-    },
-    "Filters": {
-        "message": "Filtry"
-    },
-    "ForceUpdateFeeds": {
-        "message": "Vynucené obnovení po otevření okna"
-    },
-    "General": {
-        "message": "Základní"
-    },
-    "HideNotificationsAfter": {
-        "message": "Skrýt oznámení po (sekundy), 0 - neskrývat"
-    },
-    "IntervalPeriod": {
-        "message": "Časový interval (min.)"
-    },
-    "Login": {
-        "message": "Přihlášení"
-    },
-    "Logout": {
-        "message": "Odhlášení"
-    },
-    "MarkAllAsRead": {
-        "message": "Označit vše jako přečtené"
-    },
-    "MarkAsRead": {
-        "message": "Označit jako přečtené"
-    },
-    "MaxNotificationsCount": {
-        "message": "Maximální počet najednou zobrazených oznámení"
-    },
-    "MaxNumberOfFeeds": {
-        "message": "Maximální počet článků ve vyjížděcím okně"
-    },
-    "More": {
-        "message": "Více"
-    },
-    "NewFeeds": {
-        "message": "Nové zdroje"
-    },
-    "NoSavedArticles": {
-        "message": "Žádné uložené články"
-    },
-    "NoUnreadArticles": {
-        "message": "Žádné nepřečtené zprávy"
-    },
-    "Notifications": {
-        "message": "Oznámení"
-    },
-    "OpenAllFeeds": {
-        "message": "Otevřít vše"
-    },
-    "OpenAllSavedFeeds": {
-        "message": "Open all saved feeds and unsave them"
-    },
-    "OpenFeedsInBackground": {
-        "message": "Open feeds in background tab"
-    },
-    "OpenFeedsInSameTab": {
-        "message": "Open feeds in the same tab"
-    },
-    "OpenSiteOnIconClick": {
-        "message": "Otevřít Feedly po kliknutí na ikonu (neukazovat vyjížděcí okno)"
-    },
-    "OptionsSaved": {
-        "message": "Nastavení bylo uloženo"
-    },
-    "PlaySound": {
-        "message": "Play alert sound on new feeds"
-    },
-    "Popup": {
-        "message": "Vyjížděcí okno"
-    },
-    "PopupFontSize": {
-        "message": "Velikost písma v pop-upu"
-    },
-    "PopupWidth": {
-        "message": "Popup width"
-    },
-    "ResetCounterOnClick": {
-        "message": "Vynulovat počitadlo po otevření"
-    },
-    "Save": {
-        "message": "Uložit"
-    },
-    "ShowCounter": {
-        "message": "Ukázat počitadlo"
-    },
-    "ShowCategories": {
-        "message": "Zobrazit kategorie"
-    },
-    "ShowDesktopNotifications": {
-        "message": "Zobrazit oznámení"
-    },
-    "ShowFullFeedContent": {
-        "message": "Zobrazit celý obsah článku v pohledu zdroje (pokud je to možné)"
-    },
-    "UpdateFeeds": {
-        "message": "Aktualizovat"
-    },
-    "UpdateFollowingCategories": {
-        "message": "Aktualizovat pouze následující kategorie"
-    },
-    "UseSecureConnection": {
-        "message": "Používat zabezpečené připojení (https)"
-    },
-    "YouHaveNewFeeds": {
-        "message": "Máte $count$ nových zdrojů",
-        "placeholders": {
-            "count": {
-                "content": "$1",
-                "example": "10 nebo více"
-            }
-        }
-    },
-    "many": {
-        "message": "hodně"
+  "AbilitySaveFeeds": {
+    "message": "Možnost uložit feedy"
+  },
+  "AutoMarkRead": {
+    "message": "Automaticky označit jako přečteno po otevření zprávy"
+  },
+  "Categories": {
+    "message": "Kategorie"
+  },
+  "CurrentUser": {
+    "message": "Aktuální uživatel"
+  },
+  "EnableBackgroundMode": {
+    "message": "Povolit background mód"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Rozšířit popup"
+  },
+  "ExpandFeeds": {
+    "message": "Rozbalit všechny feedy při otevření popupu"
+  },
+  "ExtensionDescription": {
+    "message": "Rozšíření pro Feedly čtečku"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly Notifier nastavení"
+  },
+  "FeedlyWebsite": {
+    "message": "Stránky Feedly"
+  },
+  "Filters": {
+    "message": "Filtry"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Vynucené obnovení feedů po otevření okna"
+  },
+  "General": {
+    "message": "Obecné"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Šedá ikona, když není nic nového"
+  },
+  "HideNotificationsAfter": {
+    "message": "Skrýt oznámení po (sekundy), 0 - neskrývat"
+  },
+  "IntervalPeriod": {
+    "message": "Časový interval (min.)"
+  },
+  "Login": {
+    "message": "Přihlášení"
+  },
+  "Logout": {
+    "message": "Odhlášení"
+  },
+  "many": {
+    "message": "hodně"
+  },
+  "MarkAllAsRead": {
+    "message": "Označit vše jako přečtené"
+  },
+  "MarkAsRead": {
+    "message": "Označit jako přečtené"
+  },
+  "MaxNotificationsCount": {
+    "message": "Maximální počet naráz zobrazených oznámení"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Maximální počet článků ve vyjížděcím okně"
+  },
+  "More": {
+    "message": "Více"
+  },
+  "NewFeeds": {
+    "message": "Nové feedy"
+  },
+  "NoSavedArticles": {
+    "message": "Žádné uložené články"
+  },
+  "Notifications": {
+    "message": "Oznámení"
+  },
+  "NoUnreadArticles": {
+    "message": "Žádné nepřečtené zprávy"
+  },
+  "OpenAllFeeds": {
+    "message": "Otevřít vše"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Zobrazit uložené feedy a oduložit je"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Otevřít feedy v záložce na pozadí"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Otevřít feedy v téže záložce"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Otevřít Feedly po kliknutí na ikonu (neukazovat vyjížděcí okno)"
+  },
+  "OptionsSaved": {
+    "message": "Nastavení bylo uloženo"
+  },
+  "Popup": {
+    "message": "Vyjížděcí okno"
+  },
+  "PopupFontSize": {
+    "message": "Velikost písma v pop-upu"
+  },
+  "ResetCounterOnClick": {
+    "message": "Vynulovat počitadlo po otevření"
+  },
+  "Save": {
+    "message": "Uložit"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Zobrazit favicon v notifikacích"
+  },
+  "ShowCategories": {
+    "message": "Zobrazit kategorie"
+  },
+  "ShowCounter": {
+    "message": "Ukázat počitadlo"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Zobrazit oznámení"
+  },
+  "ShowFullFeedContent": {
+    "message": "Zobrazit celý obsah článku v pohledu zdroje (pokud je to možné)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Zobrazit náhled v notifikacích (když je dostupný)"
+  },
+  "UpdateFeeds": {
+    "message": "Aktualizovat"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Aktualizovat pouze následující kategorie"
+  },
+  "UseSecureConnection": {
+    "message": "Používat zabezpečené připojení (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Máte $count$ nových zdrojů",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
     }
+  }
 }

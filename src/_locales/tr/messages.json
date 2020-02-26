@@ -1,161 +1,161 @@
 {
-    "AbilitySaveFeeds": {
-        "message": "Haberi kaydetme özelliği"
-    },
-    "AutoMarkRead": {
-        "message": "Haber açıldığında otomatik okundu işaretlensin"
-    },
-    "Categories": {
-        "message": "Kategoriler"
-    },
-    "CurrentUser": {
-        "message": "Güncel kullanıcı"
-    },
-    "Email": {
-        "message": "Eposta"
-    },
-    "EnableBackgroundMode": {
-        "message": "Arkaplan modunu aç"
-    },
-    "ExpandedPopupWidth": {
-        "message": "Genişletilmiş boyda açılır pencere"
-    },
-    "ExpandFeeds": {
-        "message": "Pencere açıldığında tüm beslemeleri uzat"
-    },
-    "ExtensionDescription": {
-        "message": "Feedly haber okuyucuyu uzat"
-    },
-    "FeedlyNotifierOptions": {
-        "message": "Feedly Notifier Ayarları"
-    },
-    "FeedlyWebsite": {
-        "message": "Feedly websitesi"
-    },
-    "Filters": {
-        "message": "Filtreler"
-    },
-    "ForceUpdateFeeds": {
-        "message": "Pencere açılınca besleme güncellemesi yap"
-    },
-    "General": {
-        "message": "Genel"
-    },
-    "GrayIconColorIfNoUnread": {
-        "message": "Okunmamış yoksa gri ikon rengi"
-    },
-    "HideNotificationsAfter": {
-        "message": "Masaüstü bildirim penceresini bir süre sonra kapat (san.), 0 - kapanmaz"
-    },
-    "IntervalPeriod": {
-        "message": "Güncelleme periyodu (dk.)"
-    },
-    "Login": {
-        "message": "Giriş"
-    },
-    "Logout": {
-        "message": "Çıkış"
-    },
-    "many": {
-        "message": "birçoğu"
-    },
-    "MarkAllAsRead": {
-        "message": "Hepsini okundu işaretle"
-    },
-    "MarkAsRead": {
-        "message": "Okundu işaretle"
-    },
-    "MaxNotificationsCount": {
-        "message": "Maksimum gösterilecek bildirim sayısı"
-    },
-    "MaxNumberOfFeeds": {
-        "message": "Pencerede gösterilecek maksimum haber sayısı"
-    },
-    "More": {
-        "message": "Devamı"
-    },
-    "NewFeeds": {
-        "message": "Yeni beslemeler"
-    },
-    "NoSavedArticles": {
-        "message": "Kaydedilen başlık yok"
-    },
-    "Notifications": {
-        "message": "Bildirimler"
-    },
-    "NoUnreadArticles": {
-        "message": "Okunmamış başlık yok"
-    },
-    "OpenAllFeeds": {
-        "message": "Bütün haberleri aç"
-    },
-    "OpenAllSavedFeeds": {
-        "message": "Kayıtlı tüm beslemeleri aç ve onları sil"
-    },
-    "OpenFeedsInBackground": {
-        "message": "Haberleri arka planda ayrı sekmede aç"
-    },
-    "OpenFeedsInSameTab": {
-        "message": "Haberleri aynı sekmede aç"
-    },
-    "OpenSiteOnIconClick": {
-        "message": "İkona tıkladığında Feedly açılsın (ayrı pencerede görünmez)"
-    },
-    "OptionsSaved": {
-        "message": "Ayarlarınız kaydedildi"
-    },
-    "PlaySound": {
-        "message": "Yeni haber geldiğinde sesli uyarı olsun"
-    },
-    "Popup": {
-        "message": "Ayrı Pencere"
-    },
-    "PopupFontSize": {
-        "message": "Penceredeki yazı karakteri uzunluğu"
-    },
-    "PopupWidth": {
-        "message": "Pencere genişliği"
-    },
-    "ResetCounterOnClick": {
-        "message": "Uzantı butonu tıklandığında sayaç sıfırlansın"
-    },
-    "Save": {
-        "message": "Kaydet"
-    },
-    "ShowBlogIconInNotifications": {
-        "message": "Bİldirimlerde site simgesini göster"
-    },
-    "ShowCategories": {
-        "message": "Pencerede kategorileri göster"
-    },
-    "ShowCounter": {
-        "message": "Sayacı göster"
-    },
-    "ShowDesktopNotifications": {
-        "message": "Masaüstü bildirimlerini göster"
-    },
-    "ShowFullFeedContent": {
-        "message": "Genişletilmiş özet akışını (mümkünse) göster"
-    },
-    "ShowThumbnailInNotifications": {
-        "message": "Bildirimlerde önizleme görüntüsünü göster (mümkünse)"
-    },
-    "UpdateFeeds": {
-        "message": "Güncelle"
-    },
-    "UpdateFollowingCategories": {
-        "message": "Sadece takip edilen kategorileri güncelle"
-    },
-    "UseSecureConnection": {
-        "message": "Güvenli bağlantı kullan (https)"
-    },
-    "YouHaveNewFeeds": {
-        "message": "$count$ yeni haber",
-        "placeholders": {
-            "count": {
-                "content": "$1",
-                "example": "10 or many"
-            }
-        }
+  "AbilitySaveFeeds": {
+    "message": "Haberi kaydetme özelliği"
+  },
+  "AutoMarkRead": {
+    "message": "Haber açıldığında otomatik okundu işaretlensin"
+  },
+  "Categories": {
+    "message": "Kategoriler"
+  },
+  "CurrentUser": {
+    "message": "Güncel kullanıcı"
+  },
+  "Email": {
+    "message": "Eposta"
+  },
+  "EnableBackgroundMode": {
+    "message": "Arkaplan modunu aç"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Genişletilmiş boyda açılır pencere"
+  },
+  "ExpandFeeds": {
+    "message": "Pencere açıldığında tüm beslemeleri uzat"
+  },
+  "ExtensionDescription": {
+    "message": "Feedly haber okuyucuyu uzat"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly Notifier Ayarları"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly websitesi"
+  },
+  "Filters": {
+    "message": "Filtreler"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Pencere açılınca besleme güncellemesi yap"
+  },
+  "General": {
+    "message": "Genel"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Okunmamış yoksa gri ikon rengi"
+  },
+  "HideNotificationsAfter": {
+    "message": "Masaüstü bildirim penceresini bir süre sonra kapat (san.), 0 - kapanmaz"
+  },
+  "IntervalPeriod": {
+    "message": "Güncelleme periyodu (dk.)"
+  },
+  "Login": {
+    "message": "Giriş"
+  },
+  "Logout": {
+    "message": "Çıkış"
+  },
+  "many": {
+    "message": "birçoğu"
+  },
+  "MarkAllAsRead": {
+    "message": "Hepsini okundu işaretle"
+  },
+  "MarkAsRead": {
+    "message": "Okundu işaretle"
+  },
+  "MaxNotificationsCount": {
+    "message": "Maksimum gösterilecek bildirim sayısı"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Pencerede gösterilecek maksimum haber sayısı"
+  },
+  "More": {
+    "message": "Devamı"
+  },
+  "NewFeeds": {
+    "message": "Yeni beslemeler"
+  },
+  "NoSavedArticles": {
+    "message": "Kaydedilen başlık yok"
+  },
+  "Notifications": {
+    "message": "Bildirimler"
+  },
+  "NoUnreadArticles": {
+    "message": "Okunmamış başlık yok"
+  },
+  "OpenAllFeeds": {
+    "message": "Bütün haberleri aç"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Kayıtlı tüm beslemeleri aç ve onları sil"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Haberleri arka planda ayrı sekmede aç"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Haberleri aynı sekmede aç"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "İkona tıkladığında Feedly açılsın (ayrı pencerede görünmez)"
+  },
+  "OptionsSaved": {
+    "message": "Ayarlarınız kaydedildi"
+  },
+  "PlaySound": {
+    "message": "Yeni haber geldiğinde sesli uyarı olsun"
+  },
+  "Popup": {
+    "message": "Ayrı Pencere"
+  },
+  "PopupFontSize": {
+    "message": "Penceredeki yazı karakteri uzunluğu"
+  },
+  "PopupWidth": {
+    "message": "Pencere genişliği"
+  },
+  "ResetCounterOnClick": {
+    "message": "Uzantı butonu tıklandığında sayaç sıfırlansın"
+  },
+  "Save": {
+    "message": "Kaydet"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Bİldirimlerde site simgesini göster"
+  },
+  "ShowCategories": {
+    "message": "Pencerede kategorileri göster"
+  },
+  "ShowCounter": {
+    "message": "Sayacı göster"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Masaüstü bildirimlerini göster"
+  },
+  "ShowFullFeedContent": {
+    "message": "Genişletilmiş özet akışını (mümkünse) göster"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Bildirimlerde önizleme görüntüsünü göster (mümkünse)"
+  },
+  "UpdateFeeds": {
+    "message": "Güncelle"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Sadece takip edilen kategorileri güncelle"
+  },
+  "UseSecureConnection": {
+    "message": "Güvenli bağlantı kullan (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "$count$ yeni haber",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
     }
+  }
 }

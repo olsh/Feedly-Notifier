@@ -17,9 +17,6 @@
   "EnableBackgroundMode": {
     "message": "Activar modo en segundo plano"
   },
-  "EngagementFilterLimit": {
-    "message": "Mark articles as read if engagement less than"
-  },
   "ExpandedPopupWidth": {
     "message": "Ventana emergente de anchura expandida"
   },
@@ -40,9 +37,6 @@
   },
   "ForceUpdateFeeds": {
     "message": "Forzar actualización de fuentes al abrir ventana emergente"
-  },
-  "General": {
-    "message": "General"
   },
   "GrayIconColorIfNoUnread": {
     "message": "Icono de color gris si no está leído"
@@ -67,9 +61,6 @@
   },
   "MarkAsRead": {
     "message": "Marcar como leído"
-  },
-  "MarkAsReadEngagement": {
-    "message": "Mark as read by engagement filter"
   },
   "MaxNotificationsCount": {
     "message": "Máximas notificaciones contadas de una vez"
@@ -139,9 +130,6 @@
   },
   "ShowDesktopNotifications": {
     "message": "Mostrar notificaciones de escritorio"
-  },
-  "ShowEngagementFilter": {
-    "message": "Show filter by engagement button"
   },
   "ShowFullFeedContent": {
     "message": "Mostrar el contenido completo de un artículo en la fuente expandida (si es posible)"
