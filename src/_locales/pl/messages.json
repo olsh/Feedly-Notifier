@@ -1,0 +1,158 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Możliwość zapisu wiadomości"
+  },
+  "AutoMarkRead": {
+    "message": "Automatycznie oznacz jako przeczytane przy wyświetleniu"
+  },
+  "Categories": {
+    "message": "Kategorie"
+  },
+  "CurrentUser": {
+    "message": "Aktualny użytkownik"
+  },
+  "EnableBackgroundMode": {
+    "message": "Aktywuj działanie w tle"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Szerokość rozszerzonego okna"
+  },
+  "ExpandFeeds": {
+    "message": "Rozwiń wszystkie wiadomości gdy okno jest otwarte"
+  },
+  "ExtensionDescription": {
+    "message": "Rozszerzenia dla czytnika Feedly"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Opcje Feedly Notifier"
+  },
+  "FeedlyWebsite": {
+    "message": "Strona Feedly"
+  },
+  "Filters": {
+    "message": "Filtry"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Aktualizuj wiadomości przy otwarciu okna"
+  },
+  "General": {
+    "message": "Ogólne"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Wyszarz ikonę gdy brak nieprzeczytanych wiadomości"
+  },
+  "HideNotificationsAfter": {
+    "message": "Ukryj powiadomienia po (sek.), 0 - nie ukrywaj"
+  },
+  "IntervalPeriod": {
+    "message": "Aktualizuj co (min.)"
+  },
+  "Login": {
+    "message": "Zaloguj się"
+  },
+  "Logout": {
+    "message": "Wyloguj się"
+  },
+  "many": {
+    "message": "wiele"
+  },
+  "MarkAllAsRead": {
+    "message": "Oznacz wszystko jako przeczytane"
+  },
+  "MarkAsRead": {
+    "message": "Oznacz jako przeczytane"
+  },
+  "MaxNotificationsCount": {
+    "message": "Maksymalna liczba powiadomień"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Maksymalna liczba waidomości w oknie"
+  },
+  "More": {
+    "message": "Więcej"
+  },
+  "NewFeeds": {
+    "message": "Nowe wiadomości"
+  },
+  "NoSavedArticles": {
+    "message": "Brak zapisanych artykułów"
+  },
+  "Notifications": {
+    "message": "Powiadomienia"
+  },
+  "NoUnreadArticles": {
+    "message": "Brak nieprzeczytanych artykułów"
+  },
+  "OpenAllFeeds": {
+    "message": "Otwórz wszystkie wiadomości"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Otwórz wszystkie zapisane wiadomości i wypisz je"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Otwórz okno w tle"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Otwórz wiadomości w tej samej karcie"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Otwórz stonę Feedly po wciśnięciu ikony (nie pokazuj okna)"
+  },
+  "OptionsSaved": {
+    "message": "Opcje zostały zapisane"
+  },
+  "PlaySound": {
+    "message": "Powiadomienie dźwiękowe przy nowych wiadomościach"
+  },
+  "Popup": {
+    "message": "Okno"
+  },
+  "PopupFontSize": {
+    "message": "Wielkość czcionki w procentach"
+  },
+  "PopupWidth": {
+    "message": "Szerokość okna"
+  },
+  "ResetCounterOnClick": {
+    "message": "Zresetuj licznik po wciśnięciu ikony"
+  },
+  "Save": {
+    "message": "Zapisz"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Pokaż favicon w powiadomieniach"
+  },
+  "ShowCategories": {
+    "message": "Pokaż kategorie w oknie"
+  },
+  "ShowCounter": {
+    "message": "Pokaż licznik"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Pokazuj powiadomienia"
+  },
+  "ShowFullFeedContent": {
+    "message": "Pokazuj cały artykuł w rozwiniętym kanale (jeżeli możliwe)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Pokaż podgląd obrazów w powiadomieniach (jeśli możliwe)"
+  },
+  "UpdateFeeds": {
+    "message": "Aktualizacja"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Aktualizuj tylko następujące kategorie"
+  },
+  "UseSecureConnection": {
+    "message": "Użyj bezpiecznego połączenia (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Masz $count$ nowych wiadomości",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}

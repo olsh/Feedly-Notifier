@@ -1,0 +1,137 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Capacidad de guardar feeds"
+  },
+  "Categories": {
+    "message": "Categorías"
+  },
+  "CurrentUser": {
+    "message": "Usuario actual"
+  },
+  "EnableBackgroundMode": {
+    "message": "Permitir modo segundo plano"
+  },
+  "ExpandFeeds": {
+    "message": "Expandir todos los feed al abrir la ventana emergente"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Opciones de Feedly Notifier"
+  },
+  "FeedlyWebsite": {
+    "message": "Sitio web Feedly"
+  },
+  "Filters": {
+    "message": "Filtros"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Ícono gris si no hay no leídos"
+  },
+  "HideNotificationsAfter": {
+    "message": "Ocultar notificaciones de escritorio luego de (seg.) 0 - no ocultar"
+  },
+  "IntervalPeriod": {
+    "message": "Intervalo de periodo (min)"
+  },
+  "Login": {
+    "message": "Acceder"
+  },
+  "Logout": {
+    "message": "Salir"
+  },
+  "many": {
+    "message": "muchos"
+  },
+  "MarkAllAsRead": {
+    "message": "Marcar todos como leídos"
+  },
+  "MarkAsRead": {
+    "message": "Marcar como leído"
+  },
+  "MaxNotificationsCount": {
+    "message": "Max notificaciones a la vez"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Max número de feeds en la ventana"
+  },
+  "More": {
+    "message": "Más"
+  },
+  "NewFeeds": {
+    "message": "Nuevos feeds"
+  },
+  "NoSavedArticles": {
+    "message": "Sin artículos guardados"
+  },
+  "Notifications": {
+    "message": "Notificaciones"
+  },
+  "NoUnreadArticles": {
+    "message": "Sin artículos no leídos"
+  },
+  "OpenAllFeeds": {
+    "message": "Abrir todos los feeds"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Abrir todos los feeds guardados y eliminarlos"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Abrir feeds en pestaña en segundo plano"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Abrir feeds en la misma pestaña"
+  },
+  "OptionsSaved": {
+    "message": "Las opciones fueron guardadas"
+  },
+  "PlaySound": {
+    "message": "Sonido de alerta con nuevos feeds"
+  },
+  "Popup": {
+    "message": "Ventana"
+  },
+  "PopupFontSize": {
+    "message": "Porcentaje de tamaño de fuente en ventana emergente"
+  },
+  "PopupWidth": {
+    "message": "Ancho de ventana"
+  },
+  "ResetCounterOnClick": {
+    "message": "Reiniciar el contador al clickear el botón de la extensión"
+  },
+  "Save": {
+    "message": "Guardar"
+  },
+  "ShowCategories": {
+    "message": "Mostrar categorías en la ventana"
+  },
+  "ShowCounter": {
+    "message": "Mostrar contador"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Mostrar notificaciones de escritorio"
+  },
+  "ShowFullFeedContent": {
+    "message": "Mostrar todo el contenido del artículo en el feed expandido (si fuera posible)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Mostrar previsualización de imagen en las notificaciones (si fuera posible)"
+  },
+  "UpdateFeeds": {
+    "message": "Actualizar"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Actualizar solo las categorías que sigo"
+  },
+  "UseSecureConnection": {
+    "message": "Usar conexión segura (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Tienes $count$ feeds",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}
