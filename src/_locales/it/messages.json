@@ -8,8 +8,14 @@
   "Categories": {
     "message": "Categorie"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Chiudi popup quando l'ultimo feed è stato letto"
+  },
   "CurrentUser": {
     "message": "Utente corrente"
+  },
+  "DisableOptionsSync": {
+    "message": "Disabilita la sincronizzazione delle opzioni dell'estensione"
   },
   "EnableBackgroundMode": {
     "message": "Abilita modalità background"

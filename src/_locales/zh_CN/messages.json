@@ -8,8 +8,14 @@
   "Categories": {
     "message": "分类"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "阅读完最后一条时关闭弹窗"
+  },
   "CurrentUser": {
     "message": "当前用户"
+  },
+  "DisableOptionsSync": {
+    "message": "禁用扩展选项的同步"
   },
   "Email": {
     "message": "邮箱"
