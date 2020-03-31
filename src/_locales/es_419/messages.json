@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Capacidad de guardar feeds"
   },
+  "AutoMarkRead": {
+    "message": "Marcar como leído al abrir"
+  },
   "Categories": {
     "message": "Categorías"
   },
@@ -11,8 +14,14 @@
   "EnableBackgroundMode": {
     "message": "Permitir modo segundo plano"
   },
+  "ExpandedPopupWidth": {
+    "message": "Ancho del popup"
+  },
   "ExpandFeeds": {
     "message": "Expandir todos los feed al abrir la ventana emergente"
+  },
+  "ExtensionDescription": {
+    "message": "Extensión para el lector de noticias Feedly"
   },
   "FeedlyNotifierOptions": {
     "message": "Opciones de Feedly Notifier"
