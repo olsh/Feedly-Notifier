@@ -8,14 +8,23 @@
   "Categories": {
     "message": "Kategorien"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Schließe Popup wenn der letzte Feed gelesen ist"
+  },
   "CurrentUser": {
     "message": "Aktueller Benutzer"
+  },
+  "DisableOptionsSync": {
+    "message": "Deaktiviere Synchronisation der Erweiterungsoptionen"
   },
   "Email": {
     "message": "E-Mail"
   },
   "EnableBackgroundMode": {
     "message": "Hintergrund Modus aktivieren"
+  },
+  "EngagementFilterLimit": {
+    "message": "Markiere Artikel als gelesen wenn Beliebtheit kleiner als"
   },
   "EngagementRate": {
     "message": "Beliebtheit"
@@ -131,6 +140,9 @@
   "Save": {
     "message": "Speichern"
   },
+  "ShowBlogIconInNotifications": {
+    "message": "Zeige Seiten Favicon in Benachrichtigung"
+  },
   "ShowCategories": {
     "message": "Zeige Kategorien im Popup"
   },
@@ -139,6 +151,9 @@
   },
   "ShowDesktopNotifications": {
     "message": "Desktop Benachrichtigungen anzeigen"
+  },
+  "ShowEngagementFilter": {
+    "message": "Zeige Filter-Button Beliebtheit"
   },
   "ShowFullFeedContent": {
     "message": "Den gesamten Inhalt eines Artikels in der erweiterten Ansicht anzeigen (falls möglich)"

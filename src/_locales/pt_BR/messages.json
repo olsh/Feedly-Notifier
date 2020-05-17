@@ -8,14 +8,26 @@
   "Categories": {
     "message": "Categorias"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Fechar pop-up quando o último feed for lido"
+  },
   "CurrentUser": {
     "message": "Usuário atual"
+  },
+  "DisableOptionsSync": {
+    "message": "Desabilitar a sincronização das opções de extensão"
   },
   "Email": {
     "message": "E-mail"
   },
   "EnableBackgroundMode": {
     "message": "Habilitar modo segundo plano"
+  },
+  "EngagementFilterLimit": {
+    "message": "Marque os artigos como lidos se o envolvimento for menor que"
+  },
+  "EngagementRate": {
+    "message": "Taxa de engajamento (popularidade)"
   },
   "ExpandedPopupWidth": {
     "message": "Expandir largura do popup"
@@ -59,6 +71,9 @@
   "MarkAsRead": {
     "message": "Marcar como lido"
   },
+  "MarkAsReadEngagement": {
+    "message": "Marcar como lida pelo filtro de engajamento"
+  },
   "MaxNotificationsCount": {
     "message": "Número máximo de notificações por vez"
   },
@@ -67,6 +82,9 @@
   },
   "More": {
     "message": "Mais"
+  },
+  "NewestFirst": {
+    "message": "Novos primeiro"
   },
   "NewFeeds": {
     "message": "Novos feeds"
@@ -79,6 +97,9 @@
   },
   "NoUnreadArticles": {
     "message": "Não há novos artigos"
+  },
+  "OldestFirst": {
+    "message": "Antigos primeiro"
   },
   "OpenAllFeeds": {
     "message": "Abrir todos feeds"
@@ -130,6 +151,9 @@
   },
   "ShowThumbnailInNotifications": {
     "message": "Mostrar imagem de pré-visualização nas notificações (se possível)"
+  },
+  "Sorting": {
+    "message": "Ordenar"
   },
   "UpdateFeeds": {
     "message": "Atualizar"
