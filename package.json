@@ -2,7 +2,7 @@
   "name": "feedly-notifier",
   "description": "Feedly Notifier is a tiny extension that keeps you up to date with your feedly subscriptions.",
   "devDependencies": {
-    "grunt": "^1.0.4",
+    "grunt": "^1.1.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-preprocess": "^5.1.0",
@@ -21,9 +21,9 @@
   "buildPath": "build",
   "libPath": "node_modules",
   "dependencies": {
-    "dompurify": "^2.0.7",
-    "jquery": "^3.4.1",
-    "mustache": "^3.1.0",
+    "dompurify": "^2.0.11",
+    "jquery": "^3.5.1",
+    "mustache": "^4.0.1",
     "timeago.js": "^4.0.1",
     "webextension-polyfill": "^0.6.0"
   }
