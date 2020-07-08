@@ -8,11 +8,26 @@
   "Categories": {
     "message": "Kategorie"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Zamknij okno po przeczytaniu ostatniej wiadomości"
+  },
   "CurrentUser": {
     "message": "Aktualny użytkownik"
   },
+  "Dark": {
+    "message": "Ciemny"
+  },
+  "DisableOptionsSync": {
+    "message": "Wyłącz synchronizację opcji"
+  },
   "EnableBackgroundMode": {
     "message": "Aktywuj działanie w tle"
+  },
+  "EngagementFilterLimit": {
+    "message": "Oznacz jako przeczytane wiadomości mniej popularny niż"
+  },
+  "EngagementRate": {
+    "message": "Od najpopularniejszych"
   },
   "ExpandedPopupWidth": {
     "message": "Szerokość rozszerzonego okna"
@@ -47,6 +62,9 @@
   "IntervalPeriod": {
     "message": "Aktualizuj co (min.)"
   },
+  "Light": {
+    "message": "Jasny"
+  },
   "Login": {
     "message": "Zaloguj się"
   },
@@ -62,17 +80,26 @@
   "MarkAsRead": {
     "message": "Oznacz jako przeczytane"
   },
+  "MarkAsReadEngagement": {
+    "message": "Oznacz mało popularne jako przeczytane"
+  },
   "MaxNotificationsCount": {
     "message": "Maksymalna liczba powiadomień"
   },
   "MaxNumberOfFeeds": {
-    "message": "Maksymalna liczba waidomości w oknie"
+    "message": "Maksymalna liczba wiadomości w oknie"
   },
   "More": {
     "message": "Więcej"
   },
+  "NewestFirst": {
+    "message": "Od najnowszych"
+  },
   "NewFeeds": {
     "message": "Nowe wiadomości"
+  },
+  "Nord": {
+    "message": "Nord"
   },
   "NoSavedArticles": {
     "message": "Brak zapisanych artykułów"
@@ -82,6 +109,9 @@
   },
   "NoUnreadArticles": {
     "message": "Brak nieprzeczytanych artykułów"
+  },
+  "OldestFirst": {
+    "message": "Od najstarszych"
   },
   "OpenAllFeeds": {
     "message": "Otwórz wszystkie wiadomości"
@@ -120,7 +150,7 @@
     "message": "Zapisz"
   },
   "ShowBlogIconInNotifications": {
-    "message": "Pokaż favicon w powiadomieniach"
+    "message": "Pokaż logo serwisu w powiadomieniach"
   },
   "ShowCategories": {
     "message": "Pokaż kategorie w oknie"
@@ -131,11 +161,20 @@
   "ShowDesktopNotifications": {
     "message": "Pokazuj powiadomienia"
   },
+  "ShowEngagementFilter": {
+    "message": "Pokaż przycisk filtrowania mało popularnych wiadomości"
+  },
   "ShowFullFeedContent": {
-    "message": "Pokazuj cały artykuł w rozwiniętym kanale (jeżeli możliwe)"
+    "message": "Pokazuj cały artykuł po rozwinięciu okna (jeżeli możliwe)"
   },
   "ShowThumbnailInNotifications": {
     "message": "Pokaż podgląd obrazów w powiadomieniach (jeśli możliwe)"
+  },
+  "Sorting": {
+    "message": "Sortowanie"
+  },
+  "Theme": {
+    "message": "Motyw"
   },
   "UpdateFeeds": {
     "message": "Aktualizacja"
