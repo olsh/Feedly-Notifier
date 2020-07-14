@@ -436,9 +436,10 @@ function showSavedFeeds() {
 }
 
 function setLastVisibleItems() {
-    $(".item").removeClass("item-last");
-    $("#feed .item").not(':hidden').last().addClass("item-last");
-    $("#feed-saved .item").not(':hidden').last().addClass("item-last");
+    if (!$(".item").not(':hidden').last().hasClass("item-last")) {
+        $(".item").removeClass("item-last");
+        $(".item").not(':hidden').last().addClass("item-last");
+    }
 }
 
 function setPopupWidth(expanded) {
