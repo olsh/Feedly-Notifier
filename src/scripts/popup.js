@@ -312,6 +312,7 @@ function markAllAsRead() {
     $(".item:visible").each(function (key, value) {
         feedIds.push($(value).data("id"));
     });
+    scrollFeedsToTop();
     markAsRead(feedIds);
 }
 
@@ -323,6 +324,7 @@ function markAsReadEngagement() {
             feedIds.push($(value).data("id"));
         }
     });
+    scrollFeedsToTop();
     markAsRead(feedIds);
 }
 
@@ -331,7 +333,13 @@ function markAllAsUnsaved() {
     $(".item:visible").each(function (key, value) {
         feedIds.push($(value).data("id"));
     });
+    scrollFeedsToTop();
     markAsUnSaved(feedIds);
+}
+
+function scrollFeedsToTop() {
+    $("#feed").scrollTop(0);
+    $("#feed-saved").scrollTop(0);
 }
 
 function renderCategories(container, feeds){
