@@ -24,7 +24,13 @@ $(document).ready(async function () {
     // @if BROWSER='firefox'
     popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
     if (popupGlobal.isSidebar) {
-	    $(document.body).css("font-size", "12pt");
+	    $(document.body).css("font-size", "12pt");	    
+	    $("html").height("100%");
+	    $("html").css("min-height", "600px");
+	    $("#popup-body").css("min-height", "600px");
+	    $("#popup-body").height("100%");
+	    $("#popup-body").css("max-height", "100%");
+	    $("#popup-content").css("max-height", "100%");
     }
     // @endif
 
@@ -129,8 +135,6 @@ $("#popup-content").on("click", ".show-content", function () {
                 // @endif
 
                 contentContainer.html(Mustache.render(template, feed));
-		if (popupGlobal.isSidebar)
-		   // contentContainer.css({width: "95%", marginLeft: 5});
 
                 //For open new tab without closing popup
                 contentContainer.find("a").each(function (key, value) {
