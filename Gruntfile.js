@@ -47,7 +47,7 @@ module.exports = function (grunt) {
                     replacements: [
                         {
                             pattern: /http(?:s)?:\/\/(?:www\.)?cloud\.feedly\.com/gi,
-                            replacement: "http://sandbox7.feedly.com"
+                            replacement: "https://sandbox7.feedly.com"
                         }
                     ]
                 }

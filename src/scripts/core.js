@@ -928,6 +928,7 @@ function getAccessToken(callback) {
                 let codeParse = /code=(.+?)(?:&|$)/i;
                 let matches = codeParse.exec(information.url);
                 if (matches) {
+                    appGlobal.feedlyApiClient.accessToken = null;
                     appGlobal.feedlyApiClient.request("auth/token", {
                         method: "POST",
                         useSecureConnection: appGlobal.options.useSecureConnection,
