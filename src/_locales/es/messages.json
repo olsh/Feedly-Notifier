@@ -17,6 +17,12 @@
   "EnableBackgroundMode": {
     "message": "Activar modo en segundo plano"
   },
+  "EngagementFilterLimit": {
+    "message": "CompromisoFiltroLímite"
+  },
+  "EngagementRate": {
+    "message": "Tasa de participación"
+  },
   "ExpandedPopupWidth": {
     "message": "Ventana emergente de anchura expandida"
   },
@@ -71,6 +77,9 @@
   "More": {
     "message": "Más"
   },
+  "NewestFirst": {
+    "message": "El más reciente primero"
+  },
   "NewFeeds": {
     "message": "Nuevas fuentes"
   },
@@ -82,6 +91,9 @@
   },
   "NoUnreadArticles": {
     "message": "No hay artículos no leídos"
+  },
+  "OldestFirst": {
+    "message": "Los más viejos primero"
   },
   "OpenAllFeeds": {
     "message": "Abrir todas las fuentes"
@@ -136,6 +148,9 @@
   },
   "ShowThumbnailInNotifications": {
     "message": "Mostrar vista previa de la imagen en las notificationes (si es posible)"
+  },
+  "Sorting": {
+    "message": "Clasificación"
   },
   "UpdateFeeds": {
     "message": "Actualizar"
