@@ -40,6 +40,7 @@ var appGlobal = {
         showCounter: true,
         playSound: true,
         sortBy: "newest",
+        theme: "light",
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
         showCategories: false,

@@ -8,6 +8,7 @@ var popupGlobal = {
 };
 
 $(document).ready(async function () {
+    setTheme();
     $("#feed, #feed-saved").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
     $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
     $("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
@@ -23,12 +24,18 @@ $(document).ready(async function () {
     // @if BROWSER='firefox'
     popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
     if (popupGlobal.isSidebar) {
-	    $(document.body).css("font-size", "12pt");
+	    $(document.body).css("font-size", "12pt");	    
+	    $("html").height("100%");
+	    $("html").css("min-height", "600px");
+	    $("#popup-body").css("min-height", "600px");
+	    $("#popup-body").height("100%");
+	    $("#popup-body").css("max-height", "100%");
+	    $("#popup-content").css("max-height", "100%");
     }
     // @endif
 
     setPopupWidth(false);
-    
+
     executeAsync(renderFeeds);
 });
 
@@ -128,8 +135,6 @@ $("#popup-content").on("click", ".show-content", function () {
                 // @endif
 
                 contentContainer.html(Mustache.render(template, feed));
-		if (popupGlobal.isSidebar)
-		    contentContainer.css({width: "95%", marginLeft: 5});
 
                 //For open new tab without closing popup
                 contentContainer.find("a").each(function (key, value) {
@@ -169,23 +174,21 @@ $("#popup-content").on("click", ".save-feed", function () {
     $this.toggleClass("saved");
 });
 
-$("#popup-content").on("click", "#website", function(){
-    popupGlobal.backgroundPage.openFeedlyTab();
+$("#popup-content").on("click", "#website", openFeedlyTab);
 
-    // Close the popup since the user wants to see Feedly website anyway
-    window.close();
-});
+$("#popup-content").on("click", "#feedly-logo", openFeedlyTab);
 
 $("#popup-content").on("click", ".categories > span", function (){
     $(".categories").find("span").removeClass("active");
     var button = $(this).addClass("active");
     var categoryId = button.data("id");
     if (categoryId) {
-        $(".item").hide();
+        $(".item").hide().removeClass("item-last");
         $(".item[data-categories~='" + categoryId + "']").show();
     } else {
         $(".item").show();
     }
+    setLastVisibleItems();
 });
 
 $("#feedly").on("click", "#feedly-logo", function (event) {
@@ -290,6 +293,8 @@ function markAsRead(feedIds) {
     popupGlobal.backgroundPage.markAsRead(feedIds, closePopup ? null : function () {
         if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
             renderFeeds();
+        } else {
+            setLastVisibleItems();
         }
     });
 }
@@ -311,6 +316,7 @@ function markAllAsRead() {
     $(".item:visible").each(function (key, value) {
         feedIds.push($(value).data("id"));
     });
+    scrollFeedsToTop();
     markAsRead(feedIds);
 }
 
@@ -322,6 +328,7 @@ function markAsReadEngagement() {
             feedIds.push($(value).data("id"));
         }
     });
+    scrollFeedsToTop();
     markAsRead(feedIds);
 }
 
@@ -330,7 +337,13 @@ function markAllAsUnsaved() {
     $(".item:visible").each(function (key, value) {
         feedIds.push($(value).data("id"));
     });
+    scrollFeedsToTop();
     markAsUnSaved(feedIds);
+}
+
+function scrollFeedsToTop() {
+    $("#feed").scrollTop(0);
+    $("#feed-saved").scrollTop(0);
 }
 
 function renderCategories(container, feeds){
@@ -360,6 +373,27 @@ function getUniqueCategories(feeds){
     return categories;
 }
 
+function setTheme() {
+    switch (popupGlobal.backgroundPage.appGlobal.options.theme) {
+        case "dark":
+            document.body.setAttribute('data-theme', 'dark');
+            break;
+        case "nord":
+            document.body.setAttribute('data-theme', 'nord');
+            break;
+        default: {
+            document.body.removeAttribute('data-theme');
+        }
+    }
+}
+
+function openFeedlyTab() {
+    popupGlobal.backgroundPage.openFeedlyTab();
+
+    // Close the popup since the user wants to see Feedly website anyway
+    window.close();
+}
+
 function showLoader() {
     $("body").children("div").hide();
     $("#loading").show();
@@ -387,6 +421,7 @@ function showFeeds() {
     $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
     $(".show-content").attr("title", chrome.i18n.getMessage("More"));
     $("#feedly").show().find("#popup-actions").show().children().filter(".icon-unsaved, #mark-read-engagement").hide();
+    setLastVisibleItems();
 
     if (popupGlobal.backgroundPage.appGlobal.options.showEngagementFilter) {
         $("#mark-read-engagement").show();
@@ -400,6 +435,15 @@ function showSavedFeeds() {
     $("#feedly").show().find("#popup-actions").show().children().hide();
     $("#feedly").show().find("#popup-actions").show().children().filter(".icon-unsaved").show();
     $("#feedly").show().find("#popup-actions").show().children().filter(".icon-refresh").show();
+
+    setLastVisibleItems();
+}
+
+function setLastVisibleItems() {
+    if (!$(".item").not(':hidden').last().hasClass("item-last")) {
+        $(".item").removeClass("item-last");
+        $(".item").not(':hidden').last().addClass("item-last");
+    }
 }
 
 function setPopupWidth(expanded) {

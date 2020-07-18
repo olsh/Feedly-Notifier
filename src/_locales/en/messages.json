@@ -14,6 +14,9 @@
   "CurrentUser": {
     "message": "Current user"
   },
+  "Dark": {
+    "message": "Dark"
+  },
   "DisableOptionsSync": {
     "message": "Disable synchronization of the extension options"
   },
@@ -62,6 +65,9 @@
   "IntervalPeriod": {
     "message": "Interval period (min.)"
   },
+  "Light": {
+    "message": "Light"
+  },
   "Login": {
     "message": "Login"
   },
@@ -94,6 +100,9 @@
   },
   "NewFeeds": {
     "message": "New feeds"
+  },
+  "Nord": {
+    "message": "Nord"
   },
   "NoSavedArticles": {
     "message": "No saved articles"
@@ -166,6 +175,9 @@
   },
   "Sorting": {
     "message": "Sorting"
+  },
+  "Theme": {
+    "message": "Theme"
   },
   "UpdateFeeds": {
     "message": "Update"
