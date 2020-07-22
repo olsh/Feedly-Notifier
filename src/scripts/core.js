@@ -928,10 +928,10 @@ function getAccessToken(callback) {
                 let codeParse = /code=(.+?)(?:&|$)/i;
                 let matches = codeParse.exec(information.url);
                 if (matches) {
-                    appGlobal.feedlyApiClient.accessToken = null;
                     appGlobal.feedlyApiClient.request("auth/token", {
                         method: "POST",
                         useSecureConnection: appGlobal.options.useSecureConnection,
+                        skipAuthentication: true,
                         parameters: {
                             code: matches[1],
                             client_id: appGlobal.clientId,
@@ -967,6 +967,7 @@ function refreshAccessToken(){
     return appGlobal.feedlyApiClient.request("auth/token", {
         method: "POST",
         useSecureConnection: appGlobal.options.useSecureConnection,
+        skipAuthentication: true,
         parameters: {
             refresh_token: appGlobal.options.refreshToken,
             client_id: appGlobal.clientId,

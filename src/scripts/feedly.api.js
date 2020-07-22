@@ -63,7 +63,7 @@ let FeedlyApiClient = function (accessToken) {
         }
 
         let headers = {};
-        if (this.accessToken) {
+        if (this.accessToken && !settings.skipAuthentication) {
             headers.Authorization = "OAuth " + this.accessToken;
         }
 
