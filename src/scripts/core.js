@@ -684,17 +684,26 @@ function parseFeeds(feedlyResponse) {
                     }
                 }
 
-                //Set title
-                let title;
                 let titleDirection;
-                if (item.title) {
-                    if (item.title.indexOf("direction:rtl") !== -1) {
-                        //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
-                        title = item.title.replace(/<\/?div.*?>/gi, "");
-                        titleDirection = "rtl";
-                    } else {
-                        title = item.title;
+                let title = item.title;
+
+                //Sometimes Feedly doesn't have title property, so we put content
+                // Feedly website do the same trick
+                if (!title) {
+                    if (item.summary && item.summary.content) {
+                        const maxTitleLength = 100;
+                        if (item.summary.content.length > maxTitleLength) {
+                            title = item.summary.content.substring(0, maxTitleLength) + "...";
+                        } else {
+                            title = item.summary.content;
+                        }
                     }
+                }
+
+                if (title && title.indexOf("direction:rtl") !== -1) {
+                    //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
+                    title = title.replace(/<\/?div.*?>/gi, "");
+                    titleDirection = "rtl";
                 }
 
                 let isSaved;
