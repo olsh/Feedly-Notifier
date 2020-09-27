@@ -8,14 +8,26 @@
   "Categories": {
     "message": "أقسام"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "إغلاق النافذة عند قراءة آخر خبر"
+  },
   "CurrentUser": {
     "message": "المستخدم الحالي"
+  },
+  "Dark": {
+    "message": "داكن"
+  },
+  "DisableOptionsSync": {
+    "message": "تعطيل المزامنة لخيارات الإضافة"
   },
   "Email": {
     "message": "البريد الالكتروني"
   },
   "EnableBackgroundMode": {
     "message": "تفعيل وضع الخلفية"
+  },
+  "EngagementRate": {
+    "message": "معدل الدخول (الشعبية)"
   },
   "ExpandedPopupWidth": {
     "message": "توسيع عرض النوافذ المنبثقة"
@@ -50,6 +62,9 @@
   "IntervalPeriod": {
     "message": "تحديث القائمة دوريا (بالدقائق.)"
   },
+  "Light": {
+    "message": "فاتح"
+  },
   "Login": {
     "message": "تسجيل الدخول"
   },
@@ -74,8 +89,14 @@
   "More": {
     "message": "أكثر"
   },
+  "NewestFirst": {
+    "message": "الأجدد أولا "
+  },
   "NewFeeds": {
     "message": "خلاصات جديدة"
+  },
+  "Nord": {
+    "message": "شمالي"
   },
   "NoSavedArticles": {
     "message": "لا توجد مقالات محفوظة"
@@ -85,6 +106,9 @@
   },
   "NoUnreadArticles": {
     "message": "لا توجد مقالات غير مقروءة"
+  },
+  "OldestFirst": {
+    "message": "الأقدم أولا"
   },
   "OpenAllFeeds": {
     "message": "افتح كل الخلاصات"
@@ -122,6 +146,9 @@
   "Save": {
     "message": "حفظ"
   },
+  "ShowBlogIconInNotifications": {
+    "message": "إظهار أيقونة الموقع في الإشعارات"
+  },
   "ShowCategories": {
     "message": "أظهر الأقسام في النافذة المنبقة"
   },
@@ -133,6 +160,12 @@
   },
   "ShowFullFeedContent": {
     "message": "اظهر المحتوى الكامل للمقال (إن كان ممكنا)"
+  },
+  "Sorting": {
+    "message": "تصنيف"
+  },
+  "Theme": {
+    "message": "ثيم"
   },
   "UpdateFeeds": {
     "message": "تحديث"
