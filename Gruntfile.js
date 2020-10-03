@@ -84,7 +84,7 @@ module.exports = function (grunt) {
             build: {
                 cwd: "<%= pkg.buildPath %>/",
                 src: ["<%= pkg.buildPath %>/**"],
-                dest: '<%= pkg.buildPath %>/feedly-notifier.zip',
+                dest: '<%= pkg.buildPath %>/feedly-notifier-' + grunt.option('browser') + '.zip',
                 compression: 'DEFLATE'
             }
         },
