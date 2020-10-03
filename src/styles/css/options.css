@@ -43,13 +43,8 @@ h3 {
 }
 
 #options,
-#donate,
 #userInfo {
     padding: 20px;
-}
-
-#donate {
-    float: right;
 }
 
 #userInfo {
