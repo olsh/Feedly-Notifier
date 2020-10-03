@@ -6,7 +6,6 @@ Feedly Notifier
 ---
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/egikgfbhipinieabdmcpigejkaomgjgb)](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/egikgfbhipinieabdmcpigejkaomgjgb)](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/egikgfbhipinieabdmcpigejkaomgjgb)](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb)
 ---
 [![Mozilla Add-on](https://img.shields.io/amo/v/feedly-notifier)](https://addons.mozilla.org/en-US/firefox/addon/feedly-notifier/)
 [![Mozilla Add-on](https://img.shields.io/amo/users/feedly-notifier)](https://addons.mozilla.org/en-US/firefox/addon/feedly-notifier/)
