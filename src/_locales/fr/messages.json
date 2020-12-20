@@ -8,14 +8,23 @@
   "Categories": {
     "message": "Catégories"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Fermer la fenêtre quand le dernier article est lu"
+  },
   "CurrentUser": {
     "message": "Utilisateur courant"
+  },
+  "Dark": {
+    "message": "Sombre"
+  },
+  "DisableOptionsSync": {
+    "message": "Désactiver la synchronisation des options de l'extension"
   },
   "Email": {
     "message": "Courriel"
   },
   "EnableBackgroundMode": {
-    "message": "Activer le mode en arrière-plan"
+    "message": "Activer le mode d'apparence"
   },
   "EngagementFilterLimit": {
     "message": "Marqué les articles comme Lu si moins d'actif que"
@@ -27,7 +36,7 @@
     "message": "Largeur de la fenêtre étendue"
   },
   "ExpandFeeds": {
-    "message": "Étendre tous les articles à l'ouverture de la fenêtre"
+    "message": "Afficher tous les articles à l'ouverture de la fenêtre"
   },
   "ExtensionDescription": {
     "message": "Extension pour le lecteur de flux Feedly"
@@ -55,6 +64,9 @@
   },
   "IntervalPeriod": {
     "message": "Intervalle de vérification (en minutes)"
+  },
+  "Light": {
+    "message": "Clair"
   },
   "Login": {
     "message": "Connexion"
@@ -111,7 +123,7 @@
     "message": "Ouvrir les articles dans le même onglet"
   },
   "OpenSiteOnIconClick": {
-    "message": "Ouvrir le site de Feedly lors du clique sur l'icône (Désactive la fenêtre)"
+    "message": "Ouvrir le site de Feedly lors du clic sur l'icône (Désactive la fenêtre contextuelle)"
   },
   "OptionsSaved": {
     "message": "Les options ont été enregistrées"
@@ -157,6 +169,9 @@
   },
   "Sorting": {
     "message": "Tri"
+  },
+  "Theme": {
+    "message": "Thème"
   },
   "UpdateFeeds": {
     "message": "Actualiser"
