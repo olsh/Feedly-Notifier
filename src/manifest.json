@@ -3,7 +3,7 @@
 
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
-    "version": "2.25.4",
+    "version": "2.25.5",
     "default_locale": "en",
     "permissions": [
         "storage",
