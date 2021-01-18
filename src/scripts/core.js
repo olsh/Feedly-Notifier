@@ -89,15 +89,15 @@ var appGlobal = {
     },
     //Names of options after changes of which scheduler will be initialized
     criticalOptionNames: [
-        "updateInterval", 
-        "accessToken", 
-        "showFullFeedContent", 
+        "updateInterval",
+        "accessToken",
+        "showFullFeedContent",
         "openSiteOnIconClick",
-        "maxNumberOfFeeds", 
-        "abilitySaveFeeds", 
-        "filters", 
+        "maxNumberOfFeeds",
+        "abilitySaveFeeds",
+        "filters",
         "isFiltersEnabled",
-        "showCounter", 
+        "showCounter",
         "resetCounterOnClick",
         "grayIconColorIfNoUnread",
         "sortBy"
@@ -212,7 +212,7 @@ function initialize() {
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
 
     chrome.runtime.getPlatformInfo(function (platformInfo) {
-        appGlobal.environment.os = platformInfo.os; 
+        appGlobal.environment.os = platformInfo.os;
     });
     startSchedule(appGlobal.options.updateInterval);
 }
@@ -740,7 +740,7 @@ function parseFeeds(feedlyResponse) {
                     });
                 }
 
-                let googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "&alt=feed";
+                let googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "%26alt=feed";
 
                 return {
                     title: title,
