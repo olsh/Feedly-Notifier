@@ -740,7 +740,7 @@ function parseFeeds(feedlyResponse) {
                     });
                 }
 
-                let googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "%26alt=feed";
+                let googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "%26sz=64%26alt=feed";
 
                 return {
                     title: title,
