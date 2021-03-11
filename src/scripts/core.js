@@ -27,6 +27,7 @@ var appGlobal = {
         openSiteOnIconClick: false,
         feedlyUserId: "",
         abilitySaveFeeds: false,
+        saveFeedsAlternativeToggle: false,
         maxNumberOfFeeds: 20,
         forceUpdateFeeds: false,
         useSecureConnection: true,

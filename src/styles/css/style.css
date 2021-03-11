@@ -42,6 +42,10 @@
     --active-tab-bg-color: #6cc655;
     --active-tab-color: white;
     --active-tab-hover-color: white;
+    --alt-tabs-bg-color: var(--bg-color);
+    --alt-tabs-selected-bg-color: var(--button-bg-color);
+    --alt-tabs-selected-color: var(--glyphicon-color);
+    --alt-tabs-unselected-color: var(--button-bg-color);
     /*categories*/
     --categories-span-color: black;
     --categories-span-border: none;
@@ -111,6 +115,10 @@
     --active-tab-bg-color: var(--color-primary-2);
     --active-tab-color: var(--color-secondary);
     --active-tab-hover-color: var(--color-secondary);
+    --alt-tabs-bg-color: var(--color-primary);
+    --alt-tabs-selected-bg-color: var(--glyphicon-color);
+    --alt-tabs-selected-color: var(--color-primary);
+    --alt-tabs-unselected-color: var(--glyphicon-color);
     /*categories*/
     --categories-span-color: var(--color-secondary-2);
     --categories-span-border: 1px solid var(--color-primary-3);
@@ -178,6 +186,10 @@
     --active-tab-bg-color: var(--color-primary-2);
     --active-tab-color: var(--color-secondary);
     --active-tab-hover-color: var(--color-secondary);
+    --alt-tabs-bg-color: var(--color-primary);
+    --alt-tabs-selected-bg-color: var(--glyphicon-color);
+    --alt-tabs-selected-color: var(--color-primary);
+    --alt-tabs-unselected-color: var(--glyphicon-color);
     /*categories*/
     --categories-span-color: var(--color-secondary-2);
     --categories-span-border: 1px solid var(--color-primary-3);
@@ -284,9 +296,19 @@ body {
     vertical-align: bottom;
 }
 
+#feedly-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#feedly-section, #popup-actions {
+    flex: 1;
+}
+
 #feedly-section {
-    float: left;
     margin-bottom: 10px;
+    white-space: nowrap;
 }
 
 #feedly-logo {
@@ -317,9 +339,8 @@ body {
 }
 
 #popup-actions {
-    display: none;
-    float: right;
     margin-bottom: 10px;
+    text-align: right;
 }
 
 #popup-actions > em {
@@ -392,16 +413,16 @@ body {
     display: inline-block;
 }
 
-.glyphicon {
+.menu-glyphicon {
     cursor: pointer;
     color: var(--glyphicon-color);
 }
 
-.glyphicon:hover {
+.menu-glyphicon:hover {
     color: var(--glyphicon-hover-color);
 }
 
-.glyphicon:before {
+.menu-glyphicon:before {
     font-size: 13px;
 }
 
@@ -413,7 +434,7 @@ body {
     display: none;
 }
 
-.tabs #tabs-container {
+.tabs-standard #tabs-container {
     display: inline;
 }
 
@@ -459,9 +480,12 @@ body {
     scrollbar-color: var(--scrollbar-color);
 }
 
-#feed-empty {
-    text-align: center;
-    margin: 10px;
+#feed-empty, #loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    min-height: 32px;
 }
 
 #feed-empty,
@@ -469,10 +493,6 @@ body {
     color: var(--item-title-color);
 
     font-family: "Open Sans Condensed", "Noto Sans KR", serif;
-}
-
-#loading {
-    margin: 10px;
 }
 
 .categories {
@@ -672,4 +692,110 @@ body {
     display: block;
 
     margin-bottom: 3px;
+}
+
+#alt-tabs-container {
+    display: none;
+    margin: 0 5px 5px;
+}
+
+.tabs-alternative #alt-tabs-container {
+    display: block;
+}
+
+.alt-tabs {
+    width: 58px;
+    height: 32px;
+    display: inline-block;
+    position: relative;
+}
+
+.alt-tabs-checker {
+    position: absolute;
+    z-index: 10;
+    width: 58px;
+    height: 32px;
+    cursor: pointer;
+    margin: 0;
+    opacity: 0;
+}
+
+.alt-tabs-trail {
+    width: 56px;
+    height: 30px;
+    background: var(--alt-tabs-bg-color);
+    border-radius: 17px;
+    border: 1px solid var(--alt-tabs-selected-bg-color);
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+}
+
+.alt-tabs-unselected-left, .alt-tabs-unselected-right {
+    color: var(--alt-tabs-unselected-color);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease-out;
+    z-index: 1;
+}
+
+.alt-tabs-unselected-left {
+    left: 7px;
+}
+
+.alt-tabs-unselected-right {
+    right: 7px;
+}
+
+.alt-tabs-unselected-right, .alt-tabs-checker:checked ~ .alt-tabs-unselected-left {
+    font-size: 15px;
+}
+
+.alt-tabs-unselected-left, .alt-tabs-checker:checked ~ .alt-tabs-unselected-right {
+    font-size: 0;
+}
+
+.alt-tabs-selected-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--alt-tabs-selected-bg-color);
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    z-index: 2;
+    transition: all 0.3s ease-out;
+}
+
+.alt-tabs-checker:checked ~ .alt-tabs-trail .alt-tabs-selected-bg {
+    left: calc(100% - 30px);
+}
+
+.alt-tabs-selected-left, .alt-tabs-selected-right {
+    top: 0;
+    color: var(--alt-tabs-selected-color);
+}
+
+.alt-tabs-selected-left, .alt-tabs-checker:checked ~ .alt-tabs-trail .alt-tabs-selected-right {
+    font-size: 17px;
+}
+
+.alt-tabs-selected-right, .alt-tabs-checker:checked ~ .alt-tabs-trail .alt-tabs-selected-left {
+    font-size: 0;
+}
+
+.alt-tabs-checker ~ .alt-tabs-trail .alt-tabs-selected-left, .alt-tabs-checker:checked ~ .alt-tabs-trail .alt-tabs-selected-right {
+    transition: all 0.3s ease-out;
+}
+
+.alt-tabs-checker:checked ~ .alt-tabs-trail .alt-tabs-selected-left {
+    transition: none;
+}
+
+.tab:disabled, #tabs-checker:disabled {
+    cursor: not-allowed;
 }
