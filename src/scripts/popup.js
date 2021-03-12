@@ -4,7 +4,8 @@ var popupGlobal = {
     feeds: [],
     savedFeeds: [],
     backgroundPage: chrome.extension.getBackgroundPage(),
-    isSidebar: false
+    isSidebar: false,
+    resized: false
 };
 
 $(document).ready(async function () {
@@ -20,6 +21,10 @@ $(document).ready(async function () {
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
     }
+
+    // @if BROWSER='chrome'
+    window.addEventListener('resize', onResizeChrome);
+    // @endif
 
     // @if BROWSER='firefox'
     popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
@@ -455,3 +460,15 @@ function setPopupWidth(expanded) {
         $("#feed, #feed-saved").width(width);
     }
 }
+
+// @if BROWSER='chrome'
+function onResizeChrome() {
+    if (!popupGlobal.resized) {
+        var windowHeight = $(window).height();
+        if ($(document).height() > windowHeight + 1) {
+            $("#popup-body, #popup-content").css("max-height", windowHeight - 1);
+            popupGlobal.resized = true;
+        }
+    }
+}
+// @endif
