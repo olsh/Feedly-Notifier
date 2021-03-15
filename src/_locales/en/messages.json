@@ -152,9 +152,6 @@
   "Save": {
     "message": "Save"
   },
-  "SaveFeedsAlternativeToggle": {
-    "message": "Use an alternative toggle of saved feeds"
-  },
   "ShowBlogIconInNotifications": {
     "message": "Show site favicon in notifications"
   },

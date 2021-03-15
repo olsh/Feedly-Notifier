@@ -19,7 +19,6 @@ $(document).ready(async function () {
 
     if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
-        $("#popup-content").addClass(popupGlobal.backgroundPage.appGlobal.options.saveFeedsAlternativeToggle ? "tabs-alternative" : "tabs-standard");
     }
 
     // @if BROWSER='firefox'
@@ -103,19 +102,7 @@ $("#feed").on("click", ".mark-read", function (event) {
     markAsRead([feed.data("id")]);
 });
 
-$("#feedly").on("click", "#btn-feeds-saved", function () {
-    $(this).addClass("active-tab");
-    $("#btn-feeds").removeClass("active-tab");
-    renderSavedFeeds();
-});
-
-$("#feedly").on("click", "#btn-feeds", function () {
-    $(this).addClass("active-tab");
-    $("#btn-feeds-saved").removeClass("active-tab");
-    renderFeeds();
-});
-
-$("#tabs-checker").change(function () {
+$("#tabs-checkbox").change(function () {
     if ($(this).is(':checked')) {
         renderSavedFeeds();
     } else {
@@ -165,7 +152,7 @@ $("#popup-content").on("click", ".show-content", function () {
 
 /* Manually feeds update */
 $("#feedly").on("click", "#update-feeds", function () {
-    if (!popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds || $("#feed").is(":visible") || (popupGlobal.backgroundPage.appGlobal.options.saveFeedsAlternativeToggle ? !$("#tabs-checker").is(':checked') : $("#btn-feeds").hasClass("active-tab"))) {
+    if (!popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds || !$("#tabs-checkbox").is(':checked')) {
         renderFeeds(true);
     } else {
         renderSavedFeeds(true);
@@ -404,7 +391,7 @@ function openFeedlyTab() {
 }
 
 function showLoader() {
-    lockTabs();
+    lockTabsSlider();
     $("#feed, #feed-saved, #feed-empty").hide();
     $("#loading").show();
 }
@@ -416,14 +403,14 @@ function showLogin() {
 }
 
 function showEmptyContent() {
-    unlockTabs();
+    unlockTabsSlider();
     $("body").children("div").not("#popup-content").hide();
     $("#popup-content").show().children("div").not("#feedly").hide().filter("#feed-empty").text(chrome.i18n.getMessage("NoUnreadArticles")).show();
     $("#feedly").show().find("#popup-actions").show().children().hide().filter(".icon-refresh").show();
 }
 
 function showFeeds() {
-    unlockTabs();
+    unlockTabsSlider();
     if (popupGlobal.backgroundPage.appGlobal.options.resetCounterOnClick) {
         popupGlobal.backgroundPage.resetCounter();
     }
@@ -440,7 +427,7 @@ function showFeeds() {
 }
 
 function showSavedFeeds() {
-    unlockTabs();
+    unlockTabsSlider();
     $("body").children("div").not("#popup-content").hide();
     $("#popup-content").show().children("div").not("#feedly").hide().filter("#feed-saved").show().find(".mark-read").hide();
     $("#feed-saved").find(".show-content").attr("title", chrome.i18n.getMessage("More"));
@@ -465,10 +452,10 @@ function setPopupWidth(expanded) {
     }
 }
 
-function lockTabs() {
-    $('.tab, #tabs-checker').prop("disabled", true);
+function lockTabsSlider() {
+    $('#tabs-checkbox').prop("disabled", true);
 }
 
-function unlockTabs() {
-    $('.tab, #tabs-checker').prop("disabled", false);
+function unlockTabsSlider() {
+    $('#tabs-checkbox').prop("disabled", false);
 }
