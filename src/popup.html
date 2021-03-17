@@ -11,28 +11,38 @@
 </div>
 <div id="popup-content">
     <div id="feedly">
-        <div id="feedly-section">
-            <a href="#" id="feedly-logo"></a><a href="#" id="website"></a>
-        </div>
-        <div id="popup-actions">
-            <em class="glyphicon glyphicon-share" id="open-all-news"><div class="arrow-up"></div><span></span></em>
-            <em class="glyphicon glyphicon-share icon-unsaved" id="open-unsaved-all-news"><div class="arrow-up"></div><span></span></em>
-            <em class="glyphicon glyphicon-ok" id="mark-all-read"><div class="arrow-up"></div><span></span></em>
-            <em class="glyphicon glyphicon-filter" id="mark-read-engagement"><div class="arrow-up"></div><span></span></em>
-            <em class="glyphicon glyphicon-refresh icon-refresh" id="update-feeds"><div class="arrow-up"></div><span></span></em>
-        </div>
-        <div class="clear"></div>
-        <div id="tabs-container">
-            <button id="btn-feeds" class="tab active-tab">Feeds</button>
-            <button id="btn-feeds-saved" class="tab">Saved</button>
+        <div id="feedly-flex">
+            <div id="feedly-section">
+                <a href="#" id="feedly-logo"></a><a href="#" id="website"></a>
+            </div>
+            <div id="tabs-container">
+                <div class="tabs-slider-container">
+                    <input type="checkbox" class="tabs-slider" id="tabs-checkbox">
+                    <span class="tabs-label-unselected-left glyphicon glyphicon-menu-hamburger"></span>
+                    <div class="tabs-trail">
+                        <div class="tabs-selected-bg">
+                            <span class="tabs-label-selected-left glyphicon glyphicon-menu-hamburger"></span>
+                            <span class="tabs-label-selected-right glyphicon glyphicon-time"></span>
+                        </div>
+                    </div>
+                    <span class="tabs-label-unselected-right glyphicon glyphicon-time"></span>
+                </div>
+            </div>
+            <div id="popup-actions">
+                <em class="menu-glyphicon glyphicon glyphicon-share" id="open-all-news"><div class="arrow-up"></div><span></span></em>
+                <em class="menu-glyphicon glyphicon glyphicon-share icon-unsaved" id="open-unsaved-all-news"><div class="arrow-up"></div><span></span></em>
+                <em class="menu-glyphicon glyphicon glyphicon-ok" id="mark-all-read"><div class="arrow-up"></div><span></span></em>
+                <em class="menu-glyphicon glyphicon glyphicon-filter" id="mark-read-engagement"><div class="arrow-up"></div><span></span></em>
+                <em class="menu-glyphicon glyphicon glyphicon-refresh icon-refresh" id="update-feeds"><div class="arrow-up"></div><span></span></em>
+            </div>
         </div>
     </div>
     <div id="feed"></div>
     <div id="feed-saved"></div>
     <div id="feed-empty"></div>
-</div>
-<div id="loading">
-    <img src="/images/loading.svg" alt="loading...">
+    <div id="loading">
+        <img src="/images/loading.svg" alt="loading...">
+    </div>
 </div>
 </body>
 
@@ -46,9 +56,9 @@
                 <a data-link="{{url}}" class="title">{{{title}}}</a>
             </span>
             <span class="article-menu">
-                <span class="glyphicon glyphicon-bookmark save-feed {{#isSaved}} saved {{/isSaved}}" data-saved="{{isSaved}}"></span>
-                <span class="glyphicon glyphicon-eye-open mark-read" title="Mark as read"></span>
-                <span class="glyphicon glyphicon-chevron-down show-content" title="Show content"></span>
+                <span class="menu-glyphicon glyphicon glyphicon-bookmark save-feed {{#isSaved}} saved {{/isSaved}}" data-saved="{{isSaved}}"></span>
+                <span class="menu-glyphicon glyphicon glyphicon-eye-open mark-read" title="Mark as read"></span>
+                <span class="menu-glyphicon glyphicon glyphicon-chevron-down show-content" title="Show content"></span>
             </span>
 
             <div class="blog-title {{blogTitleDirection}}">
