@@ -31,16 +31,16 @@ $("body").on("click", "#logout", function () {
 });
 
 $("#options").on("change", "input", function (e) {
-    $("[data-disable-parent]").each(function(key, value){
-        var child = $(value);
-        var parent = $("input[data-option-name='" + child.data("disable-parent") + "']");
-        parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
-    });
-
     $("[data-enable-parent]").each(function(key, value){
         var child = $(value);
         var parent = $("input[data-option-name='" + child.data("enable-parent") + "']");
         !parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
+    });
+
+    $("[data-disable-parent]").each(function(key, value){
+        var child = $(value);
+        var parent = $("input[data-option-name='" + child.data("disable-parent") + "']");
+        parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
     });
 });
 
