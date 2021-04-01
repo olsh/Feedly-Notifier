@@ -23,7 +23,7 @@
   "dependencies": {
     "dompurify": "^2.2.6",
     "jquery": "^3.5.1",
-    "mustache": "^4.1.0",
+    "mustache": "^4.2.0",
     "timeago.js": "^4.0.1",
     "webextension-polyfill": "^0.7.0"
   }
