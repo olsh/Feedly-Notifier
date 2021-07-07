@@ -14,6 +14,9 @@
   "CurrentUser": {
     "message": "当前用户"
   },
+  "Dark": {
+    "message": "黑暗"
+  },
   "DisableOptionsSync": {
     "message": "禁用扩展选项的同步"
   },
@@ -62,6 +65,9 @@
   "IntervalPeriod": {
     "message": "刷新间隔时间（分钟）"
   },
+  "Light": {
+    "message": "明亮"
+  },
   "Login": {
     "message": "登录"
   },
@@ -94,6 +100,9 @@
   },
   "NewFeeds": {
     "message": "新摘要"
+  },
+  "Nord": {
+    "message": "Nord主题"
   },
   "NoSavedArticles": {
     "message": "没有稍后阅读文章"
@@ -166,6 +175,9 @@
   },
   "Sorting": {
     "message": "排序"
+  },
+  "Theme": {
+    "message": "主题"
   },
   "UpdateFeeds": {
     "message": "更新"

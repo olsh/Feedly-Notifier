@@ -1,6 +1,6 @@
 {
   "AbilitySaveFeeds": {
-    "message": "フィードの保存が可能"
+    "message": "フィードの保存機能"
   },
   "AutoMarkRead": {
     "message": "記事を開いた時に自動で既読にする"
@@ -8,14 +8,29 @@
   "Categories": {
     "message": "カテゴリー"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "最後のフィードを既読した時にポップアップを自動で閉じる"
+  },
   "CurrentUser": {
     "message": "現在のユーザー"
+  },
+  "Dark": {
+    "message": "ダーク"
+  },
+  "DisableOptionsSync": {
+    "message": "拡張機能の設定の同期を無効にする"
   },
   "Email": {
     "message": "メールアドレス"
   },
   "EnableBackgroundMode": {
     "message": "バックグラウンドモードを有効にする"
+  },
+  "EngagementFilterLimit": {
+    "message": "エンゲージメントが次の値以下の場合、自動で記事を既読にする"
+  },
+  "EngagementRate": {
+    "message": "エンゲージメント率（話題度）"
   },
   "ExpandedPopupWidth": {
     "message": "拡張ポップアップの幅"
@@ -36,19 +51,22 @@
     "message": "フィルター"
   },
   "ForceUpdateFeeds": {
-    "message": "ポップアップした際にフィードを強制的に更新する"
+    "message": "ポップアップを開いた際にフィードを強制的に更新する"
   },
   "General": {
     "message": "標準"
   },
   "GrayIconColorIfNoUnread": {
-    "message": "未読が無い場合グレーのアイコンにする"
+    "message": "未読が無い場合アイコンをグレーにする"
   },
   "HideNotificationsAfter": {
     "message": "○秒後にデスクトップ通知を非表示にする（0を指定で非表示にしない）"
   },
   "IntervalPeriod": {
     "message": "更新間隔（分）"
+  },
+  "Light": {
+    "message": "ライト"
   },
   "Login": {
     "message": "ログイン"
@@ -65,17 +83,26 @@
   "MarkAsRead": {
     "message": "既読にする"
   },
+  "MarkAsReadEngagement": {
+    "message": "エンゲージメントフィルターで既読にする"
+  },
   "MaxNotificationsCount": {
     "message": "一回当たりの最大の通知数"
   },
   "MaxNumberOfFeeds": {
-    "message": "ポップアップの最大数"
+    "message": "ポップアップ内の最大フィード数"
   },
   "More": {
     "message": "もっと見る"
   },
+  "NewestFirst": {
+    "message": "新しい順"
+  },
   "NewFeeds": {
     "message": "新しいフィード"
+  },
+  "Nord": {
+    "message": "ノード"
   },
   "NoSavedArticles": {
     "message": "保存された記事はありません"
@@ -86,11 +113,14 @@
   "NoUnreadArticles": {
     "message": "未読の記事はありません"
   },
+  "OldestFirst": {
+    "message": "古い順"
+  },
   "OpenAllFeeds": {
     "message": "全てのフィードを開く"
   },
   "OpenAllSavedFeeds": {
-    "message": "全ての保存済みフィードを開く"
+    "message": "全ての保存済みフィードを開き、保存を解除する"
   },
   "OpenFeedsInBackground": {
     "message": "フィードをバックグラウンドのタブで開く"
@@ -102,10 +132,10 @@
     "message": "アイコンをクリックした際にFeedlyサイトを開く（ポップアップは表示しない）"
   },
   "OptionsSaved": {
-    "message": "オプションは保存されました"
+    "message": "オプションを保存しました"
   },
   "PlaySound": {
-    "message": "新着フィードに通知音を再生する"
+    "message": "フィードの新着時に通知音を再生する"
   },
   "Popup": {
     "message": "ポップアップ"
@@ -134,11 +164,20 @@
   "ShowDesktopNotifications": {
     "message": "デスクトップ通知を表示する"
   },
+  "ShowEngagementFilter": {
+    "message": "エンゲージメントボタンでフィルターを表示"
+  },
   "ShowFullFeedContent": {
     "message": "拡張フィードに全てのコンテンツを表示する（可能な場合）"
   },
   "ShowThumbnailInNotifications": {
     "message": "通知にプレビュー画像を表示する（可能な場合）"
+  },
+  "Sorting": {
+    "message": "並べ替え"
+  },
+  "Theme": {
+    "message": "テーマ"
   },
   "UpdateFeeds": {
     "message": "更新"
