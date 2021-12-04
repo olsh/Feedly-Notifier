@@ -1,0 +1,191 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Possibilitat de guardar feeds"
+  },
+  "AutoMarkRead": {
+    "message": "Marcar automàticament com a llegides les notícies obertes"
+  },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Tancar finestra emergent quan es llegeix l'últim feed"
+  },
+  "CurrentUser": {
+    "message": "Usuari actual"
+  },
+  "Dark": {
+    "message": "Fosc"
+  },
+  "DisableOptionsSync": {
+    "message": "Desactivar la sincronització de les opcions d'extensió"
+  },
+  "Email": {
+    "message": "e-mail"
+  },
+  "EnableBackgroundMode": {
+    "message": "Activa el mode de fons"
+  },
+  "EngagementFilterLimit": {
+    "message": "Marcar els articles com a llegits si la interacció és inferior a"
+  },
+  "EngagementRate": {
+    "message": "Taxa de interacció (popularitat)"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Ample emergent expandida"
+  },
+  "ExpandFeeds": {
+    "message": "Desplega tots els canals quan s'obre emergent"
+  },
+  "ExtensionDescription": {
+    "message": "Extensió per al lector de notícies Feedly"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly opcions de l'notificador"
+  },
+  "FeedlyWebsite": {
+    "message": "Pàgina web Feedly"
+  },
+  "Filters": {
+    "message": "Filtres"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Forçar l'actualització de feeds al obrir la finestra emergent"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Icona gris si no hi ha missatges sense llegir"
+  },
+  "HideNotificationsAfter": {
+    "message": "Amagar notificacions d'escriptori després de x (seg.). 0 - No amagar"
+  },
+  "IntervalPeriod": {
+    "message": "Període d'interval (min.)"
+  },
+  "Light": {
+    "message": "Clar"
+  },
+  "Login": {
+    "message": "Iniciar Sessió"
+  },
+  "Logout": {
+    "message": "Tancar sessió"
+  },
+  "many": {
+    "message": "molts"
+  },
+  "MarkAllAsRead": {
+    "message": "Marcar tots com a llegits"
+  },
+  "MarkAsRead": {
+    "message": "Marcar com llegit"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Marcar com a legit per filtre"
+  },
+  "MaxNotificationsCount": {
+    "message": "Nombre màxim de notificacions alhora"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Nombre màxim de feeds a la finestra emergent"
+  },
+  "More": {
+    "message": "Més"
+  },
+  "NewestFirst": {
+    "message": "El més nou primer"
+  },
+  "NewFeeds": {
+    "message": "Noves feeds"
+  },
+  "NoSavedArticles": {
+    "message": "No hi ha articles guardats"
+  },
+  "Notifications": {
+    "message": "Notificacions"
+  },
+  "NoUnreadArticles": {
+    "message": "No hi ha articles llegits"
+  },
+  "OldestFirst": {
+    "message": "El més antic primer"
+  },
+  "OpenAllFeeds": {
+    "message": "Obrir tots els feeds"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Obrir tots els feeds guardats i esborrels"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Feeds obertes a pestanya en segon pla"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Feeds obertes en la mateixa pestanya"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Obrir Feedly al fer click a la icona (no mostrar emergent)"
+  },
+  "OptionsSaved": {
+    "message": "Les opcions s'han guardat"
+  },
+  "PlaySound": {
+    "message": "Reproduir so d'alerta sobre nous feeds"
+  },
+  "Popup": {
+    "message": "Finestra emergent"
+  },
+  "PopupFontSize": {
+    "message": "Tamany de la font de la finestra emergent en %"
+  },
+  "PopupWidth": {
+    "message": "Amplada de la finestra emergent"
+  },
+  "ResetCounterOnClick": {
+    "message": "Ajust de el comptador quan es fa clic al botó d'extensió"
+  },
+  "Save": {
+    "message": "Desar"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Mostrar icona del lloc web a les notificacions"
+  },
+  "ShowCategories": {
+    "message": "Mostrar categories en la finestra emergent"
+  },
+  "ShowCounter": {
+    "message": "Mostrar comptador"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Mostrar notificacions d'escriptori"
+  },
+  "ShowEngagementFilter": {
+    "message": "Mostra el filtre per botó d'interacció"
+  },
+  "ShowFullFeedContent": {
+    "message": "Mostrar el contingut complet d'l'article en el feed (si és possible)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Mostrar la imatge de vista prèvia a les notificacions (si és possible)"
+  },
+  "Sorting": {
+    "message": "Classificació"
+  },
+  "Theme": {
+    "message": "Tema"
+  },
+  "UpdateFeeds": {
+    "message": "Actualitzar"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Actualitzar només les següents categories"
+  },
+  "UseSecureConnection": {
+    "message": "Utilitzar connexió segura (https)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Tens $count$ nous missatges",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}

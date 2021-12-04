@@ -8,8 +8,17 @@
   "Categories": {
     "message": "Categorías"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Cerrar ventana emergente cuando se lee el último feed"
+  },
   "CurrentUser": {
     "message": "Usuario actual"
+  },
+  "Dark": {
+    "message": "Oscuro"
+  },
+  "DisableOptionsSync": {
+    "message": "Deshabilitar la sincronización de las opciones de la extensión"
   },
   "Email": {
     "message": "Correo electrónico"
@@ -18,10 +27,10 @@
     "message": "Activar modo en segundo plano"
   },
   "EngagementFilterLimit": {
-    "message": "CompromisoFiltroLímite"
+    "message": "Marque los artículos como leídos si la participación es inferior a"
   },
   "EngagementRate": {
-    "message": "Tasa de participación"
+    "message": "Tasa de participación (popularidad)"
   },
   "ExpandedPopupWidth": {
     "message": "Ventana emergente de anchura expandida"
@@ -53,6 +62,9 @@
   "IntervalPeriod": {
     "message": "Periodo de intervalo (min.)"
   },
+  "Light": {
+    "message": "Claro"
+  },
   "Login": {
     "message": "Iniciar sesión"
   },
@@ -60,13 +72,16 @@
     "message": "Cerrar sesión"
   },
   "many": {
-    "message": "muchos"
+    "message": "muchas"
   },
   "MarkAllAsRead": {
     "message": "Marcar todos como leídos"
   },
   "MarkAsRead": {
     "message": "Marcar como leído"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Marcar como leído por filtro de participación"
   },
   "MaxNotificationsCount": {
     "message": "Máximas notificaciones contadas de una vez"
@@ -82,6 +97,9 @@
   },
   "NewFeeds": {
     "message": "Nuevas fuentes"
+  },
+  "Nord": {
+    "message": "Norte"
   },
   "NoSavedArticles": {
     "message": "No hay artículos guardados"
@@ -143,6 +161,9 @@
   "ShowDesktopNotifications": {
     "message": "Mostrar notificaciones de escritorio"
   },
+  "ShowEngagementFilter": {
+    "message": "Mostrar filtro por botón de interacción"
+  },
   "ShowFullFeedContent": {
     "message": "Mostrar el contenido completo de un artículo en la fuente expandida (si es posible)"
   },
@@ -150,7 +171,10 @@
     "message": "Mostrar vista previa de la imagen en las notificationes (si es posible)"
   },
   "Sorting": {
-    "message": "Clasificación"
+    "message": "Ordenación"
+  },
+  "Theme": {
+    "message": "Tema"
   },
   "UpdateFeeds": {
     "message": "Actualizar"

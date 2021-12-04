@@ -1,0 +1,194 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Mogelijkheid om feeds op te slaan"
+  },
+  "AutoMarkRead": {
+    "message": "Berichten automatisch markeren als gelezen na aanklikken"
+  },
+  "Categories": {
+    "message": "Categorieën"
+  },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Pop-up sluiten na lezen van laatste feed"
+  },
+  "CurrentUser": {
+    "message": "Huidige gebruiker"
+  },
+  "Dark": {
+    "message": "Donker"
+  },
+  "DisableOptionsSync": {
+    "message": "Instellingensynchronisatie uitschakelen"
+  },
+  "Email": {
+    "message": "E-mailadres"
+  },
+  "EnableBackgroundMode": {
+    "message": "Achtergrondmodus inschakelen"
+  },
+  "EngagementFilterLimit": {
+    "message": "Artikelen als gelezen markeren indien interactie korter is dan"
+  },
+  "EngagementRate": {
+    "message": "Interactiescore (populariteit)"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Breedte van uitgeklapte pop-up"
+  },
+  "ExpandFeeds": {
+    "message": "Alle feeds uitklappen na aanklikken van pop-up"
+  },
+  "ExtensionDescription": {
+    "message": "Extensie van Feedly-nieuwslezer"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly Melder-instellingen"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly-website"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Feeds bijwerken na aanklikken van pop-up"
+  },
+  "General": {
+    "message": "Algemeen"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Grijs pictogram tonen bij geen ongelezen artikelen"
+  },
+  "HideNotificationsAfter": {
+    "message": "Bureaubladmeldingen verbergen na (in sec. - 0 = niet verbergen)"
+  },
+  "IntervalPeriod": {
+    "message": "Tussenpoos (in min.)"
+  },
+  "Light": {
+    "message": "Licht"
+  },
+  "Login": {
+    "message": "Inloggen"
+  },
+  "Logout": {
+    "message": "Uitloggen"
+  },
+  "many": {
+    "message": "veel"
+  },
+  "MarkAllAsRead": {
+    "message": "Alles markeren als gelezen"
+  },
+  "MarkAsRead": {
+    "message": "Markeren als gelezen"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Markeren als gelezen middels interactiefilter"
+  },
+  "MaxNotificationsCount": {
+    "message": "Max. aantal gelijktijdige meldingen"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Max. aantal feeds in de pop-up"
+  },
+  "More": {
+    "message": "Meer"
+  },
+  "NewestFirst": {
+    "message": "Nieuwste bovenaan"
+  },
+  "NewFeeds": {
+    "message": "Nieuwe feeds"
+  },
+  "NoSavedArticles": {
+    "message": "Geen opgeslagen artikelen"
+  },
+  "Notifications": {
+    "message": "Meldingen"
+  },
+  "NoUnreadArticles": {
+    "message": "Geen ongelezen artikelen"
+  },
+  "OldestFirst": {
+    "message": "Oudste bovenaan"
+  },
+  "OpenAllFeeds": {
+    "message": "Alle feeds openen"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Alle bewaarde feeds openen en verwijderen"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Feeds openen op achtergrondtabblad"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Feeds openen op huidige tabblad"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Feedly-website openen na aanklikken van pictogram (pop-up uitschakelen)"
+  },
+  "OptionsSaved": {
+    "message": "De instellingen zijn opgeslagen."
+  },
+  "PlaySound": {
+    "message": "Geluid afspelen als er nieuwe feeds zijn"
+  },
+  "Popup": {
+    "message": "Pop-up"
+  },
+  "PopupFontSize": {
+    "message": "Tekstgrootte (in procenten)"
+  },
+  "PopupWidth": {
+    "message": "Pop-upbreedte"
+  },
+  "ResetCounterOnClick": {
+    "message": "Teller op nul zetten na aanklikken van extensieknop"
+  },
+  "Save": {
+    "message": "Opslaan"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Favicons tonen op meldingen"
+  },
+  "ShowCategories": {
+    "message": "Categorieën tonen in pop-up"
+  },
+  "ShowCounter": {
+    "message": "Teller tonen"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Bureaubladmeldingen tonen"
+  },
+  "ShowEngagementFilter": {
+    "message": "‘Filteren op interactie’-knop tonen"
+  },
+  "ShowFullFeedContent": {
+    "message": "Volledige artikelinhoud tonen in uitgeklapte feeds (indien mogelijk)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Afbeeldingen voorvertonen op meldingen (indien mogelijk)"
+  },
+  "Sorting": {
+    "message": "Sorteren"
+  },
+  "Theme": {
+    "message": "Thema"
+  },
+  "UpdateFeeds": {
+    "message": "Bijwerken"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Alleen de volgende categorieën bijwerken"
+  },
+  "UseSecureConnection": {
+    "message": "Beveiligde verbinding (https) gebruiken"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Er zijn $count$ nieuwe artikelen.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}
