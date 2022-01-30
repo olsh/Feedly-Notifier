@@ -23,11 +23,12 @@ Changelog can be found [here](https://github.com/olsh/Feedly-Notifier/releases).
 
 1. `yarn`
 2. `grunt sandbox --clientId=sandbox --clientSecret=R26NGS2Q9NAPSEJHCXM3 --browser=chrome`
-You can find actual `clientId` and `clientSecret` [here](https://developer.feedly.com/cloud/)
+You can find actual `clientId` and `clientSecret` [here](https://groups.google.com/g/feedly-cloud)
 The browser parameter can be `chrome`, `opera` or `firefox`.
 3. The result of the commands will be in `build` folder, now you can load the extension to browser.
 
 ## Acknowledgments
 
-Made with  
+Made with
+
 [![WebStorm](https://github.com/olsh/Feedly-Notifier/raw/master/logos/ws-logo.png)](https://www.jetbrains.com/webstorm/)

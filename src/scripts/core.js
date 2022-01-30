@@ -137,7 +137,6 @@ var appGlobal = {
 };
 
 // #Event handlers
-// @if BROWSER!='firefox'
 chrome.runtime.onInstalled.addListener(function (details) {
     readOptions(function () {
         //Write all options in chrome storage and initialize application
@@ -148,14 +147,6 @@ chrome.runtime.onInstalled.addListener(function (details) {
 chrome.runtime.onStartup.addListener(function () {
     readOptions(initialize);
 });
-// @endif
-
-// @if BROWSER=='firefox'
-readOptions(function () {
-    //Write all options in chrome storage and initialize application
-    writeOptions(initialize);
-});
-// @endif
 
 chrome.storage.onChanged.addListener(function (changes, areaName) {
     var callback;
