@@ -3,3 +3,4 @@ node_modules
 build
 bower_components
 *.orig
+keys.json
