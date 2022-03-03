@@ -1,0 +1,32 @@
+name: "Automerge"
+on: [push, pull_request]
+
+jobs:
+    test:
+        strategy:
+            fail-fast: false
+            matrix:
+                browser: ["chrome", "opera", "firefox"]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: "14.x"
+                  cache: "yarn"
+
+            - run: yarn install
+            - run: npx grunt build --clientId=${{ secrets.FEEDLY_CLIENT_ID }} --clientSecret=${{ secrets.FEEDLY_CLIENT_SECRET }} --browser=${{ matrix.browser }}
+
+    automerge:
+        needs: test
+        runs-on: ubuntu-latest
+
+        permissions:
+            pull-requests: write
+            contents: write
+
+        steps:
+            - uses: fastify/github-action-merge-dependabot@v3.0.0
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
