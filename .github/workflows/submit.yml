@@ -12,8 +12,9 @@ jobs:
             - uses: actions/setup-node@v2
               with:
                   node-version: "14.x"
+                  cache: "yarn"
 
-            - run: npm i
+            - run: yarn install
             - run: npx grunt build --clientId=${{ secrets.FEEDLY_CLIENT_ID }} --clientSecret=${{ secrets.FEEDLY_CLIENT_SECRET }} --browser=chrome
             - run: npx grunt build --clientId=${{ secrets.FEEDLY_CLIENT_ID }} --clientSecret=${{ secrets.FEEDLY_CLIENT_SECRET }} --browser=firefox
             - run: npx grunt build --clientId=${{ secrets.FEEDLY_CLIENT_ID }} --clientSecret=${{ secrets.FEEDLY_CLIENT_SECRET }} --browser=opera
