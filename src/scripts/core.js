@@ -653,7 +653,7 @@ function parseFeeds(feedlyResponse) {
 
                 let blogUrl;
                 try {
-                    blogUrl = item.origin.htmlUrl.match(/https?:\/\/[^/?]+/i).pop();
+                    blogUrl = item.origin.htmlUrl.match(/https?:\/\/[^:/?]+/i).pop();
                 } catch (exception) {
                     blogUrl = "#";
                 }
