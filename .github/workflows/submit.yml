@@ -27,6 +27,6 @@ jobs:
             - name: Browser Plugin Publish
               env:
                   PUPPETEER_EXECUTABLE_PATH: /opt/hostedtoolcache/chromium/latest/x64/chrome
-              uses: plasmo-corp/bpp@v1
+              uses: PlasmoHQ/bpp@v2
               with:
                   keys: ${{ secrets.SUBMIT_KEYS }}
