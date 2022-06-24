@@ -677,6 +677,7 @@ function parseFeeds(feedlyResponse) {
 
                 let titleDirection;
                 let title = item.title;
+                let itemUrl = (item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "") || blogUrl;
 
                 //Sometimes Feedly doesn't have title property, so we put content
                 // Feedly website do the same trick
@@ -741,7 +742,7 @@ function parseFeeds(feedlyResponse) {
                 return {
                     title: title,
                     titleDirection: titleDirection,
-                    url: (item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "") || blogUrl,
+                    url: itemUrl,
                     blog: blog,
                     blogTitleDirection: blogTitleDirection,
                     blogUrl: blogUrl,
