@@ -1,0 +1,200 @@
+{
+  "AbilitySaveFeeds": {
+    "message": "Iespēja saglabāt plūsmas"
+  },
+  "AutoMarkRead": {
+    "message": "Automātiski atzīmēt kā lasītu, kad ziņas tiek atvērtas"
+  },
+  "Categories": {
+    "message": "Kategorijas"
+  },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Aizvērt uznirstošo logu, kad pēdējā plūsma izlasīta"
+  },
+  "CurrentUser": {
+    "message": "Pašreizējais lietotājs"
+  },
+  "Dark": {
+    "message": "Tumšā"
+  },
+  "DisableOptionsSync": {
+    "message": "Atspējot paplašinājuma opciju sinhronizāciju"
+  },
+  "Email": {
+    "message": "E-pasts"
+  },
+  "EnableBackgroundMode": {
+    "message": "Iespējot fona režīmu"
+  },
+  "EngagementFilterLimit": {
+    "message": "Atzīmēt rakstus kā izlasītus, ja iesaistīšanās (popularitāte) ir mazāka par"
+  },
+  "EngagementRate": {
+    "message": "Iesaistīšanās līmenis (popularitāte)"
+  },
+  "ExpandedPopupWidth": {
+    "message": "Izvērsts uznirstošā loga platums"
+  },
+  "ExpandFeeds": {
+    "message": "Atverot uznirstošo logu, izvērsiet visas plūsmas"
+  },
+  "ExtensionDescription": {
+    "message": "Feedly ziņu lasītāja paplašinājums"
+  },
+  "FeedlyNotifierOptions": {
+    "message": "Feedly paziņotāja opcijas"
+  },
+  "FeedlyWebsite": {
+    "message": "Feedly vietne"
+  },
+  "Filters": {
+    "message": "Filtri"
+  },
+  "ForceUpdateFeeds": {
+    "message": "Atverot uznirstošo logu, piespiest atjaunināt plūsmas"
+  },
+  "General": {
+    "message": "Vispārīgi"
+  },
+  "GrayIconColorIfNoUnread": {
+    "message": "Pelēka ikonas krāsa, ja nav nelasītu ziņu"
+  },
+  "HideNotificationsAfter": {
+    "message": "Slēpt darbvirsmas paziņojumus pēc (sek.), 0 - neslēpt"
+  },
+  "IntervalPeriod": {
+    "message": "Intervāla periods (min.)"
+  },
+  "Light": {
+    "message": "Gaišā"
+  },
+  "Login": {
+    "message": "Pieslēgties"
+  },
+  "Logout": {
+    "message": "Izrakstīties"
+  },
+  "many": {
+    "message": "daudz"
+  },
+  "MarkAllAsRead": {
+    "message": "Atzīmēt visas kā lasītas"
+  },
+  "MarkAsRead": {
+    "message": "Atzīmēt kā lasītu"
+  },
+  "MarkAsReadEngagement": {
+    "message": "Atzīmēt kā izlasītu, balstoties uz iesaistīšanās filtru"
+  },
+  "MaxNotificationsCount": {
+    "message": "Maksimālais vienlaicīgo paziņojumu skaits"
+  },
+  "MaxNumberOfFeeds": {
+    "message": "Maksimālais plūsmu skaits uznirstošajā logā"
+  },
+  "More": {
+    "message": "Vēl"
+  },
+  "NewestFirst": {
+    "message": "Jaunākās vispirms"
+  },
+  "NewFeeds": {
+    "message": "Jaunas plūsmas"
+  },
+  "Nord": {
+    "message": "Ziemeļu"
+  },
+  "NoSavedArticles": {
+    "message": "Nav saglabātu rakstu"
+  },
+  "Notifications": {
+    "message": "Paziņojumi"
+  },
+  "NoUnreadArticles": {
+    "message": "Nav nelasītu rakstu"
+  },
+  "OldestFirst": {
+    "message": "Vecākās vispirms"
+  },
+  "OpenAllFeeds": {
+    "message": "Atvērt visas plūsmas"
+  },
+  "OpenAllSavedFeeds": {
+    "message": "Atvērt visas saglabātās plūsmas un dzēst no saglabāto saraksta"
+  },
+  "OpenFeedsInBackground": {
+    "message": "Atvērt plūsmas fona cilnē"
+  },
+  "OpenFeedsInSameTab": {
+    "message": "Atvērt plūsmas tajā pašā cilnē"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Atvērt Feedly vietni, noklikšķinot uz ikonas (nerādīt uznirstošo logu)"
+  },
+  "OptionsSaved": {
+    "message": "Opcijas saglabātas"
+  },
+  "PlaySound": {
+    "message": "Atskaņot paziņojuma skaņu, kad ir jaunas ziņas plūsmās"
+  },
+  "Popup": {
+    "message": "Uznirstošais logs"
+  },
+  "PopupFontSize": {
+    "message": "Uznirstošā loga fonta lielums procentos"
+  },
+  "PopupWidth": {
+    "message": "Uznirstošā loga platums"
+  },
+  "ResetCounterOnClick": {
+    "message": "Atiestatīt skaitītāju, kad noklikšķina uz paplašinājuma pogas"
+  },
+  "Save": {
+    "message": "Saglabāt"
+  },
+  "ShowBlogIconInNotifications": {
+    "message": "Rādīt vietnes ikonu paziņojumos"
+  },
+  "ShowCategories": {
+    "message": "Rādīt kategorijas uznirstošajā logā"
+  },
+  "ShowCounter": {
+    "message": "Rādīt skaitītāju"
+  },
+  "ShowDesktopNotifications": {
+    "message": "Rādīt darbvirsmas paziņojumus"
+  },
+  "ShowEngagementFilter": {
+    "message": "Rādīt filtru balstoties uz iesaistīšanās pogas"
+  },
+  "ShowFullFeedContent": {
+    "message": "Rādīt pilnu raksta saturu izvērstajā plūsmā (ja iespējams)"
+  },
+  "ShowThumbnailInNotifications": {
+    "message": "Rādīt priekšskatījuma attēlu paziņojumos (ja iespējams)"
+  },
+  "Sorting": {
+    "message": "Kārtošana"
+  },
+  "Theme": {
+    "message": "Tēma"
+  },
+  "UpdateFeeds": {
+    "message": "Atjaunināt"
+  },
+  "UpdateFollowingCategories": {
+    "message": "Atjaunināt tikai šīs kategorijas"
+  },
+  "UseSecureConnection": {
+    "message": "Izmantot drošo savienojumu (HTTPS)"
+  },
+  "YouHaveNewFeeds": {
+    "message": "Jums ir $count$ jaunas ziņas",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10 or many"
+      }
+    }
+  }
+}
