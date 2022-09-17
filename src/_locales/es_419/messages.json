@@ -8,11 +8,26 @@
   "Categories": {
     "message": "Categorías"
   },
+  "ClosePopupWhenLastFeedIsRead": {
+    "message": "Cerrar ventana emergente cuando se lea el último feed"
+  },
   "CurrentUser": {
     "message": "Usuario actual"
   },
+  "Dark": {
+    "message": "Oscuro"
+  },
+  "DisableOptionsSync": {
+    "message": "Deshabilitar la sincronización de las opciones de extensión"
+  },
   "EnableBackgroundMode": {
     "message": "Permitir modo segundo plano"
+  },
+  "EngagementFilterLimit": {
+    "message": "Marcar artículos como leídos si la participación es inferior a"
+  },
+  "EngagementRate": {
+    "message": "Tasa de participación (popularidad)"
   },
   "ExpandedPopupWidth": {
     "message": "Ancho del popup"
@@ -32,6 +47,9 @@
   "Filters": {
     "message": "Filtros"
   },
+  "ForceUpdateFeeds": {
+    "message": "Forzar feeds de actualización en ventana emergente abierta"
+  },
   "GrayIconColorIfNoUnread": {
     "message": "Ícono gris si no hay no leídos"
   },
@@ -40,6 +58,9 @@
   },
   "IntervalPeriod": {
     "message": "Intervalo de periodo (min)"
+  },
+  "Light": {
+    "message": "Luz"
   },
   "Login": {
     "message": "Acceder"
@@ -56,6 +77,9 @@
   "MarkAsRead": {
     "message": "Marcar como leído"
   },
+  "MarkAsReadEngagement": {
+    "message": "Marcar como leído por el filtro de interacción"
+  },
   "MaxNotificationsCount": {
     "message": "Max notificaciones a la vez"
   },
@@ -65,8 +89,14 @@
   "More": {
     "message": "Más"
   },
+  "NewestFirst": {
+    "message": "El más reciente primero"
+  },
   "NewFeeds": {
     "message": "Nuevos feeds"
+  },
+  "Nord": {
+    "message": "Norte"
   },
   "NoSavedArticles": {
     "message": "Sin artículos guardados"
@@ -76,6 +106,9 @@
   },
   "NoUnreadArticles": {
     "message": "Sin artículos no leídos"
+  },
+  "OldestFirst": {
+    "message": "Los más viejos primero"
   },
   "OpenAllFeeds": {
     "message": "Abrir todos los feeds"
@@ -88,6 +121,9 @@
   },
   "OpenFeedsInSameTab": {
     "message": "Abrir feeds en la misma pestaña"
+  },
+  "OpenSiteOnIconClick": {
+    "message": "Abra el sitio de Feedly al hacer clic en el icono (no mostrar ventana emergente)"
   },
   "OptionsSaved": {
     "message": "Las opciones fueron guardadas"
@@ -110,6 +146,9 @@
   "Save": {
     "message": "Guardar"
   },
+  "ShowBlogIconInNotifications": {
+    "message": "Mostrar favicon del sitio en las notificaciones"
+  },
   "ShowCategories": {
     "message": "Mostrar categorías en la ventana"
   },
@@ -119,11 +158,20 @@
   "ShowDesktopNotifications": {
     "message": "Mostrar notificaciones de escritorio"
   },
+  "ShowEngagementFilter": {
+    "message": "Mostrar filtro por botón de interacción"
+  },
   "ShowFullFeedContent": {
     "message": "Mostrar todo el contenido del artículo en el feed expandido (si fuera posible)"
   },
   "ShowThumbnailInNotifications": {
     "message": "Mostrar previsualización de imagen en las notificaciones (si fuera posible)"
+  },
+  "Sorting": {
+    "message": "Clasificación"
+  },
+  "Theme": {
+    "message": "Tema"
   },
   "UpdateFeeds": {
     "message": "Actualizar"
