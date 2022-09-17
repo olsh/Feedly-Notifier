@@ -173,9 +173,6 @@
   "UpdateFollowingCategories": {
     "message": "تحديث أقسام معينة فقط"
   },
-  "UseSecureConnection": {
-    "message": "استخدم اتصالا آمنا (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "لديك  $count$ اشعارا جديدا",
     "placeholders": {

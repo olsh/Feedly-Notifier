@@ -140,9 +140,6 @@
   "UpdateFollowingCategories": {
     "message": "只更新以下分類"
   },
-  "UseSecureConnection": {
-    "message": "使用安全連線（https）"
-  },
   "YouHaveNewFeeds": {
     "message": "你有 $count$ 個新摘要",
     "placeholders": {

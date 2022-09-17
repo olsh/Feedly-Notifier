@@ -155,9 +155,6 @@
   "UpdateFollowingCategories": {
     "message": "Оновлювати лише обрані категорії"
   },
-  "UseSecureConnection": {
-    "message": "Використовувати безпечне з'єднання (HTTPS)"
-  },
   "YouHaveNewFeeds": {
     "message": "У Вас  $count$ нових подач",
     "placeholders": {

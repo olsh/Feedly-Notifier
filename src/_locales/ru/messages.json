@@ -182,9 +182,6 @@
   "UpdateFollowingCategories": {
     "message": "Обновлять только следующие категории"
   },
-  "UseSecureConnection": {
-    "message": "Использовать защищенное соединение (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "У вас $count$ новых записей",
     "placeholders": {

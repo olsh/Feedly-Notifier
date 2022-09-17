@@ -179,9 +179,6 @@
   "UpdateFollowingCategories": {
     "message": "Actualiser uniquement ces catégories"
   },
-  "UseSecureConnection": {
-    "message": "Utiliser une connexion sécurisée (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Vous avez $count$ nouveaux articles",
     "placeholders": {

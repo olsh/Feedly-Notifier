@@ -182,9 +182,6 @@
   "UpdateFollowingCategories": {
     "message": "다음 분류만 업데이트"
   },
-  "UseSecureConnection": {
-    "message": "보안 연결 사용(https)"
-  },
   "YouHaveNewFeeds": {
     "message": "새로운 피드 $count$개",
     "placeholders": {

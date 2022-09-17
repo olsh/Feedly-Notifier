@@ -146,9 +146,6 @@
   "UpdateFollowingCategories": {
     "message": "Sadece takip edilen kategorileri güncelle"
   },
-  "UseSecureConnection": {
-    "message": "Güvenli bağlantı kullan (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "$count$ yeni haber",
     "placeholders": {

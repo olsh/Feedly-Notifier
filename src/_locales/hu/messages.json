@@ -134,9 +134,6 @@
   "UpdateFollowingCategories": {
     "message": "Csak ezen kategóriák frissítése"
   },
-  "UseSecureConnection": {
-    "message": "Biztonságos kapcsolat használata (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "$count$ új elemed van",
     "placeholders": {

@@ -185,9 +185,6 @@
   "UpdateFollowingCategories": {
     "message": "フォローしているカテゴリーのみ更新する"
   },
-  "UseSecureConnection": {
-    "message": "HTTPS接続を利用する"
-  },
   "YouHaveNewFeeds": {
     "message": "新着フィード $count$件",
     "placeholders": {

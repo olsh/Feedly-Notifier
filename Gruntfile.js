@@ -60,7 +60,7 @@ module.exports = function (grunt) {
                     replacements: [
                         {
                             pattern: /http(?:s)?:\/\/(?:www\.)?feedly\.com/gi,
-                            replacement: "http://sandbox7.feedly.com"
+                            replacement: "https://sandbox7.feedly.com"
                         },
                         {
                             pattern: /let\s+redirectUri\s+=\s+[^;]*/gi,

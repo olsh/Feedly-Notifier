@@ -134,9 +134,6 @@
   "UpdateFollowingCategories": {
     "message": "Ажурирај само следеће категорије"
   },
-  "UseSecureConnection": {
-    "message": "Користи безбедну везу (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Број нових вести:  $count$",
     "placeholders": {

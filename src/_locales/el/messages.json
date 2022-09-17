@@ -146,9 +146,6 @@
   "UpdateFollowingCategories": {
     "message": "Ενημέρωση μόνο των παρακάτω κατηγοριών"
   },
-  "UseSecureConnection": {
-    "message": "Χρήση ασφαλούς σύνδεσης (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Υπάρχουν $count$ νέα άρθρα",
     "placeholders": {

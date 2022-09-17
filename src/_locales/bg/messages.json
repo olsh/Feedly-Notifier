@@ -155,9 +155,6 @@
   "UpdateFollowingCategories": {
     "message": "Актуализиране само на следните категории"
   },
-  "UseSecureConnection": {
-    "message": "Използвайте защитена връзка (https)\n"
-  },
   "YouHaveNewFeeds": {
     "message": "Имате $count$ нови емисии",
     "placeholders": {

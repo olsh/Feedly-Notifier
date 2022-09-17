@@ -122,9 +122,6 @@
   "UpdateFollowingCategories": {
     "message": "Pembaruan hanya mengikuti kategori"
   },
-  "UseSecureConnection": {
-    "message": "mengunakan koneksi (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Kamu punya $count$ feed baru",
     "placeholders": {

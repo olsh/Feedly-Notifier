@@ -176,9 +176,6 @@
   "UpdateFollowingCategories": {
     "message": "Actualitzar només les següents categories"
   },
-  "UseSecureConnection": {
-    "message": "Utilitzar connexió segura (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Tens $count$ nous missatges",
     "placeholders": {

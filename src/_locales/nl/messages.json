@@ -179,9 +179,6 @@
   "UpdateFollowingCategories": {
     "message": "Alleen de volgende categorieën bijwerken"
   },
-  "UseSecureConnection": {
-    "message": "Beveiligde verbinding (https) gebruiken"
-  },
   "YouHaveNewFeeds": {
     "message": "Er zijn $count$ nieuwe artikelen.",
     "placeholders": {

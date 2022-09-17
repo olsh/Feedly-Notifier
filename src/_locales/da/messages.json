@@ -134,9 +134,6 @@
   "UpdateFollowingCategories": {
     "message": "Opdater kun de følgende feeds"
   },
-  "UseSecureConnection": {
-    "message": "Brug sikker forbindelse (HTTPS)"
-  },
   "YouHaveNewFeeds": {
     "message": "Du har $count$ nye feeds",
     "placeholders": {

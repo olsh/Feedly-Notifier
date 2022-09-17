@@ -131,9 +131,6 @@
   "UpdateFollowingCategories": {
     "message": "Actualizar solo las categorías que sigo"
   },
-  "UseSecureConnection": {
-    "message": "Usar conexión segura (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Tienes $count$ feeds",
     "placeholders": {

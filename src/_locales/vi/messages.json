@@ -149,9 +149,6 @@
   "UpdateFollowingCategories": {
     "message": "Chỉ cập nhật các thể loại sau"
   },
-  "UseSecureConnection": {
-    "message": "Dùng kết nối bảo mật (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Bạn có $count$ feed mới",
     "placeholders": {

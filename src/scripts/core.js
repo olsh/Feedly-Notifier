@@ -29,7 +29,6 @@ var appGlobal = {
         abilitySaveFeeds: false,
         maxNumberOfFeeds: 20,
         forceUpdateFeeds: false,
-        useSecureConnection: true,
         expandFeeds: false,
         isFiltersEnabled: false,
         showEngagementFilter: false,
@@ -114,7 +113,7 @@ var appGlobal = {
         os: ""
     },
     get feedlyUrl(){
-        return this.options.useSecureConnection ? "https://feedly.com" : "http://feedly.com";
+        return "https://feedly.com";
     },
     get savedGroup(){
         return "user/" + this.options.feedlyUserId + "/tag/global.saved";
@@ -920,7 +919,7 @@ function getAccessToken(callback) {
         redirect_uri: redirectUri,
         scope: "https://cloud.feedly.com/subscriptions",
         state: state
-    }, appGlobal.options.useSecureConnection);
+    });
 
     browser.tabs.create({url: url})
         .then(function () {
@@ -935,7 +934,6 @@ function getAccessToken(callback) {
                 if (matches) {
                     appGlobal.feedlyApiClient.request("auth/token", {
                         method: "POST",
-                        useSecureConnection: appGlobal.options.useSecureConnection,
                         skipAuthentication: true,
                         parameters: {
                             code: matches[1],
@@ -971,7 +969,6 @@ function refreshAccessToken(){
 
     return appGlobal.feedlyApiClient.request("auth/token", {
         method: "POST",
-        useSecureConnection: appGlobal.options.useSecureConnection,
         skipAuthentication: true,
         parameters: {
             refresh_token: appGlobal.options.refreshToken,
@@ -1051,7 +1048,6 @@ function apiRequestWrapper(methodName, settings) {
     }
 
     settings = settings || {};
-    settings.useSecureConnection = appGlobal.options.useSecureConnection;
 
     return appGlobal.feedlyApiClient.request(methodName, settings)
         .then(function (response) {

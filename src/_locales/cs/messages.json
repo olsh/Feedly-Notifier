@@ -137,9 +137,6 @@
   "UpdateFollowingCategories": {
     "message": "Aktualizovat pouze následující kategorie"
   },
-  "UseSecureConnection": {
-    "message": "Používat zabezpečené připojení (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Máte $count$ nových zdrojů",
     "placeholders": {

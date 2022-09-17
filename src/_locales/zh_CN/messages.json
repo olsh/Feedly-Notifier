@@ -185,9 +185,6 @@
   "UpdateFollowingCategories": {
     "message": "只更新以下分类"
   },
-  "UseSecureConnection": {
-    "message": "使用安全连接（https）"
-  },
   "YouHaveNewFeeds": {
     "message": "你有 $count$ 个新摘要",
     "placeholders": {

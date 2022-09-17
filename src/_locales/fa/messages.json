@@ -155,9 +155,6 @@
   "UpdateFollowingCategories": {
     "message": "بروزسانی دسته های دنبال شده"
   },
-  "UseSecureConnection": {
-    "message": "استفاده از ارتباط امن (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "شما $count$ فید جدید دارید",
     "placeholders": {

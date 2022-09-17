@@ -4,15 +4,14 @@ let FeedlyApiClient = function (accessToken) {
 
     this.accessToken = accessToken;
 
-    let apiUrl = "http://cloud.feedly.com/v3/";
-    let secureApiUrl = "https://cloud.feedly.com/v3/";
+    let apiUrl = "https://cloud.feedly.com/v3/";
     let extensionVersion = chrome.runtime.getManifest().version;
 
-    this.getMethodUrl = function (methodName, parameters, useSecureConnection) {
+    this.getMethodUrl = function (methodName, parameters) {
         if (methodName === undefined) {
             return "";
         }
-        let methodUrl = (useSecureConnection ? secureApiUrl : apiUrl) + methodName;
+        let methodUrl = apiUrl + methodName;
 
         let queryString = "?";
         for (let parameterName in parameters) {
@@ -21,10 +20,12 @@ let FeedlyApiClient = function (accessToken) {
 
         let browserPrefix;
         // @if BROWSER='chrome'
+        // noinspection JSUnusedAssignment
         browserPrefix = "c";
         // @endif
 
         // @if BROWSER='opera'
+        // noinspection JSUnusedAssignment
         browserPrefix = "o";
         // @endif
 
@@ -54,7 +55,7 @@ let FeedlyApiClient = function (accessToken) {
             });
         }
 
-        let url = this.getMethodUrl(methodName, settings.parameters, settings.useSecureConnection);
+        let url = this.getMethodUrl(methodName, settings.parameters);
         let verb = settings.method || "GET";
 
         // For bypassing the cache

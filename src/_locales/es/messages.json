@@ -182,9 +182,6 @@
   "UpdateFollowingCategories": {
     "message": "Actualizar sólo las siguientes categorías"
   },
-  "UseSecureConnection": {
-    "message": "Usar conexión segura (https)"
-  },
   "YouHaveNewFeeds": {
     "message": "Tienes $count$ nuevas fuentes",
     "placeholders": {

@@ -185,9 +185,6 @@
   "UpdateFollowingCategories": {
     "message": "Atjaunināt tikai šīs kategorijas"
   },
-  "UseSecureConnection": {
-    "message": "Izmantot drošo savienojumu (HTTPS)"
-  },
   "YouHaveNewFeeds": {
     "message": "Jums ir $count$ jaunas ziņas",
     "placeholders": {
