@@ -21,16 +21,18 @@ body {
 
     background-color: #6cc655;
 
-    font-family: "Open Sans Condensed", "Noto Sans KR", serif;
+    font-family: "Open Sans Condensed", sans-serif;
     font-size: 20px;
+    font-weight: 700;
 }
 
 h3 {
     margin: 0;
     padding: 0;
 
-    font-family: "Open Sans Condensed", "Noto Sans KR", serif;
+    font-family: "Open Sans Condensed", sans-serif;
     font-size: 18px;
+    font-weight: 700;
 }
 
 .label {
