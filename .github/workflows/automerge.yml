@@ -9,8 +9,8 @@ jobs:
                 browser: ["chrome", "opera", "firefox"]
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
               with:
                   node-version: "16.x"
                   cache: "yarn"
@@ -27,6 +27,6 @@ jobs:
             contents: write
 
         steps:
-            - uses: fastify/github-action-merge-dependabot@v3.0.0
+            - uses: fastify/github-action-merge-dependabot@v3.5.4
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
