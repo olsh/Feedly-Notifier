@@ -4,3 +4,4 @@ build
 bower_components
 *.orig
 keys.json
+.vscode

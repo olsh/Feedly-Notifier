@@ -38,6 +38,7 @@ var appGlobal = {
         filters: [],
         showCounter: true,
         playSound: true,
+        soundVolume: 0.8,
         sortBy: "newest",
         theme: "light",
         resetCounterOnClick: false,
@@ -386,6 +387,7 @@ function removeFeedFromCache(feedId) {
 /* Plays alert sound */
 function playSound(){
     var audio = new Audio("sound/alert.mp3");
+    audio.volume = appGlobal.options.soundVolume;
     audio.play();
 }
 
@@ -860,7 +862,7 @@ function markAsRead(feedIds, callback) {
     });
 }
 
-/* Save feed or unsave it.
+/* Save feed or un save it.
  * array of the feeds IDs
  * if saveFeed is true, then save the feeds, else unsafe them
  * The callback parameter should specify a function that looks like this:
