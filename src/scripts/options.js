@@ -6,13 +6,18 @@ var optionsGlobal = {
     },
     allSitesPermission: {
         origins: ["<all_urls>"]
-    }
+    },
+    loaded: false
 };
 
 $(document).ready(function () {
     loadOptions();
     loadUserCategories();
     loadProfileData();
+
+    setTimeout(function () {
+        optionsGlobal.loaded = true;
+    }, 1000);
 });
 
 $("body").on("click", "#save", function (e) {
@@ -42,6 +47,13 @@ $("#options").on("change", "input", function (e) {
         var parent = $("input[data-option-name='" + child.data("disable-parent") + "']");
         parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
     });
+
+    if (e.target.id === "soundVolume") {
+        if (optionsGlobal.loaded) {
+            chrome.extension.getBackgroundPage().appGlobal.options.soundVolume = e.target.value;
+            chrome.extension.getBackgroundPage().playSound();
+        }
+    }
 });
 
 function loadProfileData() {

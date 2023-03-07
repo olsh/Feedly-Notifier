@@ -113,7 +113,10 @@
                 <!-- @if BROWSER!='opera' -->
                 <!--Opera doesn't support silent notifications at the moment and uses system notification sound-->
                 <label for="playSound" class="label" data-locale-value="PlaySound"></label>
-                <input id="playSound" type="checkbox" data-enable-parent="showDesktopNotifications" data-option-name="playSound" />
+                <input id="playSound" type="checkbox" data-option-name="playSound" /><br/>
+
+                <label for="soundVolume" class="label" data-locale-value="SoundVolume"></label>
+                <input id="soundVolume" type="range" data-enable-parent="playSound" min="0" max="1" step="0.01" data-option-name="soundVolume" /><br>
                 <!-- @endif -->
 
                 <div id="filters-settings">
