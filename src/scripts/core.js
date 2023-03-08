@@ -38,6 +38,7 @@ var appGlobal = {
         filters: [],
         showCounter: true,
         playSound: true,
+        sound: "sound/alert.mp3",
         soundVolume: 0.8,
         sortBy: "newest",
         theme: "light",
@@ -386,7 +387,7 @@ function removeFeedFromCache(feedId) {
 
 /* Plays alert sound */
 function playSound(){
-    var audio = new Audio("sound/alert.mp3");
+    var audio = new Audio(appGlobal.options.sound);
     audio.volume = appGlobal.options.soundVolume;
     audio.play();
 }
