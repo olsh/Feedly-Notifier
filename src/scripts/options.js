@@ -35,7 +35,7 @@ $("body").on("click", "#logout", function () {
     $("#userInfo, #filters-settings").hide();
 });
 
-$("#options").on("change", "input", function (e) {
+$("#options").on("change", "input, select", function (e) {
     $("[data-enable-parent]").each(function(key, value){
         var child = $(value);
         var parent = $("input[data-option-name='" + child.data("enable-parent") + "']");
@@ -48,11 +48,20 @@ $("#options").on("change", "input", function (e) {
         parent.is(":checked") ? child.attr("disabled", "disable") : child.removeAttr("disabled");
     });
 
-    if (e.target.id === "soundVolume") {
-        if (optionsGlobal.loaded) {
-            chrome.extension.getBackgroundPage().appGlobal.options.soundVolume = e.target.value;
-            chrome.extension.getBackgroundPage().playSound();
+    if (e.target.id === "soundVolume" || e.target.id === "sound") {
+        if (!optionsGlobal.loaded) {
+            return;
         }
+
+        if (e.target.id === "soundVolume") {
+            chrome.extension.getBackgroundPage().appGlobal.options.soundVolume = e.target.value;
+        }
+
+        if (e.target.id === "sound") {
+            chrome.extension.getBackgroundPage().appGlobal.options.sound = e.target.value;
+        }
+
+        chrome.extension.getBackgroundPage().playSound();
     }
 });
 

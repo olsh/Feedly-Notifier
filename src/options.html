@@ -116,7 +116,16 @@
                 <input id="playSound" type="checkbox" data-option-name="playSound" /><br/>
 
                 <label for="soundVolume" class="label" data-locale-value="SoundVolume"></label>
-                <input id="soundVolume" type="range" data-enable-parent="playSound" min="0" max="1" step="0.01" data-option-name="soundVolume" /><br>
+                <input id="soundVolume" type="range" data-enable-parent="playSound" min="0.01" max="1" step="0.01" data-option-name="soundVolume" /><br>
+
+                <label for="sound" class="label" data-locale-value="Sound"></label>
+                <select id="sound" data-enable-parent="playSound" data-option-name="sound">
+                    <option value="sound/alert.mp3">Alert</option>
+                    <option value="sound/no-problem.mp3">No problem</option>
+                    <option value="sound/whistling.mp3">Whistling</option>
+                    <option value="sound/quite-impressed.mp3">Quite impressed</option>
+                    <option value="sound/light-hearted.mp3">Light hearted</option>
+                </select><br>
                 <!-- @endif -->
 
                 <div id="filters-settings">

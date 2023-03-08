@@ -176,6 +176,12 @@
   "Sorting": {
     "message": "Sorting"
   },
+  "Sound": {
+    "message": "Sound"
+  },
+  "SoundVolume": {
+    "message": "Sound volume"
+  },
   "Theme": {
     "message": "Theme"
   },
