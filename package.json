@@ -22,7 +22,7 @@
   "libPath": "node_modules",
   "dependencies": {
     "dompurify": "^3.0.0",
-    "jquery": "^3.6.3",
+    "jquery": "^3.6.4",
     "mustache": "^4.2.0",
     "timeago.js": "^4.0.1",
     "webextension-polyfill": "^0.10.0"
