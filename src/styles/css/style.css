@@ -245,7 +245,7 @@ body {
     display: inline-flex;
     flex-flow: column;
     max-height: 600px;
-    min-width: 230px;
+    min-width: 380px;
 
     background-color: var(--popup-content-bg-color);
 }
