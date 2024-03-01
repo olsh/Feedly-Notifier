@@ -21,7 +21,7 @@
   "buildPath": "build",
   "libPath": "node_modules",
   "dependencies": {
-    "dompurify": "^3.0.8",
+    "dompurify": "^3.0.9",
     "jquery": "^3.7.1",
     "mustache": "^4.2.0",
     "timeago.js": "^4.0.1",
