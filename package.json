@@ -25,6 +25,6 @@
     "jquery": "^3.7.1",
     "mustache": "^4.2.0",
     "timeago.js": "^4.0.1",
-    "webextension-polyfill": "^0.11.0"
+    "webextension-polyfill": "^0.12.0"
   }
 }
