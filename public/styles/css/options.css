@@ -7,23 +7,25 @@ body {
 body {
     color: #444444;
     background-color: #eeeeee;
-}
-
-#container {
     width: 800px;
     margin: 0 auto;
-
-    background-color: white;
 }
 
-#header {
+main {
+    background-color: white;
+    padding: 20px;
+}
+
+header {
     padding: 15px;
-
     background-color: #6cc655;
-
     font-family: "Open Sans Condensed", sans-serif;
     font-size: 20px;
     font-weight: 700;
+}
+
+section {
+    margin-bottom: 10px;
 }
 
 h3 {
@@ -35,22 +37,22 @@ h3 {
     font-weight: 700;
 }
 
-.label {
+label {
     font-family: sans-serif;
     font-size: 15px;
+    display: block;
 }
 
-.options-section {
-    margin-bottom: 10px;
+label + label {
+    margin-top: 5px;
 }
 
-#options,
+input, select {
+    margin-left: 10px;
+}
+
 #userInfo {
-    padding: 20px;
-}
-
-#userInfo {
-    display: none;
+    margin-top: 20px;
 }
 
 #categories {

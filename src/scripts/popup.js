@@ -9,27 +9,27 @@ var popupGlobal = {
 };
 
 $(document).ready(async function () {
-    setTheme();
-    $("#feed, #feed-saved, #feed-empty").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
-    $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
-    $("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
-    $("#mark-read-engagement>span").text(chrome.i18n.getMessage("MarkAsReadEngagement"));
-    $("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
-    $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
-    $("#open-unsaved-all-news>span").text(chrome.i18n.getMessage("OpenAllSavedFeeds"));
+    //-setTheme();
+    //-$("#feed, #feed-saved, #feed-empty").css("font-size", popupGlobal.backgroundPage.appGlobal.options.popupFontSize / 100 + "em");
+    //-$("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
+    //-$("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
+    //-$("#mark-read-engagement>span").text(chrome.i18n.getMessage("MarkAsReadEngagement"));
+    //-$("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
+    //-$("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
+    //-$("#open-unsaved-all-news>span").text(chrome.i18n.getMessage("OpenAllSavedFeeds"));
 
-    if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
-        $("#popup-content").addClass("tabs");
-    }
+    //- if (popupGlobal.backgroundPage.appGlobal.options.abilitySaveFeeds) {
+    //-     $("#popup-content").addClass("tabs");
+    //- }
 
     // @if BROWSER='chrome'
     window.addEventListener('resize', onResizeChrome);
     // @endif
 
     // @if BROWSER='firefox'
-    popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
+    //-popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
     if (popupGlobal.isSidebar) {
-	    $(document.body).css("font-size", "12pt");	    
+	    $(document.body).css("font-size", "12pt");
 	    $("html").height("100%");
 	    $("html").css("min-height", "600px");
 	    $("#popup-body").css("min-height", "600px");
@@ -40,7 +40,7 @@ $(document).ready(async function () {
     // @endif
 
     setPopupWidth(false);
-    showEmptyContent();
+    //-showEmptyContent();
     executeAsync(renderFeeds);
 });
 
@@ -374,19 +374,19 @@ function getUniqueCategories(feeds){
     return categories;
 }
 
-function setTheme() {
-    switch (popupGlobal.backgroundPage.appGlobal.options.theme) {
-        case "dark":
-            document.body.setAttribute('data-theme', 'dark');
-            break;
-        case "nord":
-            document.body.setAttribute('data-theme', 'nord');
-            break;
-        default: {
-            document.body.removeAttribute('data-theme');
-        }
-    }
-}
+// function setTheme() {
+//     switch (popupGlobal.backgroundPage.appGlobal.options.theme) {
+//         case "dark":
+//             document.body.setAttribute('data-theme', 'dark');
+//             break;
+//         case "nord":
+//             document.body.setAttribute('data-theme', 'nord');
+//             break;
+//         default: {
+//             document.body.removeAttribute('data-theme');
+//         }
+//     }
+// }
 
 function openFeedlyTab() {
     popupGlobal.backgroundPage.openFeedlyTab();

@@ -1,6 +1,6 @@
 "use strict";
 
-let FeedlyApiClient = function (accessToken) {
+export const FeedlyApiClient = function (accessToken) {
 
     this.accessToken = accessToken;
 

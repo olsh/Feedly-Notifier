@@ -4,6 +4,7 @@
     --bg-color: transparent;
     /*button*/
     --button-bg-color: #6cc655;
+    --button-bg-color-disabled: #99c88d;
     --button-color: #ffffff;
     --button-border: 1px solid rgba(0, 0, 0, 0.2);
     --button-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 1px rgba(255, 255, 255, 1);
@@ -218,6 +219,11 @@ body {
 
     white-space: nowrap;
     -webkit-appearance: none;
+}
+
+.button:disabled {
+    background-color: var(--button-bg-color-disabled);
+    cursor: default;
 }
 
 #popup-body {
@@ -549,7 +555,8 @@ body {
 }
 
 .blog-title a,
-.blog-title span {
+.blog-title span,
+.blog-title time {
     color: var(--item-blog-title-span-color);
 
     font-family: "Open Sans Condensed", sans-serif;

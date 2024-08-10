@@ -5,3 +5,6 @@ bower_components
 *.orig
 keys.json
 .vscode
+.tscache
+.yarn
+.env

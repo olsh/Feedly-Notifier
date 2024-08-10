@@ -160,7 +160,7 @@
 
 <script src="scripts/jquery.min.js"></script>
 <script src="scripts/browser-polyfill.min.js"></script>
-<script src="scripts/feedly.api.js"></script>
-<script src="scripts/options.js"></script>
+<script src="scripts/feedly.api.js" type="module"></script>
+<script src="scripts/options.js" type="module"></script>
 
 </html>
