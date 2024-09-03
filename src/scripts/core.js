@@ -447,7 +447,7 @@ function updateSavedFeeds() {
 /* Sets badge counter if unread feeds more than zero */
 function setBadgeCounter(unreadFeedsCount) {
     if (appGlobal.options.showCounter) {
-        chrome.browserAction.setBadgeText({ text: String(+unreadFeedsCount > 0 ? unreadFeedsCount : "")});
+        chrome.browserAction.setBadgeText({ text: String(+unreadFeedsCount > 0 ? (+unreadFeedsCount >= 1000 ? "1k+" : unreadFeedsCount) : "")});
     } else {
         chrome.browserAction.setBadgeText({ text: ""});
     }
