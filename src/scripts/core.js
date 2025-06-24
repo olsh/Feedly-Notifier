@@ -387,9 +387,11 @@ function removeFeedFromCache(feedId) {
 
 /* Plays alert sound */
 function playSound(){
-    var audio = new Audio(appGlobal.options.sound);
-    audio.volume = appGlobal.options.soundVolume;
-    audio.play();
+    chrome.runtime.sendMessage({
+        type: 'playSound',
+        url: chrome.runtime.getURL(appGlobal.options.sound),
+        volume: appGlobal.options.soundVolume
+    });
 }
 
 /* Returns only new feeds and set date of last feed

@@ -1,5 +1,5 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
 
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
@@ -9,16 +9,15 @@
         "storage",
         "tabs",
         "notifications",
-        "webRequest",
+        "webRequest"
+    ],
+    "host_permissions": [
         "*://*.feedly.com/"
     ],
-    "optional_permissions": [
-        // @if BROWSER='chrome'
-        "background",
-        // @endif
+    "optional_host_permissions": [
         "<all_urls>"
     ],
-    "browser_action": {
+    "action": {
         "default_icon": {
             "19": "/images/icon_inactive.png",
             "38": "/images/icon_inactive38.png"
@@ -45,16 +44,17 @@
     },
     // @endif
     "background": {
-        "scripts": [ "scripts/browser-polyfill.min.js", "scripts/feedly.api.js", "scripts/core.js"]
+        "service_worker": "scripts/background.js"
     },
     "icons": {
         "16": "/images/icon16.png",
         "48": "/images/icon48.png",
         "128": "/images/icon128.png"
     },
-    "web_accessible_resources": [
-        "/images/icon128.png"
-    ],
+    "web_accessible_resources": [{
+        "resources": ["/images/icon128.png", "sound/*.mp3"],
+        "matches": ["<all_urls>"]
+    }],
     // @if BROWSER!='firefox'
     "minimum_chrome_version": "70",
     // @endif
