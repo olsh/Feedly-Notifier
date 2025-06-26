@@ -183,7 +183,7 @@ chrome.webRequest.onCompleted.addListener(function (details) {
     }
 }, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
 
-chrome.browserAction.onClicked.addListener(function () {
+chrome.action.onClicked.addListener(function () {
     if (appGlobal.isLoggedIn) {
         openFeedlyTab();
         if(appGlobal.options.resetCounterOnClick){
@@ -197,9 +197,9 @@ chrome.browserAction.onClicked.addListener(function () {
 /* Initialization all parameters and run feeds check */
 function initialize() {
     if (appGlobal.options.openSiteOnIconClick) {
-        chrome.browserAction.setPopup({popup: ""});
+        chrome.action.setPopup({popup: ""});
     } else {
-        chrome.browserAction.setPopup({popup: "popup.html"});
+        chrome.action.setPopup({popup: "popup.html"});
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
 
@@ -454,16 +454,16 @@ function setBadgeCounter(unreadFeedsCount) {
             const thousands = Math.floor(unreadFeedsCountNumber / 1000);
             unreadFeedsCount = thousands + "k+";
         }
-        chrome.browserAction.setBadgeText({ text: String(unreadFeedsCountNumber > 0 ? unreadFeedsCount : "")});
+        chrome.action.setBadgeText({ text: String(unreadFeedsCountNumber > 0 ? unreadFeedsCount : "")});
     } else {
-        chrome.browserAction.setBadgeText({ text: ""});
+        chrome.action.setBadgeText({ text: ""});
     }
 
     if (!unreadFeedsCount && appGlobal.options.grayIconColorIfNoUnread) {
-        chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
+        chrome.action.setIcon({ path: appGlobal.icons.inactive }, function () {
         });
     } else {
-        chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {
+        chrome.action.setIcon({ path: appGlobal.icons.default }, function () {
         });
     }
 }
@@ -539,7 +539,7 @@ function makeMarkersRequest(parameters){
         }
     }).then(setBadgeCounter)
     .catch(function (e) {
-        chrome.browserAction.setBadgeText({ text: ""});
+        chrome.action.setBadgeText({ text: ""});
 
         console.info("Unable to load counters.", e);
     });
@@ -635,9 +635,9 @@ function updateFeeds(silentUpdate) {
 
 /* Stops scheduler, sets badge as inactive and resets counter */
 function setInactiveStatus() {
-    chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
+    chrome.action.setIcon({ path: appGlobal.icons.inactive }, function () {
     });
-    chrome.browserAction.setBadgeText({ text: ""});
+    chrome.action.setBadgeText({ text: ""});
     appGlobal.cachedFeeds = [];
     appGlobal.isLoggedIn = false;
     stopSchedule();
@@ -645,7 +645,7 @@ function setInactiveStatus() {
 
 /* Sets badge as active */
 function setActiveStatus() {
-    chrome.browserAction.setBadgeBackgroundColor({color: "#CF0016"});
+    chrome.action.setBadgeBackgroundColor({color: "#CF0016"});
     appGlobal.isLoggedIn = true;
 }
 
@@ -853,7 +853,7 @@ function markAsRead(feedIds, callback) {
         for (let i = 0; i < copyArray.length; i++) {
             removeFeedFromCache(copyArray[i]);
         }
-        chrome.browserAction.getBadgeText({}, function (feedsCount) {
+        chrome.action.getBadgeText({}, function (feedsCount) {
             feedsCount = +feedsCount;
             if (feedsCount > 0) {
                 feedsCount -= copyArray.length;
