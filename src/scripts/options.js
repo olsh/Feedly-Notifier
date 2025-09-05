@@ -1,14 +1,27 @@
 "use strict";
 
 var optionsGlobal = {
-    backgroundPermission: {
-        permissions: ["background"]
-    },
     allSitesPermission: {
         origins: ["<all_urls>"]
     },
     loaded: false
 };
+
+var feedlyClient = new FeedlyApiClient();
+
+function getSyncArea(disableOptionsSync) {
+    return disableOptionsSync ? chrome.storage.local : chrome.storage.sync;
+}
+
+function computeSavedGroup(feedlyUserId) {
+    return "user/" + feedlyUserId + "/tag/global.saved";
+}
+function computeGlobalFavorites(feedlyUserId) {
+    return "user/" + feedlyUserId + "/category/global.must";
+}
+function computeGlobalUncategorized(feedlyUserId) {
+    return "user/" + feedlyUserId + "/category/global.uncategorized";
+}
 
 $(document).ready(function () {
     loadOptions();
@@ -29,9 +42,9 @@ $("body").on("click", "#save", function (e) {
 });
 
 $("body").on("click", "#logout", function () {
-    chrome.extension.getBackgroundPage().appGlobal.options.accessToken = "";
-    chrome.extension.getBackgroundPage().appGlobal.options.refreshToken = "";
-    chrome.extension.getBackgroundPage().appGlobal.syncStorage.remove(["accessToken", "refreshToken"], function () {});
+    // Clear tokens in both storage areas to ensure background picks it up
+    chrome.storage.local.set({ accessToken: "", refreshToken: "" }, function () {});
+    chrome.storage.sync.set({ accessToken: "", refreshToken: "" }, function () {});
     $("#userInfo, #filters-settings").hide();
 });
 
@@ -53,20 +66,25 @@ $("#options").on("change", "input, select", function (e) {
             return;
         }
 
-        if (e.target.id === "soundVolume") {
-            chrome.extension.getBackgroundPage().appGlobal.options.soundVolume = e.target.value;
-        }
-
-        if (e.target.id === "sound") {
-            chrome.extension.getBackgroundPage().appGlobal.options.sound = e.target.value;
-        }
-
-        chrome.extension.getBackgroundPage().playSound();
+        const volume = Number($("#soundVolume").val());
+        const sound = $("#sound").val();
+        try {
+            var audio = new Audio(sound);
+            audio.volume = isNaN(volume) ? 1 : volume;
+            audio.play();
+        } catch (e) { /* no-op */ }
     }
 });
 
 function loadProfileData() {
-    chrome.extension.getBackgroundPage().apiRequestWrapper("profile").then(function (result) {
+    // Load token from storage and request profile via client
+    chrome.storage.local.get(null, function (local) {
+        const disableSync = local.disableOptionsSync || false;
+        const area = getSyncArea(disableSync);
+        area.get(null, function (items) {
+            feedlyClient.accessToken = items.accessToken || "";
+            if (!feedlyClient.accessToken) { $("#userInfo, #filters-settings").hide(); return; }
+            feedlyClient.request("profile", { parameters: {} }).then(function (result) {
         var userInfo = $("#userInfo");
         userInfo.find("[data-locale-value]").each(function () {
             var textBox = $(this);
@@ -77,26 +95,37 @@ function loadProfileData() {
         for (var profileData in result) {
             userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
         }
-    }, function () {
-        $("#userInfo, #filters-settings").hide();
+            }, function () {
+                $("#userInfo, #filters-settings").hide();
+            });
+        });
     });
 }
 
 function loadUserCategories(){
-    chrome.extension.getBackgroundPage().apiRequestWrapper("categories")
-        .then(function (result) {
-            result.forEach(function(element){
-                appendCategory(element.id, element.label);
-            });
-            appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalFavorites, "Global Favorites");
-            appendCategory(chrome.extension.getBackgroundPage().appGlobal.globalUncategorized, "Global Uncategorized");
-            chrome.extension.getBackgroundPage().appGlobal.syncStorage.get("filters", function(items){
-                let filters = items.filters || [];
-                filters.forEach(function(id){
-                    $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
+    chrome.storage.local.get(null, function (local) {
+        const disableSync = local.disableOptionsSync || false;
+        const area = getSyncArea(disableSync);
+        area.get(null, function (items) {
+            const userId = items.feedlyUserId || "";
+            feedlyClient.accessToken = items.accessToken || "";
+            if (!feedlyClient.accessToken) { return; }
+            feedlyClient.request("categories", { parameters: {} })
+                .then(function (result) {
+                    result.forEach(function(element){
+                        appendCategory(element.id, element.label);
+                    });
+                    appendCategory(computeGlobalFavorites(userId), "Global Favorites");
+                    appendCategory(computeGlobalUncategorized(userId), "Global Uncategorized");
+                    area.get("filters", function(items){
+                        let filters = items.filters || [];
+                        filters.forEach(function(id){
+                            $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
+                        });
+                    });
                 });
-            });
         });
+    });
 }
 
 function appendCategory(id, label){
@@ -134,28 +163,21 @@ function saveOptions() {
     });
     options.filters = parseFilters();
 
-    // @if BROWSER='chrome'
-    setBackgroundMode($("#enable-background-mode").is(":checked"));
-    // @endif
-
-    const appGlobal = chrome.extension.getBackgroundPage().appGlobal;
+    const disableSync = $("#disableOptionsSync").is(":checked");
     setAllSitesPermission($("#showBlogIconInNotifications").is(":checked")
         || $("#showThumbnailInNotifications").is(":checked"), options, function () {
-        appGlobal.options.disableOptionsSync = $("#disableOptionsSync").is(":checked");
-        appGlobal.syncStorage.set(options, function () {
+        const area = getSyncArea(disableSync);
+        area.set(options, function () {
             alert(chrome.i18n.getMessage("OptionsSaved"));
         });
     });
 }
 
 function loadOptions() {
-    // @if BROWSER='chrome'
-    chrome.permissions.contains(optionsGlobal.backgroundPermission, function (enabled){
-        $("#enable-background-mode").prop("checked", enabled);
-    });
-    // @endif
-
-    chrome.extension.getBackgroundPage().appGlobal.syncStorage.get(null, function (items) {
+    chrome.storage.local.get(null, function (local) {
+        const disableSync = local.disableOptionsSync || false;
+        const area = getSyncArea(disableSync);
+        area.get(null, function (items) {
         var optionsForm = $("#options");
         for (var option in items) {
             var optionControl = optionsForm.find("[data-option-name='" + option + "']");
@@ -172,6 +194,7 @@ function loadOptions() {
 
             optionsForm.find("input").trigger("change");
         });
+        });
     });
     $("#header").text(chrome.i18n.getMessage("FeedlyNotifierOptions"));
     $("#options").find("[data-locale-value]").each(function () {
@@ -180,18 +203,6 @@ function loadOptions() {
         textBox.text(chrome.i18n.getMessage(localValue));
     });
 }
-
-// @if BROWSER='chrome'
-function setBackgroundMode(enable) {
-    if (enable) {
-        chrome.permissions.request(optionsGlobal.backgroundPermission, function () {
-        });
-    } else {
-        chrome.permissions.remove(optionsGlobal.backgroundPermission, function () {
-        });
-    }
-}
-// @endif
 
 function setAllSitesPermission(enable, options, callback) {
     if (enable) {

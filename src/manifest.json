@@ -1,24 +1,26 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
 
     "name": "Feedly Notifier",
     "description": "__MSG_ExtensionDescription__",
     "version": "2.28.0",
     "default_locale": "en",
+
     "permissions": [
         "storage",
         "tabs",
         "notifications",
         "webRequest",
-        "*://*.feedly.com/"
+        "alarms"
     ],
-    "optional_permissions": [
-        // @if BROWSER='chrome'
-        "background",
-        // @endif
+    "host_permissions": [
+        "*://*.feedly.com/*"
+    ],
+    "optional_host_permissions": [
         "<all_urls>"
     ],
-    "browser_action": {
+
+    "action": {
         "default_icon": {
             "19": "/images/icon_inactive.png",
             "38": "/images/icon_inactive38.png"
@@ -26,45 +28,54 @@
         "default_title": "Feedly Notifier",
         "default_popup": "popup.html"
     },
-    // @if BROWSER!='firefox'
-    "options_page": "options.html",
-    // @endif
-    // @if BROWSER='firefox'
+
     "options_ui": {
         "page": "options.html",
         "open_in_tab": true
     },
+
+    // @if BROWSER='firefox'
     "sidebar_action": {
-	      "default_icon": {
+        "default_icon": {
             "19": "/images/icon.png",
             "38": "/images/icon38.png"
         },
-      "default_title": "Feedly Notifier",
-      "default_panel": "popup.html",
-      "open_at_install": false
+        "default_title": "Feedly Notifier",
+        "default_panel": "popup.html",
+        "open_at_install": false
     },
     // @endif
+
     "background": {
-        "scripts": [ "scripts/browser-polyfill.min.js", "scripts/feedly.api.js", "scripts/core.js"]
+        "service_worker": "scripts/background.js"
     },
+
     "icons": {
         "16": "/images/icon16.png",
         "48": "/images/icon48.png",
         "128": "/images/icon128.png"
     },
+
     "web_accessible_resources": [
-        "/images/icon128.png"
+        {
+            "resources": [
+                "/images/icon128.png"
+            ],
+            "matches": ["*://*/*"]
+        }
     ],
+
     // @if BROWSER!='firefox'
-    "minimum_chrome_version": "70",
+    "minimum_chrome_version": "88",
     // @endif
     // @if BROWSER='firefox'
     "applications": {
         "gecko": {
-            "strict_min_version": "62.0",
-	        "id": "jid1-BOjn8b0IM7kH2w@jetpack"
+            "strict_min_version": "109.0",
+            "id": "jid1-BOjn8b0IM7kH2w@jetpack"
         }
     },
     // @endif
+
     "homepage_url": "https://olsh.github.io/Feedly-Notifier/"
 }

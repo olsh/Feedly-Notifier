@@ -13,9 +13,9 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: "16.x"
-                  cache: "yarn"
+                  cache: "npm"
 
-            - run: yarn install
+            - run: npm install
             - run: npx grunt build --clientId=${{ secrets.FEEDLY_CLIENT_ID }} --clientSecret=${{ secrets.FEEDLY_CLIENT_SECRET }} --browser=${{ matrix.browser }}
 
     automerge:

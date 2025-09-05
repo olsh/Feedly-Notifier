@@ -183,7 +183,7 @@ chrome.webRequest.onCompleted.addListener(function (details) {
     }
 }, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
 
-chrome.browserAction.onClicked.addListener(function () {
+chrome.action.onClicked.addListener(function () {
     if (appGlobal.isLoggedIn) {
         openFeedlyTab();
         if(appGlobal.options.resetCounterOnClick){
@@ -197,9 +197,9 @@ chrome.browserAction.onClicked.addListener(function () {
 /* Initialization all parameters and run feeds check */
 function initialize() {
     if (appGlobal.options.openSiteOnIconClick) {
-        chrome.browserAction.setPopup({popup: ""});
+        chrome.action.setPopup({popup: ""});
     } else {
-        chrome.browserAction.setPopup({popup: "popup.html"});
+        chrome.action.setPopup({popup: "popup.html"});
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
 
@@ -213,20 +213,26 @@ function startSchedule(updateInterval) {
     stopSchedule();
     updateCounter();
     updateFeeds();
-    if(appGlobal.options.showCounter){
-        appGlobal.intervalIds.push(setInterval(updateCounter, updateInterval * 60000));
+    if (appGlobal.options.showCounter) {
+        chrome.alarms.create('updateCounter', { periodInMinutes: updateInterval });
     }
     if (appGlobal.options.showDesktopNotifications || appGlobal.options.playSound || !appGlobal.options.openSiteOnIconClick) {
-        appGlobal.intervalIds.push(setInterval(updateFeeds, updateInterval * 60000));
+        chrome.alarms.create('updateFeeds', { periodInMinutes: updateInterval });
     }
 }
 
 function stopSchedule() {
-    appGlobal.intervalIds.forEach(function(intervalId){
-        clearInterval(intervalId);
-    });
-    appGlobal.intervalIds = [];
+    chrome.alarms.clear('updateCounter');
+    chrome.alarms.clear('updateFeeds');
 }
+
+chrome.alarms.onAlarm.addListener(function (alarm) {
+    if (alarm && alarm.name === 'updateCounter') {
+        updateCounter();
+    } else if (alarm && alarm.name === 'updateFeeds') {
+        updateFeeds();
+    }
+});
 
 chrome.notifications.onClicked.addListener(function (notificationId) {
     chrome.notifications.clear(notificationId);
@@ -387,9 +393,13 @@ function removeFeedFromCache(feedId) {
 
 /* Plays alert sound */
 function playSound(){
-    var audio = new Audio(appGlobal.options.sound);
-    audio.volume = appGlobal.options.soundVolume;
-    audio.play();
+    try {
+        var audio = new Audio(appGlobal.options.sound);
+        audio.volume = appGlobal.options.soundVolume;
+        audio.play();
+    } catch (e) {
+        // In MV3 service worker there is no Audio context; ignore.
+    }
 }
 
 /* Returns only new feeds and set date of last feed
@@ -452,16 +462,16 @@ function setBadgeCounter(unreadFeedsCount) {
             const thousands = Math.floor(unreadFeedsCountNumber / 1000);
             unreadFeedsCount = thousands + "k+";
         }
-        chrome.browserAction.setBadgeText({ text: String(unreadFeedsCountNumber > 0 ? unreadFeedsCount : "")});
+        chrome.action.setBadgeText({ text: String(unreadFeedsCountNumber > 0 ? unreadFeedsCount : "")});
     } else {
-        chrome.browserAction.setBadgeText({ text: ""});
+        chrome.action.setBadgeText({ text: ""});
     }
 
     if (!unreadFeedsCount && appGlobal.options.grayIconColorIfNoUnread) {
-        chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
+        chrome.action.setIcon({ path: appGlobal.icons.inactive }, function () {
         });
     } else {
-        chrome.browserAction.setIcon({ path: appGlobal.icons.default }, function () {
+        chrome.action.setIcon({ path: appGlobal.icons.default }, function () {
         });
     }
 }
@@ -537,7 +547,7 @@ function makeMarkersRequest(parameters){
         }
     }).then(setBadgeCounter)
     .catch(function (e) {
-        chrome.browserAction.setBadgeText({ text: ""});
+        chrome.action.setBadgeText({ text: ""});
 
         console.info("Unable to load counters.", e);
     });
@@ -633,9 +643,9 @@ function updateFeeds(silentUpdate) {
 
 /* Stops scheduler, sets badge as inactive and resets counter */
 function setInactiveStatus() {
-    chrome.browserAction.setIcon({ path: appGlobal.icons.inactive }, function () {
+    chrome.action.setIcon({ path: appGlobal.icons.inactive }, function () {
     });
-    chrome.browserAction.setBadgeText({ text: ""});
+    chrome.action.setBadgeText({ text: ""});
     appGlobal.cachedFeeds = [];
     appGlobal.isLoggedIn = false;
     stopSchedule();
@@ -643,7 +653,7 @@ function setInactiveStatus() {
 
 /* Sets badge as active */
 function setActiveStatus() {
-    chrome.browserAction.setBadgeBackgroundColor({color: "#CF0016"});
+    chrome.action.setBadgeBackgroundColor({color: "#CF0016"});
     appGlobal.isLoggedIn = true;
 }
 
@@ -851,7 +861,7 @@ function markAsRead(feedIds, callback) {
         for (let i = 0; i < copyArray.length; i++) {
             removeFeedFromCache(copyArray[i]);
         }
-        chrome.browserAction.getBadgeText({}, function (feedsCount) {
+        chrome.action.getBadgeText({}, function (feedsCount) {
             feedsCount = +feedsCount;
             if (feedsCount > 0) {
                 feedsCount -= copyArray.length;
