@@ -1,4 +1,5 @@
 "use strict";
+/* exported FeedlyApiClient */
 
 let FeedlyApiClient = function (accessToken) {
 

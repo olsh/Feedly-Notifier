@@ -26,7 +26,12 @@ Load locally: Browser → Extensions → Developer Mode → “Load unpacked” 
 - Indentation: 4 spaces; UTF‑8; trim trailing whitespace (enforced by `.editorconfig`).
 - JavaScript: use strict mode; prefer `const/let`, camelCase for variables/functions, PascalCase for constructors; keep filenames lowercase with dashes or dots (e.g., `feedly.api.js`).
 - HTML/CSS: keep inline scripts minimal; reuse existing classes; keep assets under `images/`, `styles/`, `sound/`.
-- No linter is configured; match surrounding style and keep changes focused.
+- ESLint is configured; keep changes focused and fix lint issues as you go.
+
+## Linting
+- Command: `npm run lint` (auto-fix: `npm run lint:fix`).
+- Scope: ESLint across `.js` files; ignores `build/`, `node_modules/`, assets, and locales.
+- Agent rule: after every code change, run `npm run lint` and fix issues before builds or PRs.
 
 ## Testing Guidelines
 - No unit test suite in-repo. Perform manual smoke tests across supported browsers (Chrome, Firefox, Edge/Opera):

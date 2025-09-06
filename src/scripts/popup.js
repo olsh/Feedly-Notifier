@@ -15,7 +15,7 @@ let options = {};
 let environment = { os: "" };
 
 $(document).ready(async function () {
-    const state = await bg.send('getState') || {};
+    const state = await bg.send("getState") || {};
     options = state.options || {};
     environment = state.environment || { os: "" };
 
@@ -33,19 +33,19 @@ $(document).ready(async function () {
     }
 
     // @if BROWSER='chrome'
-    window.addEventListener('resize', onResizeChrome);
+    window.addEventListener("resize", onResizeChrome);
     // @endif
 
     // @if BROWSER='firefox'
     popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
     if (popupGlobal.isSidebar) {
-	    $(document.body).css("font-size", "12pt");
-	    $("html").height("100%");
-	    $("html").css("min-height", "600px");
-	    $("#popup-body").css("min-height", "600px");
-	    $("#popup-body").height("100%");
-	    $("#popup-body").css("max-height", "100%");
-	    $("#popup-content").css("max-height", "100%");
+        $(document.body).css("font-size", "12pt");
+        $("html").height("100%");
+        $("html").css("min-height", "600px");
+        $("#popup-body").css("min-height", "600px");
+        $("#popup-body").height("100%");
+        $("#popup-body").css("max-height", "100%");
+        $("#popup-content").css("max-height", "100%");
     }
     // @endif
 
@@ -55,7 +55,7 @@ $(document).ready(async function () {
 });
 
 $("#login").click(function () {
-    bg.send('getAccessToken').then(function () {
+    bg.send("getAccessToken").then(function () {
         setTimeout(renderFeeds, 500);
     });
 });
@@ -69,7 +69,7 @@ $("#feed, #feed-saved").on("mousedown", "a", async function (event) {
         var url = link.data("link");
 
         if (isFeed && options.openFeedsInSameTab) {
-            const resp = await bg.send('getFeedTabId');
+            const resp = await bg.send("getFeedTabId");
             const existingTabId = resp && resp.feedTabId;
             if (existingTabId) {
                 const tab = await browser.tabs.update(existingTabId, { url: url });
@@ -83,7 +83,7 @@ $("#feed, #feed-saved").on("mousedown", "a", async function (event) {
 
     function onOpenCallback(isFeed, tab) {
         if (isFeed) {
-            bg.send('setFeedTabId', { tabId: tab.id });
+            bg.send("setFeedTabId", { tabId: tab.id });
 
             if (options.markReadOnClick) {
                 markAsRead([link.closest(".item").data("id")]);
@@ -108,12 +108,12 @@ $("#popup-content").on("click", "#open-all-news", async function () {
 });
 
 $("#popup-content").on("click", "#open-unsaved-all-news", async function () {
-   const links = $("#feed-saved").find("a.title[data-link]").filter(":visible");
-   for (let i = 0; i < links.length; i++) {
-       const news = $(links[i]);
-       await browser.tabs.create({url: news.data("link"), active: false });
-   }
-        markAllAsUnsaved();
+    const links = $("#feed-saved").find("a.title[data-link]").filter(":visible");
+    for (let i = 0; i < links.length; i++) {
+        const news = $(links[i]);
+        await browser.tabs.create({url: news.data("link"), active: false });
+    }
+    markAllAsUnsaved();
 });
 
 $("#feed").on("click", ".mark-read", function (event) {
@@ -122,7 +122,7 @@ $("#feed").on("click", ".mark-read", function (event) {
 });
 
 $("#tabs-checkbox").change(function () {
-    if ($(this).is(':checked')) {
+    if ($(this).is(":checked")) {
         renderSavedFeeds();
     } else {
         renderFeeds();
@@ -171,7 +171,7 @@ $("#popup-content").on("click", ".show-content", function () {
 
 /* Manually feeds update */
 $("#feedly").on("click", "#update-feeds", function () {
-    if (!options.abilitySaveFeeds || !$("#tabs-checkbox").is(':checked')) {
+    if (!options.abilitySaveFeeds || !$("#tabs-checkbox").is(":checked")) {
         renderFeeds(true);
     } else {
         renderSavedFeeds(true);
@@ -184,7 +184,7 @@ $("#popup-content").on("click", ".save-feed", function () {
     var feed = $this.closest(".item");
     var feedId = feed.data("id");
     var saveItem = !$this.data("saved");
-    bg.send('toggleSavedFeed', { feedIds: [feedId], save: saveItem });
+    bg.send("toggleSavedFeed", { feedIds: [feedId], save: saveItem });
     $this.data("saved", saveItem);
     $this.toggleClass("saved");
 });
@@ -223,7 +223,7 @@ function executeAsync(func) {
 function renderFeeds(forceUpdate) {
     showLoader();
     const wantForce = (options.forceUpdateFeeds || forceUpdate);
-    bg.send('getFeeds', { forceUpdate: wantForce }).then(function (result) {
+    bg.send("getFeeds", { forceUpdate: wantForce }).then(function (result) {
         const feeds = result && result.feeds || [];
         const isLoggedIn = result && result.isLoggedIn;
         popupGlobal.feeds = feeds;
@@ -258,7 +258,7 @@ function renderFeeds(forceUpdate) {
 function renderSavedFeeds(forceUpdate) {
     showLoader();
     const wantForce = (options.forceUpdateFeeds || forceUpdate);
-    bg.send('getSavedFeeds', { forceUpdate: wantForce }).then(function (result) {
+    bg.send("getSavedFeeds", { forceUpdate: wantForce }).then(function (result) {
         const feeds = result && result.feeds || [];
         const isLoggedIn = result && result.isLoggedIn;
         popupGlobal.savedFeeds = feeds;
@@ -311,7 +311,7 @@ function markAsRead(feedIds) {
             showLoader();
         }
     }
-    bg.send('markAsRead', { feedIds: feedIds }).then(function () {
+    bg.send("markAsRead", { feedIds: feedIds }).then(function () {
         if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
             renderFeeds();
         } else {
@@ -326,7 +326,7 @@ function markAsUnSaved(feedIds) {
         feedItems = feedItems.add(".item[data-id='" + feedIds[i] + "']");
     }
 
-    bg.send('toggleSavedFeed', { feedIds: feedIds, save: false });
+    bg.send("toggleSavedFeed", { feedIds: feedIds, save: false });
 
     feedItems.data("saved", false);
     feedItems.find(".saved").removeClass("saved");
@@ -397,19 +397,19 @@ function getUniqueCategories(feeds){
 function setTheme() {
     switch (options.theme) {
         case "dark":
-            document.body.setAttribute('data-theme', 'dark');
+            document.body.setAttribute("data-theme", "dark");
             break;
         case "nord":
-            document.body.setAttribute('data-theme', 'nord');
+            document.body.setAttribute("data-theme", "nord");
             break;
         default: {
-            document.body.removeAttribute('data-theme');
+            document.body.removeAttribute("data-theme");
         }
     }
 }
 
 function openFeedlyTab() {
-    bg.send('openFeedlyTab');
+    bg.send("openFeedlyTab");
 
     // Close the popup since the user wants to see Feedly website anyway
     window.close();
@@ -437,7 +437,7 @@ function showEmptyContent() {
 function showFeeds() {
     unlockTabsSlider();
     if (options.resetCounterOnClick) {
-        bg.send('resetCounter');
+        bg.send("resetCounter");
     }
     $("body").children("div").not("#popup-content").hide();
     $("#popup-content").show().children("div").not("#feedly").hide().filter("#feed").show();
@@ -461,9 +461,9 @@ function showSavedFeeds() {
 }
 
 function setLastVisibleItems() {
-    if (!$(".item").not(':hidden').last().hasClass("item-last")) {
+    if (!$(".item").not(":hidden").last().hasClass("item-last")) {
         $(".item").removeClass("item-last");
-        $(".item").not(':hidden').last().addClass("item-last");
+        $(".item").not(":hidden").last().addClass("item-last");
     }
 }
 
@@ -490,9 +490,9 @@ function onResizeChrome() {
 // @endif
 
 function lockTabsSlider() {
-    $('#tabs-checkbox').prop("disabled", true);
+    $("#tabs-checkbox").prop("disabled", true);
 }
 
 function unlockTabsSlider() {
-    $('#tabs-checkbox').prop("disabled", false);
+    $("#tabs-checkbox").prop("disabled", false);
 }

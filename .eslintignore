@@ -1,0 +1,10 @@
+node_modules/
+build/
+test-results/
+logos/
+translations/
+src/styles/
+src/images/
+src/_locales/
+src/sound/
+

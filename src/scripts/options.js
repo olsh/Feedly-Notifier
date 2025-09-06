@@ -13,9 +13,6 @@ function getSyncArea(disableOptionsSync) {
     return disableOptionsSync ? browser.storage.local : browser.storage.sync;
 }
 
-function computeSavedGroup(feedlyUserId) {
-    return "user/" + feedlyUserId + "/tag/global.saved";
-}
 function computeGlobalFavorites(feedlyUserId) {
     return "user/" + feedlyUserId + "/category/global.must";
 }
@@ -126,9 +123,9 @@ async function loadUserCategories(){
 
 function appendCategory(id, label){
     var categories = $("#categories");
-    var label = $("<label for='" + id + "' class='label' />").text(label);
+    var labelEl = $("<label for='" + id + "' class='label' />").text(label);
     var checkbox = $("<input id='" + id + "' type='checkbox' />").attr("data-id", id);
-    categories.append(label);
+    categories.append(labelEl);
     categories.append(checkbox);
     categories.append("<br/>");
 }
@@ -199,12 +196,12 @@ async function setAllSitesPermission(enable, options) {
     if (enable) {
         const granted = await browser.permissions.request(optionsGlobal.allSitesPermission);
         if ($("#showThumbnailInNotifications").is(":checked")) {
-            $("#showThumbnailInNotifications").prop('checked', granted);
+            $("#showThumbnailInNotifications").prop("checked", granted);
             options.showThumbnailInNotifications = granted;
         }
 
         if ($("#showBlogIconInNotifications").is(":checked")) {
-            $("#showBlogIconInNotifications").prop('checked', granted);
+            $("#showBlogIconInNotifications").prop("checked", granted);
             options.showBlogIconInNotifications = granted;
         }
     }

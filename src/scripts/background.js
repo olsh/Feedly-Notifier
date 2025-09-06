@@ -4,44 +4,44 @@
 // and exposes message-based APIs for popup/options.
 
 // Load polyfill and core logic (relative to this file in /scripts)
-importScripts('browser-polyfill.min.js', 'feedly.api.js', 'core.js');
+importScripts("browser-polyfill.min.js", "feedly.api.js", "core.js");
 
 // Route messages from UI pages to background functions
 browser.runtime.onMessage.addListener((message, sender) => {
     try {
         switch (message && message.type) {
-            case 'getState':
+            case "getState":
                 return Promise.resolve({
                     options: appGlobal.options,
                     environment: appGlobal.environment,
                     isLoggedIn: appGlobal.isLoggedIn || false
                 });
-            case 'getOptions':
+            case "getOptions":
                 return Promise.resolve({ options: appGlobal.options });
-            case 'getFeeds':
+            case "getFeeds":
                 return getFeeds(Boolean(message.forceUpdate));
-            case 'getSavedFeeds':
+            case "getSavedFeeds":
                 return getSavedFeeds(Boolean(message.forceUpdate));
-            case 'markAsRead':
+            case "markAsRead":
                 return markAsRead(message.feedIds || []).then(ok => ({ ok: !!ok }));
-            case 'toggleSavedFeed':
+            case "toggleSavedFeed":
                 return toggleSavedFeed(message.feedIds || [], !!message.save).then(ok => ({ ok: !!ok }));
-            case 'openFeedlyTab':
+            case "openFeedlyTab":
                 return openFeedlyTab().then(() => ({ ok: true }));
-            case 'resetCounter':
-                return (typeof resetCounter === 'function' ? Promise.resolve(resetCounter()) : Promise.resolve()).then(() => ({ ok: true }));
-            case 'getFeedTabId':
+            case "resetCounter":
+                return (typeof resetCounter === "function" ? Promise.resolve(resetCounter()) : Promise.resolve()).then(() => ({ ok: true }));
+            case "getFeedTabId":
                 return Promise.resolve({ feedTabId: appGlobal.feedTabId || null });
-            case 'setFeedTabId':
+            case "setFeedTabId":
                 appGlobal.feedTabId = message.tabId;
                 return Promise.resolve({ ok: true });
-            case 'getAccessToken':
+            case "getAccessToken":
                 return getAccessToken().then(() => ({ ok: true }));
             default:
-                return Promise.resolve({ error: 'Unknown message type' });
+                return Promise.resolve({ error: "Unknown message type" });
         }
     } catch (e) {
-        try { console.error('background message error', e); } catch (_) {}
-        return Promise.resolve({ error: 'Internal error' });
+        try { console.error("background message error", e); } catch (_) {}
+        return Promise.resolve({ error: "Internal error" });
     }
 });

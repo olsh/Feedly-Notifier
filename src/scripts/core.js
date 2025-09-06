@@ -1,4 +1,5 @@
 "use strict";
+/* exported getFeeds, getSavedFeeds, toggleSavedFeed */
 
 var appGlobal = {
     feedlyApiClient: new FeedlyApiClient(),
@@ -218,22 +219,22 @@ function startSchedule(updateInterval) {
     updateCounter();
     updateFeeds();
     if (appGlobal.options.showCounter) {
-        browser.alarms.create('updateCounter', { periodInMinutes: updateInterval });
+        browser.alarms.create("updateCounter", { periodInMinutes: updateInterval });
     }
     if (appGlobal.options.showDesktopNotifications || appGlobal.options.playSound || !appGlobal.options.openSiteOnIconClick) {
-        browser.alarms.create('updateFeeds', { periodInMinutes: updateInterval });
+        browser.alarms.create("updateFeeds", { periodInMinutes: updateInterval });
     }
 }
 
 function stopSchedule() {
-    browser.alarms.clear('updateCounter');
-    browser.alarms.clear('updateFeeds');
+    browser.alarms.clear("updateCounter");
+    browser.alarms.clear("updateFeeds");
 }
 
 browser.alarms.onAlarm.addListener(function (alarm) {
-    if (alarm && alarm.name === 'updateCounter') {
+    if (alarm && alarm.name === "updateCounter") {
         updateCounter();
-    } else if (alarm && alarm.name === 'updateFeeds') {
+    } else if (alarm && alarm.name === "updateFeeds") {
         updateFeeds();
     }
 });
@@ -284,7 +285,7 @@ async function sendDesktopNotification(feeds) {
         let count = feeds.length === appGlobal.options.maxNumberOfFeeds ? browser.i18n.getMessage("many") : feeds.length.toString();
 
         browser.notifications.create({
-            type: 'basic',
+            type: "basic",
             title: browser.i18n.getMessage("NewFeeds"),
             message: browser.i18n.getMessage("YouHaveNewFeeds", count),
             iconUrl: appGlobal.icons.defaultBig,
@@ -318,10 +319,10 @@ async function sendDesktopNotification(feeds) {
 
     function createNotifications(feeds, showBlogIcons, showThumbnails, isSoundEnabled) {
         for (let feed of feeds) {
-            let notificationType = 'basic';
+            let notificationType = "basic";
             // @if BROWSER='chrome'
             if (showThumbnails && feed.thumbnail) {
-                notificationType = 'image';
+                notificationType = "image";
             }
             // @endif
 
