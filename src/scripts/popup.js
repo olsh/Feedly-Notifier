@@ -8,7 +8,7 @@ var popupGlobal = {
 };
 
 const bg = {
-    send: (type, payload) => new Promise(resolve => chrome.runtime.sendMessage(Object.assign({ type }, payload || {}), resolve))
+    send: (type, payload) => browser.runtime.sendMessage(Object.assign({ type }, payload || {}))
 };
 
 let options = {};
@@ -21,12 +21,12 @@ $(document).ready(async function () {
 
     setTheme();
     $("#feed, #feed-saved, #feed-empty").css("font-size", (options.popupFontSize || 100) / 100 + "em");
-    $("#website").text(chrome.i18n.getMessage("FeedlyWebsite"));
-    $("#mark-all-read>span").text(chrome.i18n.getMessage("MarkAllAsRead"));
-    $("#mark-read-engagement>span").text(chrome.i18n.getMessage("MarkAsReadEngagement"));
-    $("#update-feeds>span").text(chrome.i18n.getMessage("UpdateFeeds"));
-    $("#open-all-news>span").text(chrome.i18n.getMessage("OpenAllFeeds"));
-    $("#open-unsaved-all-news>span").text(chrome.i18n.getMessage("OpenAllSavedFeeds"));
+    $("#website").text(browser.i18n.getMessage("FeedlyWebsite"));
+    $("#mark-all-read>span").text(browser.i18n.getMessage("MarkAllAsRead"));
+    $("#mark-read-engagement>span").text(browser.i18n.getMessage("MarkAsReadEngagement"));
+    $("#update-feeds>span").text(browser.i18n.getMessage("UpdateFeeds"));
+    $("#open-all-news>span").text(browser.i18n.getMessage("OpenAllFeeds"));
+    $("#open-unsaved-all-news>span").text(browser.i18n.getMessage("OpenAllSavedFeeds"));
 
     if (options.abilitySaveFeeds) {
         $("#popup-content").addClass("tabs");
@@ -61,28 +61,24 @@ $("#login").click(function () {
 });
 
 //using "mousedown" instead of "click" event to process middle button click.
-$("#feed, #feed-saved").on("mousedown", "a", function (event) {
+$("#feed, #feed-saved").on("mousedown", "a", async function (event) {
     var link = $(this);
     if (event.which === 1 || event.which === 2) {
         var isActiveTab = !(event.ctrlKey || event.which === 2) && !options.openFeedsInBackground;
         var isFeed = link.hasClass("title") && $("#feed").is(":visible");
         var url = link.data("link");
 
-        (async () => {
-            if (isFeed && options.openFeedsInSameTab) {
-                const resp = await bg.send('getFeedTabId');
-                const existingTabId = resp && resp.feedTabId;
-                if (existingTabId) {
-                    chrome.tabs.update(existingTabId, { url: url }, function (tab) {
-                        onOpenCallback(isFeed, tab);
-                    });
-                    return;
-                }
-            }
-            chrome.tabs.create({ url: url, active: isActiveTab }, function (tab) {
+        if (isFeed && options.openFeedsInSameTab) {
+            const resp = await bg.send('getFeedTabId');
+            const existingTabId = resp && resp.feedTabId;
+            if (existingTabId) {
+                const tab = await browser.tabs.update(existingTabId, { url: url });
                 onOpenCallback(isFeed, tab);
-            });
-        })();
+                return;
+            }
+        }
+        const tab = await browser.tabs.create({ url: url, active: isActiveTab });
+        onOpenCallback(isFeed, tab);
     }
 
     function onOpenCallback(isFeed, tab) {
@@ -100,21 +96,23 @@ $("#popup-content").on("click", "#mark-all-read", markAllAsRead);
 
 $("#popup-content").on("click", "#mark-read-engagement", markAsReadEngagement);
 
-$("#popup-content").on("click", "#open-all-news", function () {
-    $("#feed").find("a.title[data-link]").filter(":visible").each(function (key, value) {
-        var news = $(value);
-        chrome.tabs.create({url: news.data("link"), active: false }, function () {});
-    });
+$("#popup-content").on("click", "#open-all-news", async function () {
+    const links = $("#feed").find("a.title[data-link]").filter(":visible");
+    for (let i = 0; i < links.length; i++) {
+        const news = $(links[i]);
+        await browser.tabs.create({url: news.data("link"), active: false });
+    }
     if (options.markReadOnClick) {
         markAllAsRead();
     }
 });
 
-$("#popup-content").on("click", "#open-unsaved-all-news", function () {
-   $("#feed-saved").find("a.title[data-link]").filter(":visible").each(function (key, value) {
-           var news = $(value);
-           chrome.tabs.create({url: news.data("link"), active: false }, function () {});
-       });
+$("#popup-content").on("click", "#open-unsaved-all-news", async function () {
+   const links = $("#feed-saved").find("a.title[data-link]").filter(":visible");
+   for (let i = 0; i < links.length; i++) {
+       const news = $(links[i]);
+       await browser.tabs.create({url: news.data("link"), active: false });
+   }
         markAllAsUnsaved();
 });
 
@@ -425,14 +423,14 @@ function showLoader() {
 
 function showLogin() {
     $("body").children("div").hide();
-    $("#login-btn").text(chrome.i18n.getMessage("Login"));
+    $("#login-btn").text(browser.i18n.getMessage("Login"));
     $("#login").show();
 }
 
 function showEmptyContent() {
     unlockTabsSlider();
     $("body").children("div").not("#popup-content").hide();
-    $("#popup-content").show().children("div").not("#feedly").hide().filter("#feed-empty").text(chrome.i18n.getMessage("NoUnreadArticles")).show();
+    $("#popup-content").show().children("div").not("#feedly").hide().filter("#feed-empty").text(browser.i18n.getMessage("NoUnreadArticles")).show();
     $("#feedly").show().find("#popup-actions").show().children().hide().filter(".icon-refresh").show();
 }
 
@@ -443,8 +441,8 @@ function showFeeds() {
     }
     $("body").children("div").not("#popup-content").hide();
     $("#popup-content").show().children("div").not("#feedly").hide().filter("#feed").show();
-    $(".mark-read").attr("title", chrome.i18n.getMessage("MarkAsRead"));
-    $(".show-content").attr("title", chrome.i18n.getMessage("More"));
+    $(".mark-read").attr("title", browser.i18n.getMessage("MarkAsRead"));
+    $(".show-content").attr("title", browser.i18n.getMessage("More"));
     $("#feedly").show().find("#popup-actions").show().children().show().filter(".icon-unsaved, #mark-read-engagement").hide();
     setLastVisibleItems();
 
@@ -457,7 +455,7 @@ function showSavedFeeds() {
     unlockTabsSlider();
     $("body").children("div").not("#popup-content").hide();
     $("#popup-content").show().children("div").not("#feedly").hide().filter("#feed-saved").show().find(".mark-read").hide();
-    $("#feed-saved").find(".show-content").attr("title", chrome.i18n.getMessage("More"));
+    $("#feed-saved").find(".show-content").attr("title", browser.i18n.getMessage("More"));
     $("#feedly").show().find("#popup-actions").show().children().hide().filter(".icon-unsaved, .icon-refresh").show();
     setLastVisibleItems();
 }

@@ -5,7 +5,7 @@ let FeedlyApiClient = function (accessToken) {
     this.accessToken = accessToken;
 
     let apiUrl = "https://cloud.feedly.com/v3/";
-    let extensionVersion = chrome.runtime.getManifest().version;
+    let extensionVersion = browser.runtime.getManifest().version;
 
     this.getMethodUrl = function (methodName, parameters) {
         if (methodName === undefined) {

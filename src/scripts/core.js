@@ -131,44 +131,49 @@ var appGlobal = {
     },
     get syncStorage(){
         if (this.options.disableOptionsSync) {
-            return chrome.storage.local;
+            return browser.storage.local;
         }
-        return chrome.storage.sync;
+        return browser.storage.sync;
     }
 };
 
 // #Event handlers
-chrome.runtime.onInstalled.addListener(function (details) {
-    readOptions(function () {
-        //Write all options in chrome storage and initialize application
-        writeOptions(initialize);
-    });
+browser.runtime.onInstalled.addListener(async function () {
+    await readOptions();
+    // Write all options in storage and initialize application
+    await writeOptions();
+    await initialize();
 });
 
-chrome.runtime.onStartup.addListener(function () {
-    readOptions(initialize);
+browser.runtime.onStartup.addListener(async function () {
+    await readOptions();
+    await initialize();
 });
 
-chrome.storage.onChanged.addListener(function (changes, areaName) {
-    var callback;
+browser.storage.onChanged.addListener(async function (changes, areaName) {
+    let shouldReinitialize = false;
 
-    for (var optionName in changes) {
+    for (let optionName in changes) {
         if (appGlobal.criticalOptionNames.indexOf(optionName) !== -1) {
-            callback = initialize;
+            shouldReinitialize = true;
             break;
         }
     }
-    readOptions(callback);
+
+    await readOptions();
+    if (shouldReinitialize) {
+        await initialize();
+    }
 });
 
-chrome.tabs.onRemoved.addListener(function(tabId){
+browser.tabs.onRemoved.addListener(function(tabId){
     if (appGlobal.feedTabId && appGlobal.feedTabId === tabId) {
         appGlobal.feedTabId = null;
     }
 });
 
 /* Listener for adding or removing feeds on the feedly website */
-chrome.webRequest.onCompleted.addListener(function (details) {
+browser.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "POST" || details.method === "DELETE") {
         updateCounter();
         updateFeeds();
@@ -177,35 +182,34 @@ chrome.webRequest.onCompleted.addListener(function (details) {
 }, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
 /* Listener for adding or removing saved feeds */
-chrome.webRequest.onCompleted.addListener(function (details) {
+browser.webRequest.onCompleted.addListener(function (details) {
     if (details.method === "PUT" || details.method === "DELETE") {
         updateSavedFeeds();
     }
 }, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
 
-chrome.action.onClicked.addListener(function () {
+browser.action.onClicked.addListener(async function () {
     if (appGlobal.isLoggedIn) {
-        openFeedlyTab();
+        await openFeedlyTab();
         if(appGlobal.options.resetCounterOnClick){
-            resetCounter();
+            await resetCounter();
         }
     } else {
-        getAccessToken();
+        await getAccessToken();
     }
 });
 
 /* Initialization all parameters and run feeds check */
-function initialize() {
+async function initialize() {
     if (appGlobal.options.openSiteOnIconClick) {
-        chrome.action.setPopup({popup: ""});
+        await browser.action.setPopup({popup: ""});
     } else {
-        chrome.action.setPopup({popup: "popup.html"});
+        await browser.action.setPopup({popup: "popup.html"});
     }
     appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
 
-    chrome.runtime.getPlatformInfo(function (platformInfo) {
-        appGlobal.environment.os = platformInfo.os;
-    });
+    const platformInfo = await browser.runtime.getPlatformInfo();
+    appGlobal.environment.os = platformInfo.os;
     startSchedule(appGlobal.options.updateInterval);
 }
 
@@ -214,19 +218,19 @@ function startSchedule(updateInterval) {
     updateCounter();
     updateFeeds();
     if (appGlobal.options.showCounter) {
-        chrome.alarms.create('updateCounter', { periodInMinutes: updateInterval });
+        browser.alarms.create('updateCounter', { periodInMinutes: updateInterval });
     }
     if (appGlobal.options.showDesktopNotifications || appGlobal.options.playSound || !appGlobal.options.openSiteOnIconClick) {
-        chrome.alarms.create('updateFeeds', { periodInMinutes: updateInterval });
+        browser.alarms.create('updateFeeds', { periodInMinutes: updateInterval });
     }
 }
 
 function stopSchedule() {
-    chrome.alarms.clear('updateCounter');
-    chrome.alarms.clear('updateFeeds');
+    browser.alarms.clear('updateCounter');
+    browser.alarms.clear('updateFeeds');
 }
 
-chrome.alarms.onAlarm.addListener(function (alarm) {
+browser.alarms.onAlarm.addListener(function (alarm) {
     if (alarm && alarm.name === 'updateCounter') {
         updateCounter();
     } else if (alarm && alarm.name === 'updateFeeds') {
@@ -234,8 +238,8 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     }
 });
 
-chrome.notifications.onClicked.addListener(function (notificationId) {
-    chrome.notifications.clear(notificationId);
+browser.notifications.onClicked.addListener(function (notificationId) {
+    browser.notifications.clear(notificationId);
 
     if (appGlobal.notifications[notificationId]) {
         openUrlInNewTab(appGlobal.notifications[notificationId], true);
@@ -247,7 +251,7 @@ chrome.notifications.onClicked.addListener(function (notificationId) {
     appGlobal.notifications[notificationId] = undefined;
 });
 
-chrome.notifications.onButtonClicked.addListener(function(notificationId, button) {
+browser.notifications.onButtonClicked.addListener(function(notificationId, button) {
     if (button !== 0) {
         // Unknown button index
         return;
@@ -256,14 +260,14 @@ chrome.notifications.onButtonClicked.addListener(function(notificationId, button
     // The "Mark as read button has been clicked"
     if (appGlobal.notifications[notificationId]) {
         markAsRead([notificationId]);
-        chrome.notifications.clear(notificationId);
+        browser.notifications.clear(notificationId);
     }
 
     appGlobal.notifications[notificationId] = undefined;
 });
 
 /* Sends desktop notifications */
-function sendDesktopNotification(feeds) {
+async function sendDesktopNotification(feeds) {
 
     //if notifications too many, then to show only count
     let maxNotifications = appGlobal.options.maxNotificationsCount;
@@ -277,12 +281,12 @@ function sendDesktopNotification(feeds) {
     const isSoundEnabled = appGlobal.options.playSound && feeds.length > 0;
     if (feeds.length > maxNotifications) {
         //We can detect only limit count of new feeds at time, but actually count of feeds may be more
-        let count = feeds.length === appGlobal.options.maxNumberOfFeeds ? chrome.i18n.getMessage("many") : feeds.length.toString();
+        let count = feeds.length === appGlobal.options.maxNumberOfFeeds ? browser.i18n.getMessage("many") : feeds.length.toString();
 
-        chrome.notifications.create({
+        browser.notifications.create({
             type: 'basic',
-            title: chrome.i18n.getMessage("NewFeeds"),
-            message: chrome.i18n.getMessage("YouHaveNewFeeds", count),
+            title: browser.i18n.getMessage("NewFeeds"),
+            message: browser.i18n.getMessage("YouHaveNewFeeds", count),
             iconUrl: appGlobal.icons.defaultBig,
             // @if BROWSER!='firefox'
             silent: !isSoundEnabled
@@ -292,19 +296,17 @@ function sendDesktopNotification(feeds) {
         let showBlogIcons = false;
         let showThumbnails = false;
 
-        chrome.permissions.contains({
-            origins: ["<all_urls>"]
-        }, function (result) {
-            if (appGlobal.options.showBlogIconInNotifications && result) {
+        try {
+            const hasAllOrigins = await browser.permissions.contains({ origins: ["<all_urls>"] });
+            if (appGlobal.options.showBlogIconInNotifications && hasAllOrigins) {
                 showBlogIcons = true;
             }
-
-            if (appGlobal.options.showThumbnailInNotifications && result) {
+            if (appGlobal.options.showThumbnailInNotifications && hasAllOrigins) {
                 showThumbnails = true;
             }
+        } catch (_) { /* ignore */ }
 
-            createNotifications(feeds, showBlogIcons, showThumbnails, isSoundEnabled);
-        });
+        createNotifications(feeds, showBlogIcons, showThumbnails, isSoundEnabled);
     }
 
     // @if BROWSER='firefox'
@@ -323,7 +325,7 @@ function sendDesktopNotification(feeds) {
             }
             // @endif
 
-            chrome.notifications.create(feed.id, {
+            browser.notifications.create(feed.id, {
                 type: notificationType,
                 title: feed.blog,
                 message: feed.title,
@@ -332,7 +334,7 @@ function sendDesktopNotification(feeds) {
                 ,imageUrl: showThumbnails ? feed.thumbnail : null
                 ,buttons: [
                     {
-                        title: chrome.i18n.getMessage("MarkAsRead")
+                        title: browser.i18n.getMessage("MarkAsRead")
                     }
                 ],
                 silent: !isSoundEnabled
@@ -348,31 +350,23 @@ function sendDesktopNotification(feeds) {
  * then creates new window and adds tab in the end of it
  * url for open
  * active when is true, then tab will be active */
-function openUrlInNewTab(url, active) {
-    browser.windows.getAll({})
-        .then(function (windows) {
-            if (windows.length < 1) {
-                return browser.windows.create({focused: true});
-            }
-
-            return Promise.resolve();
-        })
-        .then(function () {
-            return browser.tabs.create({url: url, active: active });
-        });
+async function openUrlInNewTab(url, active) {
+    const windows = await browser.windows.getAll({});
+    if (windows.length < 1) {
+        await browser.windows.create({focused: true});
+    }
+    await browser.tabs.create({url: url, active: active });
 }
 
 /* Opens new Feedly tab, if tab was already opened, then switches on it and reload. */
-function openFeedlyTab() {
-    browser.tabs.query({url: appGlobal.feedlyUrl + "/*"})
-        .then(function (tabs) {
-            if (tabs.length < 1) {
-                chrome.tabs.create({url: appGlobal.feedlyUrl});
-            } else {
-                chrome.tabs.update(tabs[0].id, {active: true});
-                chrome.tabs.reload(tabs[0].id);
-            }
-        });
+async function openFeedlyTab() {
+    const tabs = await browser.tabs.query({url: appGlobal.feedlyUrl + "/*"});
+    if (tabs.length < 1) {
+        await browser.tabs.create({url: appGlobal.feedlyUrl});
+    } else {
+        await browser.tabs.update(tabs[0].id, {active: true});
+        await browser.tabs.reload(tabs[0].id);
+    }
 }
 
 /* Removes feeds from cache by feed ID */
@@ -405,53 +399,45 @@ function playSound(){
 /* Returns only new feeds and set date of last feed
  * The callback parameter should specify a function that looks like this:
  * function(object newFeeds) {...};*/
-function filterByNewFeeds(feeds, callback) {
-    chrome.storage.local.get("lastFeedTimeTicks", function (options) {
-        var lastFeedTime;
+async function filterByNewFeeds(feeds) {
+    const options = await browser.storage.local.get("lastFeedTimeTicks");
+    let lastFeedTime;
 
-        if (options.lastFeedTimeTicks) {
-            lastFeedTime = new Date(options.lastFeedTimeTicks);
-        } else {
-            lastFeedTime = new Date(1971, 0, 1);
-        }
+    if (options.lastFeedTimeTicks) {
+        lastFeedTime = new Date(options.lastFeedTimeTicks);
+    } else {
+        lastFeedTime = new Date(1971, 0, 1);
+    }
 
-        var newFeeds = [];
-        var maxFeedTime = lastFeedTime;
+    let newFeeds = [];
+    let maxFeedTime = lastFeedTime;
 
-        for (var i = 0; i < feeds.length; i++) {
-            if (feeds[i].date > lastFeedTime) {
-                newFeeds.push(feeds[i]);
-                if (feeds[i].date > maxFeedTime) {
-                    maxFeedTime = feeds[i].date;
-                }
+    for (let i = 0; i < feeds.length; i++) {
+        if (feeds[i].date > lastFeedTime) {
+            newFeeds.push(feeds[i]);
+            if (feeds[i].date > maxFeedTime) {
+                maxFeedTime = feeds[i].date;
             }
         }
+    }
 
-        chrome.storage.local.set({ lastFeedTimeTicks: maxFeedTime.getTime() }, function () {
-            if (typeof callback === "function") {
-                callback(newFeeds);
-            }
-        });
-    });
+    await browser.storage.local.set({ lastFeedTimeTicks: maxFeedTime.getTime() });
+    return newFeeds;
 }
 
-function resetCounter(){
+async function resetCounter(){
     setBadgeCounter(0);
-    chrome.storage.local.set({ lastCounterResetTime: new Date().getTime() });
+    await browser.storage.local.set({ lastCounterResetTime: new Date().getTime() });
 }
 
 /**
  * Updates saved feeds and stores them in cache.
  * @returns {Promise}
  */
-function updateSavedFeeds() {
-    return apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents")
-        .then(function (response) {
-            return parseFeeds(response);
-        })
-        .then(function (feeds) {
-            appGlobal.cachedSavedFeeds = feeds;
-        });
+async function updateSavedFeeds() {
+    const response = await apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents");
+    const feeds = await parseFeeds(response);
+    appGlobal.cachedSavedFeeds = feeds;
 }
 
 /* Sets badge counter if unread feeds more than zero */
@@ -462,102 +448,91 @@ function setBadgeCounter(unreadFeedsCount) {
             const thousands = Math.floor(unreadFeedsCountNumber / 1000);
             unreadFeedsCount = thousands + "k+";
         }
-        chrome.action.setBadgeText({ text: String(unreadFeedsCountNumber > 0 ? unreadFeedsCount : "")});
+        browser.action.setBadgeText({ text: String(unreadFeedsCountNumber > 0 ? unreadFeedsCount : "")});
     } else {
-        chrome.action.setBadgeText({ text: ""});
+        browser.action.setBadgeText({ text: ""});
     }
 
     if (!unreadFeedsCount && appGlobal.options.grayIconColorIfNoUnread) {
-        chrome.action.setIcon({ path: appGlobal.icons.inactive }, function () {
-        });
+        browser.action.setIcon({ path: appGlobal.icons.inactive });
     } else {
-        chrome.action.setIcon({ path: appGlobal.icons.default }, function () {
-        });
+        browser.action.setIcon({ path: appGlobal.icons.default });
     }
 }
 
 /* Runs feeds update and stores unread feeds in cache
  * Callback will be started after function complete
  * */
-function updateCounter() {
-    if (appGlobal.options.resetCounterOnClick) {
-        chrome.storage.local.get("lastCounterResetTime", function (options) {
+async function updateCounter() {
+    try {
+        if (appGlobal.options.resetCounterOnClick) {
+            const options = await browser.storage.local.get("lastCounterResetTime");
             let parameters = null;
             if (options.lastCounterResetTime) {
-                parameters = {
-                    newerThan: options.lastCounterResetTime
-                };
+                parameters = { newerThan: options.lastCounterResetTime };
             }
-            makeMarkersRequest(parameters);
-        });
-    } else {
-        chrome.storage.local.set({lastCounterResetTime: new Date(0).getTime()});
-        makeMarkersRequest();
+            await makeMarkersRequest(parameters);
+        } else {
+            await browser.storage.local.set({lastCounterResetTime: new Date(0).getTime()});
+            await makeMarkersRequest();
+        }
+    } catch (e) {
+        await browser.action.setBadgeText({ text: ""});
+        console.info("Unable to load counters.", e);
     }
 }
 
-function makeMarkersRequest(parameters){
-    apiRequestWrapper("markers/counts", {
-        parameters: parameters
-    }).then(function (response) {
-        let unreadCounts = response.unreadcounts;
-        let unreadFeedsCount = 0;
+async function makeMarkersRequest(parameters){
+    const response = await apiRequestWrapper("markers/counts", { parameters: parameters });
+    const unreadCounts = response.unreadcounts || [];
+    let unreadFeedsCount = 0;
 
-        if (appGlobal.options.isFiltersEnabled) {
-            return getUserSubscriptions()
-                .then(function (response) {
-                    unreadCounts.forEach(function (element) {
-                        if (appGlobal.options.filters.indexOf(element.id) !== -1) {
-                            unreadFeedsCount += element.count;
-                        }
-                    });
-
-                    // When feed consists in more than one category, we remove feed which was counted twice or more
-                    response.forEach(function (feed) {
-                        let numberOfDupesCategories = 0;
-                        feed.categories.forEach(function(category){
-                            if(appGlobal.options.filters.indexOf(category.id) !== -1){
-                                numberOfDupesCategories++;
-                            }
-                        });
-                        if(numberOfDupesCategories > 1){
-                            for (let i = 0; i < unreadCounts.length; i++) {
-                                if (feed.id === unreadCounts[i].id) {
-                                    unreadFeedsCount -= unreadCounts[i].count * --numberOfDupesCategories;
-                                    break;
-                                }
-                            }
-                        }
-                    });
-
-                    return unreadFeedsCount;
-                })
-                .catch(function (e) {
-                    console.info("Unable to load subscriptions.", e);
-                });
-        } else {
-            for (let unreadCount of unreadCounts) {
-                if (appGlobal.globalGroup === unreadCount.id) {
-                    unreadFeedsCount = unreadCount.count;
-                    break;
+    if (appGlobal.options.isFiltersEnabled) {
+        try {
+            const subscriptions = await getUserSubscriptions();
+            unreadCounts.forEach(function (element) {
+                if (appGlobal.options.filters.indexOf(element.id) !== -1) {
+                    unreadFeedsCount += element.count;
                 }
-            }
+            });
 
-            return unreadFeedsCount;
+            // Remove double-counted feeds when they belong to multiple categories
+            subscriptions.forEach(function (feed) {
+                let numberOfDupesCategories = 0;
+                feed.categories.forEach(function(category){
+                    if(appGlobal.options.filters.indexOf(category.id) !== -1){
+                        numberOfDupesCategories++;
+                    }
+                });
+                if(numberOfDupesCategories > 1){
+                    for (let i = 0; i < unreadCounts.length; i++) {
+                        if (feed.id === unreadCounts[i].id) {
+                            unreadFeedsCount -= unreadCounts[i].count * --numberOfDupesCategories;
+                            break;
+                        }
+                    }
+                }
+            });
+        } catch (e) {
+            console.info("Unable to load subscriptions.", e);
         }
-    }).then(setBadgeCounter)
-    .catch(function (e) {
-        chrome.action.setBadgeText({ text: ""});
+    } else {
+        for (let unreadCount of unreadCounts) {
+            if (appGlobal.globalGroup === unreadCount.id) {
+                unreadFeedsCount = unreadCount.count;
+                break;
+            }
+        }
+    }
 
-        console.info("Unable to load counters.", e);
-    });
+    setBadgeCounter(unreadFeedsCount);
 }
 
 /* Runs feeds update and stores unread feeds in cache
  * Callback will be started after function complete
  * If silentUpdate is true, then notifications will not be shown
  *  */
-function updateFeeds(silentUpdate) {
+async function updateFeeds(silentUpdate) {
     appGlobal.cachedFeeds = [];
     appGlobal.options.filters = appGlobal.options.filters || [];
 
@@ -578,74 +553,68 @@ function updateFeeds(silentUpdate) {
         promises.push(promise);
     }
 
-    return Promise.all(promises)
-        .then(function (responses) {
-            let parsePromises = responses.map(response => parseFeeds(response));
+    try {
+        const responses = await Promise.all(promises);
+        const parsedFeeds = await Promise.all(responses.map(response => parseFeeds(response)));
 
-            return Promise.all(parsePromises);
-        })
-        .then(function (parsedFeeds) {
-            for (let parsedFeed of parsedFeeds) {
-                appGlobal.cachedFeeds = appGlobal.cachedFeeds.concat(parsedFeed);
+        for (let parsedFeed of parsedFeeds) {
+            appGlobal.cachedFeeds = appGlobal.cachedFeeds.concat(parsedFeed);
+        }
+
+        // Remove duplicates
+        appGlobal.cachedFeeds = appGlobal.cachedFeeds.filter(function (value, index, feeds) {
+            for (let i = ++index; i < feeds.length; i++) {
+                if (feeds[i].id === value.id) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        appGlobal.cachedFeeds = appGlobal.cachedFeeds.sort(function (a, b) {
+            if (appGlobal.options.sortBy === "newest") {
+                if (a.date > b.date) {
+                    return -1;
+                } else if (a.date < b.date){
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
 
-            // Remove duplicates
-            appGlobal.cachedFeeds = appGlobal.cachedFeeds.filter(function (value, index, feeds) {
-                for (let i = ++index; i < feeds.length; i++) {
-                    if (feeds[i].id === value.id) {
-                        return false;
-                    }
-                }
-                return true;
-            });
-
-            appGlobal.cachedFeeds = appGlobal.cachedFeeds.sort(function (a, b) {
-                if (appGlobal.options.sortBy === "newest") {
-                    if (a.date > b.date) {
-                        return -1;
-                    } else if (a.date < b.date){
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }
-
-                if (appGlobal.options.sortBy === "oldest") {
-                    if (a.date > b.date) {
-                        return 1;
-                    } else if (a.date < b.date){
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                }
-
-                if (a.engagementRate < b.engagementRate) {
+            if (appGlobal.options.sortBy === "oldest") {
+                if (a.date > b.date) {
                     return 1;
-                } else if (a.engagementRate > b.engagementRate){
+                } else if (a.date < b.date){
                     return -1;
                 } else {
                     return 0;
                 }
-            });
-
-            appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
-            if (!silentUpdate && (appGlobal.options.showDesktopNotifications)) {
-                filterByNewFeeds(appGlobal.cachedFeeds, function (newFeeds) {
-                    sendDesktopNotification(newFeeds);
-                });
             }
-        })
-        .catch(function (e) {
-            console.info("Unable to update feeds.", e);
+
+            if (a.engagementRate < b.engagementRate) {
+                return 1;
+            } else if (a.engagementRate > b.engagementRate){
+                return -1;
+            } else {
+                return 0;
+            }
         });
+
+        appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
+        if (!silentUpdate && (appGlobal.options.showDesktopNotifications)) {
+            const newFeeds = await filterByNewFeeds(appGlobal.cachedFeeds);
+            await sendDesktopNotification(newFeeds);
+        }
+    } catch (e) {
+        console.info("Unable to update feeds.", e);
+    }
 }
 
 /* Stops scheduler, sets badge as inactive and resets counter */
 function setInactiveStatus() {
-    chrome.action.setIcon({ path: appGlobal.icons.inactive }, function () {
-    });
-    chrome.action.setBadgeText({ text: ""});
+    browser.action.setIcon({ path: appGlobal.icons.inactive });
+    browser.action.setBadgeText({ text: ""});
     appGlobal.cachedFeeds = [];
     appGlobal.isLoggedIn = false;
     stopSchedule();
@@ -653,7 +622,7 @@ function setInactiveStatus() {
 
 /* Sets badge as active */
 function setActiveStatus() {
-    chrome.action.setBadgeBackgroundColor({color: "#CF0016"});
+    browser.action.setBadgeBackgroundColor({color: "#CF0016"});
     appGlobal.isLoggedIn = true;
 }
 
@@ -787,15 +756,13 @@ function parseFeeds(feedlyResponse) {
  * If the cache is empty, then it will be updated before return
  * forceUpdate, when is true, then cache will be updated
  */
-function getFeeds(forceUpdate, callback) {
+async function getFeeds(forceUpdate) {
     if (appGlobal.cachedFeeds.length > 0 && !forceUpdate) {
-        callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
+        return { feeds: appGlobal.cachedFeeds.slice(0), isLoggedIn: appGlobal.isLoggedIn };
     } else {
-        updateFeeds(true)
-            .then(function () {
-                callback(appGlobal.cachedFeeds.slice(0), appGlobal.isLoggedIn);
-            });
+        await updateFeeds(true);
         updateCounter();
+        return { feeds: appGlobal.cachedFeeds.slice(0), isLoggedIn: appGlobal.isLoggedIn };
     }
 }
 
@@ -803,14 +770,12 @@ function getFeeds(forceUpdate, callback) {
  * If the cache is empty, then it will be updated before return
  * forceUpdate, when is true, then cache will be updated
  */
-function getSavedFeeds(forceUpdate, callback) {
+async function getSavedFeeds(forceUpdate) {
     if (appGlobal.cachedSavedFeeds.length > 0 && !forceUpdate) {
-        callback(appGlobal.cachedSavedFeeds.slice(0), appGlobal.isLoggedIn);
+        return { feeds: appGlobal.cachedSavedFeeds.slice(0), isLoggedIn: appGlobal.isLoggedIn };
     } else {
-        updateSavedFeeds()
-            .then(function () {
-                callback(appGlobal.cachedSavedFeeds.slice(0), appGlobal.isLoggedIn);
-            });
+        await updateSavedFeeds();
+        return { feeds: appGlobal.cachedSavedFeeds.slice(0), isLoggedIn: appGlobal.isLoggedIn };
     }
 }
 
@@ -819,19 +784,19 @@ function getUserSubscriptions(updateCache) {
         appGlobal.getUserSubscriptionsPromise = null;
     }
 
-    appGlobal.getUserSubscriptionsPromise = appGlobal.getUserSubscriptionsPromise || apiRequestWrapper("subscriptions")
-        .then(function (response) {
+    if (!appGlobal.getUserSubscriptionsPromise) {
+        appGlobal.getUserSubscriptionsPromise = (async () => {
+            const response = await apiRequestWrapper("subscriptions");
             if (!response) {
                 appGlobal.getUserSubscriptionsPromise = null;
-                return Promise.reject();
+                throw new Error("Empty subscriptions response");
             }
-
             return response;
-        },function () {
+        })().catch((e) => {
             appGlobal.getUserSubscriptionsPromise = null;
-
-            return Promise.reject();
+            throw e;
         });
+    }
 
     return appGlobal.getUserSubscriptionsPromise;
 }
@@ -840,7 +805,7 @@ function getUserSubscriptions(updateCache) {
  * array of the ID of feeds
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
-function markAsRead(feedIds, callback) {
+async function markAsRead(feedIds) {
 
     // We should copy the array due to aggressive GC in Firefox
     // When the popup is closed Firefox destroys all objects created there
@@ -850,32 +815,29 @@ function markAsRead(feedIds, callback) {
         copyArray.push(feedIds[i]);
     }
 
-    apiRequestWrapper("markers", {
-        body: {
-            action: "markAsRead",
-            type: "entries",
-            entryIds: copyArray
-        },
-        method: "POST"
-    }).then(function () {
+    try {
+        await apiRequestWrapper("markers", {
+            body: {
+                action: "markAsRead",
+                type: "entries",
+                entryIds: copyArray
+            },
+            method: "POST"
+        });
+
         for (let i = 0; i < copyArray.length; i++) {
             removeFeedFromCache(copyArray[i]);
         }
-        chrome.action.getBadgeText({}, function (feedsCount) {
-            feedsCount = +feedsCount;
-            if (feedsCount > 0) {
-                feedsCount -= copyArray.length;
-                setBadgeCounter(feedsCount);
-            }
-        });
-        if (typeof callback === "function") {
-            callback(true);
+        let feedsCount = await browser.action.getBadgeText({});
+        feedsCount = +feedsCount;
+        if (feedsCount > 0) {
+            feedsCount -= copyArray.length;
+            setBadgeCounter(feedsCount);
         }
-    }, function () {
-        if (typeof callback === "function") {
-            callback(false);
-        }
-    });
+        return true;
+    } catch (e) {
+        return false;
+    }
 }
 
 /* Save feed or un save it.
@@ -883,52 +845,39 @@ function markAsRead(feedIds, callback) {
  * if saveFeed is true, then save the feeds, else unsafe them
  * The callback parameter should specify a function that looks like this:
  * function(boolean isLoggedIn) {...};*/
-function toggleSavedFeed(feedsIds, saveFeed, callback) {
-    if (saveFeed) {
-        apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup), {
-            method: "PUT",
-            body: {
-                entryIds: feedsIds
-            }
-        }).then(function () {
-            if (typeof callback === "function") {
-                callback(true);
-            }
-        }, function () {
-            if (typeof callback === "function") {
-                callback(false);
-            }
-        });
-    } else {
-        apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup) + "/" + encodeURIComponent(feedsIds), {
-            method: "DELETE"
-        }).then(function () {
-            if (typeof callback === "function") {
-                callback(true);
-            }
-        }, function () {
-            if (typeof callback === "function") {
-                callback(false);
-            }
-        });
-    }
+async function toggleSavedFeed(feedsIds, saveFeed) {
+    try {
+        if (saveFeed) {
+            await apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup), {
+                method: "PUT",
+                body: { entryIds: feedsIds }
+            });
+        } else {
+            await apiRequestWrapper("tags/" + encodeURIComponent(appGlobal.savedGroup) + "/" + encodeURIComponent(feedsIds), {
+                method: "DELETE"
+            });
+        }
 
-    //Update state in the cache
-    for (var i = 0; i < feedsIds.length; i++) {
-        var feedId = feedsIds[i];
-        for (var j = 0; j < appGlobal.cachedFeeds.length; j++) {
-            if (appGlobal.cachedFeeds[j].id === feedId) {
-                appGlobal.cachedFeeds[j].isSaved = saveFeed;
-                break;
+        //Update state in the cache
+        for (let i = 0; i < feedsIds.length; i++) {
+            let feedId = feedsIds[i];
+            for (let j = 0; j < appGlobal.cachedFeeds.length; j++) {
+                if (appGlobal.cachedFeeds[j].id === feedId) {
+                    appGlobal.cachedFeeds[j].isSaved = saveFeed;
+                    break;
+                }
             }
         }
+        return true;
+    } catch (_) {
+        return false;
     }
 }
 
 /**
  * Authenticates the user and stores the access token to browser storage.
  */
-function getAccessToken(callback) {
+async function getAccessToken() {
     let state = (new Date()).getTime();
     let redirectUri = "https://olsh.github.io/Feedly-Notifier/";
     let url = appGlobal.feedlyApiClient.getMethodUrl("auth/auth", {
@@ -939,40 +888,45 @@ function getAccessToken(callback) {
         state: state
     });
 
-    browser.tabs.create({url: url})
-        .then(function () {
-            chrome.tabs.onUpdated.addListener(function processCode(tabId, information, tab) {
-                let checkStateRegex = new RegExp("state=" + state);
-                if (!checkStateRegex.test(information.url)) {
-                    return;
-                }
+    await browser.tabs.create({url: url});
 
-                let codeParse = /code=(.+?)(?:&|$)/i;
-                let matches = codeParse.exec(information.url);
-                if (matches) {
-                    appGlobal.feedlyApiClient.request("auth/token", {
-                        method: "POST",
-                        skipAuthentication: true,
-                        parameters: {
-                            code: matches[1],
-                            client_id: appGlobal.clientId,
-                            client_secret: appGlobal.clientSecret,
-                            redirect_uri: redirectUri,
-                            grant_type: "authorization_code"
-                        }
-                    }).then(function (response) {
-                        appGlobal.syncStorage.set({
-                            accessToken: response.access_token,
-                            refreshToken: response.refresh_token,
-                            feedlyUserId: response.id
-                        });
-                        chrome.tabs.onUpdated.removeListener(processCode);
-			if (callback)
-			    callback();
-                    });
-                }
-            });
-        });
+    const code = await new Promise((resolve) => {
+        function processCode(tabId, information, tab) {
+            if (!information || !information.url) {
+                return;
+            }
+            let checkStateRegex = new RegExp("state=" + state);
+            if (!checkStateRegex.test(information.url)) {
+                return;
+            }
+
+            let codeParse = /code=(.+?)(?:&|$)/i;
+            let matches = codeParse.exec(information.url);
+            if (matches) {
+                try { browser.tabs.onUpdated.removeListener(processCode); } catch (_) {}
+                resolve(matches[1]);
+            }
+        }
+        browser.tabs.onUpdated.addListener(processCode);
+    });
+
+    const response = await appGlobal.feedlyApiClient.request("auth/token", {
+        method: "POST",
+        skipAuthentication: true,
+        parameters: {
+            code: code,
+            client_id: appGlobal.clientId,
+            client_secret: appGlobal.clientSecret,
+            redirect_uri: redirectUri,
+            grant_type: "authorization_code"
+        }
+    });
+
+    await appGlobal.syncStorage.set({
+        accessToken: response.access_token,
+        refreshToken: response.refresh_token,
+        feedlyUserId: response.id
+    });
 }
 
 /**
@@ -1010,7 +964,7 @@ function refreshAccessToken(){
 }
 
 /* Writes all application options in chrome storage and runs callback after it */
-function writeOptions(callback) {
+async function writeOptions() {
     let options = {};
     for (let option in appGlobal.options) {
         // Do not store private fields in the options
@@ -1020,63 +974,49 @@ function writeOptions(callback) {
 
         options[option] = appGlobal.options[option];
     }
-    appGlobal.syncStorage.set(options, function () {
-        if (typeof callback === "function") {
-            callback();
-        }
-    });
+    await appGlobal.syncStorage.set(options);
 }
 
 /* Reads all options from chrome storage and runs callback after it */
-function readOptions(callback) {
-    browser.storage.local.get(null)
-        .then(function (options) {
-            appGlobal.options.disableOptionsSync = options.disableOptionsSync || false;
+async function readOptions() {
+    const local = await browser.storage.local.get(null);
+    appGlobal.options.disableOptionsSync = local.disableOptionsSync || false;
 
-            appGlobal.syncStorage.get(null, function (options) {
-                for (let optionName in options) {
-                    // Do not read private fields in the options
-                    if (optionName.startsWith("_")) {
-                        continue;
-                    }
+    const options = await appGlobal.syncStorage.get(null);
+    for (let optionName in options) {
+        // Do not read private fields in the options
+        if (optionName.startsWith("_")) {
+            continue;
+        }
 
-                    if (typeof appGlobal.options[optionName] === "boolean") {
-                        appGlobal.options[optionName] = Boolean(options[optionName]);
-                    } else if (typeof appGlobal.options[optionName] === "number") {
-                        appGlobal.options[optionName] = Number(options[optionName]);
-                    } else {
-                        appGlobal.options[optionName] = options[optionName];
-                    }
-                }
+        if (typeof appGlobal.options[optionName] === "boolean") {
+            appGlobal.options[optionName] = Boolean(options[optionName]);
+        } else if (typeof appGlobal.options[optionName] === "number") {
+            appGlobal.options[optionName] = Number(options[optionName]);
+        } else {
+            appGlobal.options[optionName] = options[optionName];
+        }
+    }
 
-                appGlobal.options.currentUiLanguage = browser.i18n.getUILanguage();
-
-                if (typeof callback === "function") {
-                    callback();
-                }
-            });
-        });
+    appGlobal.options.currentUiLanguage = browser.i18n.getUILanguage();
 }
 
-function apiRequestWrapper(methodName, settings) {
+async function apiRequestWrapper(methodName, settings) {
     if (!appGlobal.options.accessToken) {
         setInactiveStatus();
-
         return Promise.reject();
     }
 
     settings = settings || {};
 
-    return appGlobal.feedlyApiClient.request(methodName, settings)
-        .then(function (response) {
-            setActiveStatus();
-
-            return response;
-        }, function (response) {
-            if (response && response.status === 401) {
-                return refreshAccessToken();
-            }
-
-            return Promise.reject();
-        });
+    try {
+        const response = await appGlobal.feedlyApiClient.request(methodName, settings);
+        setActiveStatus();
+        return response;
+    } catch (response) {
+        if (response && response.status === 401) {
+            return refreshAccessToken();
+        }
+        return Promise.reject();
+    }
 }

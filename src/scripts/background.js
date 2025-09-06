@@ -7,80 +7,41 @@
 importScripts('browser-polyfill.min.js', 'feedly.api.js', 'core.js');
 
 // Route messages from UI pages to background functions
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, sender) => {
     try {
         switch (message && message.type) {
-            case 'getState': {
-                sendResponse({
+            case 'getState':
+                return Promise.resolve({
                     options: appGlobal.options,
                     environment: appGlobal.environment,
                     isLoggedIn: appGlobal.isLoggedIn || false
                 });
-                return false;
-            }
-            case 'getOptions': {
-                sendResponse({ options: appGlobal.options });
-                return false;
-            }
-            case 'getFeeds': {
-                getFeeds(Boolean(message.forceUpdate), function (feeds, isLoggedIn) {
-                    sendResponse({ feeds, isLoggedIn });
-                });
-                return true;
-            }
-            case 'getSavedFeeds': {
-                getSavedFeeds(Boolean(message.forceUpdate), function (feeds, isLoggedIn) {
-                    sendResponse({ feeds, isLoggedIn });
-                });
-                return true;
-            }
-            case 'markAsRead': {
-                markAsRead(message.feedIds || [], function (ok) {
-                    sendResponse({ ok: !!ok });
-                });
-                return true;
-            }
-            case 'toggleSavedFeed': {
-                toggleSavedFeed(message.feedIds || [], !!message.save, function (ok) {
-                    sendResponse({ ok: !!ok });
-                });
-                return true;
-            }
-            case 'openFeedlyTab': {
-                openFeedlyTab();
-                sendResponse({ ok: true });
-                return false;
-            }
-            case 'resetCounter': {
-                if (typeof resetCounter === 'function') {
-                    resetCounter();
-                }
-                sendResponse({ ok: true });
-                return false;
-            }
-            case 'getFeedTabId': {
-                sendResponse({ feedTabId: appGlobal.feedTabId || null });
-                return false;
-            }
-            case 'setFeedTabId': {
+            case 'getOptions':
+                return Promise.resolve({ options: appGlobal.options });
+            case 'getFeeds':
+                return getFeeds(Boolean(message.forceUpdate));
+            case 'getSavedFeeds':
+                return getSavedFeeds(Boolean(message.forceUpdate));
+            case 'markAsRead':
+                return markAsRead(message.feedIds || []).then(ok => ({ ok: !!ok }));
+            case 'toggleSavedFeed':
+                return toggleSavedFeed(message.feedIds || [], !!message.save).then(ok => ({ ok: !!ok }));
+            case 'openFeedlyTab':
+                return openFeedlyTab().then(() => ({ ok: true }));
+            case 'resetCounter':
+                return (typeof resetCounter === 'function' ? Promise.resolve(resetCounter()) : Promise.resolve()).then(() => ({ ok: true }));
+            case 'getFeedTabId':
+                return Promise.resolve({ feedTabId: appGlobal.feedTabId || null });
+            case 'setFeedTabId':
                 appGlobal.feedTabId = message.tabId;
-                sendResponse({ ok: true });
-                return false;
-            }
-            case 'getAccessToken': {
-                getAccessToken(function () {
-                    sendResponse({ ok: true });
-                });
-                return true;
-            }
-            default: {
-                sendResponse({ error: 'Unknown message type' });
-                return false;
-            }
+                return Promise.resolve({ ok: true });
+            case 'getAccessToken':
+                return getAccessToken().then(() => ({ ok: true }));
+            default:
+                return Promise.resolve({ error: 'Unknown message type' });
         }
     } catch (e) {
         try { console.error('background message error', e); } catch (_) {}
-        sendResponse({ error: 'Internal error' });
-        return false;
+        return Promise.resolve({ error: 'Internal error' });
     }
 });

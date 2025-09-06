@@ -10,7 +10,7 @@ var optionsGlobal = {
 var feedlyClient = new FeedlyApiClient();
 
 function getSyncArea(disableOptionsSync) {
-    return disableOptionsSync ? chrome.storage.local : chrome.storage.sync;
+    return disableOptionsSync ? browser.storage.local : browser.storage.sync;
 }
 
 function computeSavedGroup(feedlyUserId) {
@@ -23,10 +23,12 @@ function computeGlobalUncategorized(feedlyUserId) {
     return "user/" + feedlyUserId + "/category/global.uncategorized";
 }
 
-$(document).ready(function () {
-    loadOptions();
-    loadUserCategories();
-    loadProfileData();
+$(document).ready(async function () {
+    await Promise.all([
+        loadOptions(),
+        loadUserCategories(),
+        loadProfileData()
+    ]);
 
     setTimeout(function () {
         optionsGlobal.loaded = true;
@@ -41,10 +43,10 @@ $("body").on("click", "#save", function (e) {
     }
 });
 
-$("body").on("click", "#logout", function () {
+$("body").on("click", "#logout", async function () {
     // Clear tokens in both storage areas to ensure background picks it up
-    chrome.storage.local.set({ accessToken: "", refreshToken: "" }, function () {});
-    chrome.storage.sync.set({ accessToken: "", refreshToken: "" }, function () {});
+    await browser.storage.local.set({ accessToken: "", refreshToken: "" });
+    await browser.storage.sync.set({ accessToken: "", refreshToken: "" });
     $("#userInfo, #filters-settings").hide();
 });
 
@@ -76,55 +78,49 @@ $("#options").on("change", "input, select", function (e) {
     }
 });
 
-function loadProfileData() {
+async function loadProfileData() {
     // Load token from storage and request profile via client
-    chrome.storage.local.get(null, function (local) {
-        const disableSync = local.disableOptionsSync || false;
-        const area = getSyncArea(disableSync);
-        area.get(null, function (items) {
-            feedlyClient.accessToken = items.accessToken || "";
-            if (!feedlyClient.accessToken) { $("#userInfo, #filters-settings").hide(); return; }
-            feedlyClient.request("profile", { parameters: {} }).then(function (result) {
+    const local = await browser.storage.local.get(null);
+    const disableSync = local.disableOptionsSync || false;
+    const area = getSyncArea(disableSync);
+    const items = await area.get(null);
+    feedlyClient.accessToken = items.accessToken || "";
+    if (!feedlyClient.accessToken) { $("#userInfo, #filters-settings").hide(); return; }
+    try {
+        const result = await feedlyClient.request("profile", { parameters: {} });
         var userInfo = $("#userInfo");
         userInfo.find("[data-locale-value]").each(function () {
             var textBox = $(this);
             var localValue = textBox.data("locale-value");
-            textBox.text(chrome.i18n.getMessage(localValue));
+            textBox.text(browser.i18n.getMessage(localValue));
         });
         userInfo.show();
         for (var profileData in result) {
             userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
         }
-            }, function () {
-                $("#userInfo, #filters-settings").hide();
-            });
-        });
-    });
+    } catch (_) {
+        $("#userInfo, #filters-settings").hide();
+    }
 }
 
-function loadUserCategories(){
-    chrome.storage.local.get(null, function (local) {
-        const disableSync = local.disableOptionsSync || false;
-        const area = getSyncArea(disableSync);
-        area.get(null, function (items) {
-            const userId = items.feedlyUserId || "";
-            feedlyClient.accessToken = items.accessToken || "";
-            if (!feedlyClient.accessToken) { return; }
-            feedlyClient.request("categories", { parameters: {} })
-                .then(function (result) {
-                    result.forEach(function(element){
-                        appendCategory(element.id, element.label);
-                    });
-                    appendCategory(computeGlobalFavorites(userId), "Global Favorites");
-                    appendCategory(computeGlobalUncategorized(userId), "Global Uncategorized");
-                    area.get("filters", function(items){
-                        let filters = items.filters || [];
-                        filters.forEach(function(id){
-                            $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
-                        });
-                    });
-                });
-        });
+async function loadUserCategories(){
+    const local = await browser.storage.local.get(null);
+    const disableSync = local.disableOptionsSync || false;
+    const area = getSyncArea(disableSync);
+    const items = await area.get(null);
+    const userId = items.feedlyUserId || "";
+    feedlyClient.accessToken = items.accessToken || "";
+    if (!feedlyClient.accessToken) { return; }
+    const result = await feedlyClient.request("categories", { parameters: {} });
+    result.forEach(function(element){
+        appendCategory(element.id, element.label);
+    });
+    appendCategory(computeGlobalFavorites(userId), "Global Favorites");
+    appendCategory(computeGlobalUncategorized(userId), "Global Uncategorized");
+    const filtersItems = await area.get("filters");
+    let filters = filtersItems.filters || [];
+    filters.forEach(function(id){
+        $("#categories").find("input[data-id='" + id +"']").attr("checked", "checked");
     });
 }
 
@@ -147,7 +143,7 @@ function parseFilters() {
 }
 
 /* Save all option in the chrome storage */
-function saveOptions() {
+async function saveOptions() {
     var options = {};
     $("#options").find("[data-option-name]").each(function (optionName, value) {
         var optionControl = $(value);
@@ -164,63 +160,52 @@ function saveOptions() {
     options.filters = parseFilters();
 
     const disableSync = $("#disableOptionsSync").is(":checked");
-    setAllSitesPermission($("#showBlogIconInNotifications").is(":checked")
-        || $("#showThumbnailInNotifications").is(":checked"), options, function () {
-        const area = getSyncArea(disableSync);
-        area.set(options, function () {
-            alert(chrome.i18n.getMessage("OptionsSaved"));
-        });
-    });
+    await setAllSitesPermission($("#showBlogIconInNotifications").is(":checked")
+        || $("#showThumbnailInNotifications").is(":checked"), options);
+    const area = getSyncArea(disableSync);
+    await area.set(options);
+    alert(browser.i18n.getMessage("OptionsSaved"));
 }
 
-function loadOptions() {
-    chrome.storage.local.get(null, function (local) {
-        const disableSync = local.disableOptionsSync || false;
-        const area = getSyncArea(disableSync);
-        area.get(null, function (items) {
-        var optionsForm = $("#options");
-        for (var option in items) {
-            var optionControl = optionsForm.find("[data-option-name='" + option + "']");
-            if (optionControl.attr("type") === "checkbox") {
-                optionControl.attr("checked", items[option]);
-            } else {
-                optionControl.val(items[option]);
-            }
+async function loadOptions() {
+    const local = await browser.storage.local.get(null);
+    const disableSync = local.disableOptionsSync || false;
+    const area = getSyncArea(disableSync);
+    const items = await area.get(null);
+    var optionsForm = $("#options");
+    for (var option in items) {
+        var optionControl = optionsForm.find("[data-option-name='" + option + "']");
+        if (optionControl.attr("type") === "checkbox") {
+            optionControl.attr("checked", items[option]);
+        } else {
+            optionControl.val(items[option]);
         }
+    }
 
-        chrome.permissions.contains(optionsGlobal.allSitesPermission, function (enabled){
-            $("#showBlogIconInNotifications").prop("checked", enabled && items.showBlogIconInNotifications);
-            $("#showThumbnailInNotifications").prop("checked", enabled && items.showThumbnailInNotifications);
+    const enabled = await browser.permissions.contains(optionsGlobal.allSitesPermission);
+    $("#showBlogIconInNotifications").prop("checked", enabled && items.showBlogIconInNotifications);
+    $("#showThumbnailInNotifications").prop("checked", enabled && items.showThumbnailInNotifications);
 
-            optionsForm.find("input").trigger("change");
-        });
-        });
-    });
-    $("#header").text(chrome.i18n.getMessage("FeedlyNotifierOptions"));
+    optionsForm.find("input").trigger("change");
+    $("#header").text(browser.i18n.getMessage("FeedlyNotifierOptions"));
     $("#options").find("[data-locale-value]").each(function () {
         var textBox = $(this);
         var localValue = textBox.data("locale-value");
-        textBox.text(chrome.i18n.getMessage(localValue));
+        textBox.text(browser.i18n.getMessage(localValue));
     });
 }
 
-function setAllSitesPermission(enable, options, callback) {
+async function setAllSitesPermission(enable, options) {
     if (enable) {
-        browser.permissions.request(optionsGlobal.allSitesPermission)
-            .then(function (granted) {
-                if ($("#showThumbnailInNotifications").is(":checked")) {
-                    $("#showThumbnailInNotifications").prop('checked', granted);
-                    options.showThumbnailInNotifications = granted;
-                }
+        const granted = await browser.permissions.request(optionsGlobal.allSitesPermission);
+        if ($("#showThumbnailInNotifications").is(":checked")) {
+            $("#showThumbnailInNotifications").prop('checked', granted);
+            options.showThumbnailInNotifications = granted;
+        }
 
-                if ($("#showBlogIconInNotifications").is(":checked")) {
-                    $("#showBlogIconInNotifications").prop('checked', granted);
-                    options.showBlogIconInNotifications = granted;
-                }
-
-                callback();
-            });
-    } else {
-        callback();
+        if ($("#showBlogIconInNotifications").is(":checked")) {
+            $("#showBlogIconInNotifications").prop('checked', granted);
+            options.showBlogIconInNotifications = granted;
+        }
     }
 }
