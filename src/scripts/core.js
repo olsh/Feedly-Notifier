@@ -174,8 +174,9 @@ browser.tabs.onRemoved.addListener(function(tabId){
 });
 
 /* Listener for adding or removing feeds on the feedly website */
-browser.webRequest.onCompleted.addListener(function (details) {
+browser.webRequest.onCompleted.addListener(async function (details) {
     if (details.method === "POST" || details.method === "DELETE") {
+        await ensureOptionsLoaded();
         updateCounter();
         updateFeeds();
         appGlobal.getUserSubscriptionsPromise = null;
@@ -183,8 +184,9 @@ browser.webRequest.onCompleted.addListener(function (details) {
 }, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers?*ct=feedly.desktop*"]});
 
 /* Listener for adding or removing saved feeds */
-browser.webRequest.onCompleted.addListener(function (details) {
+browser.webRequest.onCompleted.addListener(async function (details) {
     if (details.method === "PUT" || details.method === "DELETE") {
+        await ensureOptionsLoaded();
         updateSavedFeeds();
     }
 }, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
@@ -201,7 +203,7 @@ browser.action.onClicked.addListener(async function () {
 });
 
 /* Initialization all parameters and run feeds check */
-async function initialize() {
+async function initialize(immediate) {
     if (appGlobal.options.openSiteOnIconClick) {
         await browser.action.setPopup({popup: ""});
     } else {
@@ -211,18 +213,29 @@ async function initialize() {
 
     const platformInfo = await browser.runtime.getPlatformInfo();
     appGlobal.environment.os = platformInfo.os;
-    startSchedule(appGlobal.options.updateInterval);
+    startSchedule(appGlobal.options.updateInterval, immediate);
 }
 
-function startSchedule(updateInterval) {
-    stopSchedule();
-    updateCounter();
-    updateFeeds();
-    if (appGlobal.options.showCounter) {
-        browser.alarms.create("updateCounter", { periodInMinutes: updateInterval });
-    }
-    if (appGlobal.options.showDesktopNotifications || appGlobal.options.playSound || !appGlobal.options.openSiteOnIconClick) {
-        browser.alarms.create("updateFeeds", { periodInMinutes: updateInterval });
+async function ensureOptionsLoaded() {
+    await readOptions();
+    appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
+    appGlobal.isLoggedIn = Boolean(appGlobal.options.accessToken);
+}
+
+function startSchedule(updateInterval, immediate) {
+    const shouldRecreate = (immediate !== false);
+
+    // When shouldRecreate is false (worker wake), keep existing alarms as-is and avoid immediate fetch.
+    if (shouldRecreate) {
+        stopSchedule();
+        if (appGlobal.options.showCounter) {
+            browser.alarms.create("updateCounter", { periodInMinutes: updateInterval });
+        }
+        if (appGlobal.options.showDesktopNotifications || appGlobal.options.playSound || !appGlobal.options.openSiteOnIconClick) {
+            browser.alarms.create("updateFeeds", { periodInMinutes: updateInterval });
+        }
+        updateCounter();
+        updateFeeds();
     }
 }
 
@@ -231,7 +244,10 @@ function stopSchedule() {
     browser.alarms.clear("updateFeeds");
 }
 
-browser.alarms.onAlarm.addListener(function (alarm) {
+browser.alarms.onAlarm.addListener(async function (alarm) {
+    // Ensure tokens/options are loaded when worker wakes for an alarm
+    await ensureOptionsLoaded();
+
     if (alarm && alarm.name === "updateCounter") {
         updateCounter();
     } else if (alarm && alarm.name === "updateFeeds") {
@@ -297,15 +313,16 @@ async function sendDesktopNotification(feeds) {
         let showBlogIcons = false;
         let showThumbnails = false;
 
-        try {
-            const hasAllOrigins = await browser.permissions.contains({ origins: ["<all_urls>"] });
-            if (appGlobal.options.showBlogIconInNotifications && hasAllOrigins) {
-                showBlogIcons = true;
-            }
-            if (appGlobal.options.showThumbnailInNotifications && hasAllOrigins) {
-                showThumbnails = true;
-            }
-        } catch (_) { /* ignore */ }
+        const canCheckPermissions = browser.permissions && typeof browser.permissions.contains === "function";
+        const hasAllOrigins = canCheckPermissions
+            ? await browser.permissions.contains({ origins: ["<all_urls>"] }).catch(function () { return false; })
+            : false;
+        if (appGlobal.options.showBlogIconInNotifications && hasAllOrigins) {
+            showBlogIcons = true;
+        }
+        if (appGlobal.options.showThumbnailInNotifications && hasAllOrigins) {
+            showThumbnails = true;
+        }
 
         createNotifications(feeds, showBlogIcons, showThumbnails, isSoundEnabled);
     }
@@ -388,13 +405,12 @@ function removeFeedFromCache(feedId) {
 
 /* Plays alert sound */
 function playSound(){
-    try {
-        var audio = new Audio(appGlobal.options.sound);
-        audio.volume = appGlobal.options.soundVolume;
-        audio.play();
-    } catch (e) {
-        // In MV3 service worker there is no Audio context; ignore.
+    if (typeof Audio !== "function") {
+        return;
     }
+    var audio = new Audio(appGlobal.options.sound);
+    audio.volume = appGlobal.options.soundVolume;
+    Promise.resolve(audio.play()).catch(function () {});
 }
 
 /* Returns only new feeds and set date of last feed
@@ -439,6 +455,7 @@ async function updateSavedFeeds() {
     const response = await apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents");
     const feeds = await parseFeeds(response);
     appGlobal.cachedSavedFeeds = feeds;
+    browser.storage.local.set({ cachedSavedFeeds: feeds }).catch(function () {});
 }
 
 /* Sets badge counter if unread feeds more than zero */
@@ -534,7 +551,7 @@ async function makeMarkersRequest(parameters){
  * If silentUpdate is true, then notifications will not be shown
  *  */
 async function updateFeeds(silentUpdate) {
-    appGlobal.cachedFeeds = [];
+    const previousCache = appGlobal.cachedFeeds.slice(0);
     appGlobal.options.filters = appGlobal.options.filters || [];
 
     let streamIds = appGlobal.options.isFiltersEnabled && appGlobal.options.filters.length
@@ -558,12 +575,13 @@ async function updateFeeds(silentUpdate) {
         const responses = await Promise.all(promises);
         const parsedFeeds = await Promise.all(responses.map(response => parseFeeds(response)));
 
+        let newCache = [];
         for (let parsedFeed of parsedFeeds) {
-            appGlobal.cachedFeeds = appGlobal.cachedFeeds.concat(parsedFeed);
+            newCache = newCache.concat(parsedFeed);
         }
 
         // Remove duplicates
-        appGlobal.cachedFeeds = appGlobal.cachedFeeds.filter(function (value, index, feeds) {
+        newCache = newCache.filter(function (value, index, feeds) {
             for (let i = ++index; i < feeds.length; i++) {
                 if (feeds[i].id === value.id) {
                     return false;
@@ -572,7 +590,7 @@ async function updateFeeds(silentUpdate) {
             return true;
         });
 
-        appGlobal.cachedFeeds = appGlobal.cachedFeeds.sort(function (a, b) {
+        newCache = newCache.sort(function (a, b) {
             if (appGlobal.options.sortBy === "newest") {
                 if (a.date > b.date) {
                     return -1;
@@ -602,12 +620,16 @@ async function updateFeeds(silentUpdate) {
             }
         });
 
-        appGlobal.cachedFeeds = appGlobal.cachedFeeds.splice(0, appGlobal.options.maxNumberOfFeeds);
+        newCache = newCache.splice(0, appGlobal.options.maxNumberOfFeeds);
+        appGlobal.cachedFeeds = newCache;
+        browser.storage.local.set({ cachedFeeds: newCache }).catch(function () {});
         if (!silentUpdate && (appGlobal.options.showDesktopNotifications)) {
             const newFeeds = await filterByNewFeeds(appGlobal.cachedFeeds);
             await sendDesktopNotification(newFeeds);
         }
     } catch (e) {
+        // Preserve previous cache on failure
+        appGlobal.cachedFeeds = previousCache;
         console.info("Unable to update feeds.", e);
     }
 }
@@ -904,7 +926,9 @@ async function getAccessToken() {
             let codeParse = /code=(.+?)(?:&|$)/i;
             let matches = codeParse.exec(information.url);
             if (matches) {
-                try { browser.tabs.onUpdated.removeListener(processCode); } catch (_) {}
+                if (browser.tabs && browser.tabs.onUpdated && typeof browser.tabs.onUpdated.removeListener === "function") {
+                    browser.tabs.onUpdated.removeListener(processCode);
+                }
                 resolve(matches[1]);
             }
         }
@@ -1000,6 +1024,14 @@ async function readOptions() {
     }
 
     appGlobal.options.currentUiLanguage = browser.i18n.getUILanguage();
+
+    // Preload cached feeds from local storage to serve immediately on popup open
+    const cache = await browser.storage.local.get(["cachedFeeds", "cachedSavedFeeds"]).catch(function () { return {}; });
+    appGlobal.cachedFeeds = Array.isArray(cache.cachedFeeds) ? cache.cachedFeeds : [];
+    appGlobal.cachedSavedFeeds = Array.isArray(cache.cachedSavedFeeds) ? cache.cachedSavedFeeds : [];
+
+    // If we have a token, treat as logged in until a request proves otherwise
+    appGlobal.isLoggedIn = Boolean(appGlobal.options.accessToken);
 }
 
 async function apiRequestWrapper(methodName, settings) {

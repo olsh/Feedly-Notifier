@@ -20,7 +20,7 @@ function computeGlobalUncategorized(feedlyUserId) {
     return "user/" + feedlyUserId + "/category/global.uncategorized";
 }
 
-$(document).ready(async function () {
+document.addEventListener("DOMContentLoaded", async function () {
     await Promise.all([
         loadOptions(),
         loadUserCategories(),
@@ -67,11 +67,12 @@ $("#options").on("change", "input, select", function (e) {
 
         const volume = Number($("#soundVolume").val());
         const sound = $("#sound").val();
-        try {
-            var audio = new Audio(sound);
+        // Play preview sound; ignore rejections from autoplay policy
+        var audio = typeof Audio === "function" ? new Audio(sound) : null;
+        if (audio) {
             audio.volume = isNaN(volume) ? 1 : volume;
-            audio.play();
-        } catch (e) { /* no-op */ }
+            Promise.resolve(audio.play()).catch(function () {});
+        }
     }
 });
 

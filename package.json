@@ -2,13 +2,14 @@
   "name": "feedly-notifier",
   "description": "Feedly Notifier is a tiny extension that keeps you up to date with your feedly subscriptions.",
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-jquery": "^1.5.1",
     "grunt": "^1.6.1",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-preprocess": "^5.1.0",
     "grunt-string-replace": "^1.3.3",
-    "grunt-zip": "^1.0.0",
-    "eslint": "^8.57.0"
+    "grunt-zip": "^1.0.0"
   },
   "repository": {
     "type": "git",

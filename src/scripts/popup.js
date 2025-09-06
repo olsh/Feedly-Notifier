@@ -14,7 +14,7 @@ const bg = {
 let options = {};
 let environment = { os: "" };
 
-$(document).ready(async function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const state = await bg.send("getState") || {};
     options = state.options || {};
     environment = state.environment || { os: "" };
@@ -54,7 +54,7 @@ $(document).ready(async function () {
     executeAsync(renderFeeds);
 });
 
-$("#login").click(function () {
+$("#login").on("click", function () {
     bg.send("getAccessToken").then(function () {
         setTimeout(renderFeeds, 500);
     });
@@ -121,7 +121,7 @@ $("#feed").on("click", ".mark-read", function (event) {
     markAsRead([feed.data("id")]);
 });
 
-$("#tabs-checkbox").change(function () {
+$("#tabs-checkbox").on("change", function () {
     if ($(this).is(":checked")) {
         renderSavedFeeds();
     } else {
@@ -248,7 +248,7 @@ function renderFeeds(forceUpdate) {
                 showFeeds();
 
                 if (options.expandFeeds) {
-                    container.find(".show-content").click();
+                    container.find(".show-content").trigger("click");
                 }
             }
         }
@@ -283,7 +283,7 @@ function renderSavedFeeds(forceUpdate) {
                 showSavedFeeds();
 
                 if (options.expandFeeds) {
-                    container.find(".show-content").click();
+                    container.find(".show-content").trigger("click");
                 }
             }
         }
