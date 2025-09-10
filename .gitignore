@@ -5,3 +5,8 @@ bower_components
 *.orig
 keys.json
 .vscode
+
+# Claude Code project instructions
+CLAUDE.md
+.claude/
+AGENTS.md

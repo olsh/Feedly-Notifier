@@ -22,41 +22,52 @@ function ensureInitialized() {
 ensureInitialized();
 
 // Route messages from UI pages to background functions
-browser.runtime.onMessage.addListener((message, sender) => {
-    const ready = ensureInitialized();
+browser.runtime.onMessage.addListener(async (message, sender) => {
     try {
+        await ensureInitialized();
+        
         switch (message && message.type) {
             case "getState":
-                return ready.then(() => ({
+                return {
                     options: appGlobal.options,
                     environment: appGlobal.environment,
                     isLoggedIn: appGlobal.isLoggedIn || false
-                }));
+                };
             case "getOptions":
-                return ready.then(() => ({ options: appGlobal.options }));
+                return { options: appGlobal.options };
             case "getFeeds":
-                return ready.then(() => getFeeds(Boolean(message.forceUpdate)));
+                return await getFeeds(Boolean(message.forceUpdate));
             case "getSavedFeeds":
-                return ready.then(() => getSavedFeeds(Boolean(message.forceUpdate)));
-            case "markAsRead":
-                return ready.then(() => markAsRead(message.feedIds || []).then(ok => ({ ok: !!ok })));
-            case "toggleSavedFeed":
-                return ready.then(() => toggleSavedFeed(message.feedIds || [], !!message.save).then(ok => ({ ok: !!ok })));
+                return await getSavedFeeds(Boolean(message.forceUpdate));
+            case "markAsRead": {
+                const markResult = await markAsRead(message.feedIds || []);
+                return { ok: !!markResult };
+            }
+            case "toggleSavedFeed": {
+                const toggleResult = await toggleSavedFeed(message.feedIds || [], !!message.save);
+                return { ok: !!toggleResult };
+            }
             case "openFeedlyTab":
-                return ready.then(() => openFeedlyTab().then(() => ({ ok: true })));
+                await openFeedlyTab();
+                return { ok: true };
             case "resetCounter":
-                return ready.then(() => (typeof resetCounter === "function" ? Promise.resolve(resetCounter()) : Promise.resolve()).then(() => ({ ok: true })));
+                if (typeof resetCounter === "function") {
+                    await Promise.resolve(resetCounter());
+                }
+                return { ok: true };
             case "getFeedTabId":
-                return ready.then(() => ({ feedTabId: appGlobal.feedTabId || null }));
+                return { feedTabId: appGlobal.feedTabId || null };
             case "setFeedTabId":
-                return ready.then(() => { appGlobal.feedTabId = message.tabId; return { ok: true }; });
+                appGlobal.feedTabId = message.tabId;
+                return { ok: true };
             case "getAccessToken":
-                return ready.then(() => getAccessToken().then(() => ({ ok: true })));
+                await getAccessToken();
+                return { ok: true };
             default:
-                return Promise.resolve({ error: "Unknown message type" });
+                return { error: "Unknown message type" };
         }
     } catch (e) {
         console.error("background message error", e);
-        return Promise.resolve({ error: "Internal error" });
+        return { error: "Internal error" };
     }
 });
