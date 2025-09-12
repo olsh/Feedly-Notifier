@@ -974,17 +974,27 @@ function refreshAccessToken(){
             grant_type: "refresh_token"
         }
     }).then(function (response) {
+        // Update runtime variables immediately to prevent race conditions
+        appGlobal.options.accessToken = response.access_token;
+        appGlobal.options.feedlyUserId = response.id;
+        appGlobal.feedlyApiClient.accessToken = response.access_token;
+        appGlobal.isLoggedIn = true;
+        
+        // Also save to storage for persistence
         appGlobal.syncStorage.set({
             accessToken: response.access_token,
             feedlyUserId: response.id
         });
+        
+        setActiveStatus();
+        return response;
     }, function (response) {
         // If the refresh token is invalid
         if (response && response.status === 403) {
             setInactiveStatus();
         }
 
-        return Promise.reject();
+        return Promise.reject(response);
     });
 }
 
@@ -1037,7 +1047,7 @@ async function readOptions() {
 async function apiRequestWrapper(methodName, settings) {
     if (!appGlobal.options.accessToken) {
         setInactiveStatus();
-        return Promise.reject();
+        return Promise.reject(new Error("No access token available"));
     }
 
     settings = settings || {};
@@ -1048,8 +1058,9 @@ async function apiRequestWrapper(methodName, settings) {
         return response;
     } catch (response) {
         if (response && response.status === 401) {
-            return refreshAccessToken();
+            await refreshAccessToken();
+            return await appGlobal.feedlyApiClient.request(methodName, settings);
         }
-        return Promise.reject();
+        return Promise.reject(response);
     }
 }
