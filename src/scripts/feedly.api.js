@@ -41,7 +41,7 @@ let FeedlyApiClient = function (accessToken) {
         return methodUrl;
     };
 
-    this.request = function (methodName, settings) {
+    this.request = async function (methodName, settings) {
         function status(response) {
             if (response.status === 200) {
                 return Promise.resolve(response);
@@ -50,10 +50,12 @@ let FeedlyApiClient = function (accessToken) {
             }
         }
 
-        function json(response) {
-            return response.json().catch(function () {
+        async function json(response) {
+            try {
+                return await response.json();
+            } catch {
                 return {};
-            });
+            }
         }
 
         let url = this.getMethodUrl(methodName, settings.parameters);
@@ -78,8 +80,8 @@ let FeedlyApiClient = function (accessToken) {
             requestParameters.body = JSON.stringify(settings.body);
         }
 
-        return fetch(url, requestParameters)
-            .then(status)
-            .then(json);
+        const response = await fetch(url, requestParameters);
+        const validResponse = await status(response);
+        return await json(validResponse);
     };
 };

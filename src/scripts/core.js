@@ -650,129 +650,126 @@ function setActiveStatus() {
 }
 
 /* Converts feedly response to feeds */
-function parseFeeds(feedlyResponse) {
+async function parseFeeds(feedlyResponse) {
+    const subscriptionResponse = await getUserSubscriptions();
 
-    return getUserSubscriptions()
-        .then(function (subscriptionResponse) {
+    let subscriptionsMap = {};
+    subscriptionResponse.forEach(item => { subscriptionsMap[item.id] = item.title; });
 
-            let subscriptionsMap = {};
-            subscriptionResponse.forEach(item => { subscriptionsMap[item.id] = item.title; });
+    return feedlyResponse.items.map(function (item) {
 
-            return feedlyResponse.items.map(function (item) {
+        let blogUrl;
+        try {
+            blogUrl = item.origin.htmlUrl.match(/https?:\/\/[^:/?]+/i).pop();
+        } catch (exception) {
+            blogUrl = "#";
+        }
 
-                let blogUrl;
-                try {
-                    blogUrl = item.origin.htmlUrl.match(/https?:\/\/[^:/?]+/i).pop();
-                } catch (exception) {
-                    blogUrl = "#";
+        //Set content
+        let content;
+        let contentDirection;
+        if (appGlobal.options.showFullFeedContent) {
+            if (item.content !== undefined) {
+                content = item.content.content;
+                contentDirection = item.content.direction;
+            }
+        }
+
+        if (!content) {
+            if (item.summary !== undefined) {
+                content = item.summary.content;
+                contentDirection = item.summary.direction;
+            }
+        }
+
+        let titleDirection;
+        let title = item.title;
+
+        //Sometimes Feedly doesn't have title property, so we put content
+        // Feedly website do the same trick
+        if (!title) {
+            if (item.summary && item.summary.content) {
+                let contentWithoutTags = item.summary.content.replace(/<\/?[^>]+(>|$)/g, "");
+                const maxTitleLength = 100;
+                if (contentWithoutTags.length > maxTitleLength) {
+                    title = contentWithoutTags.substring(0, maxTitleLength) + "...";
+                } else {
+                    title = contentWithoutTags;
                 }
+            }
+        }
 
-                //Set content
-                let content;
-                let contentDirection;
-                if (appGlobal.options.showFullFeedContent) {
-                    if (item.content !== undefined) {
-                        content = item.content.content;
-                        contentDirection = item.content.direction;
-                    }
+        if (!title) {
+            title = "[no title]";
+        }
+
+        if (title && title.indexOf("direction:rtl") !== -1) {
+            //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
+            title = title.replace(/<\/?div.*?>/gi, "");
+            titleDirection = "rtl";
+        }
+
+        let isSaved;
+        if (item.tags) {
+            for (let tag of item.tags) {
+                if (tag.id.search(/global\.saved$/i) !== -1) {
+                    isSaved = true;
+                    break;
                 }
+            }
+        }
 
-                if (!content) {
-                    if (item.summary !== undefined) {
-                        content = item.summary.content;
-                        contentDirection = item.summary.direction;
-                    }
-                }
+        let blog;
+        let blogTitleDirection;
+        if (item.origin) {
+            // Trying to get the user defined name of the stream
+            blog = subscriptionsMap[item.origin.streamId] || item.origin.title || "";
 
-                let titleDirection;
-                let title = item.title;
+            if (blog.indexOf("direction:rtl") !== -1) {
+                //Feedly wraps rtl titles in div, we remove div because desktopNotifications support only text
+                blog = item.origin.title.replace(/<\/?div.*?>/gi, "");
+                blogTitleDirection = "rtl";
+            }
+        }
 
-                //Sometimes Feedly doesn't have title property, so we put content
-                // Feedly website do the same trick
-                if (!title) {
-                    if (item.summary && item.summary.content) {
-                        let contentWithoutTags = item.summary.content.replace(/<\/?[^>]+(>|$)/g, "");
-                        const maxTitleLength = 100;
-                        if (contentWithoutTags.length > maxTitleLength) {
-                            title = contentWithoutTags.substring(0, maxTitleLength) + "...";
-                        } else {
-                            title = contentWithoutTags;
-                        }
-                    }
-                }
-
-                if (!title) {
-                    title = "[no title]";
-                }
-
-                if (title && title.indexOf("direction:rtl") !== -1) {
-                    //Feedly wraps rtl titles in div, we remove div because desktopNotification supports only text
-                    title = title.replace(/<\/?div.*?>/gi, "");
-                    titleDirection = "rtl";
-                }
-
-                let isSaved;
-                if (item.tags) {
-                    for (let tag of item.tags) {
-                        if (tag.id.search(/global\.saved$/i) !== -1) {
-                            isSaved = true;
-                            break;
-                        }
-                    }
-                }
-
-                let blog;
-                let blogTitleDirection;
-                if (item.origin) {
-                    // Trying to get the user defined name of the stream
-                    blog = subscriptionsMap[item.origin.streamId] || item.origin.title || "";
-
-                    if (blog.indexOf("direction:rtl") !== -1) {
-                        //Feedly wraps rtl titles in div, we remove div because desktopNotifications support only text
-                        blog = item.origin.title.replace(/<\/?div.*?>/gi, "");
-                        blogTitleDirection = "rtl";
-                    }
-                }
-
-                let categories = [];
-                if (item.categories) {
-                    categories = item.categories.map(function (category){
-                        return {
-                            id: category.id,
-                            encodedId: encodeURI(category.id),
-                            label: category.label
-                        };
-                    });
-                }
-
-                let googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "%26sz=64%26alt=feed";
-
+        let categories = [];
+        if (item.categories) {
+            categories = item.categories.map(function (category){
                 return {
-                    title: title,
-                    titleDirection: titleDirection,
-                    url: (item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "") || blogUrl,
-                    blog: blog,
-                    blogTitleDirection: blogTitleDirection,
-                    blogUrl: blogUrl,
-                    blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=16..64..300&fallback_icon_url=" + googleFaviconUrl,
-                    id: item.id,
-                    content: content,
-                    contentDirection: contentDirection,
-                    isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
-                    date: item.crawled ? new Date(item.crawled) : "",
-                    isSaved: isSaved,
-                    categories: categories,
-                    author: item.author,
-                    thumbnail: item.thumbnail && item.thumbnail.length > 0 && item.thumbnail[0].url ? item.thumbnail[0].url : null,
-                    showEngagement: item.engagement > 0,
-                    engagement: item.engagement > 1000 ? Math.trunc(item.engagement / 1000) : item.engagement,
-                    engagementPostfix: item.engagement > 1000 ? "K" : "",
-                    engagementRate: item.engagementRate || 0,
-                    isEngagementHot: item.engagement >= 5000 && item.engagement < 100000,
-                    isEngagementOnFire: item.engagement >= 100000
+                    id: category.id,
+                    encodedId: encodeURI(category.id),
+                    label: category.label
                 };
             });
-        });
+        }
+
+        let googleFaviconUrl = "https://www.google.com/s2/favicons?domain=" + blogUrl + "%26sz=64%26alt=feed";
+
+        return {
+            title: title,
+            titleDirection: titleDirection,
+            url: (item.alternate ? item.alternate[0] ? item.alternate[0].href : "" : "") || blogUrl,
+            blog: blog,
+            blogTitleDirection: blogTitleDirection,
+            blogUrl: blogUrl,
+            blogIcon: "https://i.olsh.me/icon?url=" + blogUrl + "&size=16..64..300&fallback_icon_url=" + googleFaviconUrl,
+            id: item.id,
+            content: content,
+            contentDirection: contentDirection,
+            isoDate: item.crawled ? new Date(item.crawled).toISOString() : "",
+            date: item.crawled ? new Date(item.crawled) : "",
+            isSaved: isSaved,
+            categories: categories,
+            author: item.author,
+            thumbnail: item.thumbnail && item.thumbnail.length > 0 && item.thumbnail[0].url ? item.thumbnail[0].url : null,
+            showEngagement: item.engagement > 0,
+            engagement: item.engagement > 1000 ? Math.trunc(item.engagement / 1000) : item.engagement,
+            engagementPostfix: item.engagement > 1000 ? "K" : "",
+            engagementRate: item.engagementRate || 0,
+            isEngagementHot: item.engagement >= 5000 && item.engagement < 100000,
+            isEngagementOnFire: item.engagement >= 100000
+        };
+    });
 }
 
 /* Returns feeds from the cache.
@@ -947,33 +944,44 @@ async function getAccessToken() {
         }
     });
 
+    // Update runtime variables immediately to prevent race conditions
+    appGlobal.options.accessToken = response.access_token;
+    appGlobal.options.refreshToken = response.refresh_token;
+    appGlobal.options.feedlyUserId = response.id;
+    appGlobal.feedlyApiClient.accessToken = response.access_token;
+    appGlobal.isLoggedIn = true;
+
+    // Also save to storage for persistence
     await appGlobal.syncStorage.set({
         accessToken: response.access_token,
         refreshToken: response.refresh_token,
         feedlyUserId: response.id
     });
+
+    setActiveStatus();
 }
 
 /**
  * Refreshes the access token.
  */
-function refreshAccessToken(){
+async function refreshAccessToken(){
     if(!appGlobal.options.refreshToken) {
         setInactiveStatus();
-
-        return Promise.reject();
+        throw new Error("No refresh token available");
     }
 
-    return appGlobal.feedlyApiClient.request("auth/token", {
-        method: "POST",
-        skipAuthentication: true,
-        parameters: {
-            refresh_token: appGlobal.options.refreshToken,
-            client_id: appGlobal.clientId,
-            client_secret: appGlobal.clientSecret,
-            grant_type: "refresh_token"
-        }
-    }).then(function (response) {
+    try {
+        const response = await appGlobal.feedlyApiClient.request("auth/token", {
+            method: "POST",
+            skipAuthentication: true,
+            parameters: {
+                refresh_token: appGlobal.options.refreshToken,
+                client_id: appGlobal.clientId,
+                client_secret: appGlobal.clientSecret,
+                grant_type: "refresh_token"
+            }
+        });
+
         // Update runtime variables immediately to prevent race conditions
         appGlobal.options.accessToken = response.access_token;
         appGlobal.options.feedlyUserId = response.id;
@@ -988,14 +996,13 @@ function refreshAccessToken(){
         
         setActiveStatus();
         return response;
-    }, function (response) {
+    } catch (response) {
         // If the refresh token is invalid
         if (response && response.status === 403) {
             setInactiveStatus();
         }
-
-        return Promise.reject(response);
-    });
+        throw response;
+    }
 }
 
 /* Writes all application options in chrome storage and runs callback after it */

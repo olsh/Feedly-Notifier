@@ -54,10 +54,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     executeAsync(renderFeeds);
 });
 
-$("#login").on("click", function () {
-    bg.send("getAccessToken").then(function () {
-        setTimeout(renderFeeds, 500);
-    });
+$("#login").on("click", async function () {
+    await bg.send("getAccessToken");
+    renderFeeds();
 });
 
 //using "mousedown" instead of "click" event to process middle button click.
@@ -220,77 +219,75 @@ function executeAsync(func) {
     }, timeout);
 }
 
-function renderFeeds(forceUpdate) {
+async function renderFeeds(forceUpdate) {
     showLoader();
     const wantForce = (options.forceUpdateFeeds || forceUpdate);
-    bg.send("getFeeds", { forceUpdate: wantForce }).then(function (result) {
-        const feeds = result && result.feeds || [];
-        const isLoggedIn = result && result.isLoggedIn;
-        popupGlobal.feeds = feeds;
-        if (isLoggedIn === false) {
-            showLogin();
+    const result = await bg.send("getFeeds", { forceUpdate: wantForce });
+    const feeds = result && result.feeds || [];
+    const isLoggedIn = result && result.isLoggedIn;
+    popupGlobal.feeds = feeds;
+    if (isLoggedIn === false) {
+        showLogin();
+    } else {
+        if (feeds.length === 0) {
+            showEmptyContent();
         } else {
-            if (feeds.length === 0) {
-                showEmptyContent();
-            } else {
-                var container = $("#feed").show().empty();
+            var container = $("#feed").show().empty();
 
-                if (options.showCategories) {
-                    renderCategories(container, feeds);
-                }
+            if (options.showCategories) {
+                renderCategories(container, feeds);
+            }
 
-                var feedsTemplate = $("#feedTemplate").html();
-                Mustache.parse(feedsTemplate);
+            var feedsTemplate = $("#feedTemplate").html();
+            Mustache.parse(feedsTemplate);
 
-                container.append(Mustache.render(feedsTemplate, {feeds: feeds}));
-                renderTimeAgo(container);
+            container.append(Mustache.render(feedsTemplate, {feeds: feeds}));
+            renderTimeAgo(container);
 
-                showFeeds();
+            showFeeds();
 
-                if (options.expandFeeds) {
-                    container.find(".show-content").trigger("click");
-                }
+            if (options.expandFeeds) {
+                container.find(".show-content").trigger("click");
             }
         }
-    });
+    }
 }
 
-function renderSavedFeeds(forceUpdate) {
+async function renderSavedFeeds(forceUpdate) {
     showLoader();
     const wantForce = (options.forceUpdateFeeds || forceUpdate);
-    bg.send("getSavedFeeds", { forceUpdate: wantForce }).then(function (result) {
-        const feeds = result && result.feeds || [];
-        const isLoggedIn = result && result.isLoggedIn;
-        popupGlobal.savedFeeds = feeds;
-        if (isLoggedIn === false) {
-            showLogin();
+    const result = await bg.send("getSavedFeeds", { forceUpdate: wantForce });
+    const feeds = result && result.feeds || [];
+    const isLoggedIn = result && result.isLoggedIn;
+    popupGlobal.savedFeeds = feeds;
+    if (isLoggedIn === false) {
+        showLogin();
+    } else {
+        if (feeds.length === 0) {
+            showEmptyContent();
         } else {
-            if (feeds.length === 0) {
-                showEmptyContent();
-            } else {
-                var container = $("#feed-saved").empty();
+            var container = $("#feed-saved").empty();
 
-                if (options.showCategories) {
-                    renderCategories(container, feeds);
-                }
+            if (options.showCategories) {
+                renderCategories(container, feeds);
+            }
 
-                var feedTemplate = $("#feedTemplate").html();
-                Mustache.parse(feedTemplate);
+            var feedTemplate = $("#feedTemplate").html();
+            Mustache.parse(feedTemplate);
 
-                container.append(Mustache.render(feedTemplate, {feeds: feeds}));
-                renderTimeAgo(container);
+            container.append(Mustache.render(feedTemplate, {feeds: feeds}));
+            renderTimeAgo(container);
 
-                showSavedFeeds();
+            showSavedFeeds();
 
-                if (options.expandFeeds) {
-                    container.find(".show-content").trigger("click");
-                }
+            if (options.expandFeeds) {
+                container.find(".show-content").trigger("click");
             }
         }
-    });
+    }
 }
 
-function markAsRead(feedIds) {
+async function markAsRead(feedIds) {
     var feedItems = $();
     for (var i = 0; i < feedIds.length; i++) {
         feedItems = feedItems.add(".item[data-id='" + feedIds[i] + "']");
@@ -311,13 +308,12 @@ function markAsRead(feedIds) {
             showLoader();
         }
     }
-    bg.send("markAsRead", { feedIds: feedIds }).then(function () {
-        if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
-            renderFeeds();
-        } else {
-            setLastVisibleItems();
-        }
-    });
+    await bg.send("markAsRead", { feedIds: feedIds });
+    if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
+        renderFeeds();
+    } else {
+        setLastVisibleItems();
+    }
 }
 
 function markAsUnSaved(feedIds) {

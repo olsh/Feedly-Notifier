@@ -27,9 +27,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         loadProfileData()
     ]);
 
-    setTimeout(function () {
-        optionsGlobal.loaded = true;
-    }, 1000);
+    optionsGlobal.loaded = true;
 });
 
 $("body").on("click", "#save", function (e) {
