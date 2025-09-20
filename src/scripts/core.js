@@ -848,6 +848,10 @@ async function markAsRead(feedIds) {
         for (let i = 0; i < copyArray.length; i++) {
             removeFeedFromCache(copyArray[i]);
         }
+
+        // Update storage with the modified cached feeds
+        await browser.storage.local.set({ cachedFeeds: appGlobal.cachedFeeds }).catch(function () {});
+
         let feedsCount = await browser.action.getBadgeText({});
         feedsCount = +feedsCount;
         if (feedsCount > 0) {
