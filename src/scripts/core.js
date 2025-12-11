@@ -1051,8 +1051,11 @@ async function readOptions() {
     appGlobal.cachedFeeds = Array.isArray(cache.cachedFeeds) ? cache.cachedFeeds : [];
     appGlobal.cachedSavedFeeds = Array.isArray(cache.cachedSavedFeeds) ? cache.cachedSavedFeeds : [];
 
-    // If we have a token, treat as logged in until a request proves otherwise
+    // Explicitly set accessToken in API client and mark as logged in if token is present
+    appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
+    // Treat presence of stored token as logged-in until proven otherwise by API request
     appGlobal.isLoggedIn = Boolean(appGlobal.options.accessToken);
+    console.debug("[Core] readOptions loaded, token present:", Boolean(appGlobal.options.accessToken));
 }
 
 async function apiRequestWrapper(methodName, settings) {
