@@ -11,8 +11,23 @@ let __initPromise = null;
 function ensureInitialized() {
     if (!__initPromise) {
         __initPromise = (async () => {
+            console.debug("[Background] Starting initialization...");
             await readOptions();
-            await initialize(false);
+            
+            // Explicitly restore accessToken and login state from storage
+            appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
+            appGlobal.isLoggedIn = Boolean(appGlobal.options.accessToken);
+            console.debug("[Background] Login state after readOptions - isLoggedIn:", appGlobal.isLoggedIn, "token present:", Boolean(appGlobal.options.accessToken));
+            
+            try {
+                await initialize(false);
+                console.debug("[Background] Initialization complete");
+            } catch (error) {
+                console.error("[Background] Initialization failed:", error);
+                // Reset promise to allow retry on next message
+                __initPromise = null;
+                throw error;
+            }
         })();
     }
     return __initPromise;
@@ -28,10 +43,11 @@ browser.runtime.onMessage.addListener(async (message, sender) => {
         
         switch (message && message.type) {
             case "getState":
+                // Re-evaluate isLoggedIn to avoid returning stale runtime-only state
                 return {
                     options: appGlobal.options,
                     environment: appGlobal.environment,
-                    isLoggedIn: appGlobal.isLoggedIn || false
+                    isLoggedIn: Boolean(appGlobal.options.accessToken) && appGlobal.isLoggedIn
                 };
             case "getOptions":
                 return { options: appGlobal.options };
