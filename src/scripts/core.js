@@ -192,6 +192,7 @@ browser.webRequest.onCompleted.addListener(async function (details) {
 }, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
 
 browser.action.onClicked.addListener(async function () {
+    await ensureOptionsLoaded();
     if (appGlobal.isLoggedIn) {
         await openFeedlyTab();
         if(appGlobal.options.resetCounterOnClick){
