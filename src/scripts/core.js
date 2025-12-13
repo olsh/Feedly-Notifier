@@ -61,7 +61,7 @@ var appGlobal = {
             this._updateInterval = value;
         },
         get popupWidth() {
-            let maxValue = 750;
+            let maxValue = 800;
             let minValue = 380;
             if (this._popupWidth > maxValue ) {
                 return maxValue;
@@ -75,7 +75,7 @@ var appGlobal = {
             this._popupWidth = value;
         },
         get expandedPopupWidth() {
-            let maxValue = 750;
+            let maxValue = 800;
             let minValue = 380;
             if (this._expandedPopupWidth > maxValue ) {
                 return maxValue;
