@@ -662,7 +662,7 @@ async function parseFeeds(feedlyResponse) {
         let blogUrl;
         try {
             blogUrl = item.origin.htmlUrl.match(/https?:\/\/[^:/?]+/i).pop();
-        } catch (exception) {
+        } catch {
             blogUrl = "#";
         }
 
@@ -860,7 +860,7 @@ async function markAsRead(feedIds) {
             setBadgeCounter(feedsCount);
         }
         return true;
-    } catch (e) {
+    } catch {
         return false;
     }
 }
@@ -894,7 +894,7 @@ async function toggleSavedFeed(feedsIds, saveFeed) {
             }
         }
         return true;
-    } catch (_) {
+    } catch {
         return false;
     }
 }
