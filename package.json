@@ -2,8 +2,11 @@
   "name": "feedly-notifier",
   "description": "Feedly Notifier is a tiny extension that keeps you up to date with your feedly subscriptions.",
   "devDependencies": {
-    "eslint": "^8.57.0",
+    "@eslint/compat": "^1.2.4",
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
     "eslint-plugin-jquery": "^1.5.1",
+    "globals": "^15.14.0",
     "grunt": "^1.6.1",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
@@ -30,7 +33,7 @@
     "webextension-polyfill": "^0.12.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --ext .js --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   }
 }

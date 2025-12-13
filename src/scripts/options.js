@@ -94,7 +94,7 @@ async function loadProfileData() {
         for (var profileData in result) {
             userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
         }
-    } catch (_) {
+    } catch {
         $("#userInfo, #filters-settings").hide();
     }
 }
