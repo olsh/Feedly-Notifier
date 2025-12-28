@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Capacidad para guardar fuentes"
   },
+  "Auto": {
+    "message": "Automático"
+  },
   "AutoMarkRead": {
     "message": "Marcar automáticamente como leído al abrir noticias"
   },

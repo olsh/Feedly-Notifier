@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Mulighed for at gemme feeds"
   },
+  "Auto": {
+    "message": "Automatisk"
+  },
   "AutoMarkRead": {
     "message": "Marker automatisk som læst ved åbning af nyhed"
   },

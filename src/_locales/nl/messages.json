@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Mogelijkheid om feeds op te slaan"
   },
+  "Auto": {
+    "message": "Automatisch"
+  },
   "AutoMarkRead": {
     "message": "Berichten automatisch markeren als gelezen na aanklikken"
   },

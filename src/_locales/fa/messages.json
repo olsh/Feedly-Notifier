@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "قابلیت ذخیره فید"
   },
+  "Auto": {
+    "message": "خودکار"
+  },
   "AutoMarkRead": {
     "message": "نشان‌گذاری به خوانده شده در زمان بازشدن اخبار"
   },

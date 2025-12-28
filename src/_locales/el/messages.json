@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Δυνατότητα αποθήκευσης των feeds"
   },
+  "Auto": {
+    "message": "Αυτόματο"
+  },
   "AutoMarkRead": {
     "message": "Αυτόματη σημείωση ως αναγνωσμένου κατά το άνοιγμα"
   },

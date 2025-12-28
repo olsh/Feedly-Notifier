@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Kemampuan untuk menyimpan feed"
   },
+  "Auto": {
+    "message": "Otomatis"
+  },
   "AutoMarkRead": {
     "message": "Otomatis tandai dibaca pada berita terbuka"
   },

@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Haberi kaydetme özelliği"
   },
+  "Auto": {
+    "message": "Otomatik"
+  },
   "AutoMarkRead": {
     "message": "Haber açıldığında otomatik okundu işaretlensin"
   },

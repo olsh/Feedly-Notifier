@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Khả năng lưu feed"
   },
+  "Auto": {
+    "message": "Tự động"
+  },
   "AutoMarkRead": {
     "message": "Tự động đánh dấu đã đọc khi mở"
   },

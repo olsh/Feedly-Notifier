@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "提供“稍后阅读”按钮"
   },
+  "Auto": {
+    "message": "自动"
+  },
   "AutoMarkRead": {
     "message": "打开摘要时自动标记为已读"
   },

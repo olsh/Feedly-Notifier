@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "القدرة على حفظ الخلاصات"
   },
+  "Auto": {
+    "message": "تلقائي"
+  },
   "AutoMarkRead": {
     "message": "تلقائيا علم الأخبار المفتوحة كمقروء"
   },
