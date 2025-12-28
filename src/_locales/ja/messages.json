@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "フィードの保存機能"
   },
+  "Auto": {
+    "message": "自動"
+  },
   "AutoMarkRead": {
     "message": "記事を開いた時に自動で既読にする"
   },

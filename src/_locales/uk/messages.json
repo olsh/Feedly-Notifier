@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Можливість збереження подач"
   },
+  "Auto": {
+    "message": "Автоматично"
+  },
   "AutoMarkRead": {
     "message": "Позначати відкриту новину як прочитану"
   },

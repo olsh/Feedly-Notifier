@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Ability to save feeds"
   },
+  "Auto": {
+    "message": "Auto"
+  },
   "AutoMarkRead": {
     "message": "Auto mark as read on news open"
   },

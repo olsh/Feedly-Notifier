@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Possibilitat de guardar feeds"
   },
+  "Auto": {
+    "message": "Automàtic"
+  },
   "AutoMarkRead": {
     "message": "Marcar automàticament com a llegides les notícies obertes"
   },

@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Możliwość zapisu wiadomości"
   },
+  "Auto": {
+    "message": "Automatyczny"
+  },
   "AutoMarkRead": {
     "message": "Automatycznie oznacz jako przeczytane przy wyświetleniu"
   },

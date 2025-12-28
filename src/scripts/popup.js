@@ -390,17 +390,34 @@ function getUniqueCategories(feeds){
     return categories;
 }
 
+function getSystemTheme() {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function applyTheme(theme) {
+    if (theme === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+    } else if (theme === "nord") {
+        document.body.setAttribute("data-theme", "nord");
+    } else {
+        document.body.removeAttribute("data-theme");
+    }
+}
+
 function setTheme() {
-    switch (options.theme) {
-        case "dark":
-            document.body.setAttribute("data-theme", "dark");
-            break;
-        case "nord":
-            document.body.setAttribute("data-theme", "nord");
-            break;
-        default: {
-            document.body.removeAttribute("data-theme");
-        }
+    let effectiveTheme = options.theme;
+
+    if (options.theme === "auto") {
+        effectiveTheme = getSystemTheme();
+    }
+
+    applyTheme(effectiveTheme);
+
+    // Listen for system theme changes when auto mode is enabled
+    if (options.theme === "auto") {
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+            applyTheme(e.matches ? "dark" : "light");
+        });
     }
 }
 

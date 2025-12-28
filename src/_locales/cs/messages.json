@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Možnost uložit feedy"
   },
+  "Auto": {
+    "message": "Automaticky"
+  },
   "AutoMarkRead": {
     "message": "Automaticky označit jako přečteno po otevření zprávy"
   },

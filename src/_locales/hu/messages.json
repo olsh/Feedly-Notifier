@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Elemek mentésének lehetősége"
   },
+  "Auto": {
+    "message": "Automatikus"
+  },
   "AutoMarkRead": {
     "message": "Hír automatikus megjelölése annak megnyitásakor"
   },

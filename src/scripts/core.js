@@ -16,8 +16,8 @@ var appGlobal = {
     },
     options: {
         _updateInterval: 10, //minutes
-        _popupWidth: 380,
-        _expandedPopupWidth: 650,
+        _popupWidth: 500,
+        _expandedPopupWidth: 800,
 
         markReadOnClick: true,
         accessToken: "",
@@ -42,7 +42,7 @@ var appGlobal = {
         sound: "sound/alert.mp3",
         soundVolume: 0.8,
         sortBy: "newest",
-        theme: "light",
+        theme: "auto",
         resetCounterOnClick: false,
         popupFontSize: 100, //percent
         showCategories: false,

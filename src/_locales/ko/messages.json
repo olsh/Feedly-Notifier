@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "피드 저장 기능"
   },
+  "Auto": {
+    "message": "자동"
+  },
   "AutoMarkRead": {
     "message": "열린 뉴스 자동으로 읽은 상태로 표시"
   },

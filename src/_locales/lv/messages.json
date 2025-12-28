@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Iespēja saglabāt plūsmas"
   },
+  "Auto": {
+    "message": "Automātiski"
+  },
   "AutoMarkRead": {
     "message": "Automātiski atzīmēt kā lasītu, kad ziņas tiek atvērtas"
   },

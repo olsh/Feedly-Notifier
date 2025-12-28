@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Possibilitа di salvare i feed"
   },
+  "Auto": {
+    "message": "Automatico"
+  },
   "AutoMarkRead": {
     "message": "Segna il feed automaticamente come letto quando si visualizza la notizia"
   },

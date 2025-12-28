@@ -2,6 +2,9 @@
   "AbilitySaveFeeds": {
     "message": "Possibilité d'enregistrer les articles"
   },
+  "Auto": {
+    "message": "Automatique"
+  },
   "AutoMarkRead": {
     "message": "Marquer comme lu automatiquement à l'ouverture d'un article"
   },
