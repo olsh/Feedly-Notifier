@@ -181,7 +181,7 @@ browser.webRequest.onCompleted.addListener(async function (details) {
         updateFeeds();
         appGlobal.getUserSubscriptionsPromise = null;
     }
-}, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers?*ct=feedly.desktop*"]});
+}, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers*"]});
 
 /* Listener for adding or removing saved feeds */
 browser.webRequest.onCompleted.addListener(async function (details) {
