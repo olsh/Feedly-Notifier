@@ -3,7 +3,7 @@
   "description": "Feedly Notifier is a tiny extension that keeps you up to date with your feedly subscriptions.",
   "devDependencies": {
     "@eslint/compat": "^2.0.2",
-    "@eslint/js": "^9.17.0",
+    "@eslint/js": "^10.0.1",
     "eslint": "^10.0.2",
     "eslint-plugin-jquery": "^1.5.1",
     "globals": "^17.3.0",
