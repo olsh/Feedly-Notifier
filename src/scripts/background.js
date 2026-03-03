@@ -13,9 +13,21 @@ function ensureInitialized() {
         __initPromise = (async () => {
             await readOptions();
             await initialize(false);
+            await restoreFeedTabId();
         })();
     }
     return __initPromise;
+}
+
+async function restoreFeedTabId() {
+    try {
+        const data = await appGlobal.sessionStorage.get("_feedTabId");
+        if (data._feedTabId != null) {
+            appGlobal.feedTabId = data._feedTabId;
+        }
+    } catch (e) {
+        console.warn("Failed to restore feedTabId from session storage", e);
+    }
 }
 
 // Kick off initialization eagerly on worker boot
@@ -59,6 +71,7 @@ browser.runtime.onMessage.addListener(async (message, sender) => {
                 return { feedTabId: appGlobal.feedTabId || null };
             case "setFeedTabId":
                 appGlobal.feedTabId = message.tabId;
+                appGlobal.sessionStorage.set({ _feedTabId: message.tabId }).catch(() => {});
                 return { ok: true };
             case "getAccessToken":
                 await getAccessToken();
