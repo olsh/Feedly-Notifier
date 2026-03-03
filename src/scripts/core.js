@@ -135,6 +135,9 @@ var appGlobal = {
             return browser.storage.local;
         }
         return browser.storage.sync;
+    },
+    get sessionStorage(){
+        return browser.storage.session;
     }
 };
 
@@ -170,6 +173,7 @@ browser.storage.onChanged.addListener(async function (changes, areaName) {
 browser.tabs.onRemoved.addListener(function(tabId){
     if (appGlobal.feedTabId && appGlobal.feedTabId === tabId) {
         appGlobal.feedTabId = null;
+        appGlobal.sessionStorage.remove("_feedTabId").catch(function () {});
     }
 });
 

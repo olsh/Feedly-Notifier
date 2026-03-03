@@ -71,9 +71,14 @@ $("#feed, #feed-saved").on("mousedown", "a", async function (event) {
             const resp = await bg.send("getFeedTabId");
             const existingTabId = resp && resp.feedTabId;
             if (existingTabId) {
-                const tab = await browser.tabs.update(existingTabId, { url: url });
-                onOpenCallback(isFeed, tab);
-                return;
+                try {
+                    const tab = await browser.tabs.update(existingTabId, { url: url });
+                    onOpenCallback(isFeed, tab);
+                    return;
+                } catch {
+                    // Tab no longer exists (e.g. closed while service worker was inactive),
+                    // fall through to create a new one
+                }
             }
         }
         const tab = await browser.tabs.create({ url: url, active: isActiveTab });
