@@ -6,7 +6,7 @@
     "@eslint/js": "^10.0.1",
     "eslint": "^10.1.0",
     "eslint-plugin-jquery": "^1.5.1",
-    "globals": "^17.3.0",
+    "globals": "^17.4.0",
     "grunt": "^1.6.1",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
