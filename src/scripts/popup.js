@@ -491,7 +491,14 @@ function setPopupWidth(expanded) {
             ? options.expandedPopupWidth
             : options.popupWidth;
 
+        // Set width on feed containers
         $("#feed, #feed-saved, #feed-empty, #loading").width(width);
+        // Also set width on the popup content container so it respects the user's width setting
+        // (it only had min-width before, which doesn't constrain content in Vivaldi's popup panel)
+        $("#popup-content").width(width);
+        // In Vivaldi's popup panel, the root element's width constrains the entire viewport.
+        // Set it directly to ensure the user's width preference is respected.
+        document.documentElement.style.width = width + "px";
     }
 }
 
