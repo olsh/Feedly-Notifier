@@ -2,7 +2,7 @@
   "name": "feedly-notifier",
   "description": "Feedly Notifier is a tiny extension that keeps you up to date with your feedly subscriptions.",
   "devDependencies": {
-    "@eslint/compat": "^2.0.3",
+    "@eslint/compat": "^2.0.5",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.1.0",
     "eslint-plugin-jquery": "^1.5.1",
