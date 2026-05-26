@@ -14,6 +14,16 @@ const bg = {
 let options = {};
 let environment = { os: "" };
 
+function applySidebarLayout() {
+    $(document.body).css("font-size", "12pt");
+    $("html").height("100%");
+    $("html").css("min-height", "600px");
+    $("#popup-body").css("min-height", "600px");
+    $("#popup-body").height("100%");
+    $("#popup-body").css("max-height", "100%");
+    $("#popup-content").css("max-height", "100%");
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
     const state = await bg.send("getState") || {};
     options = state.options || {};
@@ -32,20 +42,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         $("#popup-content").addClass("tabs");
     }
 
+    const isSidePanel = new URLSearchParams(window.location.search).get("panel") === "1";
+    if (isSidePanel) {
+        popupGlobal.isSidebar = true;
+        applySidebarLayout();
+    }
+
     // @if BROWSER='chrome'
     window.addEventListener("resize", onResizeChrome);
     // @endif
 
     // @if BROWSER='firefox'
-    popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
-    if (popupGlobal.isSidebar) {
-        $(document.body).css("font-size", "12pt");
-        $("html").height("100%");
-        $("html").css("min-height", "600px");
-        $("#popup-body").css("min-height", "600px");
-        $("#popup-body").height("100%");
-        $("#popup-body").css("max-height", "100%");
-        $("#popup-content").css("max-height", "100%");
+    const isFirefoxSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
+    if (isFirefoxSidebar) {
+        popupGlobal.isSidebar = true;
+        applySidebarLayout();
     }
     // @endif
 
@@ -67,12 +78,16 @@ $("#feed, #feed-saved").on("mousedown", "a", async function (event) {
         var isFeed = link.hasClass("title") && $("#feed").is(":visible");
         var url = link.data("link");
 
-        if (isFeed && options.openFeedsInSameTab) {
+        if (isFeed && options.openFeedsInSameTab && isActiveTab) {
             const resp = await bg.send("getFeedTabId");
-            const existingTabId = resp && resp.feedTabId;
-            if (existingTabId) {
+            let targetTabId = resp && resp.feedTabId;
+            if (!targetTabId) {
+                const activeTabs = await browser.tabs.query({ active: true, currentWindow: true });
+                targetTabId = activeTabs && activeTabs[0] && activeTabs[0].id;
+            }
+            if (targetTabId) {
                 try {
-                    const tab = await browser.tabs.update(existingTabId, { url: url });
+                    const tab = await browser.tabs.update(targetTabId, { url: url, active: true });
                     onOpenCallback(isFeed, tab);
                     return;
                 } catch {

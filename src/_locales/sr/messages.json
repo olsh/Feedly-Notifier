@@ -20,6 +20,9 @@
   "EnableBackgroundMode": {
     "message": "Омогући рад у позадини"
   },
+  "EnableSidePanel": {
+    "message": "Омогући бочни панел (исто као и искачући прозор)"
+  },
   "ExpandedPopupWidth": {
     "message": "Ширина проширеног искачућег прозора"
   },
@@ -145,5 +148,8 @@
         "example": "10 or many"
       }
     }
+  },
+  "EngagementFilterLimit": {
+    "message": "Максималан број обавештења одједном"
   }
 }

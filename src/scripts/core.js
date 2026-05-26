@@ -26,6 +26,7 @@ var appGlobal = {
         showFullFeedContent: false,
         maxNotificationsCount: 5,
         openSiteOnIconClick: false,
+        enableSidePanel: false,
         feedlyUserId: "",
         abilitySaveFeeds: false,
         maxNumberOfFeeds: 20,
@@ -95,6 +96,7 @@ var appGlobal = {
         "accessToken",
         "showFullFeedContent",
         "openSiteOnIconClick",
+        "enableSidePanel",
         "maxNumberOfFeeds",
         "abilitySaveFeeds",
         "filters",
@@ -165,6 +167,7 @@ browser.storage.onChanged.addListener(async function (changes, areaName) {
     }
 
     await readOptions();
+    await configureSidePanel();
     if (shouldReinitialize) {
         await initialize();
     }
@@ -197,6 +200,10 @@ browser.webRequest.onCompleted.addListener(async function (details) {
 
 browser.action.onClicked.addListener(async function () {
     await ensureOptionsLoaded();
+    if (appGlobal.options.enableSidePanel) {
+        await toggleSidePanel();
+        return;
+    }
     if (appGlobal.isLoggedIn) {
         await openFeedlyTab();
         if(appGlobal.options.resetCounterOnClick){
@@ -209,7 +216,9 @@ browser.action.onClicked.addListener(async function () {
 
 /* Initialization all parameters and run feeds check */
 async function initialize(immediate) {
-    if (appGlobal.options.openSiteOnIconClick) {
+    if (appGlobal.options.enableSidePanel) {
+        await browser.action.setPopup({popup: ""});
+    } else if (appGlobal.options.openSiteOnIconClick) {
         await browser.action.setPopup({popup: ""});
     } else {
         await browser.action.setPopup({popup: "popup.html"});
@@ -218,7 +227,52 @@ async function initialize(immediate) {
 
     const platformInfo = await browser.runtime.getPlatformInfo();
     appGlobal.environment.os = platformInfo.os;
+    await configureSidePanel();
     startSchedule(appGlobal.options.updateInterval, immediate);
+}
+
+async function configureSidePanel() {
+    if (!browser.sidePanel || typeof browser.sidePanel.setOptions !== "function") {
+        return;
+    }
+    try {
+        await browser.sidePanel.setOptions({
+            enabled: Boolean(appGlobal.options.enableSidePanel),
+            path: "popup.html?panel=1"
+        });
+        if (typeof browser.sidePanel.setPanelBehavior === "function") {
+            await browser.sidePanel.setPanelBehavior({
+                openPanelOnActionClick: Boolean(appGlobal.options.enableSidePanel)
+            });
+        }
+    } catch (e) {
+        console.info("Unable to configure side panel", e);
+    }
+}
+
+async function toggleSidePanel() {
+    if (browser.sidebarAction && typeof browser.sidebarAction.isOpen === "function") {
+        const isOpen = await browser.sidebarAction.isOpen({});
+        if (isOpen && typeof browser.sidebarAction.close === "function") {
+            await browser.sidebarAction.close();
+            return true;
+        }
+        if (typeof browser.sidebarAction.open === "function") {
+            await browser.sidebarAction.open();
+            return true;
+        }
+    }
+    if (browser.sidePanel && typeof browser.sidePanel.open === "function") {
+        const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+        if (tabs.length && tabs[0].id != null) {
+            await browser.sidePanel.open({ tabId: tabs[0].id });
+            return true;
+        }
+        const windowInfo = await browser.windows.getCurrent();
+        await browser.sidePanel.open({ windowId: windowInfo.id });
+        return true;
+    }
+    return false;
 }
 
 async function ensureOptionsLoaded() {
@@ -996,13 +1050,13 @@ async function refreshAccessToken(){
         appGlobal.options.feedlyUserId = response.id;
         appGlobal.feedlyApiClient.accessToken = response.access_token;
         appGlobal.isLoggedIn = true;
-        
+
         // Also save to storage for persistence
         appGlobal.syncStorage.set({
             accessToken: response.access_token,
             feedlyUserId: response.id
         });
-        
+
         setActiveStatus();
         return response;
     } catch (response) {
