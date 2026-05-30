@@ -167,7 +167,6 @@ browser.storage.onChanged.addListener(async function (changes, areaName) {
     }
 
     await readOptions();
-    await configureSidePanel();
     if (shouldReinitialize) {
         await initialize();
     }

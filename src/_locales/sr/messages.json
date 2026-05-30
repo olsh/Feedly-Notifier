@@ -148,8 +148,5 @@
         "example": "10 or many"
       }
     }
-  },
-  "EngagementFilterLimit": {
-    "message": "Максималан број обавештења одједном"
   }
 }

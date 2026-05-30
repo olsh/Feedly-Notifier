@@ -24,6 +24,12 @@ function applySidebarLayout() {
     $("#popup-content").css("max-height", "100%");
 }
 
+function applySidePanelLayout() {
+    applySidebarLayout();
+    $(document.body).css("width", "100%");
+    $("#popup-content").css("width", "100%");
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
     const state = await bg.send("getState") || {};
     options = state.options || {};
@@ -45,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const isSidePanel = new URLSearchParams(window.location.search).get("panel") === "1";
     if (isSidePanel) {
         popupGlobal.isSidebar = true;
-        applySidebarLayout();
+        applySidePanelLayout();
     }
 
     // @if BROWSER='chrome'

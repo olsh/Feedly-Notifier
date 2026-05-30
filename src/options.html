@@ -40,8 +40,10 @@
                 <label for="openSiteOnIconClick" class="label" data-locale-value="OpenSiteOnIconClick"></label>
                 <input id="openSiteOnIconClick" type="checkbox" data-option-name="openSiteOnIconClick" /><br>
 
-                <label for="enableSidePanel" class="label" data-locale-value="EnableSidePanel">Enable side panel</label>
+                <!-- @if BROWSER!='firefox' -->
+                <label for="enableSidePanel" class="label" data-locale-value="EnableSidePanel"></label>
                 <input id="enableSidePanel" type="checkbox" data-option-name="enableSidePanel" /><br>
+                <!-- @endif -->
 
                 <label for="openFeedsInBackground" class="label" data-locale-value="OpenFeedsInBackground"></label>
                 <input id="openFeedsInBackground" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="openFeedsInBackground" /><br>
