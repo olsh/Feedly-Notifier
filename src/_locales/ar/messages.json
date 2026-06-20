@@ -29,6 +29,9 @@
   "EnableBackgroundMode": {
     "message": "تفعيل وضع الخلفية"
   },
+  "EnableSidePanel": {
+    "message": "تفعيل اللوحة الجانبية (مثل النافذة المنبثقة)"
+  },
   "EngagementRate": {
     "message": "معدل الدخول (الشعبية)"
   },

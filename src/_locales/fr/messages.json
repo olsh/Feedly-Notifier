@@ -27,7 +27,10 @@
     "message": "Courriel"
   },
   "EnableBackgroundMode": {
-    "message": "Activer le mode d'apparence"
+    "message": "Activer le mode d'arrière-plan"
+  },
+  "EnableSidePanel": {
+    "message": "Activer le panneau latéral (identique à la fenêtre contextuelle)"
   },
   "EngagementFilterLimit": {
     "message": "Marqué les articles comme Lu si moins d'actif que"

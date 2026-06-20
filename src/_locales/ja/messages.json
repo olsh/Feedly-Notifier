@@ -29,6 +29,9 @@
   "EnableBackgroundMode": {
     "message": "バックグラウンドモードを有効にする"
   },
+  "EnableSidePanel": {
+    "message": "サイドパネルを有効にする（ポップアップと同じ）"
+  },
   "EngagementFilterLimit": {
     "message": "エンゲージメントが次の値以下の場合、自動で記事を既読にする"
   },

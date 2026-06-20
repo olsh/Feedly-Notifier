@@ -20,6 +20,17 @@ function computeGlobalUncategorized(feedlyUserId) {
     return "user/" + feedlyUserId + "/category/global.uncategorized";
 }
 
+function applyLocale(root) {
+    root.find("[data-locale-value]").each(function () {
+        var textBox = $(this);
+        var localValue = textBox.data("locale-value");
+        var message = browser.i18n.getMessage(localValue);
+        if (message) {
+            textBox.text(message);
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
     await Promise.all([
         loadOptions(),
@@ -85,11 +96,7 @@ async function loadProfileData() {
     try {
         const result = await feedlyClient.request("profile", { parameters: {} });
         var userInfo = $("#userInfo");
-        userInfo.find("[data-locale-value]").each(function () {
-            var textBox = $(this);
-            var localValue = textBox.data("locale-value");
-            textBox.text(browser.i18n.getMessage(localValue));
-        });
+        applyLocale(userInfo);
         userInfo.show();
         for (var profileData in result) {
             userInfo.find("span[data-value-name='" + profileData + "']").text(result[profileData]);
@@ -184,11 +191,7 @@ async function loadOptions() {
 
     optionsForm.find("input").trigger("change");
     $("#header").text(browser.i18n.getMessage("FeedlyNotifierOptions"));
-    $("#options").find("[data-locale-value]").each(function () {
-        var textBox = $(this);
-        var localValue = textBox.data("locale-value");
-        textBox.text(browser.i18n.getMessage(localValue));
-    });
+    applyLocale(optionsForm);
 }
 
 async function setAllSitesPermission(enable, options) {

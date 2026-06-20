@@ -15,7 +15,10 @@
     "message": "Aktuální uživatel"
   },
   "EnableBackgroundMode": {
-    "message": "Povolit background mód"
+    "message": "Povolit režim na pozadí"
+  },
+  "EnableSidePanel": {
+    "message": "Povolit postranní panel (stejné jako vyskakovací okno)"
   },
   "ExpandedPopupWidth": {
     "message": "Rozšířit popup"

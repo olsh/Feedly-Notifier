@@ -18,7 +18,10 @@
     "message": "E-mail"
   },
   "EnableBackgroundMode": {
-    "message": "Start baggrundstilstand"
+    "message": "Aktiver baggrundstilstand"
+  },
+  "EnableSidePanel": {
+    "message": "Aktivér sidepanel (samme som pop op-vinduet)"
   },
   "ExpandedPopupWidth": {
     "message": "Bredde på udvidet po op vindue"

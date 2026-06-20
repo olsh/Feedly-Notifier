@@ -12,6 +12,9 @@
         "notifications",
         "webRequest",
         "alarms"
+        // @if BROWSER!='firefox'
+        ,"sidePanel"
+        // @endif
     ],
     "host_permissions": [
         "*://*.feedly.com/*"
@@ -28,6 +31,12 @@
         "default_title": "Feedly Notifier",
         "default_popup": "popup.html"
     },
+
+    // @if BROWSER!='firefox'
+    "side_panel": {
+        "default_path": "popup.html?panel=1"
+    },
+    // @endif
 
     "options_ui": {
         "page": "options.html",
