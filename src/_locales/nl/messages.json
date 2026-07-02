@@ -27,7 +27,10 @@
     "message": "E-mailadres"
   },
   "EnableBackgroundMode": {
-    "message": "Achtergrondmodus inschakelen"
+    "message": "Achtergrond modus inschakelen"
+  },
+  "EnableSidePanel": {
+    "message": "Zijpaneel inschakelen (hetzelfde als pop-up)"
   },
   "EngagementFilterLimit": {
     "message": "Artikelen als gelezen markeren indien interactie korter is dan"

@@ -27,7 +27,10 @@
     "message": "Correo electrónico"
   },
   "EnableBackgroundMode": {
-    "message": "Activar modo en segundo plano"
+    "message": "Habilitar el modo de fondo"
+  },
+  "EnableSidePanel": {
+    "message": "Activar panel lateral (igual que la ventana emergente)"
   },
   "EngagementFilterLimit": {
     "message": "Marque los artículos como leídos si la participación es inferior a"

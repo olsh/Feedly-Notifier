@@ -17,6 +17,9 @@
   "EnableBackgroundMode": {
     "message": "Aktifkan mode latar belakang"
   },
+  "EnableSidePanel": {
+    "message": "Aktifkan panel samping (sama seperti pop-up)"
+  },
   "ExpandedPopupWidth": {
     "message": "Lebar popup diperluas"
   },
