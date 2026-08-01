@@ -29,6 +29,9 @@
   "EnableBackgroundMode": {
     "message": "Iespējot fona režīmu"
   },
+  "EnableSidePanel": {
+    "message": "Iespējot sānu paneli (tāpat kā uznirstošais logs)"
+  },
   "EngagementFilterLimit": {
     "message": "Atzīmēt rakstus kā izlasītus, ja iesaistīšanās (popularitāte) ir mazāka par"
   },

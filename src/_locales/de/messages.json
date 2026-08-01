@@ -24,7 +24,10 @@
     "message": "E-Mail"
   },
   "EnableBackgroundMode": {
-    "message": "Hintergrund Modus aktivieren"
+    "message": "Hintergrundmodus aktivieren"
+  },
+  "EnableSidePanel": {
+    "message": "Seitenleiste aktivieren (wie das Popup)"
   },
   "EngagementFilterLimit": {
     "message": "Markiere Artikel als gelesen wenn Beliebtheit kleiner als"

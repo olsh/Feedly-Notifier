@@ -26,6 +26,9 @@
   "EnableBackgroundMode": {
     "message": "백그라운드 모드 활성화"
   },
+  "EnableSidePanel": {
+    "message": "사이드 패널 사용(팝업과 동일)"
+  },
   "EngagementFilterLimit": {
     "message": "다음보다 작을 경우 기사를 읽은 것으로 표시"
   },

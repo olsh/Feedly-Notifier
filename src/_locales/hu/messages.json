@@ -17,6 +17,9 @@
   "EnableBackgroundMode": {
     "message": "Háttérbeli mód engedélyezése"
   },
+  "EnableSidePanel": {
+    "message": "Oldalsáv engedélyezése (ugyanaz, mint az előugró ablak)"
+  },
   "ExpandedPopupWidth": {
     "message": "Kinyitott ablak mérete"
   },

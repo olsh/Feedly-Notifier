@@ -26,6 +26,9 @@
   "EnableBackgroundMode": {
     "message": "Abilita modalità background"
   },
+  "EnableSidePanel": {
+    "message": "Abilita pannello laterale (come il popup)"
+  },
   "EngagementFilterLimit": {
     "message": "Segna come letti gli articoli con un interesse minore di"
   },

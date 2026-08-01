@@ -15,7 +15,10 @@
     "message": "Người dùng hiện tại"
   },
   "EnableBackgroundMode": {
-    "message": "Cho phép chạy ngầm"
+    "message": "Kích hoạt chế độ nền"
+  },
+  "EnableSidePanel": {
+    "message": "Bật bảng điều khiển bên (giống như cửa sổ bật lên)"
   },
   "EngagementFilterLimit": {
     "message": "Đánh dấu đã đọc nếu độ tương tác ít hơn"

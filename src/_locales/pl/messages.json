@@ -24,7 +24,10 @@
     "message": "Wyłącz synchronizację opcji"
   },
   "EnableBackgroundMode": {
-    "message": "Aktywuj działanie w tle"
+    "message": "Włącz tryb pracy w tle"
+  },
+  "EnableSidePanel": {
+    "message": "Włącz panel boczny (tak samo jak okno wyskakujące)"
   },
   "EngagementFilterLimit": {
     "message": "Oznacz jako przeczytane wiadomości mniej popularny niż"

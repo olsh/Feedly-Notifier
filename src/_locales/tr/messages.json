@@ -18,7 +18,10 @@
     "message": "Eposta"
   },
   "EnableBackgroundMode": {
-    "message": "Arkaplan modunu aç"
+    "message": "Arkaplan modunu etkinleştir"
+  },
+  "EnableSidePanel": {
+    "message": "Yan paneli etkinleştir (açılır pencereyle aynı)"
   },
   "ExpandedPopupWidth": {
     "message": "Genişletilmiş boyda açılır pencere"

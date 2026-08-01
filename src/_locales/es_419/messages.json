@@ -26,6 +26,9 @@
   "EnableBackgroundMode": {
     "message": "Permitir modo segundo plano"
   },
+  "EnableSidePanel": {
+    "message": "Activar panel lateral (igual que la ventana emergente)"
+  },
   "EngagementFilterLimit": {
     "message": "Marcar artículos como leídos si la participación es inferior a"
   },
