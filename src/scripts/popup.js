@@ -59,6 +59,15 @@ $("#login").on("click", async function () {
     renderFeeds();
 });
 
+//Allow only safe URL schemes to prevent javascript:/data:/file: injection via feed content.
+function isSafeUrl(url) {
+    try {
+        return ["http:", "https:"].includes(new URL(url, location.href).protocol);
+    } catch {
+        return false;
+    }
+}
+
 //using "mousedown" instead of "click" event to process middle button click.
 $("#feed, #feed-saved").on("mousedown", "a", async function (event) {
     var link = $(this);
@@ -66,6 +75,10 @@ $("#feed, #feed-saved").on("mousedown", "a", async function (event) {
         var isActiveTab = !(event.ctrlKey || event.which === 2) && !options.openFeedsInBackground;
         var isFeed = link.hasClass("title") && $("#feed").is(":visible");
         var url = link.data("link");
+
+        if (!isSafeUrl(url)) {
+            return;
+        }
 
         if (isFeed && options.openFeedsInSameTab) {
             const resp = await bg.send("getFeedTabId");
@@ -104,7 +117,9 @@ $("#popup-content").on("click", "#open-all-news", async function () {
     const links = $("#feed").find("a.title[data-link]").filter(":visible");
     for (let i = 0; i < links.length; i++) {
         const news = $(links[i]);
-        await browser.tabs.create({url: news.data("link"), active: false });
+        if (isSafeUrl(news.data("link"))) {
+            await browser.tabs.create({url: news.data("link"), active: false });
+        }
     }
     if (options.markReadOnClick) {
         markAllAsRead();
@@ -115,7 +130,9 @@ $("#popup-content").on("click", "#open-unsaved-all-news", async function () {
     const links = $("#feed-saved").find("a.title[data-link]").filter(":visible");
     for (let i = 0; i < links.length; i++) {
         const news = $(links[i]);
-        await browser.tabs.create({url: news.data("link"), active: false });
+        if (isSafeUrl(news.data("link"))) {
+            await browser.tabs.create({url: news.data("link"), active: false });
+        }
     }
     markAllAsUnsaved();
 });
