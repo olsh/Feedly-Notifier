@@ -24,7 +24,10 @@
     "message": "e-mail"
   },
   "EnableBackgroundMode": {
-    "message": "Activa el mode de fons"
+    "message": "Habilitar el mode de fons"
+  },
+  "EnableSidePanel": {
+    "message": "Activa el panell lateral (igual que la finestra emergent)"
   },
   "EngagementFilterLimit": {
     "message": "Marcar els articles com a llegits si la interacció és inferior a"

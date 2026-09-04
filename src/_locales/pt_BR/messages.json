@@ -24,7 +24,10 @@
     "message": "E-mail"
   },
   "EnableBackgroundMode": {
-    "message": "Habilitar modo segundo plano"
+    "message": "Ativar modo de fundo"
+  },
+  "EnableSidePanel": {
+    "message": "Ativar painel lateral (igual ao pop-up)"
   },
   "EngagementFilterLimit": {
     "message": "Marque os artigos como lidos se o envolvimento for menor que"

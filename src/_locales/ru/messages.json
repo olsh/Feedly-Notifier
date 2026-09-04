@@ -26,6 +26,9 @@
   "EnableBackgroundMode": {
     "message": "Включить фоновый режим"
   },
+  "EnableSidePanel": {
+    "message": "Включить боковую панель (как всплывающее окно)"
+  },
   "EngagementFilterLimit": {
     "message": "Пометить новости как прочитанные если популярность меньше чем"
   },

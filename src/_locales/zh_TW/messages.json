@@ -17,6 +17,9 @@
   "EnableBackgroundMode": {
     "message": "啟用背景模式"
   },
+  "EnableSidePanel": {
+    "message": "啟用側邊欄（與彈出視窗相同）"
+  },
   "ExpandedPopupWidth": {
     "message": "展開寬度"
   },

@@ -18,7 +18,10 @@
     "message": "ایمیل"
   },
   "EnableBackgroundMode": {
-    "message": "فعال سازی حالت پس‌زمینه"
+    "message": "فعال کردن حالت پس زمینه"
+  },
+  "EnableSidePanel": {
+    "message": "فعال‌سازی پنل کناری (همانند پنجرهٔ بازشو)"
   },
   "ExpandedPopupWidth": {
     "message": "اضافه کردن پهنای پنجره شناور"

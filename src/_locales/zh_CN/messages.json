@@ -27,7 +27,10 @@
     "message": "邮箱"
   },
   "EnableBackgroundMode": {
-    "message": "启用后台模式"
+    "message": "开启后台模式"
+  },
+  "EnableSidePanel": {
+    "message": "启用侧边栏（与弹出窗口相同）"
   },
   "EngagementFilterLimit": {
     "message": "将文章标记为已读，在参与度小于"

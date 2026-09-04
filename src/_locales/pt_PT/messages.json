@@ -15,7 +15,10 @@
     "message": "Utilizador atual"
   },
   "EnableBackgroundMode": {
-    "message": "Permite o funcionamento em fundo"
+    "message": "Ativar modo em segundo plano"
+  },
+  "EnableSidePanel": {
+    "message": "Ativar painel lateral (igual ao pop-up)"
   },
   "ExpandedPopupWidth": {
     "message": "Comprimento da janela popup"

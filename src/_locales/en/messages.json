@@ -29,6 +29,9 @@
   "EnableBackgroundMode": {
     "message": "Enable background mode"
   },
+  "EnableSidePanel": {
+    "message": "Enable side panel (same as popup)"
+  },
   "EngagementFilterLimit": {
     "message": "Mark articles as read if engagement less than"
   },

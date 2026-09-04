@@ -14,6 +14,22 @@ const bg = {
 let options = {};
 let environment = { os: "" };
 
+function applySidebarLayout() {
+    $(document.body).css("font-size", "12pt");
+    $("html").height("100%");
+    $("html").css("min-height", "600px");
+    $("#popup-body").css("min-height", "600px");
+    $("#popup-body").height("100%");
+    $("#popup-body").css("max-height", "100%");
+    $("#popup-content").css("max-height", "100%");
+}
+
+function applySidePanelLayout() {
+    applySidebarLayout();
+    $(document.body).css("width", "100%");
+    $("#popup-content").css("width", "100%");
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
     const state = await bg.send("getState") || {};
     options = state.options || {};
@@ -32,20 +48,25 @@ document.addEventListener("DOMContentLoaded", async function () {
         $("#popup-content").addClass("tabs");
     }
 
+    const isSidePanel = new URLSearchParams(window.location.search).get("panel") === "1";
+    if (isSidePanel) {
+        popupGlobal.isSidebar = true;
+        applySidePanelLayout();
+    }
+
     // @if BROWSER='chrome'
-    window.addEventListener("resize", onResizeChrome);
+    //The side panel is resizable and keeps the percentage based layout applied above,
+    //onResizeChrome would freeze it at the height of the first resize.
+    if (!isSidePanel) {
+        window.addEventListener("resize", onResizeChrome);
+    }
     // @endif
 
     // @if BROWSER='firefox'
-    popupGlobal.isSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
-    if (popupGlobal.isSidebar) {
-        $(document.body).css("font-size", "12pt");
-        $("html").height("100%");
-        $("html").css("min-height", "600px");
-        $("#popup-body").css("min-height", "600px");
-        $("#popup-body").height("100%");
-        $("#popup-body").css("max-height", "100%");
-        $("#popup-content").css("max-height", "100%");
+    const isFirefoxSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
+    if (isFirefoxSidebar) {
+        popupGlobal.isSidebar = true;
+        applySidebarLayout();
     }
     // @endif
 
@@ -59,20 +80,42 @@ $("#login").on("click", async function () {
     renderFeeds();
 });
 
+//Resolves the tab to reuse when "open feeds in same tab" is enabled: the remembered
+//feed tab if it is still known, otherwise the active tab, but only in the sidebar and
+//the side panel. There the feeds live next to the tab strip rather than inside it, so
+//reusing the active tab is expected. In the popup it would navigate the page the user
+//opened the popup from.
+async function resolveSameTabTargetId() {
+    const resp = await bg.send("getFeedTabId");
+    const storedTabId = resp?.feedTabId;
+    if (storedTabId) {
+        return storedTabId;
+    }
+
+    if (!popupGlobal.isSidebar) {
+        return undefined;
+    }
+
+    const activeTabs = await browser.tabs.query({ active: true, currentWindow: true });
+    return activeTabs?.[0]?.id;
+}
+
 //using "mousedown" instead of "click" event to process middle button click.
 $("#feed, #feed-saved").on("mousedown", "a", async function (event) {
     var link = $(this);
     if (event.which === 1 || event.which === 2) {
-        var isActiveTab = !(event.ctrlKey || event.which === 2) && !options.openFeedsInBackground;
+        var isNewTabRequested = event.ctrlKey || event.metaKey || event.which === 2;
+        var isActiveTab = !isNewTabRequested && !options.openFeedsInBackground;
         var isFeed = link.hasClass("title") && $("#feed").is(":visible");
         var url = link.data("link");
 
-        if (isFeed && options.openFeedsInSameTab) {
-            const resp = await bg.send("getFeedTabId");
-            const existingTabId = resp && resp.feedTabId;
-            if (existingTabId) {
+        //Only an explicitly requested new tab overrides "open feeds in same tab",
+        //opening in the background still reuses the feed tab.
+        if (isFeed && options.openFeedsInSameTab && !isNewTabRequested) {
+            const targetTabId = await resolveSameTabTargetId();
+            if (targetTabId) {
                 try {
-                    const tab = await browser.tabs.update(existingTabId, { url: url });
+                    const tab = await browser.tabs.update(targetTabId, { url: url, active: isActiveTab });
                     onOpenCallback(isFeed, tab);
                     return;
                 } catch {

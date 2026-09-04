@@ -20,6 +20,9 @@
   "EnableBackgroundMode": {
     "message": "Омогући рад у позадини"
   },
+  "EnableSidePanel": {
+    "message": "Омогући бочни панел (исто као и искачући прозор)"
+  },
   "ExpandedPopupWidth": {
     "message": "Ширина проширеног искачућег прозора"
   },
