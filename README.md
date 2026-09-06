@@ -1,8 +1,7 @@
 Feedly Notifier
 ===============
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/cc043ddadb231bfaa48b/maintainability)](https://codeclimate.com/github/olsh/Feedly-Notifier/maintainability)
-[![Known Vulnerabilities](https://snyk.io/test/github/olsh/Feedly-Notifier/badge.svg)](https://snyk.io/test/github/olsh/Feedly-Notifier)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=olsh_Feedly-Notifier&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=olsh_Feedly-Notifier)
 ---
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/egikgfbhipinieabdmcpigejkaomgjgb)](https://chrome.google.com/webstore/detail/feedly-notifier/egikgfbhipinieabdmcpigejkaomgjgb)
