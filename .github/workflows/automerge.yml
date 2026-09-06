@@ -1,5 +1,8 @@
 name: "Automerge"
-on: [push, pull_request]
+on:
+    push:
+        branches: ["master"]
+    pull_request:
 
 jobs:
     test:
@@ -20,7 +23,7 @@ jobs:
             - run: npx grunt build --clientId=${{ secrets.FEEDLY_CLIENT_ID }} --clientSecret=${{ secrets.FEEDLY_CLIENT_SECRET }} --browser=${{ matrix.browser }}
 
     automerge:
-        needs: test
+        if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]'
         runs-on: ubuntu-latest
 
         permissions:
@@ -28,6 +31,13 @@ jobs:
             contents: write
 
         steps:
-            - uses: fastify/github-action-merge-dependabot@v3.15.0
+            - id: metadata
+              uses: dependabot/fetch-metadata@v3.1.0
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
+
+            - if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+              run: gh pr merge --auto --squash "$PR_URL"
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PR_URL: ${{ github.event.pull_request.html_url }}
