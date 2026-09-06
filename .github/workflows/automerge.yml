@@ -4,6 +4,8 @@ on:
         branches: ["master"]
     pull_request:
 
+permissions: {}
+
 jobs:
     test:
         strategy:
@@ -11,6 +13,10 @@ jobs:
             matrix:
                 browser: ["chrome", "opera", "firefox"]
         runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
         steps:
             - uses: actions/checkout@v7
             - uses: actions/setup-node@v7
