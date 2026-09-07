@@ -1,4 +1,4 @@
-const { test, expect } = require("./fixtures/extension");
+const { test, expect, RETRY } = require("./fixtures/extension");
 const { SUBSCRIPTIONS, GLOBAL_ALL, USER_ID } = require("./fixtures/feed-items");
 
 test.describe("options page", () => {
@@ -66,7 +66,7 @@ test.describe("options page", () => {
 
         await expect(async () => {
             expect(dialogs).toHaveLength(1);
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("applies the new update interval to the background alarms", async ({ signIn, optionsPage, serviceWorker }) => {
@@ -82,7 +82,7 @@ test.describe("options page", () => {
                 return alarm ? alarm.periodInMinutes : null;
             });
             expect(period).toBe(60);
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("clamps an update interval below the minimum", async ({ signIn, optionsPage, serviceWorker }) => {
@@ -97,7 +97,7 @@ test.describe("options page", () => {
         await expect(async () => {
             const interval = await serviceWorker.evaluate(() => globalThis.appGlobal.options.updateInterval);
             expect(interval).toBe(10);
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("lists the user's categories as filter options", async ({ signIn, optionsPage }) => {
@@ -122,7 +122,7 @@ test.describe("options page", () => {
                 async () => (await chrome.storage.local.get("maxNumberOfFeeds")).maxNumberOfFeeds
             );
             expect(stored).toBe(33);
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("signs the user out", async ({ signIn, optionsPage, serviceWorker }) => {

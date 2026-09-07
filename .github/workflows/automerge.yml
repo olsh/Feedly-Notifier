@@ -18,7 +18,11 @@ jobs:
             contents: read
 
         steps:
+            # No step here pushes or fetches, so the job has no use for a
+            # persisted token in .git/config.
             - uses: actions/checkout@v7
+              with:
+                  persist-credentials: false
             - uses: actions/setup-node@v7
               with:
                   node-version: "22.x"
@@ -41,7 +45,11 @@ jobs:
             contents: read
 
         steps:
+            # No step here pushes or fetches, so the job has no use for a
+            # persisted token in .git/config.
             - uses: actions/checkout@v7
+              with:
+                  persist-credentials: false
             - uses: actions/setup-node@v7
               with:
                   node-version: "22.x"

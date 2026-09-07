@@ -156,10 +156,16 @@ const test = base.test.extend({
         await use(signIn);
     },
 
-    /** Opens the popup page the way the toolbar button would. */
+    /**
+     * Opens the popup page the way the toolbar button would.
+     *
+     * `beforeNavigate` runs against the blank page before goto(), which is the
+     * only way to observe events raised during navigation itself.
+     */
     popupPage: async ({ context, extensionId }, use) => {
-        const open = async (query = "") => {
+        const open = async (query = "", beforeNavigate) => {
             const page = await context.newPage();
+            beforeNavigate?.(page);
             await page.goto(`chrome-extension://${extensionId}/popup.html${query}`);
             return page;
         };
@@ -182,4 +188,11 @@ const test = base.test.extend({
 
 const expect = base.expect;
 
-module.exports = { test, expect, BUILD_DIR, PROJECT_ROOT };
+/*
+ * `toPass()` defaults to no timeout, so a failing condition would spin until the
+ * test's own 30s limit and report the timeout rather than the assertion. Give
+ * every retry loop the same budget as the other assertions.
+ */
+const RETRY = { timeout: 10000 };
+
+module.exports = { test, expect, RETRY, BUILD_DIR, PROJECT_ROOT };

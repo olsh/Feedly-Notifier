@@ -1,4 +1,4 @@
-const { test, expect } = require("./fixtures/extension");
+const { test, expect, RETRY } = require("./fixtures/extension");
 const { SUBSCRIPTIONS, GLOBAL_ALL } = require("./fixtures/feed-items");
 
 /**
@@ -23,7 +23,7 @@ test.describe("toolbar badge", () => {
 
         await expect(async () => {
             expect(await badgeText(serviceWorker)).toBe("42");
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("abbreviates counts above 999", async ({ mockApi, signIn, serviceWorker }) => {
@@ -33,7 +33,7 @@ test.describe("toolbar badge", () => {
 
         await expect(async () => {
             expect(await badgeText(serviceWorker)).toBe("12k+");
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("stays empty when there is nothing unread", async ({ mockApi, signIn, serviceWorker }) => {
@@ -43,7 +43,7 @@ test.describe("toolbar badge", () => {
 
         await expect(async () => {
             expect(await badgeText(serviceWorker)).toBe("");
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("stays empty when the counter is switched off", async ({ mockApi, signIn, serviceWorker }) => {
@@ -53,7 +53,7 @@ test.describe("toolbar badge", () => {
 
         await expect(async () => {
             expect(await badgeText(serviceWorker)).toBe("");
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("ignores counts for streams the user is not looking at", async ({ mockApi, signIn, serviceWorker }) => {
@@ -66,7 +66,7 @@ test.describe("toolbar badge", () => {
 
         await expect(async () => {
             expect(await badgeText(serviceWorker)).toBe("7");
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("recovers by refreshing the token after a 401", async ({ mockApi, signIn, serviceWorker }) => {
@@ -79,6 +79,6 @@ test.describe("toolbar badge", () => {
         await expect(async () => {
             expect(mockApi.requestsTo("/v3/auth/token", "POST").length).toBeGreaterThan(0);
             expect(await badgeText(serviceWorker)).toBe("5");
-        }).toPass();
+        }).toPass(RETRY);
     });
 });

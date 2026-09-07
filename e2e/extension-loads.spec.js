@@ -1,4 +1,4 @@
-const { test, expect } = require("./fixtures/extension");
+const { test, expect, RETRY } = require("./fixtures/extension");
 const { item, SUBSCRIPTIONS, GLOBAL_ALL } = require("./fixtures/feed-items");
 
 /**
@@ -56,15 +56,17 @@ test.describe("extension loading", () => {
 
         await expect(async () => {
             expect(mockApi.requestsFor("/contents").length).toBeGreaterThan(0);
-        }).toPass();
+        }).toPass(RETRY);
     });
 
     test("opens the popup without console errors", async ({ popupPage, mockApi }) => {
         mockApi.setStream(GLOBAL_ALL, []);
         const errors = [];
 
-        const page = await popupPage();
-        page.on("pageerror", error => errors.push(error.message));
+        // Registered before goto(), so errors thrown during navigation count.
+        const page = await popupPage("", target => {
+            target.on("pageerror", error => errors.push(error.message));
+        });
         await page.waitForLoadState("domcontentloaded");
 
         expect(errors).toEqual([]);
