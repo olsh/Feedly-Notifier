@@ -94,9 +94,18 @@ test.describe("options page", () => {
         await page.locator("#updateInterval").fill("2");
         await page.locator("#save").click();
 
+        /*
+         * Assert the raw field as well as the getter. The default is already 10
+         * and the getter floors at 10, so checking only `updateInterval` would
+         * pass even if the value never reached the background at all.
+         */
         await expect(async () => {
-            const interval = await serviceWorker.evaluate(() => globalThis.appGlobal.options.updateInterval);
-            expect(interval).toBe(10);
+            const stored = await serviceWorker.evaluate(() => ({
+                raw: globalThis.appGlobal.options._updateInterval,
+                clamped: globalThis.appGlobal.options.updateInterval
+            }));
+            expect(stored.raw).toBe(2);
+            expect(stored.clamped).toBe(10);
         }).toPass(RETRY);
     });
 

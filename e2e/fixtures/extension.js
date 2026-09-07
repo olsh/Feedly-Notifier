@@ -84,13 +84,41 @@ const test = base.test.extend({
         fs.rmSync(userDataDir, { recursive: true, force: true });
     },
 
-    /** The extension's service worker, awaited into existence. */
+    /**
+     * The extension's service worker.
+     *
+     * Exposed as a wrapper rather than the raw handle because MV3 recycles
+     * workers: a handle captured at the start of a test goes stale the moment
+     * Chrome restarts the worker, and every later evaluate() on it throws. That
+     * failure is invisible inside a toPass() loop, which just retries until its
+     * budget expires. So re-acquire the live worker on each call and retry once
+     * if it dies mid-evaluate.
+     */
     serviceWorker: async ({ context }, use) => {
-        let [worker] = context.serviceWorkers();
-        if (!worker) {
-            worker = await context.waitForEvent("serviceworker");
-        }
-        await use(worker);
+        const current = async () => {
+            const [worker] = context.serviceWorkers();
+            return worker || context.waitForEvent("serviceworker");
+        };
+
+        const initial = await current();
+        const isGone = (error) => /destroyed|closed|Target|Execution context/i.test(String(error));
+
+        await use({
+            // The extension id is fixed for the profile, so this stays valid.
+            url: () => initial.url(),
+            evaluate: async (fn, arg) => {
+                const worker = await current();
+                try {
+                    return await worker.evaluate(fn, arg);
+                } catch (error) {
+                    if (!isGone(error)) {
+                        throw error;
+                    }
+                    const restarted = await current();
+                    return restarted.evaluate(fn, arg);
+                }
+            }
+        });
     },
 
     extensionId: async ({ serviceWorker }, use) => {
@@ -173,12 +201,20 @@ const test = base.test.extend({
         await use(open);
     },
 
-    /** Opens the options page. */
+    /**
+     * Opens the options page and waits until it has finished populating.
+     *
+     * loadOptions() fills the form asynchronously after DOMContentLoaded, so a
+     * test that types into a control before that completes has its input
+     * overwritten by the stored value. options.js sets `optionsGlobal.loaded`
+     * once all three loaders resolve, which is the signal to wait on.
+     */
     optionsPage: async ({ context, extensionId }, use) => {
         const open = async () => {
             const page = await context.newPage();
             page.on("dialog", dialog => dialog.accept());
             await page.goto(`chrome-extension://${extensionId}/options.html`);
+            await page.waitForFunction(() => window.optionsGlobal && window.optionsGlobal.loaded === true);
             return page;
         };
 
