@@ -48,6 +48,7 @@
     --items-bg-color: #fff;
     --item-bg-color: #fff;
     --item-hover-bg-color: #f5f5f4;
+    --item-menu-hover-bg-color: rgba(0, 0, 0, 0.08);
     --item-not-last-border-bottom: 1px solid #d2d2d2;
     --item-title-color: #444444;
     --item-saved-glyphicon-color: rgb(108, 198, 85);
@@ -113,6 +114,7 @@
     --items-bg-color: var(--color-primary);
     --item-bg-color: var(--color-primary);
     --item-hover-bg-color: var(--color-primary-hover);
+    --item-menu-hover-bg-color: rgba(255, 255, 255, 0.12);
     --item-not-last-border-bottom: 1px solid var(--color-primary-3);
     --item-title-color: var(--color-secondary);
     --item-saved-glyphicon-color: var(--color-feedly-green);
@@ -176,6 +178,7 @@
     --items-bg-color: var(--color-primary);
     --item-bg-color: var(--color-primary);
     --item-hover-bg-color: var(--color-primary-hover);
+    --item-menu-hover-bg-color: rgba(255, 255, 255, 0.12);
     --item-not-last-border-bottom: 1px solid var(--color-primary-3);
     --item-title-color: var(--color-secondary);
     --item-saved-glyphicon-color: var(--color-feedly-green);
@@ -252,6 +255,7 @@ body {
 
 #feedly {
     flex: 0 1 auto;
+    position: relative;
     top: 0;
     right: 0;
     left: 0;
@@ -313,13 +317,20 @@ body {
 }
 
 #popup-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+
     margin-bottom: 10px;
-    text-align: right;
-    white-space: nowrap;
 }
 
 #popup-actions > em {
-    padding: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 5px;
 
     cursor: pointer;
 
@@ -335,7 +346,7 @@ body {
 #popup-actions > em:hover > .arrow-up{
     display: inline-block;
     position: absolute;
-    top: 24px;
+    bottom: 0;
     right: 6px;
 
     width: 0;
@@ -364,13 +375,14 @@ body {
     font-family: sans-serif;
     font-weight: bold;
     line-height: 14px;
+    white-space: nowrap;
 }
 
 #popup-actions > em:hover > span {
     display: inline-block;
 
-    position: fixed;
-    top: 40px;
+    position: absolute;
+    top: 100%;
     right: 20px;
     z-index: 1;
 
@@ -457,6 +469,11 @@ body {
 }
 
 .item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 8px;
+
     padding: 3px 10px;
 
     /* Workaround for https://github.com/olsh/w-Notifier/issues/73#issuecomment-292728526 */
@@ -475,14 +492,10 @@ body {
     padding-bottom: 10px;
 }
 
-.article-title,
-.blog-title {
-    width: calc(100% - 45px);
-}
-
-.tabs .article-title,
-.tabs .blog-title {
-    width: calc(100% - 55px);
+/* The title and the action menu share the first row; everything else spans it. */
+.blog-title,
+.item .content {
+    grid-column: 1 / -1;
 }
 
 .title {
@@ -500,27 +513,29 @@ body {
 }
 
 .article-menu {
-    float: right;
+    display: flex;
+    gap: 6px;
 
-    vertical-align: middle;
     font-size: 12px;
 }
 
 .article-menu > * {
-    height: 14px;
-    width: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    vertical-align: middle;
-    line-height: 14px;
+    height: 24px;
+    width: 24px;
+
+    border-radius: 4px;
 }
 
-.article-menu,
-.article-title {
-    display: inline-block;
+.article-menu > *:hover {
+    background-color: var(--item-menu-hover-bg-color);
 }
 
 .tabs .save-feed {
-    display: inline-block;
+    display: inline-flex;
 }
 
 .save-feed {
