@@ -15,7 +15,7 @@ const SUBSCRIPTIONS = [
 
 /** Builds a single Feedly stream item, overridable field by field. */
 function item(overrides = {}) {
-    return Object.assign({
+    return {
         id: "item-1",
         title: "A post title",
         origin: {
@@ -28,8 +28,9 @@ function item(overrides = {}) {
         engagementRate: 1.5,
         alternate: [{ href: "https://blog-a.com/posts/1" }],
         categories: [{ id: "user/u1/category/Tech", label: "Tech" }],
-        summary: { content: "<p>Summary text</p>", direction: "ltr" }
-    }, overrides);
+        summary: { content: "<p>Summary text</p>", direction: "ltr" },
+        ...overrides
+    };
 }
 
 /** Wraps items in the stream contents envelope. */

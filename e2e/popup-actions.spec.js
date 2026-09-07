@@ -91,7 +91,7 @@ test.describe("popup actions", () => {
             const page = await popupPage();
             await expect(page.locator("#feed .item")).toHaveCount(1);
 
-            await page.locator("#tabs-checkbox").check({ force: true });
+            await page.locator("#tabs-checkbox").check();
 
             await expect(page.locator("#feed-saved")).toBeVisible();
             await expect(page.locator("#feed-saved .item")).toHaveCount(1);

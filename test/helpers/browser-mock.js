@@ -22,7 +22,7 @@ function createEvent(name, registry) {
             }
         },
         hasListener(fn) {
-            return listeners.indexOf(fn) !== -1;
+            return listeners.includes(fn);
         },
         /* Test helper: invoke every registered listener and await them all. */
         async trigger(...args) {
@@ -36,19 +36,19 @@ function createEvent(name, registry) {
  * core.js actually calls: `get(null)`, `get("key")` and `get(["a", "b"])`.
  */
 function createStorageArea(initial) {
-    const data = Object.assign({}, initial);
+    const data = { ...initial };
 
     return {
         /* Exposed so tests can seed or assert without going through promises. */
         _data: data,
         async get(keys) {
             if (keys === null || keys === undefined) {
-                return Object.assign({}, data);
+                return { ...data };
             }
             const wanted = Array.isArray(keys) ? keys : [keys];
             const result = {};
             for (const key of wanted) {
-                if (Object.prototype.hasOwnProperty.call(data, key)) {
+                if (Object.hasOwn(data, key)) {
                     result[key] = data[key];
                 }
             }
@@ -115,9 +115,9 @@ function createBrowserMock(overrides) {
         },
 
         storage: {
-            local: createStorageArea(options.storage && options.storage.local),
-            sync: createStorageArea(options.storage && options.storage.sync),
-            session: createStorageArea(options.storage && options.storage.session),
+            local: createStorageArea(options.storage?.local),
+            sync: createStorageArea(options.storage?.sync),
+            session: createStorageArea(options.storage?.session),
             onChanged: createEvent("storage.onChanged", events)
         },
 

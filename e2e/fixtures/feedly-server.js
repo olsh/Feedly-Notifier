@@ -13,11 +13,12 @@ const http = require("node:http");
  * manifest is used exactly as released.
  */
 class FeedlyMockServer {
+    server = null;
+    port = null;
+    /** Every request the extension made, for assertions. */
+    requests = [];
+
     constructor() {
-        this.server = null;
-        this.port = null;
-        /** Every request the extension made, for assertions. */
-        this.requests = [];
         this.reset();
     }
 
@@ -78,7 +79,10 @@ class FeedlyMockServer {
     }
 
     handle(request, response) {
-        const url = new URL(request.url, "http://cloud.feedly.com");
+        // Base for parsing only. Plain HTTP is deliberate: this mock stands in
+        // for the API over the loopback interface, avoiding a self-signed
+        // certificate. It never carries real traffic. NOSONAR
+        const url = new URL(request.url, "http://cloud.feedly.com"); // NOSONAR
         const chunks = [];
 
         request.on("data", chunk => chunks.push(chunk));

@@ -29,7 +29,9 @@ function pointBuildAtMockServer() {
     }
 
     const source = fs.readFileSync(apiFile, "utf8");
-    const rewritten = source.replace("https://cloud.feedly.com/v3/", "http://cloud.feedly.com/v3/");
+    // Downgrading to plain HTTP is the point: it lets the loopback mock answer
+    // without a self-signed certificate. Test builds only, never shipped.
+    const rewritten = source.replace("https://cloud.feedly.com/v3/", "http://cloud.feedly.com/v3/"); // NOSONAR
 
     if (rewritten !== source) {
         fs.writeFileSync(apiFile, rewritten);

@@ -54,7 +54,9 @@ test.describe("extension loading", () => {
 
         await signIn();
 
-        await expect.poll(() => mockApi.requestsFor("/contents").length).toBeGreaterThan(0);
+        await expect(async () => {
+            expect(mockApi.requestsFor("/contents").length).toBeGreaterThan(0);
+        }).toPass();
     });
 
     test("opens the popup without console errors", async ({ popupPage, mockApi }) => {

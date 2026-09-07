@@ -47,10 +47,12 @@ jobs:
                   node-version: "22.x"
                   cache: "npm"
 
-            # `npm ci` for reproducible installs, and the locally installed
-            # Playwright binary rather than `npx`, which would be free to fetch
-            # an unpinned package on demand.
-            - run: npm ci
+            # `npm ci --ignore-scripts` for a reproducible install that runs no
+            # dependency lifecycle scripts, and the locally installed Playwright
+            # binary rather than `npx`, which would be free to fetch an unpinned
+            # package on demand. Browsers are installed by the next step, so
+            # nothing here depends on a postinstall hook.
+            - run: npm ci --ignore-scripts
             - run: ./node_modules/.bin/playwright install --with-deps chromium
             - run: npm run build:e2e
             - run: npm run test:e2e

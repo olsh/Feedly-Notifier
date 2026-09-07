@@ -10,7 +10,8 @@ function item(id, overrides = {}) {
         id,
         title: `Article ${id}`,
         origin: {
-            htmlUrl: "http://example-blog.com",
+            // Plain HTTP so the loopback mock can serve the article tabs. NOSONAR
+            htmlUrl: "http://example-blog.com", // NOSONAR
             streamId: "feed/http://example-blog.com/rss",
             title: "Example Blog"
         },

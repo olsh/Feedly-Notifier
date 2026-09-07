@@ -64,7 +64,9 @@ test.describe("options page", () => {
 
         await page.locator("#save").click();
 
-        await expect.poll(() => dialogs.length).toBe(1);
+        await expect(async () => {
+            expect(dialogs).toHaveLength(1);
+        }).toPass();
     });
 
     test("applies the new update interval to the background alarms", async ({ signIn, optionsPage, serviceWorker }) => {
@@ -74,12 +76,13 @@ test.describe("options page", () => {
         await page.locator("#updateInterval").fill("60");
         await page.locator("#save").click();
 
-        await expect.poll(
-            () => serviceWorker.evaluate(async () => {
+        await expect(async () => {
+            const period = await serviceWorker.evaluate(async () => {
                 const alarm = await chrome.alarms.get("updateFeeds");
                 return alarm ? alarm.periodInMinutes : null;
-            })
-        ).toBe(60);
+            });
+            expect(period).toBe(60);
+        }).toPass();
     });
 
     test("clamps an update interval below the minimum", async ({ signIn, optionsPage, serviceWorker }) => {
@@ -91,9 +94,10 @@ test.describe("options page", () => {
         await page.locator("#updateInterval").fill("2");
         await page.locator("#save").click();
 
-        await expect
-            .poll(() => serviceWorker.evaluate(() => globalThis.appGlobal.options.updateInterval))
-            .toBe(10);
+        await expect(async () => {
+            const interval = await serviceWorker.evaluate(() => globalThis.appGlobal.options.updateInterval);
+            expect(interval).toBe(10);
+        }).toPass();
     });
 
     test("lists the user's categories as filter options", async ({ signIn, optionsPage }) => {
@@ -113,9 +117,12 @@ test.describe("options page", () => {
         await page.locator("#maxNumberOfFeeds").fill("33");
         await page.locator("#save").click();
 
-        await expect
-            .poll(() => serviceWorker.evaluate(async () => (await chrome.storage.local.get("maxNumberOfFeeds")).maxNumberOfFeeds))
-            .toBe(33);
+        await expect(async () => {
+            const stored = await serviceWorker.evaluate(
+                async () => (await chrome.storage.local.get("maxNumberOfFeeds")).maxNumberOfFeeds
+            );
+            expect(stored).toBe(33);
+        }).toPass();
     });
 
     test("signs the user out", async ({ signIn, optionsPage, serviceWorker }) => {

@@ -16,8 +16,11 @@
  * directive that this simplified parser cannot handle fails loudly.
  */
 
-const IF_DIRECTIVE = /^\s*(?:\/\/|<!--)\s*@if\s+BROWSER\s*(!?)=\s*'([^']*)'\s*(?:-->)?\s*$/;
-const ENDIF_DIRECTIVE = /^\s*(?:\/\/|<!--)\s*@endif\s*(?:-->)?\s*$/;
+// The trailing `-->` is folded inside its optional group rather than sitting
+// between two `\s*` runs, so there is no ambiguity for the engine to backtrack
+// over and matching stays linear.
+const IF_DIRECTIVE = /^\s*(?:\/\/|<!--)\s*@if\s+BROWSER\s*(!?)=\s*'([^']*)'\s*(?:-->\s*)?$/;
+const ENDIF_DIRECTIVE = /^\s*(?:\/\/|<!--)\s*@endif\s*(?:-->\s*)?$/;
 
 /**
  * @param {string} source - file contents.

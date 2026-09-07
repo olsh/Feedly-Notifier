@@ -11,12 +11,9 @@ test.describe("toolbar badge", () => {
         mockApi.setStream(GLOBAL_ALL, []);
     });
 
-    /** Waits for the badge to settle on a value. */
-    async function expectBadge(serviceWorker, expected) {
-        await expect.poll(
-            () => serviceWorker.evaluate(() => chrome.action.getBadgeText({})),
-            { message: `badge never became ${JSON.stringify(expected)}` }
-        ).toBe(expected);
+    /** Reads the toolbar badge out of the background worker. */
+    function badgeText(serviceWorker) {
+        return serviceWorker.evaluate(() => chrome.action.getBadgeText({}));
     }
 
     test("shows the unread count from the api", async ({ mockApi, signIn, serviceWorker }) => {
@@ -24,7 +21,9 @@ test.describe("toolbar badge", () => {
 
         await signIn();
 
-        await expectBadge(serviceWorker, "42");
+        await expect(async () => {
+            expect(await badgeText(serviceWorker)).toBe("42");
+        }).toPass();
     });
 
     test("abbreviates counts above 999", async ({ mockApi, signIn, serviceWorker }) => {
@@ -32,7 +31,9 @@ test.describe("toolbar badge", () => {
 
         await signIn();
 
-        await expectBadge(serviceWorker, "12k+");
+        await expect(async () => {
+            expect(await badgeText(serviceWorker)).toBe("12k+");
+        }).toPass();
     });
 
     test("stays empty when there is nothing unread", async ({ mockApi, signIn, serviceWorker }) => {
@@ -40,7 +41,9 @@ test.describe("toolbar badge", () => {
 
         await signIn();
 
-        await expectBadge(serviceWorker, "");
+        await expect(async () => {
+            expect(await badgeText(serviceWorker)).toBe("");
+        }).toPass();
     });
 
     test("stays empty when the counter is switched off", async ({ mockApi, signIn, serviceWorker }) => {
@@ -48,7 +51,9 @@ test.describe("toolbar badge", () => {
 
         await signIn({ showCounter: false });
 
-        await expectBadge(serviceWorker, "");
+        await expect(async () => {
+            expect(await badgeText(serviceWorker)).toBe("");
+        }).toPass();
     });
 
     test("ignores counts for streams the user is not looking at", async ({ mockApi, signIn, serviceWorker }) => {
@@ -59,7 +64,9 @@ test.describe("toolbar badge", () => {
 
         await signIn();
 
-        await expectBadge(serviceWorker, "7");
+        await expect(async () => {
+            expect(await badgeText(serviceWorker)).toBe("7");
+        }).toPass();
     });
 
     test("recovers by refreshing the token after a 401", async ({ mockApi, signIn, serviceWorker }) => {
@@ -69,9 +76,9 @@ test.describe("toolbar badge", () => {
         await signIn();
 
         // The wrapper refreshes the token and retries the original request.
-        await expect
-            .poll(() => mockApi.requestsTo("/v3/auth/token", "POST").length)
-            .toBeGreaterThan(0);
-        await expectBadge(serviceWorker, "5");
+        await expect(async () => {
+            expect(mockApi.requestsTo("/v3/auth/token", "POST").length).toBeGreaterThan(0);
+            expect(await badgeText(serviceWorker)).toBe("5");
+        }).toPass();
     });
 });
