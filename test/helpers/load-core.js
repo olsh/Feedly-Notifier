@@ -23,6 +23,10 @@ function compileScript(name, targetBrowser) {
         const source = readFileSync(filename, "utf8");
         // Line-preserving, so stack traces and coverage point at the real file.
         const processed = targetBrowser ? preprocessPreservingLines(source, targetBrowser) : source;
+        // NOSONAR - compiling this repository's own src/scripts files is the
+        // entire purpose of the loader; the input is a checked-in source file,
+        // never user input, and it runs in an isolated context under the test
+        // runner only.
         scriptCache.set(key, new Script(processed, { filename }));
     }
     return scriptCache.get(key);
@@ -34,7 +38,7 @@ function compileScript(name, targetBrowser) {
  * follow-up script in the *same* context can still see them, which is how
  * `FeedlyApiClient` gets published to the test.
  */
-const EXPOSE_LEXICALS = new Script(
+const EXPOSE_LEXICALS = new Script( // NOSONAR - fixed literal, no dynamic input
     "globalThis.FeedlyApiClient = FeedlyApiClient;",
     { filename: "expose-lexicals.js" }
 );
