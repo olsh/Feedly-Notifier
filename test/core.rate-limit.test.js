@@ -112,6 +112,28 @@ describe("rate limit cooldown", () => {
         expect(client.calls).toHaveLength(1);
     });
 
+    /*
+     * The cooldown is there to stop polling, and the update cycle already stops before
+     * the wrapper. Refusing here would only block the action the user just asked for,
+     * which the popup applies optimistically and never reports as failed.
+     */
+    it("still attempts a write the user asked for", async () => {
+        await trip({ "Retry-After": "600" });
+
+        const calls = [];
+        appGlobal.feedlyApiClient = {
+            accessToken: "token",
+            request: async (method, settings) => {
+                calls.push({ method, verb: settings.method });
+                return {};
+            }
+        };
+
+        await ctx.markAsRead(["a"]);
+
+        expect(calls).toEqual([{ method: "markers", verb: "POST" }]);
+    });
+
     it("resumes once the deadline has passed", async () => {
         await trip({ "Retry-After": "600" });
 

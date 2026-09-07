@@ -214,8 +214,7 @@ browser.storage.onChanged.addListener(async function (changes) {
 
 function containsOptionChanges(changes) {
     for (let key in changes) {
-        // Not Object.hasOwn, which needs Chrome 93 and the manifest declares 88
-        if (Object.prototype.hasOwnProperty.call(appGlobal.options, key)) {
+        if (Object.hasOwn(appGlobal.options, key)) {
             return true;
         }
     }
@@ -1407,11 +1406,18 @@ async function apiRequestWrapper(methodName, settings) {
         throw new Error("No access token available");
     }
 
-    if (isRateLimited()) {
+    settings = settings || {};
+
+    /*
+     * Only reads are held back. They are the polling traffic that spends the quota, and
+     * updateCounter, updateFeeds and updateSavedFeeds all stop before reaching this. A
+     * write is something the user just asked for, so refusing it without trying would
+     * make the extension look broken for the whole cooldown -- and if feedly really is
+     * still refusing, the 429 that comes back refreshes the deadline anyway.
+     */
+    if ((!settings.method || settings.method === "GET") && isRateLimited()) {
         throw createRateLimitError();
     }
-
-    settings = settings || {};
 
     try {
         const response = await appGlobal.feedlyApiClient.request(methodName, settings);
