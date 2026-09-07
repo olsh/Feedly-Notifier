@@ -161,6 +161,11 @@ describe("manifest.json", () => {
  * suite only ever compiles the chrome target, because loadCore and
  * loadBackground default `targetBrowser` to "chrome". So this is the only check
  * that the opera and firefox packages contain valid JS.
+ *
+ * Unlike every other suite, this one runs the real `preprocess` package rather
+ * than the line-preserving helper: the point is to parse the exact bytes the
+ * zip would carry. The two are pinned together above, so this cannot drift, and
+ * a failure here means the shipped file is broken rather than the stand-in.
  */
 describe("preprocessed scripts", () => {
     it("found the shipped scripts", () => {
@@ -170,7 +175,8 @@ describe("preprocessed scripts", () => {
     describe.each(BROWSERS)("for %s", (targetBrowser) => {
         it.each(SHIPPED_SCRIPTS)("compiles %s", (name) => {
             const filename = path.join(scriptsDir, name);
-            const processed = preprocessPreservingLines(readFileSync(filename, "utf8"), targetBrowser);
+            const source = readFileSync(filename, "utf8");
+            const processed = preprocess(source, { BROWSER: targetBrowser }, { type: "js" });
 
             /*
              * Compiling this repository's own source: checked-in input, never
