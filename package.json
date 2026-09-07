@@ -4,6 +4,8 @@
   "devDependencies": {
     "@eslint/compat": "^2.1.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
+    "@vitest/coverage-v8": "^5.0.0",
     "eslint": "^10.9.1",
     "eslint-plugin-jquery": "^1.5.1",
     "globals": "^17.11.0",
@@ -12,7 +14,10 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-preprocess": "^5.1.0",
     "grunt-string-replace": "^1.3.3",
-    "grunt-zip": "^1.0.0"
+    "grunt-zip": "^1.0.0",
+    "jsdom": "^30.0.1",
+    "preprocess": "^3.2.0",
+    "vitest": "^5.0.0"
   },
   "repository": {
     "type": "git",
@@ -34,6 +39,12 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "build:e2e": "grunt clean:pre-build default --browser=chrome --clientId=e2e-client-id --clientSecret=e2e-client-secret",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed"
   }
 }

@@ -18,15 +18,59 @@ jobs:
             contents: read
 
         steps:
+            # No step here pushes or fetches, so the job has no use for a
+            # persisted token in .git/config.
             - uses: actions/checkout@v7
+              with:
+                  persist-credentials: false
             - uses: actions/setup-node@v7
               with:
-                  node-version: "20.x"
+                  node-version: "22.x"
                   cache: "npm"
 
             - run: npm install
             - run: npm run lint
+            - run: npm test
             - run: npx grunt build --clientId=${{ secrets.FEEDLY_CLIENT_ID }} --clientSecret=${{ secrets.FEEDLY_CLIENT_SECRET }} --browser=${{ matrix.browser }}
+
+    # Separate from the browser matrix: the extension only side-loads into
+    # Chromium, so running this three times would add no coverage. The build
+    # uses dummy credentials rather than the repository secrets, because the
+    # suite never exercises the real OAuth flow -- which also lets it run on
+    # pull requests from forks.
+    e2e:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
+        steps:
+            # No step here pushes or fetches, so the job has no use for a
+            # persisted token in .git/config.
+            - uses: actions/checkout@v7
+              with:
+                  persist-credentials: false
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: "22.x"
+                  cache: "npm"
+
+            # `npm ci --ignore-scripts` for a reproducible install that runs no
+            # dependency lifecycle scripts, and the locally installed Playwright
+            # binary rather than `npx`, which would be free to fetch an unpinned
+            # package on demand. Browsers are installed by the next step, so
+            # nothing here depends on a postinstall hook.
+            - run: npm ci --ignore-scripts
+            - run: ./node_modules/.bin/playwright install --with-deps chromium
+            - run: npm run build:e2e
+            - run: npm run test:e2e
+
+            - uses: actions/upload-artifact@v4
+              if: ${{ failure() }}
+              with:
+                  name: playwright-report
+                  path: playwright-report/
+                  retention-days: 7
 
     automerge:
         if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]'

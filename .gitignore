@@ -10,3 +10,9 @@ keys.json
 CLAUDE.md
 .claude/
 AGENTS.md
+
+# Test output
+test-results
+playwright-report
+blob-report
+coverage
