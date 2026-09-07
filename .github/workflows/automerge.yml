@@ -38,8 +38,10 @@ jobs:
             #
             # Dummy credentials, like the e2e build: string-replace substitutes
             # whatever it is handed, so the real secrets would prove nothing here,
-            # and this way the job also runs on pull requests from forks.
-            - run: npx grunt build --clientId=ci-client-id --clientSecret=ci-client-secret --browser=firefox
+            # and this way the job also runs on pull requests from forks. The
+            # locally installed grunt rather than `npx`, which would be free to
+            # fetch an unpinned package on demand and run its lifecycle scripts.
+            - run: ./node_modules/.bin/grunt build --clientId=ci-client-id --clientSecret=ci-client-secret --browser=firefox
 
     # Kept separate from `test`: this job needs a Playwright browser download and
     # a different build, and it is worth seeing which of the two failed. The build
