@@ -265,7 +265,7 @@ browser.webRequest.onCompleted.addListener(function (details) {
     }
 
     // Only a subscriptions change can invalidate the memo, marking as read cannot.
-    if (details.url && details.url.includes("/v3/subscriptions")) {
+    if (details.url?.includes("/v3/subscriptions")) {
         appGlobal.getUserSubscriptionsPromise = null;
     }
 
@@ -1430,19 +1430,24 @@ async function apiRequestWrapper(methodName, settings) {
 
         await refreshAccessToken();
 
-        /*
-         * The retry deliberately bypasses the wrapper, so it cannot loop, but it still
-         * needs the cooldown: a token can expire while the account is already close to
-         * its quota, which would otherwise leave the 429 unnoticed.
-         */
-        try {
-            return await appGlobal.feedlyApiClient.request(methodName, settings);
-        } catch (retryResponse) {
-            if (retryResponse?.status === 429) {
-                await startRateLimitCooldown(retryResponse);
-            }
-            throw retryResponse;
+        return await retryAfterRefresh(methodName, settings);
+    }
+}
+
+/*
+ * The retry deliberately bypasses the wrapper, so it cannot loop, but it still needs the
+ * cooldown: a token can expire while the account is already close to its quota, which
+ * would otherwise leave the 429 unnoticed.
+ */
+async function retryAfterRefresh(methodName, settings) {
+    try {
+        return await appGlobal.feedlyApiClient.request(methodName, settings);
+    } catch (response) {
+        if (response?.status === 429) {
+            await startRateLimitCooldown(response);
         }
+
+        throw response;
     }
 }
 
