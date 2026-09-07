@@ -8,10 +8,6 @@ permissions: {}
 
 jobs:
     test:
-        strategy:
-            fail-fast: false
-            matrix:
-                browser: ["chrome", "opera", "firefox"]
         runs-on: ubuntu-latest
 
         permissions:
@@ -31,10 +27,24 @@ jobs:
             - run: npm install
             - run: npm run lint
             - run: npm test
-            - run: npx grunt build --clientId=${{ secrets.FEEDLY_CLIENT_ID }} --clientSecret=${{ secrets.FEEDLY_CLIENT_SECRET }} --browser=${{ matrix.browser }}
 
-    # Separate from the browser matrix: the extension only side-loads into
-    # Chromium, so running this three times would add no coverage. The build
+            # One build proves the copy/preprocess/zip pipeline runs. Building each
+            # browser in turn adds nothing: the only per-browser failure mode is an
+            # unbalanced @if/@endif, and `preprocess` scans every directive whatever
+            # BROWSER it is resolving, so it throws for all three alike. firefox rather
+            # than chrome because the e2e job already builds chrome -- and through the
+            # `default` task, so it never zips. What each target actually resolves to is
+            # validated in test/preprocess.test.js.
+            #
+            # Dummy credentials, like the e2e build: string-replace substitutes
+            # whatever it is handed, so the real secrets would prove nothing here,
+            # and this way the job also runs on pull requests from forks. The
+            # locally installed grunt rather than `npx`, which would be free to
+            # fetch an unpinned package on demand and run its lifecycle scripts.
+            - run: ./node_modules/.bin/grunt build --clientId=ci-client-id --clientSecret=ci-client-secret --browser=firefox
+
+    # Kept separate from `test`: this job needs a Playwright browser download and
+    # a different build, and it is worth seeing which of the two failed. The build
     # uses dummy credentials rather than the repository secrets, because the
     # suite never exercises the real OAuth flow -- which also lets it run on
     # pull requests from forks.

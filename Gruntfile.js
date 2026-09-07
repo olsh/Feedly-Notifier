@@ -70,16 +70,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        uglify: {
-            dist: {
-                files: {
-                    "<%= pkg.buildPath %>/scripts/core.js": ["<%= pkg.buildPath %>/scripts/core.js"],
-                    "<%= pkg.buildPath %>/scripts/feedly.api.js": ["<%= pkg.buildPath %>/scripts/feedly.api.js"],
-                    "<%= pkg.buildPath %>/scripts/options.js": ["<%= pkg.buildPath %>/scripts/options.js"],
-                    "<%= pkg.buildPath %>/scripts/popup.js": ["<%= pkg.buildPath %>/scripts/popup.js"]
-                }
-            }
-        },
         zip: {
             build: {
                 cwd: "<%= pkg.buildPath %>/",
