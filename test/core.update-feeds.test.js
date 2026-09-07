@@ -256,3 +256,109 @@ describe("getFeeds", () => {
         expect(requests).toBeGreaterThan(0);
     });
 });
+
+/**
+ * A sidebar or side panel stays open for hours, so the worker tells it when the cache
+ * moved on (issue #297). Only when the articles actually changed: getFeeds() updates
+ * whenever the cache is empty, so an unconditional message would have a panel with
+ * nothing unread triggering an update on every round.
+ */
+describe("feedsUpdated broadcast", () => {
+    let ctx;
+    let browser;
+    let appGlobal;
+
+    /** Every message the worker broadcast, ignoring anything else it sent. */
+    function broadcasts() {
+        return browser._calls.messagesSent.filter(message => message.type === "feedsUpdated");
+    }
+
+    function stubGlobalStream(items) {
+        appGlobal.options.accessToken = "token";
+        appGlobal.feedlyApiClient = {
+            accessToken: "token",
+            request: async (method) => {
+                if (method === "subscriptions") {
+                    return [];
+                }
+                return { items };
+            }
+        };
+    }
+
+    beforeEach(() => {
+        ({ ctx, browser, appGlobal } = loadCore());
+        appGlobal.options.feedlyUserId = "u1";
+    });
+
+    it("announces articles arriving", async () => {
+        stubGlobalStream([entry("a")]);
+
+        await ctx.updateFeeds(true);
+
+        expect(broadcasts()).toHaveLength(1);
+    });
+
+    it("stays quiet when the same articles come back", async () => {
+        stubGlobalStream([entry("a")]);
+        await ctx.updateFeeds(true);
+        browser._calls.messagesSent.length = 0;
+
+        await ctx.updateFeeds(true);
+
+        expect(broadcasts()).toEqual([]);
+    });
+
+    /* The loop this guards against: an empty cache makes getFeeds() update, so a message
+       on every update would have the panel asking for another one straight away. */
+    it("stays quiet when there was nothing unread and still is not", async () => {
+        stubGlobalStream([]);
+
+        await ctx.updateFeeds(true);
+
+        expect(broadcasts()).toEqual([]);
+    });
+
+    it("announces the last article being read", async () => {
+        stubGlobalStream([entry("a")]);
+        await ctx.updateFeeds(true);
+        browser._calls.messagesSent.length = 0;
+        stubGlobalStream([]);
+
+        await ctx.updateFeeds(true);
+
+        expect(broadcasts()).toHaveLength(1);
+    });
+
+    it("stays quiet when the update fails", async () => {
+        appGlobal.options.accessToken = "token";
+        appGlobal.feedlyApiClient = {
+            accessToken: "token",
+            request: async () => {
+                throw new Error("network down");
+            }
+        };
+
+        await ctx.updateFeeds(true);
+
+        expect(broadcasts()).toEqual([]);
+    });
+
+    it("announces saved articles changing", async () => {
+        stubGlobalStream([entry("saved")]);
+
+        await ctx.updateSavedFeeds();
+
+        expect(broadcasts()).toHaveLength(1);
+    });
+
+    it("stays quiet when the saved articles are unchanged", async () => {
+        stubGlobalStream([entry("saved")]);
+        await ctx.updateSavedFeeds();
+        browser._calls.messagesSent.length = 0;
+
+        await ctx.updateSavedFeeds();
+
+        expect(broadcasts()).toEqual([]);
+    });
+});

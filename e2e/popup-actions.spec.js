@@ -30,6 +30,11 @@ test.describe("popup actions", () => {
         await signIn();
 
         const page = await popupPage();
+        /* Unlike the per-article buttons, #mark-all-read is in the static markup and is
+           already clickable when goto() returns, before the popup has rendered anything.
+           Clicking it then marks the empty list, so wait for the articles first. */
+        await expect(page.locator("#feed .item")).toHaveCount(3);
+
         await page.locator("#mark-all-read").click();
 
         await expect.poll(() => mockApi.requestsTo("/v3/markers", "POST").length).toBeGreaterThan(0);

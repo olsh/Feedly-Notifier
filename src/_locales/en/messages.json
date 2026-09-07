@@ -30,7 +30,7 @@
     "message": "Enable background mode"
   },
   "EnableSidePanel": {
-    "message": "Enable side panel (same as popup)"
+    "message": "Open the side panel instead of the popup"
   },
   "EngagementFilterLimit": {
     "message": "Mark articles as read if engagement less than"

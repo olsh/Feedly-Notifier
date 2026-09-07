@@ -75,7 +75,7 @@
     ],
 
     // @if BROWSER!='firefox'
-    "minimum_chrome_version": "114",
+    "minimum_chrome_version": "116",
     // @endif
     // @if BROWSER='firefox'
     "applications": {

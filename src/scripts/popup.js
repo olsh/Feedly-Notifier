@@ -75,6 +75,40 @@ document.addEventListener("DOMContentLoaded", async function () {
     executeAsync(renderFeeds);
 });
 
+//Deliberately not async: this listener also sees the messages the options page sends to
+//the worker, and any promise returned from here would race with the worker's own reply.
+//Returning undefined leaves those messages to it.
+browser.runtime.onMessage.addListener(function (message) {
+    if (message?.type === "feedsUpdated") {
+        renderFromCache();
+    }
+
+    return undefined;
+});
+
+/* Follows the background's scheduled updates while the page stays open. Only the sidebar
+   and the side panel need it: the popup is opened, read and closed again, whereas a pinned
+   panel would otherwise go on showing the articles that were current when it was pinned
+   (issue #297). Renders from the cache the background has just filled, spending a request
+   of our own here would undo the quota protection. */
+function renderFromCache() {
+    if (!popupGlobal.isSidebar) {
+        return;
+    }
+
+    //Re-rendering collapses whatever the user has open, so a page being read is left as
+    //it is. Not a signal when expandFeeds expands every article by itself.
+    if (!options.expandFeeds && $(".content").is(":visible")) {
+        return;
+    }
+
+    if (options.abilitySaveFeeds && $("#tabs-checkbox").is(":checked")) {
+        renderSavedFeeds(false, true);
+    } else {
+        renderFeeds(false, true);
+    }
+}
+
 $("#login").on("click", async function () {
     await bg.send("getAccessToken");
     renderFeeds();
@@ -265,10 +299,11 @@ function executeAsync(func) {
     }, timeout);
 }
 
-async function renderFeeds(forceUpdate) {
-    showLoader();
-    const wantForce = (options.forceUpdateFeeds || forceUpdate);
-    const result = await bg.send("getFeeds", { forceUpdate: wantForce });
+async function renderFeeds(forceUpdate = options.forceUpdateFeeds, isSilent = false) {
+    if (!isSilent) {
+        showLoader();
+    }
+    const result = await bg.send("getFeeds", { forceUpdate: Boolean(forceUpdate) });
     const feeds = result && result.feeds || [];
     const isLoggedIn = result && result.isLoggedIn;
     popupGlobal.feeds = feeds;
@@ -299,10 +334,11 @@ async function renderFeeds(forceUpdate) {
     }
 }
 
-async function renderSavedFeeds(forceUpdate) {
-    showLoader();
-    const wantForce = (options.forceUpdateFeeds || forceUpdate);
-    const result = await bg.send("getSavedFeeds", { forceUpdate: wantForce });
+async function renderSavedFeeds(forceUpdate = options.forceUpdateFeeds, isSilent = false) {
+    if (!isSilent) {
+        showLoader();
+    }
+    const result = await bg.send("getSavedFeeds", { forceUpdate: Boolean(forceUpdate) });
     const feeds = result && result.feeds || [];
     const isLoggedIn = result && result.isLoggedIn;
     popupGlobal.savedFeeds = feeds;
