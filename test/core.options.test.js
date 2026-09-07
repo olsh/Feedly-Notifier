@@ -110,7 +110,7 @@ describe("options", () => {
         });
 
         /*
-         * KNOWN BEHAVIOUR (core.js:1119): booleans go through Boolean(), so any
+         * KNOWN BEHAVIOUR (core.js:1354): booleans go through Boolean(), so any
          * non-empty string is true. A legacy record holding the string "false"
          * therefore reads back as true.
          */

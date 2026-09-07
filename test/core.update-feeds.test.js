@@ -87,7 +87,7 @@ describe("updateFeeds", () => {
 
     /*
      * The dedup filter drops an entry when a later copy exists, so the *last*
-     * occurrence survives (core.js:665-672). Which stream's copy wins matters,
+     * occurrence survives (core.js:815-822). Which stream's copy wins matters,
      * because the metadata can differ between them.
      */
     it("keeps the last copy of an item present in several streams", async () => {

@@ -104,7 +104,10 @@ var appGlobal = {
         "showCounter",
         "resetCounterOnClick",
         "grayIconColorIfNoUnread",
-        "sortBy"
+        "sortBy",
+        // Both decide whether startSchedule creates the updateFeeds alarm
+        "showDesktopNotifications",
+        "playSound"
     ],
     cachedFeeds: [],
     cachedSavedFeeds: [],
@@ -114,6 +117,13 @@ var appGlobal = {
     clientId: "",
     clientSecret: "",
     getUserSubscriptionsPromise: null,
+    refreshAccessTokenPromise: null,
+    rateLimitedUntil: 0,
+    /* The statuses the token endpoint uses to say that the grant will never be accepted
+       again: 400 invalid_grant for an expired or revoked refresh token, 401 and 403 for
+       one that no longer belongs to this client. Anything else, 429 and 5xx included, is
+       temporary and must not sign the user out. */
+    deadRefreshTokenStatuses: [400, 401, 403],
     environment: {
         os: ""
     },
@@ -143,6 +153,17 @@ var appGlobal = {
     }
 };
 
+/* The feedly website marks entries as read one request at a time, so without a window
+   here reading a page of articles costs a full update per article. Kept below the
+   ~30 seconds a service worker stays alive after an event, so the trailing run fires. */
+const websiteUpdateWindowMs = 20000;
+
+/* How long to stop talking to feedly after it answers 429. The response usually says
+   when the quota resets, the rest is a guard against a missing or absurd value. */
+const rateLimitDefaultCooldownMs = 15 * 60 * 1000;
+const rateLimitMinCooldownMs = 60 * 1000;
+const rateLimitMaxCooldownMs = 60 * 60 * 1000;
+
 // #Event handlers
 browser.runtime.onInstalled.addListener(async function () {
     await readOptions();
@@ -156,21 +177,72 @@ browser.runtime.onStartup.addListener(async function () {
     await initialize();
 });
 
-browser.storage.onChanged.addListener(async function (changes, areaName) {
-    let shouldReinitialize = false;
+browser.storage.onChanged.addListener(async function (changes) {
+    // The feed caches, the notification watermark and the rate limit deadline share these
+    // storage areas and are written by this worker on every update cycle. Re-reading the
+    // options for them is pure noise.
+    if (!containsOptionChanges(changes)) {
+        return;
+    }
 
-    for (let optionName in changes) {
-        if (appGlobal.criticalOptionNames.indexOf(optionName) !== -1) {
-            shouldReinitialize = true;
-            break;
+    let previousToken = appGlobal.options.accessToken;
+    let snapshot = snapshotCriticalOptions();
+
+    await readOptions();
+
+    let changedOptions = getChangedCriticalOptions(snapshot);
+
+    // A write raises the event even when the value did not change, and writeOptions
+    // rewrites every option at once. Comparing the resolved options rather than the
+    // reported change also keeps signing out correct, where the two storage areas are
+    // written one after the other.
+    if (changedOptions.length === 0) {
+        return;
+    }
+
+    // A refreshed access token replaces one working token with another, and the request
+    // that asked for the refresh is already retrying with it. Reinitializing here would
+    // rebuild the schedule and start another update for every single refresh.
+    if (changedOptions.length === 1 && changedOptions[0] === "accessToken"
+        && previousToken && appGlobal.options.accessToken) {
+        appGlobal.feedlyApiClient.accessToken = appGlobal.options.accessToken;
+        return;
+    }
+
+    await initialize();
+});
+
+function containsOptionChanges(changes) {
+    for (let key in changes) {
+        if (Object.hasOwn(appGlobal.options, key)) {
+            return true;
         }
     }
 
-    await readOptions();
-    if (shouldReinitialize) {
-        await initialize();
+    return false;
+}
+
+/* Values are stringified so that an array option such as the filters compares by content
+   rather than by identity. */
+function snapshotCriticalOptions() {
+    let snapshot = {};
+    for (let optionName of appGlobal.criticalOptionNames) {
+        snapshot[optionName] = JSON.stringify(appGlobal.options[optionName]);
     }
-});
+
+    return snapshot;
+}
+
+function getChangedCriticalOptions(snapshot) {
+    let changed = [];
+    for (let optionName of appGlobal.criticalOptionNames) {
+        if (snapshot[optionName] !== JSON.stringify(appGlobal.options[optionName])) {
+            changed.push(optionName);
+        }
+    }
+
+    return changed;
+}
 
 browser.tabs.onRemoved.addListener(function(tabId){
     if (appGlobal.feedTabId && appGlobal.feedTabId === tabId) {
@@ -180,22 +252,101 @@ browser.tabs.onRemoved.addListener(function(tabId){
 });
 
 /* Listener for adding or removing feeds on the feedly website */
-browser.webRequest.onCompleted.addListener(async function (details) {
-    if (details.method === "POST" || details.method === "DELETE") {
-        await ensureOptionsLoaded();
-        updateCounter();
-        updateFeeds();
+browser.webRequest.onCompleted.addListener(function (details) {
+    if (details.method !== "POST" && details.method !== "DELETE") {
+        return;
+    }
+
+    // Our own markers request already updated the cache and the badge, updating again
+    // would only repeat the work and the request.
+    if (isOwnRequest(details)) {
+        return;
+    }
+
+    // Only a subscriptions change can invalidate the memo, marking as read cannot.
+    if (details.url?.includes("/v3/subscriptions")) {
         appGlobal.getUserSubscriptionsPromise = null;
     }
+
+    scheduleWebsiteUpdate();
 }, {urls: ["*://*.feedly.com/v3/subscriptions*", "*://*.feedly.com/v3/markers*"]});
 
 /* Listener for adding or removing saved feeds */
-browser.webRequest.onCompleted.addListener(async function (details) {
-    if (details.method === "PUT" || details.method === "DELETE") {
-        await ensureOptionsLoaded();
-        updateSavedFeeds();
+browser.webRequest.onCompleted.addListener(function (details) {
+    if (details.method !== "PUT" && details.method !== "DELETE") {
+        return;
     }
+
+    if (isOwnRequest(details)) {
+        return;
+    }
+
+    scheduleSavedFeedsUpdate();
 }, {urls: ["*://*.feedly.com/v3/tags*global.saved*"]});
+
+/* True when the extension itself made the request rather than the feedly website.
+   Chromium reports the origin in initiator, firefox in originUrl. The tab id is not
+   usable here, the feedly website is a progressive web app and its own service worker
+   makes requests without a tab too. */
+function isOwnRequest(details) {
+    // getURL ends in exactly one slash, chrome reports initiator as a bare origin
+    let extensionOrigin = browser.runtime.getURL("").replace(/\/$/, "");
+    let initiator = details.initiator || details.originUrl || "";
+
+    return initiator.length > 0 && initiator.indexOf(extensionOrigin) === 0;
+}
+
+/**
+ * Wraps an update so that a burst of website activity costs one run instead of one per
+ * event: the first event runs straight away, everything else inside the window collapses
+ * into a single trailing run. Each throttle keeps its own timer, so saving an article
+ * cannot postpone the counter refresh or the other way round.
+ */
+function createWebsiteUpdateThrottle(runUpdate) {
+    let timeoutId = null;
+    let lastRunTime = 0;
+
+    function runNow() {
+        if (timeoutId !== null) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+        }
+
+        lastRunTime = Date.now();
+
+        // Nothing awaits this, so a failure would surface as an unhandled rejection
+        runUpdate().catch(function (e) {
+            console.info("Unable to update after a change on the feedly website.", e);
+        });
+    }
+
+    return function () {
+        let elapsed = Date.now() - lastRunTime;
+
+        if (elapsed >= websiteUpdateWindowMs) {
+            runNow();
+            return;
+        }
+
+        if (timeoutId === null) {
+            timeoutId = setTimeout(runNow, websiteUpdateWindowMs - elapsed);
+        }
+    };
+}
+
+async function runWebsiteUpdate() {
+    await ensureOptionsLoaded();
+    updateCounter();
+    updateFeeds();
+}
+
+async function runSavedFeedsUpdate() {
+    await ensureOptionsLoaded();
+    await updateSavedFeeds();
+}
+
+const scheduleWebsiteUpdate = createWebsiteUpdateThrottle(runWebsiteUpdate);
+const scheduleSavedFeedsUpdate = createWebsiteUpdateThrottle(runSavedFeedsUpdate);
 
 browser.action.onClicked.addListener(function (tab) {
     //The side panel may only be opened from within the user gesture, which any
@@ -309,6 +460,13 @@ function startSchedule(updateInterval, immediate) {
     // When shouldRecreate is false (worker wake), keep existing alarms as-is and avoid immediate fetch.
     if (shouldRecreate) {
         stopSchedule();
+
+        // Without a token every scheduled request fails, and every failure wakes the
+        // worker again. Stay quiet until the user signs in.
+        if (!appGlobal.options.accessToken) {
+            return;
+        }
+
         if (appGlobal.options.showCounter) {
             browser.alarms.create("updateCounter", { periodInMinutes: updateInterval });
         }
@@ -533,6 +691,10 @@ async function resetCounter(){
  * @returns {Promise}
  */
 async function updateSavedFeeds() {
+    if (isRateLimited()) {
+        return;
+    }
+
     const response = await apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents");
     const feeds = await parseFeeds(response);
     appGlobal.cachedSavedFeeds = feeds;
@@ -563,6 +725,10 @@ function setBadgeCounter(unreadFeedsCount) {
  * Callback will be started after function complete
  * */
 async function updateCounter() {
+    if (isRateLimited()) {
+        return;
+    }
+
     try {
         if (appGlobal.options.resetCounterOnClick) {
             const options = await browser.storage.local.get("lastCounterResetTime");
@@ -576,7 +742,11 @@ async function updateCounter() {
             await makeMarkersRequest();
         }
     } catch (e) {
-        await browser.action.setBadgeText({ text: ""});
+        // A rate limited cycle knows nothing about the count, so blanking the badge would
+        // throw the last good value away for the whole cooldown.
+        if (e?.status !== 429) {
+            await browser.action.setBadgeText({ text: ""});
+        }
         console.info("Unable to load counters.", e);
     }
 }
@@ -632,6 +802,10 @@ async function makeMarkersRequest(parameters){
  * If silentUpdate is true, then notifications will not be shown
  *  */
 async function updateFeeds(silentUpdate) {
+    if (isRateLimited()) {
+        return;
+    }
+
     const previousCache = appGlobal.cachedFeeds.slice(0);
     appGlobal.options.filters = appGlobal.options.filters || [];
 
@@ -722,6 +896,30 @@ function setInactiveStatus() {
     appGlobal.cachedFeeds = [];
     appGlobal.isLoggedIn = false;
     stopSchedule();
+}
+
+/* Drops credentials that feedly has permanently rejected and stops polling. Left in
+   storage a dead token keeps the scheduler awake, and every cycle spends requests that can
+   only fail, which is what exhausts the account's quota. Mirrors the options page logout,
+   which is the recovery users have been performing by hand. */
+async function clearStoredTokens() {
+    appGlobal.options.accessToken = "";
+    appGlobal.options.refreshToken = "";
+    appGlobal.feedlyApiClient.accessToken = "";
+    // Nothing else drops the memo, so signing in as somebody else would otherwise
+    // label their articles with the previous account's subscription titles.
+    appGlobal.getUserSubscriptionsPromise = null;
+    setInactiveStatus();
+    await clearRateLimitCooldown();
+
+    try {
+        // The area the options are read from goes first, otherwise the storage event for
+        // the other one would read the token back out of it and revive the session.
+        await appGlobal.syncStorage.set({ accessToken: "", refreshToken: "" });
+        await browser.storage.local.set({ accessToken: "", refreshToken: "" });
+    } catch (e) {
+        console.info("Unable to clear the stored tokens.", e);
+    }
 }
 
 /* Sets badge as active */
@@ -1043,13 +1241,30 @@ async function getAccessToken() {
         feedlyUserId: response.id
     });
 
+    // A cooldown left over from the previous credentials is not this account's
+    await clearRateLimitCooldown();
+
     setActiveStatus();
 }
 
 /**
  * Refreshes the access token.
+ *
+ * A whole update cycle can fail with 401 at once, so the grant is shared: the first caller
+ * performs it and the rest wait on the same promise. Without that, one expired token turns
+ * into one auth/token request per in-flight call.
  */
-async function refreshAccessToken(){
+function refreshAccessToken() {
+    if (!appGlobal.refreshAccessTokenPromise) {
+        appGlobal.refreshAccessTokenPromise = requestNewAccessToken().finally(function () {
+            appGlobal.refreshAccessTokenPromise = null;
+        });
+    }
+
+    return appGlobal.refreshAccessTokenPromise;
+}
+
+async function requestNewAccessToken(){
     if(!appGlobal.options.refreshToken) {
         setInactiveStatus();
         throw new Error("No refresh token available");
@@ -1067,14 +1282,20 @@ async function refreshAccessToken(){
             }
         });
 
+        // A grant that answers 200 without a token must not be stored, writing undefined
+        // over the token would make the failure permanent.
+        if (!response?.access_token) {
+            throw new Error("The refresh response contained no access token");
+        }
+
         // Update runtime variables immediately to prevent race conditions
         appGlobal.options.accessToken = response.access_token;
         appGlobal.options.feedlyUserId = response.id;
         appGlobal.feedlyApiClient.accessToken = response.access_token;
         appGlobal.isLoggedIn = true;
 
-        // Also save to storage for persistence
-        appGlobal.syncStorage.set({
+        // Awaited, so the retry cannot run before the new token is persisted
+        await appGlobal.syncStorage.set({
             accessToken: response.access_token,
             feedlyUserId: response.id
         });
@@ -1082,12 +1303,64 @@ async function refreshAccessToken(){
         setActiveStatus();
         return response;
     } catch (response) {
-        // If the refresh token is invalid
-        if (response && response.status === 403) {
-            setInactiveStatus();
+        if (response?.status === 429) {
+            await startRateLimitCooldown(response);
+        } else if (response && appGlobal.deadRefreshTokenStatuses.includes(response.status)) {
+            console.info("The refresh token was rejected, signing out.", response.status);
+            await clearStoredTokens();
         }
         throw response;
     }
+}
+
+/* Feedly answers 429 (HAP429) once the account has spent its API quota, and it counts
+   against the whole account, so the feedly website starts failing too. Polling through it
+   only prolongs the ban. */
+function isRateLimited() {
+    return appGlobal.rateLimitedUntil > Date.now();
+}
+
+/* The quota belongs to the account, so a deadline recorded for one set of credentials
+   must not hold back the next. If feedly is still refusing, the next request records the
+   cooldown again at the cost of a single call. */
+async function clearRateLimitCooldown() {
+    appGlobal.rateLimitedUntil = 0;
+    await browser.storage.local.remove("rateLimitedUntil").catch(function () {});
+}
+
+async function startRateLimitCooldown(response) {
+    const cooldown = parseRateLimitCooldown(response);
+    appGlobal.rateLimitedUntil = Date.now() + cooldown;
+
+    console.info("Feedly rate limited the account, pausing requests for "
+        + Math.round(cooldown / 60000) + " minutes.");
+
+    await browser.storage.local.set({ rateLimitedUntil: appGlobal.rateLimitedUntil })
+        .catch(function () {});
+}
+
+/* Feedly reports the seconds left in the current window in X-RateLimit-Reset, Retry-After
+   is the standard fallback and may hold either seconds or a date. The bounds guard against
+   a missing header on one side and a value that would mute the extension on the other. */
+function parseRateLimitCooldown(response) {
+    let cooldown = Number.NaN;
+    const headers = response?.headers;
+
+    if (headers && typeof headers.get === "function") {
+        const reset = headers.get("X-RateLimit-Reset") || headers.get("Retry-After");
+        if (reset) {
+            cooldown = Number(reset) * 1000;
+            if (Number.isNaN(cooldown)) {
+                cooldown = Date.parse(reset) - Date.now();
+            }
+        }
+    }
+
+    if (Number.isNaN(cooldown) || cooldown <= 0) {
+        cooldown = rateLimitDefaultCooldownMs;
+    }
+
+    return Math.min(Math.max(cooldown, rateLimitMinCooldownMs), rateLimitMaxCooldownMs);
 }
 
 /* Writes all application options in chrome storage and runs callback after it */
@@ -1128,9 +1401,12 @@ async function readOptions() {
     appGlobal.options.currentUiLanguage = browser.i18n.getUILanguage();
 
     // Preload cached feeds from local storage to serve immediately on popup open
-    const cache = await browser.storage.local.get(["cachedFeeds", "cachedSavedFeeds"]).catch(function () { return {}; });
+    const cache = await browser.storage.local.get(["cachedFeeds", "cachedSavedFeeds", "rateLimitedUntil"]).catch(function () { return {}; });
     appGlobal.cachedFeeds = Array.isArray(cache.cachedFeeds) ? cache.cachedFeeds : [];
     appGlobal.cachedSavedFeeds = Array.isArray(cache.cachedSavedFeeds) ? cache.cachedSavedFeeds : [];
+
+    // The alarm wakes a fresh worker, so the cooldown has to come back from storage
+    appGlobal.rateLimitedUntil = Number(cache.rateLimitedUntil) || 0;
 
     // If we have a token, treat as logged in until a request proves otherwise
     appGlobal.isLoggedIn = Boolean(appGlobal.options.accessToken);
@@ -1139,20 +1415,62 @@ async function readOptions() {
 async function apiRequestWrapper(methodName, settings) {
     if (!appGlobal.options.accessToken) {
         setInactiveStatus();
-        return Promise.reject(new Error("No access token available"));
+        throw new Error("No access token available");
     }
 
     settings = settings || {};
 
+    /*
+     * Only reads are held back. They are the polling traffic that spends the quota, and
+     * updateCounter, updateFeeds and updateSavedFeeds all stop before reaching this. A
+     * write is something the user just asked for, so refusing it without trying would
+     * make the extension look broken for the whole cooldown -- and if feedly really is
+     * still refusing, the 429 that comes back refreshes the deadline anyway.
+     */
+    if ((!settings.method || settings.method === "GET") && isRateLimited()) {
+        throw createRateLimitError();
+    }
+
+    try {
+        return await sendRequest(methodName, settings);
+    } catch (error) {
+        // A 429 was already recorded by sendRequest, and must never be taken for an
+        // expired token, so only a 401 gets a new one.
+        if (error?.status !== 401) {
+            throw error;
+        }
+
+        await refreshAccessToken();
+
+        // Deliberately not back through the wrapper, so a retry cannot loop
+        return await sendRequest(methodName, settings);
+    }
+}
+
+/*
+ * Feedly rejects with the raw response, so a failure carries a status rather than being an
+ * Error. Both the first attempt and the retry after a refresh come through here, so a
+ * token that expires while the account is already close to its quota still records the
+ * cooldown instead of slipping past it.
+ */
+async function sendRequest(methodName, settings) {
     try {
         const response = await appGlobal.feedlyApiClient.request(methodName, settings);
         setActiveStatus();
         return response;
-    } catch (response) {
-        if (response && response.status === 401) {
-            await refreshAccessToken();
-            return await appGlobal.feedlyApiClient.request(methodName, settings);
+    } catch (error) {
+        if (error?.status === 429) {
+            await startRateLimitCooldown(error);
         }
-        return Promise.reject(response);
+
+        throw error;
     }
+}
+
+/* Carries the status, so callers branch on it the way they do for a real api response. */
+function createRateLimitError() {
+    const rateLimitError = new Error("Rate limited by feedly");
+    rateLimitError.status = 429;
+
+    return rateLimitError;
 }

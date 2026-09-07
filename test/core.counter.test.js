@@ -120,7 +120,7 @@ describe("makeMarkersRequest", () => {
 
     /*
      * A feed belonging to several selected categories is counted once per
-     * category, so core.js subtracts the surplus (core.js:599-614).
+     * category, so core.js subtracts the surplus (core.js:745-760).
      */
     it("subtracts a feed counted twice across two selected categories", async () => {
         appGlobal.options.isFiltersEnabled = true;
@@ -182,7 +182,7 @@ describe("makeMarkersRequest", () => {
     });
 
     /*
-     * KNOWN BEHAVIOUR (core.js:589-617): with filters enabled the summing loop
+     * KNOWN BEHAVIOUR (core.js:735-763): with filters enabled the summing loop
      * sits inside the same try block as, and after, `await
      * getUserSubscriptions()`. A failed subscription lookup therefore skips the
      * sum entirely and the badge clears rather than falling back to the

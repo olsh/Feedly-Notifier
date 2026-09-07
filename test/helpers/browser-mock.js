@@ -104,6 +104,9 @@ function createBrowserMock(overrides) {
 
         runtime: {
             getManifest: () => ({ version: options.version || "3.2.0" }),
+            /* Real extensions get "chrome-extension://<id>/"; core.js compares request
+               initiators against it to recognise its own traffic. */
+            getURL: (path) => "chrome-extension://feedly-notifier-test/" + (path || ""),
             getPlatformInfo: async () => ({ os: options.os || "win" }),
             sendMessage: async (message) => {
                 calls.messagesSent.push(message);
