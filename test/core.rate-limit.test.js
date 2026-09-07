@@ -188,6 +188,73 @@ describe("signing out", () => {
     });
 });
 
+/*
+ * The quota is counted per account. A deadline that outlived the credentials it was
+ * recorded for would hold back a freshly authorised account for up to an hour.
+ */
+describe("cooldown across a credential change", () => {
+    let ctx;
+    let browser;
+    let appGlobal;
+
+    beforeEach(async () => {
+        vi.useFakeTimers();
+        vi.setSystemTime(NOW);
+        ({ ctx, browser, appGlobal } = loadCore());
+        appGlobal.options.accessToken = "token";
+        appGlobal.options.refreshToken = "refresh";
+        appGlobal.rateLimitedUntil = NOW + 30 * MINUTE;
+        await browser.storage.local.set({ rateLimitedUntil: NOW + 30 * MINUTE });
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it("drops the deadline when the tokens are cleared", async () => {
+        await ctx.clearStoredTokens();
+
+        expect(appGlobal.rateLimitedUntil).toBe(0);
+        expect(await browser.storage.local.get("rateLimitedUntil")).toEqual({});
+    });
+
+    it("drops the deadline when an account signs in", async () => {
+        appGlobal.feedlyApiClient = {
+            accessToken: "",
+            getMethodUrl: () => "https://cloud.feedly.com/v3/auth/auth",
+            request: async () => ({ access_token: "new", refresh_token: "r2", id: "u2" })
+        };
+
+        const signIn = ctx.getAccessToken();
+        await vi.advanceTimersByTimeAsync(0);
+        await browser.tabs.onUpdated.trigger(1, {
+            url: "https://olsh.github.io/Feedly-Notifier/?state=" + NOW + "&code=abc"
+        }, {});
+        await signIn;
+
+        expect(appGlobal.options.accessToken).toBe("new");
+        expect(appGlobal.rateLimitedUntil).toBe(0);
+    });
+
+    /* The whole point: the account that signs in afterwards can talk to feedly again. */
+    it("lets the new account read straight away", async () => {
+        await ctx.clearStoredTokens();
+        appGlobal.options.accessToken = "new";
+
+        const calls = [];
+        appGlobal.feedlyApiClient = {
+            accessToken: "new",
+            request: async (method) => {
+                calls.push(method);
+                return { id: "u2" };
+            }
+        };
+
+        await expect(ctx.apiRequestWrapper("profile")).resolves.toEqual({ id: "u2" });
+        expect(calls).toEqual(["profile"]);
+    });
+});
+
 describe("rate limited update cycle", () => {
     let ctx;
     let browser;

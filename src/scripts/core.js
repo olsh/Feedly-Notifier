@@ -910,6 +910,7 @@ async function clearStoredTokens() {
     // label their articles with the previous account's subscription titles.
     appGlobal.getUserSubscriptionsPromise = null;
     setInactiveStatus();
+    await clearRateLimitCooldown();
 
     try {
         // The area the options are read from goes first, otherwise the storage event for
@@ -1240,6 +1241,9 @@ async function getAccessToken() {
         feedlyUserId: response.id
     });
 
+    // A cooldown left over from the previous credentials is not this account's
+    await clearRateLimitCooldown();
+
     setActiveStatus();
 }
 
@@ -1314,6 +1318,14 @@ async function requestNewAccessToken(){
    only prolongs the ban. */
 function isRateLimited() {
     return appGlobal.rateLimitedUntil > Date.now();
+}
+
+/* The quota belongs to the account, so a deadline recorded for one set of credentials
+   must not hold back the next. If feedly is still refusing, the next request records the
+   cooldown again at the cost of a single call. */
+async function clearRateLimitCooldown() {
+    appGlobal.rateLimitedUntil = 0;
+    await browser.storage.local.remove("rateLimitedUntil").catch(function () {});
 }
 
 async function startRateLimitCooldown(response) {
@@ -1420,47 +1432,45 @@ async function apiRequestWrapper(methodName, settings) {
     }
 
     try {
-        const response = await appGlobal.feedlyApiClient.request(methodName, settings);
-        setActiveStatus();
-        return response;
-    } catch (response) {
-        // Ahead of the 401 branch, so a 429 can never be mistaken for an expired token
-        if (response?.status === 429) {
-            await startRateLimitCooldown(response);
-            throw response;
-        }
-
-        if (response?.status !== 401) {
-            throw response;
+        return await sendRequest(methodName, settings);
+    } catch (error) {
+        // A 429 was already recorded by sendRequest, and must never be taken for an
+        // expired token, so only a 401 gets a new one.
+        if (error?.status !== 401) {
+            throw error;
         }
 
         await refreshAccessToken();
 
-        return await retryAfterRefresh(methodName, settings);
+        // Deliberately not back through the wrapper, so a retry cannot loop
+        return await sendRequest(methodName, settings);
     }
 }
 
 /*
- * The retry deliberately bypasses the wrapper, so it cannot loop, but it still needs the
- * cooldown: a token can expire while the account is already close to its quota, which
- * would otherwise leave the 429 unnoticed.
+ * Feedly rejects with the raw response, so a failure carries a status rather than being an
+ * Error. Both the first attempt and the retry after a refresh come through here, so a
+ * token that expires while the account is already close to its quota still records the
+ * cooldown instead of slipping past it.
  */
-async function retryAfterRefresh(methodName, settings) {
+async function sendRequest(methodName, settings) {
     try {
-        return await appGlobal.feedlyApiClient.request(methodName, settings);
-    } catch (response) {
-        if (response?.status === 429) {
-            await startRateLimitCooldown(response);
+        const response = await appGlobal.feedlyApiClient.request(methodName, settings);
+        setActiveStatus();
+        return response;
+    } catch (error) {
+        if (error?.status === 429) {
+            await startRateLimitCooldown(error);
         }
 
-        throw response;
+        throw error;
     }
 }
 
 /* Carries the status, so callers branch on it the way they do for a real api response. */
 function createRateLimitError() {
-    const error = new Error("Rate limited by feedly");
-    error.status = 429;
+    const rateLimitError = new Error("Rate limited by feedly");
+    rateLimitError.status = 429;
 
-    return error;
+    return rateLimitError;
 }
