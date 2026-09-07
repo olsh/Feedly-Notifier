@@ -67,6 +67,8 @@ describe("line-preserving preprocessor", () => {
         expect(chromeManifest.manifest_version).toBe(3);
         expect(chromeManifest.permissions).toContain("sidePanel");
         expect(chromeManifest.side_panel).toBeDefined();
+        // sidePanel.open() is Chrome 116+, and core.js calls it unguarded.
+        expect(chromeManifest.minimum_chrome_version).toBe("116");
 
         expect(firefoxManifest.permissions).not.toContain("sidePanel");
         expect(firefoxManifest.sidebar_action).toBeDefined();

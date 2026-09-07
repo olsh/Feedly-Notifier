@@ -93,7 +93,10 @@ function createBrowserMock(overrides) {
         tabsCreated: [],
         tabsUpdated: [],
         windowsCreated: [],
-        messagesSent: []
+        messagesSent: [],
+        sidePanelOptions: [],
+        sidePanelBehavior: [],
+        sidePanelOpened: []
     };
 
     let badgeText = "";
@@ -201,12 +204,25 @@ function createBrowserMock(overrides) {
         }
     };
 
-    /* Chromium-only surfaces. Omitted when simulating Firefox. */
+    /* Chromium-only surfaces. Omitted when simulating Firefox, which has sidebarAction
+       instead, and when simulating a Chromium without a side panel implementation. */
     if (options.sidePanel !== false) {
         browser.sidePanel = {
-            setOptions: async () => undefined,
-            setPanelBehavior: async () => undefined,
-            open: async () => undefined
+            setOptions: async (panelOptions) => {
+                calls.sidePanelOptions.push(panelOptions);
+                if (options.sidePanelSetOptionsFails) {
+                    throw new Error("setOptions refused");
+                }
+            },
+            setPanelBehavior: async (behavior) => {
+                calls.sidePanelBehavior.push(behavior);
+                if (options.sidePanelSetBehaviorFails) {
+                    throw new Error("setPanelBehavior refused");
+                }
+            },
+            open: async (target) => {
+                calls.sidePanelOpened.push(target);
+            }
         };
     }
 

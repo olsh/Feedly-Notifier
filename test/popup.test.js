@@ -11,7 +11,9 @@ const POPUP_EXPORTS = [
     "executeAsync",
     "options",
     "environment",
-    "bg"
+    "bg",
+    "popupGlobal",
+    "renderFromCache"
 ];
 
 async function loadPopup(overrides = {}) {
@@ -177,5 +179,85 @@ describe("popup page", () => {
             await new Promise(resolve => setTimeout(resolve, 600));
             expect(ran).toBe(true);
         });
+    });
+});
+
+/**
+ * A pinned sidebar or side panel has to follow the worker's scheduled updates, which the
+ * worker announces by broadcasting to every extension page (issue #297). The toolbar
+ * popup receives the same message and must ignore it -- it renders on open, and
+ * re-rendering under the user's cursor would be worse than showing a stale list.
+ */
+describe("feedsUpdated broadcast", () => {
+    let popup;
+    let browser;
+
+    /** Every request the page made of the worker. */
+    function sent() {
+        return browser._calls.messagesSent;
+    }
+
+    beforeEach(async () => {
+        ({ page: popup, browser } = await loadPopup());
+        sent().length = 0;
+    });
+
+    function broadcast(message) {
+        return browser._events["runtime.onMessage"][0](message, {});
+    }
+
+    it("listens for messages from the worker", () => {
+        expect(browser._events["runtime.onMessage"]).toHaveLength(1);
+    });
+
+    /* An async listener would return a promise for every message, including the ones the
+       options page sends to the worker, and race with the worker's own reply. */
+    it("claims no message it does not handle", () => {
+        expect(broadcast({ type: "getOptions" })).toBeUndefined();
+        expect(broadcast({ type: "feedsUpdated" })).toBeUndefined();
+        expect(broadcast(null)).toBeUndefined();
+    });
+
+    it("ignores unrelated messages", () => {
+        broadcast({ type: "getOptions" });
+
+        expect(sent()).toEqual([]);
+    });
+
+    it("ignores the broadcast in the popup", () => {
+        popup.popupGlobal.isSidebar = false;
+
+        broadcast({ type: "feedsUpdated" });
+
+        expect(sent()).toEqual([]);
+    });
+
+    it("re-reads the cache in the sidebar", () => {
+        popup.popupGlobal.isSidebar = true;
+
+        broadcast({ type: "feedsUpdated" });
+
+        expect(sent()).toEqual([{ type: "getFeeds", forceUpdate: false }]);
+    });
+
+    /* The worker has just finished an update; asking for another one would undo the
+       quota protection, and forceUpdateFeeds must not drag the panel into one either. */
+    it("never forces an update, whatever the option says", () => {
+        popup.popupGlobal.isSidebar = true;
+        popup.options.forceUpdateFeeds = true;
+
+        popup.renderFromCache();
+
+        expect(sent()).toEqual([{ type: "getFeeds", forceUpdate: false }]);
+    });
+
+    it("re-reads the saved articles when that tab is showing", () => {
+        popup.popupGlobal.isSidebar = true;
+        popup.options.abilitySaveFeeds = true;
+        $("#tabs-checkbox").prop("checked", true);
+
+        popup.renderFromCache();
+
+        expect(sent()).toEqual([{ type: "getSavedFeeds", forceUpdate: false }]);
     });
 });

@@ -397,42 +397,45 @@ async function initialize(immediate) {
     startSchedule(appGlobal.options.updateInterval, immediate);
 }
 
-/* Returns true when the side panel is enabled and the browser accepted the configuration */
+/* The page the browser loads into its sidebar. Must stay in sync with the
+   side_panel.default_path key in manifest.json: the manifest is what makes the browser
+   list the extension before the worker has ever run, this is what it uses afterwards. */
+const SIDE_PANEL_PATH = "popup.html?panel=1";
+
+/* Registers the side panel and reports whether the toolbar icon now opens it.
+
+   The panel itself is always left enabled. `enabled: false` is how an extension takes
+   itself out of the browser's sidebar UI, and the Edge sidebar is meant to be opened
+   from the browser rather than unlocked by an extension setting (issue #297), so the
+   option below decides only what the toolbar icon does, never whether the panel exists. */
 async function configureSidePanel() {
-    if (!browser.sidePanel || typeof browser.sidePanel.setOptions !== "function") {
+    //Firefox has sidebar_action instead, and Opera ships no implementation at all.
+    if (!browser.sidePanel) {
         return false;
     }
 
-    const isEnabled = Boolean(appGlobal.options.enableSidePanel);
-    let isConfigured = false;
+    const opensOnActionClick = Boolean(appGlobal.options.enableSidePanel);
 
     try {
         await browser.sidePanel.setOptions({
-            enabled: isEnabled,
-            path: "popup.html?panel=1"
+            enabled: true,
+            path: SIDE_PANEL_PATH
         });
-        isConfigured = true;
+        await browser.sidePanel.setPanelBehavior({openPanelOnActionClick: opensOnActionClick});
     } catch (e) {
+        //Reported as not configured, so the caller keeps the popup: an icon that opens
+        //neither the panel nor the popup would leave the extension unreachable.
         console.info("Unable to configure side panel", e);
+        return false;
     }
 
-    //Set separately, a failure above must not leave the icon without any behaviour
-    if (typeof browser.sidePanel.setPanelBehavior === "function") {
-        try {
-            await browser.sidePanel.setPanelBehavior({openPanelOnActionClick: isEnabled});
-            isConfigured = true;
-        } catch (e) {
-            console.info("Unable to set side panel behaviour", e);
-        }
-    }
-
-    return isEnabled && isConfigured;
+    return opensOnActionClick;
 }
 
 /* Opens the side panel for the clicked tab. Deliberately not async, awaiting the call
    would move it out of the user gesture that the browser requires. */
 function openSidePanel(tab) {
-    if (!browser.sidePanel || typeof browser.sidePanel.open !== "function") {
+    if (!browser.sidePanel) {
         return false;
     }
 
@@ -686,6 +689,28 @@ async function resetCounter(){
     await browser.storage.local.set({ lastCounterResetTime: new Date().getTime() });
 }
 
+/* Identifies a cache by the articles in it. The sidebar is refreshed when articles come
+   or go, not when their engagement rate drifts under them. */
+function feedIdsSignature(feeds) {
+    return JSON.stringify(feeds.map(function (feed) {
+        return feed.id;
+    }));
+}
+
+/* Tells an open sidebar or side panel that the cache moved on. The toolbar popup renders
+   itself every time it opens and needs nothing, but a panel the user has pinned would
+   otherwise keep showing whatever was current when they pinned it (issue #297).
+
+   Only sent when the articles actually changed, which is also what keeps it from looping:
+   getFeeds() updates the feeds whenever the cache is empty, so an unconditional message
+   would have a panel with nothing unread triggering an update on every round.
+
+   Nothing is listening when no extension page is open and sendMessage rejects in that
+   case, so that rejection is the normal path rather than a failure. */
+function notifyFeedsUpdated() {
+    browser.runtime.sendMessage({type: "feedsUpdated"}).catch(function () {});
+}
+
 /**
  * Updates saved feeds and stores them in cache.
  * @returns {Promise}
@@ -695,10 +720,14 @@ async function updateSavedFeeds() {
         return;
     }
 
+    const previousSignature = feedIdsSignature(appGlobal.cachedSavedFeeds);
     const response = await apiRequestWrapper("streams/" + encodeURIComponent(appGlobal.savedGroup) + "/contents");
     const feeds = await parseFeeds(response);
     appGlobal.cachedSavedFeeds = feeds;
     browser.storage.local.set({ cachedSavedFeeds: feeds }).catch(function () {});
+    if (feedIdsSignature(feeds) !== previousSignature) {
+        notifyFeedsUpdated();
+    }
 }
 
 /* Sets badge counter if unread feeds more than zero */
@@ -878,6 +907,9 @@ async function updateFeeds(silentUpdate) {
         newCache = newCache.splice(0, appGlobal.options.maxNumberOfFeeds);
         appGlobal.cachedFeeds = newCache;
         browser.storage.local.set({ cachedFeeds: newCache }).catch(function () {});
+        if (feedIdsSignature(newCache) !== feedIdsSignature(previousCache)) {
+            notifyFeedsUpdated();
+        }
         if (!silentUpdate && (appGlobal.options.showDesktopNotifications)) {
             const newFeeds = await filterByNewFeeds(appGlobal.cachedFeeds);
             await sendDesktopNotification(newFeeds);
