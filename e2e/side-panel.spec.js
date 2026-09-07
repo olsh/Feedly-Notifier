@@ -16,6 +16,16 @@ test.describe("side panel", () => {
         return serviceWorker.evaluate(() => chrome.sidePanel.getOptions({}));
     }
 
+    /*
+     * getOptions() answers with the manifest's own defaults until the worker overrides
+     * them, so reading it straight away would pass whatever the worker went on to do.
+     * ensureInitialized() is the worker's memoised boot promise: awaiting it puts the
+     * read after configureSidePanel(), which is the call under test.
+     */
+    function settled(serviceWorker) {
+        return serviceWorker.evaluate(() => globalThis.ensureInitialized());
+    }
+
     test("declares the panel in the manifest", async ({ serviceWorker }) => {
         const manifest = await serviceWorker.evaluate(() => chrome.runtime.getManifest());
 
@@ -31,7 +41,9 @@ test.describe("side panel", () => {
      * browser's sidebar. Nothing here touches the options page.
      */
     test("offers the panel out of the box", async ({ serviceWorker }) => {
-        await expect.poll(() => panelOptions(serviceWorker)).toMatchObject({
+        await settled(serviceWorker);
+
+        expect(await panelOptions(serviceWorker)).toEqual({
             enabled: true,
             path: "popup.html?panel=1"
         });
@@ -39,16 +51,17 @@ test.describe("side panel", () => {
 
     test("still offers the panel once signed in", async ({ signIn, serviceWorker }) => {
         await signIn();
+        await settled(serviceWorker);
 
-        await expect.poll(() => panelOptions(serviceWorker)).toMatchObject({ enabled: true });
+        expect(await panelOptions(serviceWorker)).toMatchObject({ enabled: true });
     });
 
     test("leaves the toolbar icon on the popup by default", async ({ signIn, serviceWorker }) => {
         await signIn();
+        await settled(serviceWorker);
 
-        await expect
-            .poll(() => serviceWorker.evaluate(() => chrome.action.getPopup({})))
-            .toContain("popup.html");
+        const popup = await serviceWorker.evaluate(() => chrome.action.getPopup({}));
+        expect(popup).toContain("popup.html");
     });
 
     test("hands the toolbar icon to the panel when the option is on", async ({ signIn, optionsPage, serviceWorker }) => {
@@ -58,11 +71,15 @@ test.describe("side panel", () => {
         await page.locator("#enableSidePanel").check();
         await page.locator("#save").click();
 
-        // A popup would take precedence over the panel, so it has to be dropped.
+        /* Saving reaches the worker through storage.onChanged, which re-runs the boot
+           work outside the promise settled() waits on, so poll for it to land. A popup
+           would take precedence over the panel, so it has to be dropped. */
         await expect
             .poll(() => serviceWorker.evaluate(() => chrome.action.getPopup({})))
             .toBe("");
-        await expect.poll(() => panelOptions(serviceWorker)).toMatchObject({ enabled: true });
+
+        // Handing the icon over must not cost the browser's own sidebar entry.
+        expect(await panelOptions(serviceWorker)).toMatchObject({ enabled: true });
     });
 
     test("renders the feeds in the panel layout", async ({ mockApi, signIn, popupPage }) => {

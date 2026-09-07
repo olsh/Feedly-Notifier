@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 //the worker, and any promise returned from here would race with the worker's own reply.
 //Returning undefined leaves those messages to it.
 browser.runtime.onMessage.addListener(function (message) {
-    if (message && message.type === "feedsUpdated") {
+    if (message?.type === "feedsUpdated") {
         renderFromCache();
     }
 
