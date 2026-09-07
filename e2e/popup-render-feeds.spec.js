@@ -93,6 +93,30 @@ test.describe("popup feed rendering", () => {
         await expect(article.locator(".content")).toContainText("The full body text");
     });
 
+    // Issue #47: the buttons used to be 14x14 and flush against each other.
+    test("gives the article actions a big enough hit target", async ({ mockApi, signIn, popupPage }) => {
+        mockApi.setStream(GLOBAL_ALL, [item("a")]);
+        await signIn({ abilitySaveFeeds: true });
+
+        const page = await popupPage();
+        const buttons = page.locator("#feed .item").first().locator(".article-menu > *");
+        await expect(buttons).toHaveCount(3);
+
+        const boxes = [];
+        for (const button of await buttons.all()) {
+            const box = await button.boundingBox();
+            expect(box.width).toBeGreaterThanOrEqual(24);
+            expect(box.height).toBeGreaterThanOrEqual(24);
+            boxes.push(box);
+        }
+
+        boxes.sort((a, b) => a.x - b.x);
+        for (let i = 1; i < boxes.length; i++) {
+            const gap = boxes[i].x - (boxes[i - 1].x + boxes[i - 1].width);
+            expect(gap).toBeGreaterThanOrEqual(4);
+        }
+    });
+
     test("renders category chips when the option is on", async ({ mockApi, signIn, popupPage }) => {
         mockApi.setStream(GLOBAL_ALL, [item("a")]);
         await signIn({ showCategories: true });
