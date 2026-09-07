@@ -10,6 +10,8 @@ module.exports = [
             "node_modules/**",
             "build/**",
             "test-results/**",
+            "playwright-report/**",
+            "coverage/**",
             "logos/**",
             "translations/**",
             "src/styles/**",
@@ -90,6 +92,30 @@ module.exports = [
         languageOptions: {
             globals: {
                 FeedlyApiClient: "readonly"
+            }
+        }
+    },
+
+    // Unit tests run under Vitest as ES modules on Node
+    {
+        files: ["test/**/*.js", "vitest.config.mjs"],
+        languageOptions: {
+            ecmaVersion: 2023,
+            sourceType: "module",
+            globals: {
+                ...globals.node
+            }
+        }
+    },
+
+    // End-to-end tests run under Playwright as CommonJS on Node
+    {
+        files: ["e2e/**/*.js", "playwright.config.js"],
+        languageOptions: {
+            ecmaVersion: 2023,
+            sourceType: "commonjs",
+            globals: {
+                ...globals.node
             }
         }
     }
