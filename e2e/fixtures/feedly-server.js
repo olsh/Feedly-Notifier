@@ -81,7 +81,7 @@ class FeedlyMockServer {
     handle(request, response) {
         // Base for parsing only. Plain HTTP is deliberate: this mock stands in
         // for the API over the loopback interface, avoiding a self-signed
-        // certificate. It never carries real traffic. NOSONAR
+        // certificate. It never carries real traffic.
         const url = new URL(request.url, "http://cloud.feedly.com"); // NOSONAR
         const chunks = [];
 
