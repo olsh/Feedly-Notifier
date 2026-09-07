@@ -23,11 +23,13 @@ function compileScript(name, targetBrowser) {
         const source = readFileSync(filename, "utf8");
         // Line-preserving, so stack traces and coverage point at the real file.
         const processed = targetBrowser ? preprocessPreservingLines(source, targetBrowser) : source;
-        // NOSONAR - compiling this repository's own src/scripts files is the
-        // entire purpose of the loader; the input is a checked-in source file,
-        // never user input, and it runs in an isolated context under the test
-        // runner only.
-        scriptCache.set(key, new Script(processed, { filename }));
+        /*
+         * Compiling this repository's own src/scripts files is the entire
+         * purpose of the loader: the input is a checked-in source file, never
+         * user input, and it runs in an isolated context under the test runner
+         * only. Suppression must sit on the reported line itself.
+         */
+        scriptCache.set(key, new Script(processed, { filename })); // NOSONAR
     }
     return scriptCache.get(key);
 }
