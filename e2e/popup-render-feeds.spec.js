@@ -113,7 +113,7 @@ test.describe("popup feed rendering", () => {
         boxes.sort((a, b) => a.x - b.x);
         for (let i = 1; i < boxes.length; i++) {
             const gap = boxes[i].x - (boxes[i - 1].x + boxes[i - 1].width);
-            expect(gap).toBeGreaterThanOrEqual(4);
+            expect(gap).toBeGreaterThanOrEqual(6);
         }
     });
 
