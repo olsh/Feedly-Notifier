@@ -135,31 +135,62 @@ describe("saved feeds listener", () => {
     let saved;
 
     beforeEach(() => {
+        vi.useFakeTimers();
+        vi.setSystemTime(new Date("2026-09-07T12:00:00Z"));
+
         ({ ctx, browser } = loadCore({ storage: { sync: { accessToken: "token" } } }));
+
         saved = 0;
-        // The real one is async, and the listener attaches a catch to what it returns.
+        // The real one is async, and the throttle attaches a catch to what it returns.
         ctx.updateSavedFeeds = async () => { saved++; };
         ctx.updateCounter = () => {};
         ctx.updateFeeds = () => {};
     });
 
-    it("updates when the website saves a feed", async () => {
-        await browser.webRequest.onCompleted.trigger(websiteEvent({
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    async function fire(details) {
+        await browser.webRequest.onCompleted.trigger(websiteEvent(Object.assign({
             method: "PUT",
             url: "https://cloud.feedly.com/v3/tags/user%2F1%2Ftag%2Fglobal.saved"
-        }));
+        }, details)));
+        await vi.advanceTimersByTimeAsync(0);
+    }
+
+    it("updates when the website saves a feed", async () => {
+        await fire();
 
         expect(saved).toBe(1);
     });
 
     it("ignores the extension's own save", async () => {
-        await browser.webRequest.onCompleted.trigger(websiteEvent({
-            method: "PUT",
-            url: "https://cloud.feedly.com/v3/tags/user%2F1%2Ftag%2Fglobal.saved",
-            initiator: EXTENSION_ORIGIN.replace(/\/$/, ""),
-            tabId: -1
-        }));
+        await fire({ initiator: EXTENSION_ORIGIN.replace(/\/$/, ""), tabId: -1 });
 
         expect(saved).toBe(0);
+    });
+
+    /* Saving in bulk would otherwise spend one stream request per article. */
+    it("collapses a burst into one leading and one trailing update", async () => {
+        for (let i = 0; i < 6; i++) {
+            await fire();
+        }
+
+        expect(saved).toBe(1);
+
+        await vi.advanceTimersByTimeAsync(WINDOW_MS);
+
+        expect(saved).toBe(2);
+    });
+
+    /* Each throttle keeps its own timer, so one cannot postpone the other. */
+    it("does not share its window with the counter update", async () => {
+        await browser.webRequest.onCompleted.trigger(websiteEvent());
+        await vi.advanceTimersByTimeAsync(0);
+
+        await fire();
+
+        expect(saved).toBe(1);
     });
 });

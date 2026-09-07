@@ -40,7 +40,7 @@ function routedClient(routes) {
             if (!outcomes || outcomes.length === 0) {
                 throw new Error(`Unexpected request: ${method}`);
             }
-            const outcome = outcomes.length === 1 ? outcomes[0] : outcomes.shift();
+            const outcome = outcomes.shift();
             if (outcome.reject) {
                 throw outcome.reject;
             }
@@ -161,7 +161,10 @@ describe("apiRequestWrapper", () => {
         appGlobal.options.refreshToken = "refresh";
         const client = routedClient({
             "profile": [{ reject: { status: 401 } }, { resolve: { id: "u1" } }],
-            "auth/token": [{ resolve: { access_token: "fresh", id: "u1" } }]
+            "auth/token": [
+                { resolve: { access_token: "fresh", id: "u1" } },
+                { resolve: { access_token: "fresher", id: "u1" } }
+            ]
         });
         appGlobal.feedlyApiClient = client;
 
@@ -169,6 +172,23 @@ describe("apiRequestWrapper", () => {
         await ctx.refreshAccessToken();
 
         expect(client.calls.filter(call => call.method === "auth/token")).toHaveLength(2);
+    });
+
+    /* A token can expire while the account is already close to its quota. */
+    it("starts the cooldown when the retry after a refresh is rate limited", async () => {
+        appGlobal.options.accessToken = "stale";
+        appGlobal.options.refreshToken = "refresh";
+        appGlobal.feedlyApiClient = routedClient({
+            "markers/counts": [
+                { reject: { status: 401 } },
+                { reject: { status: 429, headers: { get: () => "600" } } }
+            ],
+            "auth/token": [{ resolve: { access_token: "fresh", id: "u1" } }]
+        });
+
+        await expect(ctx.apiRequestWrapper("markers/counts")).rejects.toHaveProperty("status", 429);
+
+        expect(appGlobal.rateLimitedUntil).toBeGreaterThan(Date.now());
     });
 
     it("propagates non-401 failures without refreshing", async () => {

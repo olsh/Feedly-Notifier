@@ -77,6 +77,18 @@ describe("storage change handling", () => {
         expect(browser._calls.alarmsCreated[0].info).toEqual({ periodInMinutes: 45 });
     });
 
+    /*
+     * startSchedule decides whether to create the updateFeeds alarm from both of these,
+     * so a change to either has to rebuild it.
+     */
+    it.each(["showDesktopNotifications", "playSound"])("restarts the schedule when %s changes", async (optionName) => {
+        await ctx.readOptions();
+
+        await change({ [optionName]: false });
+
+        expect(reinitialised()).toBe(true);
+    });
+
     it("does not restart when an option is rewritten with the same value", async () => {
         await ctx.readOptions();
 

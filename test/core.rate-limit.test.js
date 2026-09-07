@@ -150,6 +150,22 @@ describe("rate limit cooldown", () => {
     });
 });
 
+describe("signing out", () => {
+    /*
+     * Nothing else resets the memo, so signing in as a different account in the same
+     * worker would label their articles with the previous account's subscription titles.
+     */
+    it("drops the cached subscriptions", async () => {
+        const { ctx, appGlobal } = loadCore();
+        appGlobal.options.accessToken = "token";
+        appGlobal.getUserSubscriptionsPromise = Promise.resolve([]);
+
+        await ctx.clearStoredTokens();
+
+        expect(appGlobal.getUserSubscriptionsPromise).toBeNull();
+    });
+});
+
 describe("rate limited update cycle", () => {
     let ctx;
     let browser;
