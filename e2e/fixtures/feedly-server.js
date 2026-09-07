@@ -37,8 +37,21 @@ class FeedlyMockServer {
     }
 
     /** Makes the next request to a matching path fail with `status`. */
-    failNext(pathFragment, status) {
-        this.failures.set(pathFragment, status);
+    failNext(pathFragment, status, headers) {
+        this.failures.set(pathFragment, { status, headers, remaining: 1 });
+    }
+
+    /** Makes the next `times` requests to a matching path fail with `status`. */
+    failTimes(pathFragment, status, times, headers) {
+        this.failures.set(pathFragment, { status, headers, remaining: times });
+    }
+
+    /**
+     * Makes every request to a matching path fail until `reset()`. Needed to model a
+     * quota that stays exhausted, or a refresh token feedly keeps rejecting.
+     */
+    failAlways(pathFragment, status, headers) {
+        this.failures.set(pathFragment, { status, headers, remaining: Infinity });
     }
 
     setStream(streamId, items) {
@@ -106,10 +119,14 @@ class FeedlyMockServer {
                 });
             }
 
-            for (const [fragment, status] of this.failures) {
+            for (const [fragment, failure] of this.failures) {
                 if (url.pathname.includes(fragment)) {
-                    this.failures.delete(fragment);
-                    return this.send(response, status, { errorMessage: "forced failure" });
+                    failure.remaining--;
+                    if (failure.remaining <= 0) {
+                        this.failures.delete(fragment);
+                    }
+                    return this.send(response, failure.status,
+                        { errorMessage: "forced failure" }, failure.headers || {});
                 }
             }
 

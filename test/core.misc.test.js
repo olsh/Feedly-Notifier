@@ -54,7 +54,7 @@ describe("filterByNewFeeds", () => {
     /*
      * KNOWN BUG: parseFeeds emits `date` as a Date, but updateFeeds writes the
      * cache straight into storage where it is JSON-serialised to a string. After
-     * a service-worker restart the comparison at core.js:514 is string vs Date,
+     * a service-worker restart the comparison at core.js:648 is string vs Date,
      * which is always false, so notifications go silent until the next fetch.
      */
     it("treats feeds whose date came back from storage as a string as not new", async () => {
@@ -188,7 +188,7 @@ describe("markAsRead", () => {
     });
 
     /*
-     * KNOWN BUG (core.js:940): the badge text is read back and coerced with `+`.
+     * KNOWN BUG (core.js:1107): the badge text is read back and coerced with `+`.
      * Above 999 it reads "1k+", which coerces to NaN, so the decrement is
      * silently skipped and the badge keeps its stale value.
      */
@@ -265,6 +265,7 @@ describe("toggleSavedFeed", () => {
 describe("scheduling", () => {
     it("creates both alarms and clears them again", () => {
         const { ctx, browser, appGlobal } = loadCore();
+        appGlobal.options.accessToken = "token";
 
         ctx.startSchedule(15, true);
 
@@ -280,11 +281,25 @@ describe("scheduling", () => {
 
     it("skips the counter alarm when the badge is disabled", () => {
         const { ctx, browser, appGlobal } = loadCore();
+        appGlobal.options.accessToken = "token";
         appGlobal.options.showCounter = false;
 
         ctx.startSchedule(10, true);
 
         expect(browser._calls.alarmsCreated.map(alarm => alarm.name)).toEqual(["updateFeeds"]);
+    });
+
+    /*
+     * Signed out, every scheduled request would fail, and each failure wakes the worker
+     * again. That idle churn is part of what exhausted the api quota in issue #368.
+     */
+    it("arms no alarms without an access token", () => {
+        const { ctx, browser } = loadCore();
+
+        ctx.startSchedule(10, true);
+
+        expect(browser._calls.alarmsCreated).toEqual([]);
+        expect(browser._calls.alarmsCleared).toEqual(["updateCounter", "updateFeeds"]);
     });
 
     // A worker waking for an alarm must not recreate the alarms it woke for.

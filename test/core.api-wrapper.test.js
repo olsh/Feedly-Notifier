@@ -25,6 +25,30 @@ function scriptedClient(outcomes) {
     };
 }
 
+/**
+ * Builds an API client whose outcomes are keyed by method name rather than by call
+ * order, which is what concurrent callers need.
+ */
+function routedClient(routes) {
+    const calls = [];
+    return {
+        calls,
+        accessToken: "token",
+        request: async (method) => {
+            calls.push({ method });
+            const outcomes = routes[method];
+            if (!outcomes || outcomes.length === 0) {
+                throw new Error(`Unexpected request: ${method}`);
+            }
+            const outcome = outcomes.length === 1 ? outcomes[0] : outcomes.shift();
+            if (outcome.reject) {
+                throw outcome.reject;
+            }
+            return outcome.resolve;
+        }
+    };
+}
+
 describe("apiRequestWrapper", () => {
     let ctx;
     let browser;
@@ -106,6 +130,47 @@ describe("apiRequestWrapper", () => {
         expect(client.calls.filter(call => call.method === "auth/token")).toHaveLength(1);
     });
 
+    /*
+     * A whole update cycle fails with 401 together when the token expires. One
+     * auth/token request per in-flight call is what turned an expired token into the
+     * request storm behind issue #368.
+     */
+    it("shares one token refresh between concurrent callers", async () => {
+        appGlobal.options.accessToken = "stale";
+        appGlobal.options.refreshToken = "refresh";
+        const client = routedClient({
+            "markers/counts": [{ reject: { status: 401 } }, { resolve: { unreadcounts: [] } }],
+            "subscriptions": [{ reject: { status: 401 } }, { resolve: [] }],
+            "profile": [{ reject: { status: 401 } }, { resolve: { id: "u1" } }],
+            "auth/token": [{ resolve: { access_token: "fresh", id: "user-1" } }]
+        });
+        appGlobal.feedlyApiClient = client;
+
+        await Promise.all([
+            ctx.apiRequestWrapper("markers/counts"),
+            ctx.apiRequestWrapper("subscriptions"),
+            ctx.apiRequestWrapper("profile")
+        ]);
+
+        expect(client.calls.filter(call => call.method === "auth/token")).toHaveLength(1);
+        expect(appGlobal.options.accessToken).toBe("fresh");
+    });
+
+    it("refreshes again for a later request once the first refresh settled", async () => {
+        appGlobal.options.accessToken = "stale";
+        appGlobal.options.refreshToken = "refresh";
+        const client = routedClient({
+            "profile": [{ reject: { status: 401 } }, { resolve: { id: "u1" } }],
+            "auth/token": [{ resolve: { access_token: "fresh", id: "u1" } }]
+        });
+        appGlobal.feedlyApiClient = client;
+
+        await ctx.apiRequestWrapper("profile");
+        await ctx.refreshAccessToken();
+
+        expect(client.calls.filter(call => call.method === "auth/token")).toHaveLength(2);
+    });
+
     it("propagates non-401 failures without refreshing", async () => {
         appGlobal.options.accessToken = "token";
         appGlobal.options.refreshToken = "refresh";
@@ -136,23 +201,53 @@ describe("refreshAccessToken", () => {
         expect(browser._calls.setIcon).toEqual([appGlobal.icons.inactive]);
     });
 
-    it("goes inactive when the refresh token is rejected", async () => {
+    /*
+     * A refresh token feedly has permanently rejected cannot recover on its own. Left in
+     * storage it kept the scheduler awake, spending requests that could only fail --
+     * which is what exhausted the quota in issue #368. Deleting the tokens by hand was
+     * the workaround users found; this is that workaround, automated.
+     */
+    it.each([400, 401, 403])("clears the stored tokens when the refresh is rejected with %i", async (status) => {
+        await browser.storage.sync.set({ accessToken: "stale", refreshToken: "revoked" });
+        appGlobal.options.accessToken = "stale";
         appGlobal.options.refreshToken = "revoked";
-        appGlobal.feedlyApiClient = scriptedClient([{ reject: { status: 403 } }]);
+        appGlobal.feedlyApiClient = scriptedClient([{ reject: { status } }]);
 
-        await expect(ctx.refreshAccessToken()).rejects.toHaveProperty("status", 403);
+        await expect(ctx.refreshAccessToken()).rejects.toHaveProperty("status", status);
 
         expect(appGlobal.isLoggedIn).toBe(false);
         expect(browser._calls.setIcon).toEqual([appGlobal.icons.inactive]);
+        expect(appGlobal.options.accessToken).toBe("");
+        expect(appGlobal.options.refreshToken).toBe("");
+
+        const sync = await browser.storage.sync.get(null);
+        expect(sync).toMatchObject({ accessToken: "", refreshToken: "" });
+        const local = await browser.storage.local.get(["accessToken", "refreshToken"]);
+        expect(local).toMatchObject({ accessToken: "", refreshToken: "" });
     });
 
-    it("keeps the session alive on other failures", async () => {
+    it.each([429, 500, 503])("keeps the session and the tokens on a %i", async (status) => {
         appGlobal.options.refreshToken = "refresh";
-        appGlobal.feedlyApiClient = scriptedClient([{ reject: { status: 500 } }]);
+        appGlobal.feedlyApiClient = scriptedClient([{ reject: { status } }]);
 
-        await expect(ctx.refreshAccessToken()).rejects.toHaveProperty("status", 500);
+        await expect(ctx.refreshAccessToken()).rejects.toHaveProperty("status", status);
 
         expect(browser._calls.setIcon).toEqual([]);
+        expect(appGlobal.options.refreshToken).toBe("refresh");
+    });
+
+    /* Storing `undefined` over the token would make a one-off glitch permanent. */
+    it("rejects a grant that carries no token, without signing out", async () => {
+        appGlobal.options.accessToken = "stale";
+        appGlobal.options.refreshToken = "refresh";
+        appGlobal.feedlyApiClient = scriptedClient([{ resolve: { id: "u1" } }]);
+
+        await expect(ctx.refreshAccessToken()).rejects.toMatchObject({
+            message: "The refresh response contained no access token"
+        });
+
+        expect(appGlobal.options.accessToken).toBe("stale");
+        expect(appGlobal.options.refreshToken).toBe("refresh");
     });
 
     it("sends the refresh grant without the stale authorization header", async () => {
