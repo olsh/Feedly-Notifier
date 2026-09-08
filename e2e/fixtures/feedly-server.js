@@ -33,6 +33,7 @@ class FeedlyMockServer {
         this.subscriptions = [];
         this.categories = [];
         this.unreadCounts = [];
+        this.unreadCountsSinceReset = null;
         /** Stream id (decoded) to the items it should return. */
         this.streams = new Map();
     }
@@ -61,6 +62,15 @@ class FeedlyMockServer {
 
     setUnreadCounts(counts) {
         this.unreadCounts = Object.entries(counts).map(([id, count]) => ({ id, count }));
+    }
+
+    /**
+     * Counts to answer a `markers/counts?newerThan=...` with, which is how the extension
+     * asks for what has arrived since the counter was last reset. Left unset, a narrowed
+     * request gets the totals back, exactly as before.
+     */
+    setUnreadCountsSinceReset(counts) {
+        this.unreadCountsSinceReset = Object.entries(counts).map(([id, count]) => ({ id, count }));
     }
 
     /**
@@ -184,7 +194,10 @@ class FeedlyMockServer {
         }
 
         if (path === "markers/counts") {
-            return this.send(response, 200, { unreadcounts: this.unreadCounts });
+            const counts = url.searchParams.has("newerThan") && this.unreadCountsSinceReset
+                ? this.unreadCountsSinceReset
+                : this.unreadCounts;
+            return this.send(response, 200, { unreadcounts: counts });
         }
 
         // Marking as read, and saving or unsaving an entry.

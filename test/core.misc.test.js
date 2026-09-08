@@ -201,6 +201,53 @@ describe("markAsRead", () => {
         expect(browser._calls.setBadgeText.at(-1)).toBe("1k+");
     });
 
+    /*
+     * Issue #102: after a counter reset the badge is blank, so there is no number to
+     * decrement -- but reading the last unread article still has to gray the icon.
+     */
+    it("greys the icon when the last unread article is read after a reset", async () => {
+        appGlobal.options.grayIconColorIfNoUnread = true;
+        appGlobal.feedlyApiClient = { accessToken: "token", request: async () => ({}) };
+        // The badge is blank after a reset while one article is still unread.
+        ctx.setBadgeCounter(0, 1);
+        const iconCallsBefore = browser._calls.setIcon.length;
+
+        await ctx.markAsRead(["a"]);
+
+        expect(browser._calls.setIcon.slice(iconCallsBefore)).toEqual([appGlobal.icons.inactive]);
+    });
+
+    it("keeps the icon active while unread articles remain after a reset", async () => {
+        appGlobal.options.grayIconColorIfNoUnread = true;
+        appGlobal.feedlyApiClient = { accessToken: "token", request: async () => ({}) };
+        ctx.setBadgeCounter(0, 5);
+
+        await ctx.markAsRead(["a"]);
+
+        expect(browser._calls.setIcon.at(-1)).toEqual(appGlobal.icons.default);
+        expect(appGlobal.lastKnownUnreadCount).toBe(4);
+    });
+
+    it("never drives the remembered total below zero", async () => {
+        appGlobal.feedlyApiClient = { accessToken: "token", request: async () => ({}) };
+        ctx.setBadgeCounter(0, 1);
+
+        await ctx.markAsRead(["a", "b", "c"]);
+
+        expect(appGlobal.lastKnownUnreadCount).toBe(0);
+    });
+
+    /* A worker that has never counted must not grey the icon on the guess that zero
+       articles are left. */
+    it("leaves the icon alone when no total has been counted yet", async () => {
+        appGlobal.options.grayIconColorIfNoUnread = true;
+        appGlobal.feedlyApiClient = { accessToken: "token", request: async () => ({}) };
+
+        await ctx.markAsRead(["a"]);
+
+        expect(browser._calls.setIcon).toEqual([]);
+    });
+
     it("reports failure and keeps the cache when the request fails", async () => {
         appGlobal.feedlyApiClient = {
             accessToken: "token",

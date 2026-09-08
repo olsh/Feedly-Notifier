@@ -123,6 +123,13 @@ var appGlobal = {
     getUserSubscriptionsPromise: null,
     refreshAccessTokenPromise: null,
     rateLimitedUntil: 0,
+    /* The total number of unread articles, as opposed to the number on the badge. The two
+       differ once resetCounterOnClick is on: the badge counts what arrived since the reset,
+       while this is what the icon colour answers for (issue #102). null means nothing has
+       been counted yet, and the icon is then left alone rather than greyed on a guess.
+       Persisted, because the worker is recycled between the cycle that learns the count and
+       the click that acts on it. */
+    lastKnownUnreadCount: null,
     /* The statuses the token endpoint uses to say that the grant will never be accepted
        again: 400 invalid_grant for an expired or revoked refresh token, 401 and 403 for
        one that no longer belongs to this client. Anything else, 429 and 5xx included, is
@@ -766,8 +773,13 @@ async function filterByNewFeeds(feeds) {
     return newFeeds;
 }
 
+/* Blanks the badge and starts counting again from now. Only the number is reset: nothing
+   was read, so whether anything is unread has not changed and the icon is left exactly as
+   it is (issue #102). Deliberately not setBadgeCounter(0): this runs on the click that
+   woke the worker, so the total is often not in memory yet, and greying the icon on a zero
+   it does not have is the bug itself. */
 async function resetCounter(){
-    setBadgeCounter(0);
+    await browser.action.setBadgeText({ text: "" });
     await browser.storage.local.set({ lastCounterResetTime: new Date().getTime() });
 }
 
@@ -812,8 +824,15 @@ async function updateSavedFeeds() {
     }
 }
 
-/* Sets badge counter if unread feeds more than zero */
-function setBadgeCounter(unreadFeedsCount) {
+/* Sets badge counter if unread feeds more than zero.
+ * totalUnreadCount is what the icon follows, and defaults to the badge number for the
+ * callers that count everything. The two differ only under resetCounterOnClick, where the
+ * badge counts what arrived since the last reset. */
+function setBadgeCounter(unreadFeedsCount, totalUnreadCount) {
+    if (totalUnreadCount === undefined) {
+        totalUnreadCount = unreadFeedsCount;
+    }
+
     if (appGlobal.options.showCounter) {
         const unreadFeedsCountNumber = +unreadFeedsCount;
         if (unreadFeedsCountNumber > 999) {
@@ -825,11 +844,34 @@ function setBadgeCounter(unreadFeedsCount) {
         browser.action.setBadgeText({ text: ""});
     }
 
-    if (!unreadFeedsCount && appGlobal.options.grayIconColorIfNoUnread) {
+    setUnreadIcon(totalUnreadCount);
+}
+
+/* Green while anything is unread, gray when nothing is and the user asked for that.
+ * Deliberately not driven by the badge number: a counter reset blanks that while articles
+ * are still unread, and the icon has to keep saying so (issue #102). null means the total
+ * is not known, in which case the icon keeps whatever it was last told -- greying on a
+ * guess is the bug itself. */
+function setUnreadIcon(totalUnreadCount) {
+    if (totalUnreadCount === null || totalUnreadCount === undefined) {
+        return;
+    }
+
+    const unreadCount = +totalUnreadCount || 0;
+    rememberUnreadCount(unreadCount);
+
+    if (!unreadCount && appGlobal.options.grayIconColorIfNoUnread) {
         browser.action.setIcon({ path: appGlobal.icons.inactive });
     } else {
         browser.action.setIcon({ path: appGlobal.icons.default });
     }
+}
+
+/* Outlives the worker, so a click that wakes a fresh one still knows whether anything is
+ * unread. Fire and forget, the way the feed caches are written. */
+function rememberUnreadCount(unreadCount) {
+    appGlobal.lastKnownUnreadCount = unreadCount;
+    browser.storage.local.set({ lastKnownUnreadCount: unreadCount }).catch(function () {});
 }
 
 /* Runs feeds update and stores unread feeds in cache
@@ -843,11 +885,9 @@ async function updateCounter() {
     try {
         if (appGlobal.options.resetCounterOnClick) {
             const options = await browser.storage.local.get("lastCounterResetTime");
-            let parameters = null;
-            if (options.lastCounterResetTime) {
-                parameters = { newerThan: options.lastCounterResetTime };
-            }
-            await makeMarkersRequest(parameters);
+            await makeMarkersRequest(options.lastCounterResetTime
+                ? { newerThan: options.lastCounterResetTime }
+                : null);
         } else {
             await browser.storage.local.set({lastCounterResetTime: new Date(0).getTime()});
             await makeMarkersRequest();
@@ -863,6 +903,36 @@ async function updateCounter() {
 }
 
 async function makeMarkersRequest(parameters){
+    const unreadFeedsCount = await requestUnreadCount(parameters);
+
+    setBadgeCounter(unreadFeedsCount, await resolveTotalUnreadCount(unreadFeedsCount, parameters));
+}
+
+/* What the icon should answer for, given the number the badge is about to show. An
+ * un-narrowed count already is the total, and a narrowed count above zero already proves
+ * the total is above zero, so feedly is asked a second time only when the badge is empty
+ * because of a reset and the icon colour actually depends on the answer. Both options are
+ * off by default, so a default install never pays for this. */
+async function resolveTotalUnreadCount(unreadFeedsCount, parameters) {
+    if (!parameters?.newerThan || unreadFeedsCount > 0 || !appGlobal.options.grayIconColorIfNoUnread) {
+        return unreadFeedsCount;
+    }
+
+    try {
+        return await requestUnreadCount();
+    } catch (e) {
+        // Unknown, including a 429 that landed between the two requests. Reported as
+        // unknown rather than as zero, so the icon keeps the last colour it was given
+        // instead of greying over articles that are probably still unread -- and so the
+        // badge just counted stays, which updateCounter's catch would have thrown away.
+        console.info("Unable to load the total unread count.", e);
+        return null;
+    }
+}
+
+/* The number of unread articles feedly reports for the streams the user is watching.
+ * `parameters.newerThan` narrows it to what has arrived since the counter was reset. */
+async function requestUnreadCount(parameters){
     const response = await apiRequestWrapper("markers/counts", { parameters: parameters });
     const unreadCounts = response.unreadcounts || [];
     let unreadFeedsCount = 0;
@@ -905,7 +975,7 @@ async function makeMarkersRequest(parameters){
         }
     }
 
-    setBadgeCounter(unreadFeedsCount);
+    return unreadFeedsCount;
 }
 
 /* Runs feeds update and stores unread feeds in cache
@@ -1008,6 +1078,9 @@ function setInactiveStatus() {
     browser.action.setIcon({ path: appGlobal.icons.inactive });
     browser.action.setBadgeText({ text: ""});
     appGlobal.cachedFeeds = [];
+    // Signed out there is nothing unread to speak of, and a stale total must not keep the
+    // icon green for whoever signs in next.
+    rememberUnreadCount(0);
     appGlobal.isLoggedIn = false;
     stopSchedule();
 }
@@ -1245,11 +1318,21 @@ async function markAsRead(feedIds) {
         // Update storage with the modified cached feeds
         await browser.storage.local.set({ cachedFeeds: appGlobal.cachedFeeds }).catch(function () {});
 
+        /* The badge number and the icon answer different questions once the counter has
+           been reset: the badge may be blank, or abbreviated past parsing, while articles
+           are still unread. So the badge is only touched when its text is usable, while
+           the icon always follows the tracked total (issue #102). */
         let feedsCount = await browser.action.getBadgeText({});
         feedsCount = +feedsCount;
+        const remainingUnread = appGlobal.lastKnownUnreadCount === null
+            ? null
+            : Math.max(0, appGlobal.lastKnownUnreadCount - copyArray.length);
+
         if (feedsCount > 0) {
             feedsCount -= copyArray.length;
-            setBadgeCounter(feedsCount);
+            setBadgeCounter(feedsCount, remainingUnread);
+        } else {
+            setUnreadIcon(remainingUnread);
         }
         return true;
     } catch {
@@ -1515,12 +1598,18 @@ async function readOptions() {
     appGlobal.options.currentUiLanguage = browser.i18n.getUILanguage();
 
     // Preload cached feeds from local storage to serve immediately on popup open
-    const cache = await browser.storage.local.get(["cachedFeeds", "cachedSavedFeeds", "rateLimitedUntil"]).catch(function () { return {}; });
+    const cache = await browser.storage.local.get(["cachedFeeds", "cachedSavedFeeds", "rateLimitedUntil", "lastKnownUnreadCount"]).catch(function () { return {}; });
     appGlobal.cachedFeeds = Array.isArray(cache.cachedFeeds) ? cache.cachedFeeds : [];
     appGlobal.cachedSavedFeeds = Array.isArray(cache.cachedSavedFeeds) ? cache.cachedSavedFeeds : [];
 
     // The alarm wakes a fresh worker, so the cooldown has to come back from storage
     appGlobal.rateLimitedUntil = Number(cache.rateLimitedUntil) || 0;
+
+    // And so does the count the icon colour rests on, which a click can arrive before any
+    // update cycle has recomputed.
+    appGlobal.lastKnownUnreadCount = typeof cache.lastKnownUnreadCount === "number"
+        ? cache.lastKnownUnreadCount
+        : null;
 
     // If we have a token, treat as logged in until a request proves otherwise
     appGlobal.isLoggedIn = Boolean(appGlobal.options.accessToken);
