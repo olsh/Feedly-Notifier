@@ -206,13 +206,14 @@ function createBrowserMock(overrides) {
         }
     };
 
-    /* The two browsers expose different sidebar surfaces and core.js branches on which of
-       them exists, so the preprocess target picks the pair. Either can still be set by
-       hand: `sidePanel: false` on its own is a chromium with no implementation, which is
-       opera. */
-    const isFirefox = options.targetBrowser === "firefox";
-    const hasSidePanel = options.sidePanel === undefined ? !isFirefox : options.sidePanel;
-    const hasSidebarAction = options.sidebarAction === undefined ? isFirefox : options.sidebarAction;
+    /* Each target exposes a different sidebar surface and core.js branches on which of
+       them exists, so the target picks the pair: chromium has sidePanel, firefox has
+       sidebarAction, and opera -- which is handed the manifest keys but ships no
+       implementation, see the note in core.js -- has neither. Either can still be set by
+       hand for a browser that does not fit its family. */
+    const target = options.targetBrowser || "chrome";
+    const hasSidePanel = options.sidePanel === undefined ? target === "chrome" : options.sidePanel;
+    const hasSidebarAction = options.sidebarAction === undefined ? target === "firefox" : options.sidebarAction;
 
     if (hasSidePanel) {
         browser.sidePanel = {

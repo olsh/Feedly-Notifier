@@ -103,17 +103,20 @@ describe("side panel", () => {
             expect(browser._calls.setPopup).toContain("popup.html");
         });
 
-        /* Opera ships neither implementation, and core.js is shared with that build. The
-           default target is chrome, so the mock creates no sidebarAction either. */
+        /* Opera is handed the manifest keys but ships neither implementation, and core.js
+           is shared with that build, so the option has nothing to act on and the icon has
+           to keep the popup. */
         it("does nothing on a browser with neither implementation", async () => {
             const { browser, ready } = loadBackground({
-                sidePanel: false,
+                targetBrowser: "opera",
                 storage: { sync: { enableSidePanel: true } }
             });
 
             await ready();
 
             expect(browser._calls.setPopup).toContain("popup.html");
+            expect(browser._calls.sidePanelOptions).toEqual([]);
+            expect(browser._calls.sidebarToggled).toEqual([]);
         });
     });
 
