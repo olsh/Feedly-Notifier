@@ -4,48 +4,13 @@ const os = require("node:os");
 
 const base = require("@playwright/test");
 
-const { FeedlyMockServer } = require("./feedly-server");
+const { mockApiFixture } = require("./feedly-server");
 const { USER_ID } = require("./feed-items");
-
-const PROJECT_ROOT = path.resolve(__dirname, "../..");
-const BUILD_DIR = path.join(PROJECT_ROOT, "build");
-
-/**
- * Rewrites the API scheme in the built extension from https to http, so the
- * plain-HTTP mock server can answer.
- *
- * Only the scheme changes -- the host stays cloud.feedly.com, which is what
- * lets the shipped `*://*.feedly.com/*` host permission keep working and keeps
- * the manifest untouched. `--host-resolver-rules` then sends that host to the
- * mock. Idempotent, so repeated runs over one build are safe.
- */
-function pointBuildAtMockServer() {
-    const apiFile = path.join(BUILD_DIR, "scripts", "feedly.api.js");
-
-    if (!fs.existsSync(apiFile)) {
-        throw new Error(
-            `Built extension not found at ${BUILD_DIR}. Run \`npm run build:e2e\` first.`
-        );
-    }
-
-    const source = fs.readFileSync(apiFile, "utf8");
-    // Downgrading to plain HTTP is the point: it lets the loopback mock answer
-    // without a self-signed certificate. Test builds only, never shipped.
-    const rewritten = source.replace("https://cloud.feedly.com/v3/", "http://cloud.feedly.com/v3/"); // NOSONAR
-
-    if (rewritten !== source) {
-        fs.writeFileSync(apiFile, rewritten);
-    }
-}
+const { PROJECT_ROOT, BUILD_DIR, pointBuildAtMockServer } = require("./build");
 
 const test = base.test.extend({
     /** A mock Feedly API on an ephemeral port, reset for every test. */
-    mockApi: async ({}, use) => {
-        const server = new FeedlyMockServer();
-        await server.start();
-        await use(server);
-        await server.stop();
-    },
+    mockApi: mockApiFixture,
 
     /**
      * A persistent context with the unpacked extension loaded.
@@ -55,7 +20,7 @@ const test = base.test.extend({
      * work headless, so CI needs no xvfb.
      */
     context: async ({ mockApi }, use) => {
-        pointBuildAtMockServer();
+        pointBuildAtMockServer(BUILD_DIR);
 
         const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "feedly-notifier-e2e-"));
         const context = await base.chromium.launchPersistentContext(userDataDir, {

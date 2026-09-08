@@ -18,6 +18,7 @@
     "grunt-zip": "^1.0.0",
     "jsdom": "^30.0.1",
     "preprocess": "^3.2.0",
+    "selenium-webdriver": "^4.48.0",
     "vitest": "^5.0.0"
   },
   "repository": {
@@ -45,8 +46,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "build:e2e": "grunt clean:pre-build default --browser=chrome --clientId=e2e-client-id --clientSecret=e2e-client-secret",
+    "build:e2e": "npm run build:e2e:chromium && npm run build:e2e:firefox",
+    "build:e2e:chromium": "grunt clean:pre-build default --browser=chrome --clientId=e2e-client-id --clientSecret=e2e-client-secret",
+    "build:e2e:firefox": "grunt clean:pre-build default --browser=firefox --buildPath=build-firefox --clientId=e2e-client-id --clientSecret=e2e-client-secret",
     "test:e2e": "playwright test",
+    "test:e2e:chromium": "playwright test --project=chromium-extension",
+    "test:e2e:firefox": "playwright test --project=firefox-extension",
     "test:e2e:headed": "playwright test --headed"
   }
 }

@@ -197,4 +197,16 @@ function safeParse(text) {
     }
 }
 
-module.exports = { FeedlyMockServer };
+/**
+ * The `mockApi` playwright fixture, shared by both harnesses so they cannot drift.
+ * Deliberately not importing playwright: a fixture body is a plain function, and this
+ * file is the one part of the suite that knows nothing about the browser driving it.
+ */
+const mockApiFixture = async ({}, use) => {
+    const server = new FeedlyMockServer();
+    await server.start();
+    await use(server);
+    await server.stop();
+};
+
+module.exports = { FeedlyMockServer, mockApiFixture };

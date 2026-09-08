@@ -57,8 +57,8 @@ jobs:
             - run: ./node_modules/.bin/addons-linter build/feedly-notifier-firefox.zip
 
     # Kept separate from `test`: this job needs a Playwright browser download and
-    # a different build, and it is worth seeing which of the two failed. The build
-    # uses dummy credentials rather than the repository secrets, because the
+    # different builds, and it is worth seeing which of the two failed. The builds
+    # use dummy credentials rather than the repository secrets, because the
     # suite never exercises the real OAuth flow -- which also lets it run on
     # pull requests from forks.
     e2e:
@@ -84,7 +84,17 @@ jobs:
             # package on demand. Browsers are installed by the next step, so
             # nothing here depends on a postinstall hook.
             - run: npm ci --ignore-scripts
+
+            # Only chromium is downloaded. The firefox project drives the firefox and
+            # geckodriver the runner image already ships, which e2e/fixtures/
+            # firefox-driver.js prefers through $GECKOWEBDRIVER so selenium-manager
+            # never has to fetch one. Printing the versions makes image drift show up
+            # in the log rather than as a mystery failure.
             - run: ./node_modules/.bin/playwright install --with-deps chromium
+            - run: firefox --version && "$GECKOWEBDRIVER/geckodriver" --version
+
+            # Builds and runs both projects: chromium into build/, firefox into
+            # build-firefox/.
             - run: npm run build:e2e
             - run: npm run test:e2e
 

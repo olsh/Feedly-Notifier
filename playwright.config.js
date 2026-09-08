@@ -35,7 +35,25 @@ module.exports = defineConfig({
             name: "chromium-extension",
             // MV3 extensions load only in Playwright's bundled Chromium;
             // Chrome and Edge dropped the side-loading flags.
-            use: { channel: "chromium" }
+            use: { channel: "chromium" },
+            // e2e/firefox drives selenium rather than a playwright context, so it is a
+            // project of its own rather than a second browser here.
+            testIgnore: "**/firefox/**"
+        },
+        {
+            /*
+             * Playwright has no firefox extension api at all, so this project uses the
+             * runner only: the specs drive a geckodriver session through
+             * selenium-webdriver. trace, video and screenshot-on-failure above all hang
+             * off a playwright browser context and never fire here --
+             * e2e/fixtures/firefox-extension.js attaches a screenshot and the mock's
+             * request log by hand instead.
+             */
+            name: "firefox-extension",
+            testDir: "./e2e/firefox",
+            // Launching firefox and installing a temporary add-on costs several seconds
+            // before a spec reaches its first assertion.
+            timeout: 60000
         }
     ]
 });
