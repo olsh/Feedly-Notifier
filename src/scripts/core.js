@@ -833,8 +833,9 @@ function setBadgeCounter(unreadFeedsCount, totalUnreadCount) {
         totalUnreadCount = unreadFeedsCount;
     }
 
+    const unreadFeedsCountNumber = +unreadFeedsCount;
+
     if (appGlobal.options.showCounter) {
-        const unreadFeedsCountNumber = +unreadFeedsCount;
         if (unreadFeedsCountNumber > 999) {
             const thousands = Math.floor(unreadFeedsCountNumber / 1000);
             unreadFeedsCount = thousands + "k+";
@@ -844,31 +845,48 @@ function setBadgeCounter(unreadFeedsCount, totalUnreadCount) {
         browser.action.setBadgeText({ text: ""});
     }
 
-    setUnreadIcon(totalUnreadCount);
+    // A badge number above zero proves something is unread even when the exact total is
+    // not known, which is the whole of what the icon needs to stay green.
+    setUnreadIcon(totalUnreadCount, unreadFeedsCountNumber > 0);
 }
 
 /* Green while anything is unread, gray when nothing is and the user asked for that.
- * Deliberately not driven by the badge number: a counter reset blanks that while articles
- * are still unread, and the icon has to keep saying so (issue #102). null means the total
- * is not known, in which case the icon keeps whatever it was last told -- greying on a
- * guess is the bug itself. */
-function setUnreadIcon(totalUnreadCount) {
-    if (totalUnreadCount === null || totalUnreadCount === undefined) {
+ *
+ * Deliberately not driven by the badge number alone: a counter reset blanks that while
+ * articles are still unread, and the icon has to keep saying so (issue #102).
+ * `totalUnreadCount` is the exact total, or null when only a lower bound is available --
+ * the reset-relative case, where `atLeastOneUnread` can still turn the icon green without
+ * anything exact being remembered for markAsRead to decrement. With neither, the icon
+ * keeps whatever it was last told: greying on a guess is the bug this exists to avoid. */
+function setUnreadIcon(totalUnreadCount, atLeastOneUnread) {
+    const exactTotal = totalUnreadCount === null || totalUnreadCount === undefined
+        ? null
+        : +totalUnreadCount || 0;
+
+    rememberUnreadCount(exactTotal);
+
+    if (!appGlobal.options.grayIconColorIfNoUnread) {
+        browser.action.setIcon({ path: appGlobal.icons.default });
         return;
     }
 
-    const unreadCount = +totalUnreadCount || 0;
-    rememberUnreadCount(unreadCount);
-
-    if (!unreadCount && appGlobal.options.grayIconColorIfNoUnread) {
-        browser.action.setIcon({ path: appGlobal.icons.inactive });
-    } else {
-        browser.action.setIcon({ path: appGlobal.icons.default });
+    if (exactTotal === null) {
+        // Only a lower bound to go on. It can turn the icon green, but it can never grey
+        // it: not knowing of anything unread is not the same as knowing of nothing.
+        if (atLeastOneUnread) {
+            browser.action.setIcon({ path: appGlobal.icons.default });
+        }
+        return;
     }
+
+    browser.action.setIcon({
+        path: exactTotal > 0 ? appGlobal.icons.default : appGlobal.icons.inactive
+    });
 }
 
 /* Outlives the worker, so a click that wakes a fresh one still knows whether anything is
- * unread. Fire and forget, the way the feed caches are written. */
+ * unread. null is "not known", which markAsRead must not decrement as though it were a
+ * count. Fire and forget, the way the feed caches are written. */
 function rememberUnreadCount(unreadCount) {
     appGlobal.lastKnownUnreadCount = unreadCount;
     browser.storage.local.set({ lastKnownUnreadCount: unreadCount }).catch(function () {});
@@ -908,14 +926,22 @@ async function makeMarkersRequest(parameters){
     setBadgeCounter(unreadFeedsCount, await resolveTotalUnreadCount(unreadFeedsCount, parameters));
 }
 
-/* What the icon should answer for, given the number the badge is about to show. An
- * un-narrowed count already is the total, and a narrowed count above zero already proves
- * the total is above zero, so feedly is asked a second time only when the badge is empty
- * because of a reset and the icon colour actually depends on the answer. Both options are
- * off by default, so a default install never pays for this. */
+/* The exact unread total, or null when this cycle cannot know it.
+ *
+ * An un-narrowed count already is the total. A narrowed one never is -- it is a lower
+ * bound, and reporting it as a total would have markAsRead decrement it as one, greying
+ * the icon over the articles that were already unread before the reset. So feedly is asked
+ * a second time, but only when the answer is worth a request: a narrowed count above zero
+ * already proves the total is above zero, which is all the icon needs, and with greying off
+ * the colour does not depend on the total at all. Both options are off by default, so a
+ * default install never pays for this. */
 async function resolveTotalUnreadCount(unreadFeedsCount, parameters) {
-    if (!parameters?.newerThan || unreadFeedsCount > 0 || !appGlobal.options.grayIconColorIfNoUnread) {
+    if (!parameters?.newerThan) {
         return unreadFeedsCount;
+    }
+
+    if (unreadFeedsCount > 0 || !appGlobal.options.grayIconColorIfNoUnread) {
+        return null;
     }
 
     try {

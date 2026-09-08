@@ -82,13 +82,32 @@ describe("setBadgeCounter", () => {
 
     /* Greying on a total nobody has counted is the bug, so an unknown one leaves the icon
        showing whatever it was last told. */
-    it("leaves the icon alone when the total is unknown", () => {
+    it("leaves the icon alone when nothing at all is known", () => {
+        appGlobal.options.grayIconColorIfNoUnread = true;
+
+        ctx.setBadgeCounter(0, null);
+
+        expect(browser._calls.setBadgeText).toEqual([""]);
+        expect(browser._calls.setIcon).toEqual([]);
+    });
+
+    /* A badge number is a lower bound on the total: it cannot say how much is unread, but
+       it does prove that something is. */
+    it("keeps the icon active on the badge number alone when the total is unknown", () => {
         appGlobal.options.grayIconColorIfNoUnread = true;
 
         ctx.setBadgeCounter(5, null);
 
         expect(browser._calls.setBadgeText).toEqual(["5"]);
-        expect(browser._calls.setIcon).toEqual([]);
+        expect(browser._calls.setIcon).toEqual([appGlobal.icons.default]);
+    });
+
+    /* markAsRead decrements the remembered total as an exact count, so a lower bound must
+       never be remembered as one. */
+    it("remembers nothing when the total is unknown", () => {
+        ctx.setBadgeCounter(5, null);
+
+        expect(appGlobal.lastKnownUnreadCount).toBeNull();
     });
 
     /* The worker is recycled between the cycle that counts and the click that acts on the
@@ -376,6 +395,35 @@ describe("updateCounter", () => {
         expect(browser._calls.setIcon.at(-1)).toEqual(appGlobal.icons.default);
     });
 
+    /*
+     * A narrowed count is a lower bound, not a total. Remembering it as one would have
+     * markAsRead decrement it to zero and grey the icon over the articles that were
+     * already unread before the reset -- issue #102 again, by a different route.
+     */
+    it("does not remember a narrowed count as the total", async () => {
+        await enableResetAndGreying();
+        stubCounts({ total: 42, newer: 3 });
+
+        await ctx.updateCounter();
+
+        expect(browser._calls.setBadgeText.at(-1)).toBe("3");
+        expect(appGlobal.lastKnownUnreadCount).toBeNull();
+    });
+
+    it("keeps the icon active when only the newly arrived articles are read", async () => {
+        await enableResetAndGreying();
+        // 42 unread overall, 3 of which arrived since the reset.
+        stubCounts({ total: 42, newer: 3 });
+        await ctx.updateCounter();
+
+        appGlobal.cachedFeeds = [{ id: "a" }, { id: "b" }, { id: "c" }];
+        appGlobal.feedlyApiClient = { accessToken: "token", request: async () => ({}) };
+        await ctx.markAsRead(["a", "b", "c"]);
+
+        expect(browser._calls.setBadgeText.at(-1)).toBe("");
+        expect(browser._calls.setIcon).not.toContain(appGlobal.icons.inactive);
+    });
+
     it("spends no second request when the icon never greys", async () => {
         appGlobal.options.resetCounterOnClick = true;
         await browser.storage.local.set({ lastCounterResetTime: RESET_TIME });
@@ -389,7 +437,8 @@ describe("updateCounter", () => {
 
     /* The badge has just been counted correctly, so a failed total must not reach
        updateCounter's catch and throw it away, nor grey the icon over articles that are
-       probably still unread. */
+       probably still unread. The previous total goes back to unknown rather than being
+       kept: it is a cycle old, and markAsRead would decrement it as though it were not. */
     it("leaves the icon alone when the total request fails", async () => {
         await enableResetAndGreying();
         ctx.setBadgeCounter(9);
@@ -400,7 +449,7 @@ describe("updateCounter", () => {
 
         expect(browser._calls.setBadgeText.at(-1)).toBe("");
         expect(browser._calls.setIcon.length).toBe(iconCallsBefore);
-        expect(appGlobal.lastKnownUnreadCount).toBe(9);
+        expect(appGlobal.lastKnownUnreadCount).toBeNull();
     });
 
     /* A 429 on the second request still has to record the cooldown, and still must not
