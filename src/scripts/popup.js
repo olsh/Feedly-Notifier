@@ -378,17 +378,27 @@ async function markAsRead(feedIds) {
 
     feedItems.attr("data-is-read", "true");
 
-    const closePopup = options.closePopupWhenLastFeedIsRead;
+    /* Only the still unread items are counted, and fadeOut removes the ones just read,
+       so this answer cannot change across the await below. */
+    const allRead = $("#feed").find(".item[data-is-read!='true']").length === 0;
+    const closePopup = allRead && options.closePopupWhenLastFeedIsRead;
+
     //Show loader if all feeds were read
-    if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
-        if (closePopup) {
-            window.close();
-        } else {
-            showLoader();
-        }
+    if (allRead && !closePopup) {
+        showLoader();
     }
+
+    /* window.close() tears the document down and takes any request that has not been
+       handed to the worker yet with it, so it has to wait until the worker has taken the
+       batch -- otherwise the articles come back unread on the next update (issue #393). */
     await bg.send("markAsRead", { feedIds: feedIds });
-    if ($("#feed").find(".item[data-is-read!='true']").length === 0) {
+
+    if (closePopup) {
+        window.close();
+        return;
+    }
+
+    if (allRead) {
         renderFeeds();
     } else {
         setLastVisibleItems();
@@ -500,8 +510,9 @@ function setTheme() {
     }
 }
 
-function openFeedlyTab() {
-    bg.send("openFeedlyTab");
+async function openFeedlyTab() {
+    // Closing the popup would take an unsent request with it -- see markAsRead (issue #393).
+    await bg.send("openFeedlyTab");
 
     // Close the popup since the user wants to see Feedly website anyway
     window.close();
