@@ -186,15 +186,21 @@ describe("manifest.json", () => {
     });
 
     /*
-     * The side panel page is named twice -- once for the browser to read before
-     * the worker has ever run, once for core.js to reopen it afterwards -- and
-     * nothing in the build compares the two. See the note above SIDE_PANEL_PATH.
+     * The panel page is declared once per target -- side_panel.default_path on chromium,
+     * sidebar_action.default_panel on firefox -- and once more as SIDE_PANEL_PATH, which
+     * chromium reopens it with and which is the only written statement of the ?panel=1
+     * marker popup.js lays itself out on. Nothing in the build compares any of them, and
+     * a firefox sidebar pointed at a path without the marker would silently render as the
+     * toolbar popup inside the sidebar frame. See the note above SIDE_PANEL_PATH.
      */
-    it("points the side panel at the path core.js opens", () => {
+    it.each([
+        ["chrome", (manifest) => manifest.side_panel.default_path],
+        ["opera", (manifest) => manifest.side_panel.default_path],
+        ["firefox", (manifest) => manifest.sidebar_action.default_panel]
+    ])("points %s's panel at the path core.js names", (targetBrowser, declaredPath) => {
         const coreSource = readFileSync(path.join(projectRoot, "src/scripts/core.js"), "utf8");
-        const manifest = readManifest("chrome");
 
-        expect(coreSource).toContain(`SIDE_PANEL_PATH = "${manifest.side_panel.default_path}"`);
+        expect(coreSource).toContain(`SIDE_PANEL_PATH = "${declaredPath(readManifest(targetBrowser))}"`);
     });
 });
 

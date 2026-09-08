@@ -196,8 +196,6 @@ describe("firefox event page", () => {
     it("boots from the manifest's background.scripts", async () => {
         const { browser, appGlobal, onMessage, ready } = loadBackground({
             targetBrowser: "firefox",
-            sidePanel: false,
-            sidebarAction: true,
             storage: { sync: { accessToken: "token", feedlyUserId: "u1" } }
         });
         appGlobal.feedlyApiClient = {
@@ -210,17 +208,18 @@ describe("firefox event page", () => {
         await expect(onMessage({ type: "getState" })).resolves.toMatchObject({ isLoggedIn: true });
     });
 
-    /* No sidePanel surface to configure, so the icon has to keep opening the popup. */
-    it("keeps the popup, having no side panel to replace it with", async () => {
+    /* No sidePanel API, but a sidebar the toolbar icon can toggle, so the popup gives way
+       to it exactly as it does on chromium. The behaviour itself belongs to
+       test/core.side-panel.test.js; this only proves the event page reaches it. */
+    it("gives the icon to the sidebar instead of the popup", async () => {
         const { browser, ready } = loadBackground({
             targetBrowser: "firefox",
-            sidePanel: false,
-            sidebarAction: true,
             storage: { sync: { enableSidePanel: true } }
         });
 
         await ready();
 
-        expect(browser._calls.setPopup).toContain("popup.html");
+        expect(browser._calls.setPopup).toContain("");
+        expect(browser._calls.sidePanelOptions).toEqual([]);
     });
 });

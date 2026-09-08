@@ -96,7 +96,9 @@ function createBrowserMock(overrides) {
         messagesSent: [],
         sidePanelOptions: [],
         sidePanelBehavior: [],
-        sidePanelOpened: []
+        sidePanelOpened: [],
+        //toggle() takes no arguments, so these entries only count the calls.
+        sidebarToggled: []
     };
 
     let badgeText = "";
@@ -204,9 +206,15 @@ function createBrowserMock(overrides) {
         }
     };
 
-    /* Chromium-only surfaces. Omitted when simulating Firefox, which has sidebarAction
-       instead, and when simulating a Chromium without a side panel implementation. */
-    if (options.sidePanel !== false) {
+    /* The two browsers expose different sidebar surfaces and core.js branches on which of
+       them exists, so the preprocess target picks the pair. Either can still be set by
+       hand: `sidePanel: false` on its own is a chromium with no implementation, which is
+       opera. */
+    const isFirefox = options.targetBrowser === "firefox";
+    const hasSidePanel = options.sidePanel === undefined ? !isFirefox : options.sidePanel;
+    const hasSidebarAction = options.sidebarAction === undefined ? isFirefox : options.sidebarAction;
+
+    if (hasSidePanel) {
         browser.sidePanel = {
             setOptions: async (panelOptions) => {
                 calls.sidePanelOptions.push(panelOptions);
@@ -226,9 +234,15 @@ function createBrowserMock(overrides) {
         };
     }
 
-    if (options.sidebarAction) {
+    if (hasSidebarAction) {
         browser.sidebarAction = {
-            isOpen: async () => Boolean(options.sidebarOpen)
+            toggle: () => {
+                calls.sidebarToggled.push({});
+                if (options.sidebarToggleFails) {
+                    //What firefox throws once the user gesture has been spent.
+                    throw new Error("sidebarAction.toggle may only be called from a user input handler");
+                }
+            }
         };
     }
 

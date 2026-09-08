@@ -86,6 +86,33 @@ function runBackgroundScripts(ctx, names, targetBrowser) {
     EXPOSE_LEXICALS.runInContext(ctx);
 }
 
+/**
+ * A synchronous, in-memory Storage.
+ *
+ * Firefox's background is an event page rather than a service worker, so it has a real
+ * localStorage -- the only thing core.js can read before its first await, and therefore
+ * the only place the toolbar icon's meaning survives a suspension. Pass one instance to
+ * two loadBackground calls to model one profile across a suspend and a wake.
+ */
+function createLocalStorageStub(initial) {
+    const data = { ...initial };
+
+    return {
+        getItem: (key) => (Object.hasOwn(data, key) ? data[key] : null),
+        setItem: (key, value) => {
+            data[key] = String(value);
+        },
+        removeItem: (key) => {
+            delete data[key];
+        },
+        clear: () => {
+            for (const key of Object.keys(data)) {
+                delete data[key];
+            }
+        }
+    };
+}
+
 function createSandbox(browser, options) {
     return {
         browser,
@@ -104,6 +131,9 @@ function createSandbox(browser, options) {
         Date,
         URL,
         URLSearchParams,
+        // Only firefox reaches it -- core.js guards on browser.sidebarAction -- but a
+        // default keeps a test that forgets to pass one from failing obscurely.
+        localStorage: options.localStorage || createLocalStorageStub(),
         Audio: options.Audio
     };
 }
@@ -241,4 +271,12 @@ function loadApiClient(options = {}) {
     return { ctx, browser, FeedlyApiClient: ctx.FeedlyApiClient };
 }
 
-export { loadCore, loadBackground, loadApiClient, readManifest, projectRoot, scriptsDir };
+export {
+    loadCore,
+    loadBackground,
+    loadApiClient,
+    createLocalStorageStub,
+    readManifest,
+    projectRoot,
+    scriptsDir
+};

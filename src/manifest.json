@@ -50,7 +50,10 @@
             "38": "/images/icon38.png"
         },
         "default_title": "Feedly Notifier",
-        "default_panel": "popup.html",
+        // The same ?panel=1 marker chromium's side_panel.default_path carries: it is how
+        // popup.js tells the sidebar document from the toolbar popup, whichever browser
+        // opened it. Pinned against core.js by test/preprocess.test.js.
+        "default_panel": "popup.html?panel=1",
         "open_at_install": false
     },
     // @endif

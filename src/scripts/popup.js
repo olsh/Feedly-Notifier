@@ -14,19 +14,20 @@ const bg = {
 let options = {};
 let environment = { os: "" };
 
+/* The layout for the page rendered as a panel rather than as the toolbar popup. Chromium's
+   side panel and firefox's sidebar both size the frame themselves and both let the user
+   drag it wider, so the fixed dimensions the popup relies on give way to percentages --
+   without the widths, the inline-flex body in style.css shrink-wraps to its 380px minimum
+   and leaves the rest of a widened panel empty. */
 function applySidebarLayout() {
     $(document.body).css("font-size", "12pt");
+    $(document.body).css("width", "100%");
     $("html").height("100%");
     $("html").css("min-height", "600px");
     $("#popup-body").css("min-height", "600px");
     $("#popup-body").height("100%");
     $("#popup-body").css("max-height", "100%");
     $("#popup-content").css("max-height", "100%");
-}
-
-function applySidePanelLayout() {
-    applySidebarLayout();
-    $(document.body).css("width", "100%");
     $("#popup-content").css("width", "100%");
 }
 
@@ -48,10 +49,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         $("#popup-content").addClass("tabs");
     }
 
+    //Both browsers point their panel at popup.html?panel=1, so the marker is per document
+    //and says what this page IS. sidebarAction.isOpen, which firefox used to use here,
+    //only says whether a sidebar is open somewhere in the window -- with one open, the
+    //toolbar popup was laying itself out as a sidebar too.
     const isSidePanel = new URLSearchParams(window.location.search).get("panel") === "1";
     if (isSidePanel) {
         popupGlobal.isSidebar = true;
-        applySidePanelLayout();
+        applySidebarLayout();
     }
 
     // @if BROWSER='chrome'
@@ -59,14 +64,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     //onResizeChrome would freeze it at the height of the first resize.
     if (!isSidePanel) {
         window.addEventListener("resize", onResizeChrome);
-    }
-    // @endif
-
-    // @if BROWSER='firefox'
-    const isFirefoxSidebar = browser.sidebarAction.isOpen && await browser.sidebarAction.isOpen({});
-    if (isFirefoxSidebar) {
-        popupGlobal.isSidebar = true;
-        applySidebarLayout();
     }
     // @endif
 
