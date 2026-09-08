@@ -113,6 +113,10 @@ var appGlobal = {
     cachedSavedFeeds: [],
     notifications: {},
     isLoggedIn: false,
+    /* Whether readOptions has ever finished. Firefox delivers the click that wakes the
+       event page before storage has answered, so the action.onClicked listener has to
+       tell "the option is off" from "nobody has looked yet" without awaiting. */
+    optionsLoaded: false,
     intervalIds: [],
     clientId: "",
     clientSecret: "",
@@ -349,9 +353,15 @@ const scheduleWebsiteUpdate = createWebsiteUpdateThrottle(runWebsiteUpdate);
 const scheduleSavedFeedsUpdate = createWebsiteUpdateThrottle(runSavedFeedsUpdate);
 
 browser.action.onClicked.addListener(function (tab) {
-    //The side panel may only be opened from within the user gesture, which any
-    //preceding await destroys, so try it before the options are read from storage.
-    if (appGlobal.options.enableSidePanel && openSidePanel(tab)) {
+    //The side panel and the sidebar may only be opened from within the user gesture,
+    //which any preceding await destroys, so this has to decide before the options are
+    //read from storage. On firefox they routinely have not been: the click is what woke
+    //the event page, so fall back to what the last initialize() recorded.
+    const opensSidePanel = appGlobal.optionsLoaded
+        ? appGlobal.options.enableSidePanel
+        : iconOpensSidebar();
+
+    if (opensSidePanel && openSidePanel(tab)) {
         return;
     }
 
@@ -397,10 +407,53 @@ async function initialize(immediate) {
     startSchedule(appGlobal.options.updateInterval, immediate);
 }
 
-/* The page the browser loads into its sidebar. Must stay in sync with the
-   side_panel.default_path key in manifest.json: the manifest is what makes the browser
-   list the extension before the worker has ever run, this is what it uses afterwards. */
+/* The page the browser loads into its sidebar. Must stay in sync with three declarations
+   in manifest.json -- side_panel.default_path on chromium, sidebar_action.default_panel
+   on firefox, and the ?panel=1 marker popup.js switches its layout on. The manifest is
+   what makes the browser list the extension before the background has ever run, this is
+   what chromium reopens it with afterwards. test/preprocess.test.js pins them together. */
 const SIDE_PANEL_PATH = "popup.html?panel=1";
+
+/* What the toolbar icon does, in the one place a firefox event page can read before it
+   has awaited anything.
+
+   Firefox suspends the event page after ~30 seconds idle, and the click that wakes it is
+   delivered before storage has answered -- browser.storage is asynchronous and there is
+   nothing synchronous to read it from. Without this, the guard in the onClicked listener
+   would see the in-memory default, fall through to handleActionClick, and lose the user
+   gesture to its await, so the first click after every suspension would do nothing at
+   all. Chromium never needs it: there the browser opens the panel by itself.
+
+   localStorage is a poor place for extension data because firefox clears it along with
+   the user's browsing history, which is why nothing but this one derived flag lives here.
+   A wipe costs a single click, and the wake that click causes rewrites the value on its
+   way through initialize(). */
+const ICON_OPENS_SIDEBAR_KEY = "iconOpensSidebar";
+
+function rememberIconOpensSidebar(opensSidebar) {
+    try {
+        localStorage.setItem(ICON_OPENS_SIDEBAR_KEY, opensSidebar ? "1" : "0");
+    } catch (e) {
+        //DOM storage can be switched off browser-wide. Costs the first click after each
+        //suspension, nothing else.
+        console.info("Unable to remember what the toolbar icon opens", e);
+    }
+
+    return opensSidebar;
+}
+
+function iconOpensSidebar() {
+    //Chromium has no sidebarAction, no localStorage in a worker, and no need for either.
+    if (!browser.sidebarAction) {
+        return false;
+    }
+
+    try {
+        return localStorage.getItem(ICON_OPENS_SIDEBAR_KEY) === "1";
+    } catch {
+        return false;
+    }
+}
 
 /* Registers the side panel and reports whether the toolbar icon now opens it.
 
@@ -411,7 +464,7 @@ const SIDE_PANEL_PATH = "popup.html?panel=1";
 async function configureSidePanel() {
     //Firefox has sidebar_action instead, and Opera ships no implementation at all.
     if (!browser.sidePanel) {
-        return false;
+        return configureSidebarAction();
     }
 
     const opensOnActionClick = Boolean(appGlobal.options.enableSidePanel);
@@ -432,9 +485,38 @@ async function configureSidePanel() {
     return opensOnActionClick;
 }
 
-/* Opens the side panel for the clicked tab. Deliberately not async, awaiting the call
-   would move it out of the user gesture that the browser requires. */
+/* Firefox's sidebar needs no registration -- the manifest's sidebar_action is the whole
+   of it, and unlike chromium there is no per-window enable to get wrong -- so this only
+   records the answer the click handler needs before it is able to await. */
+function configureSidebarAction() {
+    if (!browser.sidebarAction) {
+        return false;
+    }
+
+    return rememberIconOpensSidebar(Boolean(appGlobal.options.enableSidePanel));
+}
+
+/* Opens chromium's side panel for the clicked tab, or toggles firefox's sidebar.
+   Deliberately not async, awaiting the call would move it out of the user gesture that
+   both browsers require. Answers whether the click was consumed. */
 function openSidePanel(tab) {
+    if (browser.sidebarAction) {
+        try {
+            //Toggle rather than open: with the popup gone the icon is the only way in, so
+            //the second click has to close what the first one opened. A spent gesture is
+            //refused synchronously rather than by a rejected promise.
+            Promise.resolve(browser.sidebarAction.toggle()).catch(function (e) {
+                console.info("Unable to toggle the sidebar", e);
+            });
+        } catch (e) {
+            console.info("Unable to toggle the sidebar", e);
+        }
+
+        //Consumed either way. Falling through would open feedly.com in a tab instead,
+        //which is a stranger answer to "show me the sidebar" than doing nothing.
+        return true;
+    }
+
     if (!browser.sidePanel) {
         return false;
     }
@@ -1442,6 +1524,7 @@ async function readOptions() {
 
     // If we have a token, treat as logged in until a request proves otherwise
     appGlobal.isLoggedIn = Boolean(appGlobal.options.accessToken);
+    appGlobal.optionsLoaded = true;
 }
 
 async function apiRequestWrapper(methodName, settings) {

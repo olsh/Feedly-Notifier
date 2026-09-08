@@ -50,14 +50,37 @@
             "38": "/images/icon38.png"
         },
         "default_title": "Feedly Notifier",
-        "default_panel": "popup.html",
+        // The same ?panel=1 marker chromium's side_panel.default_path carries: it is how
+        // popup.js tells the sidebar document from the toolbar popup, whichever browser
+        // opened it. Pinned against core.js by test/preprocess.test.js.
+        "default_panel": "popup.html?panel=1",
         "open_at_install": false
     },
     // @endif
 
+    // @if BROWSER!='firefox'
     "background": {
         "service_worker": "scripts/background.js"
     },
+    // @endif
+    // @if BROWSER='firefox'
+    // An event page rather than a worker: firefox has never supported extension
+    // service workers. The list is what background.js pulls in with importScripts
+    // on chromium, plus itself, and the order is load-bearing -- core.js builds a
+    // FeedlyApiClient while loading, and background.js calls into core.js while it
+    // is still evaluating. Declaring service_worker here as well is the documented
+    // cross-browser shape, but chrome refuses to load an MV3 extension carrying
+    // background.scripts until 121 and minimum_chrome_version below is 116.
+    // test/preprocess.test.js pins this list against the importScripts call.
+    "background": {
+        "scripts": [
+            "scripts/browser-polyfill.min.js",
+            "scripts/feedly.api.js",
+            "scripts/core.js",
+            "scripts/background.js"
+        ]
+    },
+    // @endif
 
     "icons": {
         "16": "/images/icon16.png",
@@ -78,10 +101,29 @@
     "minimum_chrome_version": "116",
     // @endif
     // @if BROWSER='firefox'
-    "applications": {
+    "browser_specific_settings": {
         "gecko": {
-            "strict_min_version": "115.0",
-            "id": "jid1-BOjn8b0IM7kH2w@jetpack"
+            "id": "jid1-BOjn8b0IM7kH2w@jetpack",
+            // 128 is the first release that understands optional_host_permissions,
+            // and the first ESR where the manifest host permissions are granted at
+            // install rather than left for the user to find.
+            "strict_min_version": "128.0",
+            // "none" rather than authenticationInfo, which an automated reviewer has
+            // already argued for once. What leaves the machine is the OAuth token
+            // feedly itself issued, going back to feedly, plus the entry ids of the
+            // articles the user acts on -- the account the user deliberately connected
+            // doing its own job. Nothing is gathered and handed to the developer or to
+            // any third party, and there is no server of ours to hand it to. Revisit
+            // this if the extension ever talks to a host other than feedly.
+            //
+            // Firefox itself only reads this key from 140, which addons-linter reports
+            // as a min-version warning. Left alone rather than raising the floor
+            // another twelve releases: the key is for the AMO review pipeline, and
+            // nothing is being consented to, so 128 through 139 ignoring it costs
+            // nothing.
+            "data_collection_permissions": {
+                "required": ["none"]
+            }
         }
     },
     // @endif

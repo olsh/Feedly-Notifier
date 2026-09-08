@@ -29,6 +29,9 @@
   "EnableBackgroundMode": {
     "message": "Enable background mode"
   },
+  "EnableSidebar": {
+    "message": "Open the sidebar instead of the popup"
+  },
   "EnableSidePanel": {
     "message": "Open the side panel instead of the popup"
   },

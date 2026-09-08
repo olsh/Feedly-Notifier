@@ -3,9 +3,10 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { loadBackground } from "./helpers/load-core.js";
 
 /**
- * background.js is the MV3 service worker: it stitches the core scripts
+ * background.js is the MV3 background entry point: it stitches the core scripts
  * together and exposes them to the popup and options pages through a single
- * runtime.onMessage router.
+ * runtime.onMessage router. Chromium runs it as a service worker, firefox as an
+ * event page -- see the firefox suite at the end of this file.
  */
 describe("background message router", () => {
     let browser;
@@ -180,5 +181,45 @@ describe("service worker startup", () => {
         await ready();
 
         expect(browser._calls.setPopup).toContain("");
+    });
+});
+
+/*
+ * Firefox's MV3 background is an event page, not a service worker: there is no
+ * importScripts, so manifest.json lists the same files as classic scripts loaded
+ * ahead of background.js, and loadBackground follows that list. The router itself
+ * is browser-agnostic, so this only has to prove the page boots at all -- if the
+ * list or its order were wrong, readOptions would not be defined by the time
+ * background.js reaches it and nothing below would run.
+ */
+describe("firefox event page", () => {
+    it("boots from the manifest's background.scripts", async () => {
+        const { browser, appGlobal, onMessage, ready } = loadBackground({
+            targetBrowser: "firefox",
+            storage: { sync: { accessToken: "token", feedlyUserId: "u1" } }
+        });
+        appGlobal.feedlyApiClient = {
+            accessToken: "token",
+            request: async (method) => (method === "subscriptions" ? [] : { items: [], unreadcounts: [] })
+        };
+        await ready();
+
+        expect(browser._events["runtime.onMessage"]).toHaveLength(1);
+        await expect(onMessage({ type: "getState" })).resolves.toMatchObject({ isLoggedIn: true });
+    });
+
+    /* No sidePanel API, but a sidebar the toolbar icon can toggle, so the popup gives way
+       to it exactly as it does on chromium. The behaviour itself belongs to
+       test/core.side-panel.test.js; this only proves the event page reaches it. */
+    it("gives the icon to the sidebar instead of the popup", async () => {
+        const { browser, ready } = loadBackground({
+            targetBrowser: "firefox",
+            storage: { sync: { enableSidePanel: true } }
+        });
+
+        await ready();
+
+        expect(browser._calls.setPopup).toContain("");
+        expect(browser._calls.sidePanelOptions).toEqual([]);
     });
 });

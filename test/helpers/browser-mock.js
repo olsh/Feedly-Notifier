@@ -96,7 +96,9 @@ function createBrowserMock(overrides) {
         messagesSent: [],
         sidePanelOptions: [],
         sidePanelBehavior: [],
-        sidePanelOpened: []
+        sidePanelOpened: [],
+        //toggle() takes no arguments, so these entries only count the calls.
+        sidebarToggled: []
     };
 
     let badgeText = "";
@@ -204,9 +206,16 @@ function createBrowserMock(overrides) {
         }
     };
 
-    /* Chromium-only surfaces. Omitted when simulating Firefox, which has sidebarAction
-       instead, and when simulating a Chromium without a side panel implementation. */
-    if (options.sidePanel !== false) {
+    /* Each target exposes a different sidebar surface and core.js branches on which of
+       them exists, so the target picks the pair: chromium has sidePanel, firefox has
+       sidebarAction, and opera -- which is handed the manifest keys but ships no
+       implementation, see the note in core.js -- has neither. Either can still be set by
+       hand for a browser that does not fit its family. */
+    const target = options.targetBrowser || "chrome";
+    const hasSidePanel = options.sidePanel === undefined ? target === "chrome" : options.sidePanel;
+    const hasSidebarAction = options.sidebarAction === undefined ? target === "firefox" : options.sidebarAction;
+
+    if (hasSidePanel) {
         browser.sidePanel = {
             setOptions: async (panelOptions) => {
                 calls.sidePanelOptions.push(panelOptions);
@@ -226,9 +235,15 @@ function createBrowserMock(overrides) {
         };
     }
 
-    if (options.sidebarAction) {
+    if (hasSidebarAction) {
         browser.sidebarAction = {
-            isOpen: async () => Boolean(options.sidebarOpen)
+            toggle: () => {
+                calls.sidebarToggled.push({});
+                if (options.sidebarToggleFails) {
+                    //What firefox throws once the user gesture has been spent.
+                    throw new Error("sidebarAction.toggle may only be called from a user input handler");
+                }
+            }
         };
     }
 

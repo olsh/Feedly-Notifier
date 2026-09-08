@@ -6,6 +6,7 @@
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
     "@vitest/coverage-v8": "^5.0.0",
+    "addons-linter": "^10.10.0",
     "eslint": "^10.9.1",
     "eslint-plugin-jquery": "^1.5.1",
     "globals": "^17.11.0",
@@ -40,6 +41,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "lint:addon": "addons-linter build/feedly-notifier-firefox.zip",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

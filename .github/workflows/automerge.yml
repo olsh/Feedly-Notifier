@@ -43,6 +43,19 @@ jobs:
             # fetch an unpinned package on demand and run its lifecycle scripts.
             - run: ./node_modules/.bin/grunt build --clientId=ci-client-id --clientSecret=ci-client-secret --browser=firefox
 
+            # The zip the previous step just produced is the artifact that goes to
+            # addons.mozilla.org, where this same linter gates the submission -- so a
+            # manifest AMO would reject fails the pull request instead of the release.
+            # The archive rather than the unpacked build, because its layout is part of
+            # what gets validated. This is also why the build above is the firefox one.
+            #
+            # addons-linter exits non-zero on errors only, which is what we want:
+            # warnings remain for the sidePanel calls core.js guards on
+            # `browser.sidePanel` at runtime, and there is no per-rule suppression, so
+            # --warnings-as-errors would fail forever. The locally installed binary
+            # rather than `npx`, for the same reason as grunt above.
+            - run: ./node_modules/.bin/addons-linter build/feedly-notifier-firefox.zip
+
     # Kept separate from `test`: this job needs a Playwright browser download and
     # a different build, and it is worth seeing which of the two failed. The build
     # uses dummy credentials rather than the repository secrets, because the

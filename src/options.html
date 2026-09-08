@@ -40,10 +40,15 @@
                 <label for="openSiteOnIconClick" class="label" data-locale-value="OpenSiteOnIconClick"></label>
                 <input id="openSiteOnIconClick" type="checkbox" data-option-name="openSiteOnIconClick" /><br>
 
+                <!--Same option either way, but the surface it opens has a different name
+                    in each browser: chromium calls it the side panel, firefox the sidebar.-->
                 <!-- @if BROWSER!='firefox' -->
                 <label for="enableSidePanel" class="label" data-locale-value="EnableSidePanel"></label>
-                <input id="enableSidePanel" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="enableSidePanel" /><br>
                 <!-- @endif -->
+                <!-- @if BROWSER='firefox' -->
+                <label for="enableSidePanel" class="label" data-locale-value="EnableSidebar"></label>
+                <!-- @endif -->
+                <input id="enableSidePanel" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="enableSidePanel" /><br>
 
                 <label for="openFeedsInBackground" class="label" data-locale-value="OpenFeedsInBackground"></label>
                 <input id="openFeedsInBackground" type="checkbox" data-disable-parent="openSiteOnIconClick" data-option-name="openFeedsInBackground" /><br>

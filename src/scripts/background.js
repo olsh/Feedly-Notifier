@@ -1,10 +1,16 @@
 "use strict";
 
-// MV3 background service worker wrapper that loads existing logic
+// MV3 background entry point that loads existing logic
 // and exposes message-based APIs for popup/options.
 
-// Load polyfill and core logic (relative to this file in /scripts)
+// Load polyfill and core logic (relative to this file in /scripts).
+// Firefox's MV3 background is an event page rather than a service worker, so it has
+// no importScripts and loads the same three files as classic scripts ahead of this
+// one -- see background.scripts in manifest.json, which resolves them from the
+// extension root instead. test/preprocess.test.js keeps the two lists in step.
+// @if BROWSER!='firefox'
 importScripts("browser-polyfill.min.js", "feedly.api.js", "core.js");
+// @endif
 
 // Ensure options/tokens are loaded after each worker start
 let __initPromise = null;
