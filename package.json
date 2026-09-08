@@ -19,7 +19,8 @@
     "jsdom": "^30.0.1",
     "preprocess": "^3.2.0",
     "selenium-webdriver": "^4.48.0",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.0",
+    "web-ext": "^10.6.0"
   },
   "repository": {
     "type": "git",

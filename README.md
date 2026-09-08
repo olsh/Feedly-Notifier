@@ -30,3 +30,23 @@ Changelog can be found [here](https://github.com/olsh/Feedly-Notifier/releases).
 You can find actual `clientId` and `clientSecret` [here](https://groups.google.com/g/feedly-cloud)
 The browser parameter can be `chrome`, `opera` or `firefox`.
 3. The result of the commands will be in `build` folder, now you can load the extension to browser.
+
+### Reproducing a released package
+
+The archives submitted to the stores come from the `build` task rather than `sandbox`,
+which rewrites every feedly.com URL to sandbox7.feedly.com and produces no archive:
+
+    npm ci
+    ./node_modules/.bin/grunt build --clientId=<id> --clientSecret=<secret> --browser=firefox
+
+Node 22, and the exact dependency versions pinned in `package-lock.json`. The result is
+`build/feedly-notifier-firefox.zip`; `--browser` selects the target and accepts `chrome`,
+`opera` or `firefox`. The `.xpi` on addons.mozilla.org is that archive's file tree
+repacked by `web-ext sign`, so the two contain the same files.
+
+`clientId` and `clientSecret` are the project's Feedly API credentials, and they are the
+only difference between a build made this way and the released one: `string-replace:keys`
+substitutes them into the empty `clientId: ""` and `clientSecret: ""` literals in
+`build/scripts/core.js`, and nothing else in the package reads them. Building with the
+sandbox credentials above therefore reproduces the submitted package apart from those two
+string literals and the archive's entry timestamps.
