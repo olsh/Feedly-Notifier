@@ -1,0 +1,543 @@
+name: "Publish"
+on:
+    release:
+        types: ["published"]
+
+    # The rehearsal trigger. A manual run builds every package and checks that each
+    # store accepts its credentials, then stops -- it never uploads and never
+    # submits. That split is deliberate rather than cautious: each of the four write
+    # calls spends a version number the store will not accept a second time, so the
+    # only thing worth rehearsing is everything up to them.
+    workflow_dispatch:
+
+permissions: {}
+
+jobs:
+    # Every store job hangs off this one, which is also where the prerelease guard
+    # lives: `release: published` fires for prereleases exactly as it does for real
+    # releases, and skipping here skips the three jobs that need it rather than each
+    # of them having to remember the condition.
+    verify:
+        if: github.event_name == 'workflow_dispatch' || !github.event.release.prerelease
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
+        steps:
+            # No step here pushes or fetches, so the job has no use for a
+            # persisted token in .git/config.
+            - uses: actions/checkout@v7
+              with:
+                  persist-credentials: false
+
+            # The one gate that has to pass before any store is touched. A store
+            # version number is spent the moment it is accepted, so a package whose
+            # manifest disagrees with the tag is the mistake that cannot be undone --
+            # unlike everything downstream, which can be re-run or cancelled.
+            #
+            # No setup-node above: the runner image ships one, and this job installs
+            # nothing.
+            #
+            # Not jq. manifest.json is preprocessor input, so its // @if directives
+            # make the source invalid JSON -- and so is the *firefox* build output,
+            # which keeps its prose comments; both browsers parse manifests leniently.
+            # Only the chrome build comes out parseable, and only because every prose
+            # comment happens to sit inside a firefox-only @if block, which one comment
+            # moved elsewhere would quietly stop being true. This whole-line strip is
+            # what readManifest in test/helpers/load-core.js already does.
+            #
+            # Skipped on workflow_dispatch, which has no tag to compare against.
+            - if: github.event_name == 'release'
+              run: |
+                  set -euo pipefail
+
+                  version=$(node -e '
+                      const source = require("fs").readFileSync("src/manifest.json", "utf8");
+                      const json = source.split("\n").filter(line => !/^\s*\/\//.test(line)).join("\n");
+                      process.stdout.write(JSON.parse(json).version);
+                  ')
+
+                  if [ "$version" != "${TAG#v}" ]; then
+                      echo "src/manifest.json declares $version, but the release is tagged $TAG" >&2
+                      exit 1
+                  fi
+
+                  echo "Publishing $version"
+              env:
+                  TAG: ${{ github.event.release.tag_name }}
+
+            # An unset store identifier reads as a 404 several minutes into a release
+            # rather than as a mistake, and an unset credential as a 401 in whichever
+            # job got there first. Both are cheaper to find here, before three jobs
+            # have each spent two minutes installing and building. `${VAR:?}` exits
+            # the shell on an empty value, so the message names what is missing.
+            - run: |
+                  : "${CHROME_SERVICE_ACCOUNT_KEY:?is not set as a repository secret}"
+                  : "${EDGE_API_KEY:?is not set as a repository secret}"
+                  : "${AMO_API_KEY:?is not set as a repository secret}"
+                  : "${AMO_API_SECRET:?is not set as a repository secret}"
+                  : "${FEEDLY_CLIENT_ID:?is not set as a repository secret}"
+                  : "${FEEDLY_CLIENT_SECRET:?is not set as a repository secret}"
+                  : "${CHROME_PUBLISHER_ID:?is not set as a repository variable}"
+                  : "${EDGE_CLIENT_ID:?is not set as a repository secret}"
+                  : "${EDGE_PRODUCT_ID:?is not set as a repository variable}"
+              env:
+                  CHROME_SERVICE_ACCOUNT_KEY: ${{ secrets.CHROME_SERVICE_ACCOUNT_KEY }}
+                  EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
+                  AMO_API_KEY: ${{ secrets.AMO_API_KEY }}
+                  AMO_API_SECRET: ${{ secrets.AMO_API_SECRET }}
+                  FEEDLY_CLIENT_ID: ${{ secrets.FEEDLY_CLIENT_ID }}
+                  FEEDLY_CLIENT_SECRET: ${{ secrets.FEEDLY_CLIENT_SECRET }}
+                  CHROME_PUBLISHER_ID: ${{ vars.CHROME_PUBLISHER_ID }}
+                  EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+                  EDGE_PRODUCT_ID: ${{ vars.EDGE_PRODUCT_ID }}
+
+    # One job per store, each building its own package rather than downloading a
+    # shared artifact. Two reasons: this repository is public and workflow artifacts
+    # are world-readable, so publishing one would hand out a build with the real
+    # Feedly clientId and clientSecret substituted into core.js; and independent jobs
+    # mean a store that rejects a submission can be re-run on its own from the
+    # Actions UI without disturbing the ones that succeeded -- which matters here,
+    # because none of the three stores accepts the same version twice. Paying for
+    # `npm ci` and a grunt build three times costs about a minute each, at a few
+    # releases a year.
+    chrome:
+        needs: verify
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
+        # The extension id is public -- README links it, and it is half of every store
+        # URL -- so it stays here rather than becoming a repository variable. The
+        # publisher id is not public and comes from the dashboard's Account page.
+        env:
+            EXTENSION_ID: "egikgfbhipinieabdmcpigejkaomgjgb"
+            PUBLISHER_ID: ${{ vars.CHROME_PUBLISHER_ID }}
+
+        steps:
+            # No step here pushes or fetches, so the job has no use for a
+            # persisted token in .git/config.
+            - uses: actions/checkout@v7
+              with:
+                  persist-credentials: false
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: "22.x"
+                  cache: "npm"
+
+            # `npm ci --ignore-scripts` rather than the `npm install` the test job
+            # uses: a release must install exactly what package-lock.json pins, and
+            # `npm install` is free to float a caret range onto a version nobody has
+            # linted. --ignore-scripts because no dependency lifecycle script has any
+            # business running in a job that holds store credentials, and the build
+            # needs none -- grunt only copies files out of node_modules.
+            - run: npm ci --ignore-scripts
+
+            # The real credentials, unlike every build in automerge.yml: these are what
+            # string-replace:keys substitutes into the empty clientId and clientSecret
+            # literals in core.js, and a build without them cannot sign a user in.
+            # Through env: rather than inline, so nothing lands on a command line. The
+            # locally installed grunt rather than `npx`, which would be free to fetch
+            # an unpinned package on demand and run its lifecycle scripts.
+            - run: ./node_modules/.bin/grunt build --clientId="$FEEDLY_CLIENT_ID" --clientSecret="$FEEDLY_CLIENT_SECRET" --browser=chrome
+              env:
+                  FEEDLY_CLIENT_ID: ${{ secrets.FEEDLY_CLIENT_ID }}
+                  FEEDLY_CLIENT_SECRET: ${{ secrets.FEEDLY_CLIENT_SECRET }}
+
+            # Google's own action, exchanging the service account key for a token
+            # scoped to the Web Store alone. No `id-token: write` permission above, and
+            # that is not an oversight: only the workload-identity branch of this
+            # action asks GitHub for an OIDC token, and credentials_json does not take
+            # it. Nothing downstream is gcloud or a Cloud client library, so the key is
+            # never written to disk and no environment variables are exported -- the
+            # only thing wanted here is the token.
+            #
+            # What the action does with the key is worth knowing, because it decides
+            # how the service account has to be set up: it does not sign its own bearer
+            # token, it calls iamcredentials.generateAccessToken on the key's own
+            # account. So that account needs roles/iam.serviceAccountTokenCreator on
+            # itself and the IAM Service Account Credentials API has to be enabled. A
+            # 403 from iamcredentials.googleapis.com in this step is that and nothing
+            # else. See the release section of AGENTS.md.
+            #
+            # Not an actions/* action, so pinned to a full commit SHA with the version
+            # in a comment -- the rule dependabot/fetch-metadata follows in
+            # automerge.yml. Dependabot watches github-actions monthly and automerge.yml
+            # merges its non-major bumps, so this pin moves on its own.
+            - id: auth
+              uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+              with:
+                  credentials_json: ${{ secrets.CHROME_SERVICE_ACCOUNT_KEY }}
+                  token_format: "access_token"
+                  access_token_scopes: "https://www.googleapis.com/auth/chromewebstore"
+                  create_credentials_file: false
+                  export_environment_variables: false
+
+            # The rehearsal. :fetchStatus is a documented read that changes nothing, and
+            # reaching it proves the whole Chrome chain at once: the key parsed, the
+            # account could mint a scoped token, and the publisher and extension ids
+            # name an item this publisher actually owns.
+            - if: github.event_name != 'release'
+              run: |
+                  set -euo pipefail
+
+                  if ! response=$(curl --silent --show-error --fail-with-body \
+                      --header "Authorization: Bearer $TOKEN" \
+                      "https://chromewebstore.googleapis.com/v2/publishers/$PUBLISHER_ID/items/$EXTENSION_ID:fetchStatus"); then
+                      echo "$response" >&2
+                      exit 1
+                  fi
+                  echo "$response"
+              env:
+                  TOKEN: ${{ steps.auth.outputs.access_token }}
+
+            # Chrome Web Store API v2. The v1 API is turned down on 15 October 2026, so
+            # nothing here should be ported back to googleapis.com/chromewebstore.
+            #
+            # Field names come from the live discovery document rather than the
+            # published guide, because the two disagree: the upload response calls it
+            # uploadState and :fetchStatus calls it lastAsyncUploadState, and the
+            # guide's UPLOAD_IN_PROGRESS is not a value either of them can take -- the
+            # enum is SUCCEEDED / IN_PROGRESS / FAILED / NOT_FOUND. So the loop waits
+            # for SUCCEEDED rather than testing for the in-progress value; a response
+            # shape nobody anticipated then times out instead of being mistaken for a
+            # finished upload.
+            #
+            # --fail-with-body throughout, because curl exits 0 on an HTTP error by
+            # default and a 403 would otherwise read as a successful publish. The
+            # `if !` wrapper is there because `set -e` would kill the shell before that
+            # body could be printed.
+            - if: github.event_name == 'release'
+              run: |
+                  set -euo pipefail
+
+                  item="publishers/$PUBLISHER_ID/items/$EXTENSION_ID"
+
+                  if ! response=$(curl --silent --show-error --fail-with-body \
+                      --header "Authorization: Bearer $TOKEN" \
+                      --request POST \
+                      --upload-file build/feedly-notifier-chrome.zip \
+                      "https://chromewebstore.googleapis.com/upload/v2/$item:upload"); then
+                      echo "$response" >&2
+                      exit 1
+                  fi
+                  echo "$response"
+
+                  state=$(echo "$response" | jq --raw-output '.uploadState // ""')
+
+                  attempt=0
+                  while [ "$state" != "SUCCEEDED" ]; do
+                      if [ "$state" = "FAILED" ] || [ "$state" = "NOT_FOUND" ]; then
+                          echo "The store rejected the package: $state" >&2
+                          exit 1
+                      fi
+
+                      attempt=$((attempt + 1))
+                      if [ "$attempt" -gt 30 ]; then
+                          echo "Upload was still $state after five minutes" >&2
+                          exit 1
+                      fi
+
+                      sleep 10
+
+                      if ! response=$(curl --silent --show-error --fail-with-body \
+                          --header "Authorization: Bearer $TOKEN" \
+                          "https://chromewebstore.googleapis.com/v2/$item:fetchStatus"); then
+                          echo "$response" >&2
+                          exit 1
+                      fi
+                      echo "$response"
+
+                      state=$(echo "$response" | jq --raw-output '.lastAsyncUploadState // ""')
+                  done
+              env:
+                  TOKEN: ${{ steps.auth.outputs.access_token }}
+
+            # Submits for review. The empty body takes the documented defaults: publish
+            # on approval, at the visibility already set in the dashboard, with no
+            # attempt to skip review. v2 can neither create an item nor change its
+            # visibility, and if the visibility was last changed by hand the store
+            # wants one manual publish before it will accept an API one again.
+            #
+            # Not polled: the call either accepts the submission or it does not, and
+            # the review itself takes days.
+            - if: github.event_name == 'release'
+              run: |
+                  set -euo pipefail
+
+                  if ! response=$(curl --silent --show-error --fail-with-body \
+                      --header "Authorization: Bearer $TOKEN" \
+                      --header "Content-Length: 0" \
+                      --request POST \
+                      "https://chromewebstore.googleapis.com/v2/publishers/$PUBLISHER_ID/items/$EXTENSION_ID:publish"); then
+                      echo "$response" >&2
+                      exit 1
+                  fi
+                  echo "$response"
+
+                  case "$(echo "$response" | jq --raw-output '.state // ""')" in
+                      PENDING_REVIEW|STAGED|PUBLISHED|PUBLISHED_TO_TESTERS) ;;
+                      *) echo "Unexpected submission state" >&2; exit 1 ;;
+                  esac
+              env:
+                  TOKEN: ${{ steps.auth.outputs.access_token }}
+
+    # Edge is sent the chrome package. feedly.api.js branches on 'chrome', 'opera' and
+    # 'firefox' only, so --browser=edge would leave browserPrefix undefined and ship a
+    # build that sends Feedly a malformed av= parameter. Edge is chromium and takes the
+    # chromium manifest, so this is correct rather than a workaround.
+    edge:
+        needs: verify
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
+        env:
+            PRODUCT_ID: ${{ vars.EDGE_PRODUCT_ID }}
+            CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+            API_KEY: ${{ secrets.EDGE_API_KEY }}
+
+        steps:
+            # No step here pushes or fetches, so the job has no use for a
+            # persisted token in .git/config.
+            - uses: actions/checkout@v7
+              with:
+                  persist-credentials: false
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: "22.x"
+                  cache: "npm"
+
+            - run: npm ci --ignore-scripts
+
+            # The chrome package, per the note on this job. Real credentials, as in the
+            # chrome job.
+            - run: ./node_modules/.bin/grunt build --clientId="$FEEDLY_CLIENT_ID" --clientSecret="$FEEDLY_CLIENT_SECRET" --browser=chrome
+              env:
+                  FEEDLY_CLIENT_ID: ${{ secrets.FEEDLY_CLIENT_ID }}
+                  FEEDLY_CLIENT_SECRET: ${{ secrets.FEEDLY_CLIENT_SECRET }}
+
+            # The rehearsal. This API exposes nothing to read but operation status, so
+            # the probe asks after an operation id that cannot exist and reads the code
+            # rather than the body: 401 or 403 means the key or the client id is wrong,
+            # 404 means both were accepted and only the operation was unknown. It is a
+            # heuristic, which is why it runs on manual runs only -- a real release
+            # takes the documented path and nothing else.
+            #
+            # The API key carries an expiry date that Partner Center shows and nothing
+            # warns about, so a 401 here is most often a key that quietly ran out.
+            - if: github.event_name != 'release'
+              run: |
+                  set -euo pipefail
+
+                  code=$(curl --silent --output /dev/null --write-out '%{http_code}' \
+                      --header "Authorization: ApiKey $API_KEY" \
+                      --header "X-ClientID: $CLIENT_ID" \
+                      "https://api.addons.microsoftedge.microsoft.com/v1/products/$PRODUCT_ID/submissions/operations/00000000-0000-0000-0000-000000000000")
+
+                  echo "Credential probe answered HTTP $code"
+                  case "$code" in
+                      404) ;;
+                      401|403) echo "Partner Center rejected the credentials" >&2; exit 1 ;;
+                      *) echo "Unexpected response -- check EDGE_PRODUCT_ID" >&2; exit 1 ;;
+                  esac
+
+            # Edge Add-ons Update REST API v1.1 -- header auth with an API key, rather
+            # than v1's access token, which stopped being supported at the end of 2024.
+            # The 1.1 names the auth scheme, not the path: every endpoint is still /v1/.
+            #
+            # The upload answers 202 with the operation id in the Location response
+            # header, not the body, hence --dump-header. Microsoft's own PowerShell
+            # sample parses that header by splitting the whole line on ":" and keeps the
+            # value's leading space; awk on the second field, and `tr -d` for the CR
+            # ending every header line, is what it should have done.
+            #
+            # Uploading only replaces the package in the draft submission. Nothing
+            # enters review until the next step.
+            - if: github.event_name == 'release'
+              run: |
+                  set -euo pipefail
+
+                  api="https://api.addons.microsoftedge.microsoft.com/v1/products/$PRODUCT_ID"
+
+                  if ! response=$(curl --silent --show-error --fail-with-body \
+                      --dump-header headers.txt \
+                      --header "Authorization: ApiKey $API_KEY" \
+                      --header "X-ClientID: $CLIENT_ID" \
+                      --header "Content-Type: application/zip" \
+                      --request POST \
+                      --upload-file build/feedly-notifier-chrome.zip \
+                      "$api/submissions/draft/package"); then
+                      echo "$response" >&2
+                      exit 1
+                  fi
+
+                  operation=$(tr -d '\r' < headers.txt | awk 'tolower($1) == "location:" { print $2 }')
+                  if [ -z "$operation" ]; then
+                      echo "The API accepted the upload but returned no operation id" >&2
+                      exit 1
+                  fi
+
+                  # InProgress / Succeeded / Failed. The PowerShell sample loops until
+                  # the status stops saying InProgress and then never looks at what it
+                  # settled on, so a rejected package reads there as a good upload.
+                  # Anything that is not one of the three is fatal rather than another
+                  # lap, so a changed response shape cannot become a ten-minute spin.
+                  status="InProgress"
+                  attempt=0
+                  while [ "$status" = "InProgress" ]; do
+                      attempt=$((attempt + 1))
+                      if [ "$attempt" -gt 60 ]; then
+                          echo "Upload was still InProgress after ten minutes" >&2
+                          exit 1
+                      fi
+
+                      sleep 10
+
+                      if ! response=$(curl --silent --show-error --fail-with-body \
+                          --header "Authorization: ApiKey $API_KEY" \
+                          --header "X-ClientID: $CLIENT_ID" \
+                          "$api/submissions/draft/package/operations/$operation"); then
+                          echo "$response" >&2
+                          exit 1
+                      fi
+
+                      status=$(echo "$response" | jq --raw-output '.status // ""')
+                  done
+
+                  echo "$response"
+                  if [ "$status" != "Succeeded" ]; then
+                      exit 1
+                  fi
+
+            # Submits the draft the previous step uploaded. The body is the note the
+            # certification team reads.
+            - if: github.event_name == 'release'
+              run: |
+                  set -euo pipefail
+
+                  api="https://api.addons.microsoftedge.microsoft.com/v1/products/$PRODUCT_ID"
+                  notes=$(jq --null-input --arg tag "$TAG" \
+                      '{notes: "Submitted automatically from release \($tag)."}')
+
+                  if ! response=$(curl --silent --show-error --fail-with-body \
+                      --dump-header headers.txt \
+                      --header "Authorization: ApiKey $API_KEY" \
+                      --header "X-ClientID: $CLIENT_ID" \
+                      --header "Content-Type: application/json" \
+                      --request POST \
+                      --data "$notes" \
+                      "$api/submissions"); then
+                      echo "$response" >&2
+                      exit 1
+                  fi
+
+                  operation=$(tr -d '\r' < headers.txt | awk 'tolower($1) == "location:" { print $2 }')
+                  if [ -z "$operation" ]; then
+                      echo "The API accepted the submission but returned no operation id" >&2
+                      exit 1
+                  fi
+
+                  status="InProgress"
+                  attempt=0
+                  while [ "$status" = "InProgress" ]; do
+                      attempt=$((attempt + 1))
+                      if [ "$attempt" -gt 60 ]; then
+                          echo "Publish was still InProgress after ten minutes" >&2
+                          exit 1
+                      fi
+
+                      sleep 10
+
+                      if ! response=$(curl --silent --show-error --fail-with-body \
+                          --header "Authorization: ApiKey $API_KEY" \
+                          --header "X-ClientID: $CLIENT_ID" \
+                          "$api/submissions/operations/$operation"); then
+                          echo "$response" >&2
+                          exit 1
+                      fi
+
+                      status=$(echo "$response" | jq --raw-output '.status // ""')
+                  done
+
+                  echo "$response"
+                  if [ "$status" != "Succeeded" ]; then
+                      exit 1
+                  fi
+              env:
+                  TAG: ${{ github.event.release.tag_name }}
+
+    firefox:
+        needs: verify
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
+        steps:
+            # persist-credentials: false as everywhere else -- `git archive` below reads
+            # the checked-out tree and needs no token.
+            - uses: actions/checkout@v7
+              with:
+                  persist-credentials: false
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: "22.x"
+                  cache: "npm"
+
+            - run: npm ci --ignore-scripts
+
+            - run: ./node_modules/.bin/grunt build --clientId="$FEEDLY_CLIENT_ID" --clientSecret="$FEEDLY_CLIENT_SECRET" --browser=firefox
+              env:
+                  FEEDLY_CLIENT_ID: ${{ secrets.FEEDLY_CLIENT_ID }}
+                  FEEDLY_CLIENT_SECRET: ${{ secrets.FEEDLY_CLIENT_SECRET }}
+
+            # The same gate automerge.yml runs on every pull request, on the archive
+            # this job is about to submit. It has already passed for this tree; running
+            # it again costs seconds and is the only thing that checks the *release*
+            # build -- the one with real credentials substituted in -- is still
+            # something AMO will accept. Errors only, as there: the remaining warnings
+            # are permanent and --warnings-as-errors would fail forever.
+            - run: ./node_modules/.bin/addons-linter build/feedly-notifier-firefox.zip
+
+            # web-ext sign has no --xpi-path; it packages --source-dir itself. Unpacking
+            # the archive addons-linter just passed and signing that keeps the linted
+            # file set and the submitted one identical -- web-ext's default ignores are
+            # dot-files, node_modules, *.zip and *.xpi, none of which a built extension
+            # contains, so only archive metadata differs. Into RUNNER_TEMP so neither
+            # the unpacked copy nor the .amo-upload-uuid web-ext leaves beside its
+            # source directory lands in the workspace.
+            - run: unzip -q build/feedly-notifier-firefox.zip -d "$RUNNER_TEMP/firefox-package"
+
+            # AMO asks for readable source because what ships is generated: minified
+            # vendored libraries, plus whatever preprocess and string-replace rewrote.
+            # `git archive` reads the commit rather than the working tree, so
+            # node_modules and the build output are excluded by construction and only
+            # tracked files land in it. The build instructions a reviewer needs are the
+            # README section inside this archive; keep the two in step.
+            - run: git archive --format=zip --output="$RUNNER_TEMP/feedly-notifier-source.zip" HEAD
+
+            # Mozilla's own tool, against the submission API. --approval-timeout=0 is
+            # the difference between a job that finishes and one that does not: without
+            # it web-ext waits for the version to be approved so it can download the
+            # signed xpi, falling back to --timeout, and a listed review is a human
+            # reading the source archive over days. Nothing here wants the signed file,
+            # only the submission. The upload's validation is still waited on, which is
+            # the part that can fail. A green job means submitted, not approved.
+            #
+            # Credentials as WEB_EXT_API_KEY and WEB_EXT_API_SECRET, which web-ext reads
+            # from the environment, so no secret reaches a command line.
+            - if: github.event_name == 'release'
+              run: >
+                  ./node_modules/.bin/web-ext sign
+                  --channel=listed
+                  --source-dir="$RUNNER_TEMP/firefox-package"
+                  --artifacts-dir="$RUNNER_TEMP/web-ext-artifacts"
+                  --upload-source-code="$RUNNER_TEMP/feedly-notifier-source.zip"
+                  --approval-timeout=0
+              env:
+                  WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
+                  WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
