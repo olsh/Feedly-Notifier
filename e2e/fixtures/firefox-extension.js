@@ -85,7 +85,7 @@ const test = base.test.extend({
                     await focus();
                     return evaluateInPage(driver, (browser, css) => {
                         const element = document.querySelector(css);
-                        return Boolean(element && element.getClientRects().length);
+                        return Boolean(element?.getClientRects().length);
                     }, selector);
                 }
             };
@@ -227,7 +227,7 @@ const test = base.test.extend({
                carried the getter throughout. */
             pinToolbarButton: () => evaluateInChrome(driver, widgetId => {
                 if (typeof CustomizableUI === "undefined") {
-                    throw new Error("this firefox no longer exposes CustomizableUI on the browser window");
+                    throw new TypeError("this firefox no longer exposes CustomizableUI on the browser window");
                 }
 
                 CustomizableUI.addWidgetToArea(widgetId, CustomizableUI.AREA_NAVBAR);
@@ -262,7 +262,7 @@ const test = base.test.extend({
             /* What about:debugging's "Terminate Background Script" button calls. */
             terminateBackground: () => evaluateInChrome(driver, addonId => {
                 const policy = WebExtensionPolicy.getByID(addonId);
-                const extension = policy && policy.extension;
+                const extension = policy?.extension;
 
                 if (!extension || typeof extension.terminateBackground !== "function") {
                     throw new Error("this firefox no longer exposes Extension#terminateBackground");
@@ -276,9 +276,9 @@ const test = base.test.extend({
                on -- which is the whole reason the cold start test can prove anything. */
             backgroundState: () => evaluateInChrome(driver, addonId => {
                 const policy = WebExtensionPolicy.getByID(addonId);
-                const extension = policy && policy.extension;
+                const extension = policy?.extension;
 
-                if (!extension || extension.backgroundState === undefined) {
+                if (extension?.backgroundState === undefined) {
                     throw new Error("this firefox no longer exposes Extension#backgroundState");
                 }
 

@@ -160,20 +160,31 @@ async function createDriver({ mockPort, headless }) {
         .setFirefoxService(geckodriverService(options))
         .build();
 
-    //The w3c default is 30s, which outlives the spec that would have reported it.
-    await driver.manage().setTimeouts({ script: 20000 });
-    //Headless lays the chrome out too, but only into the window it was given. The toolbar
-    //button needs one wide enough to have a navigation bar to sit in.
-    await driver.manage().window().setRect({ width: 1280, height: 900 });
+    /* Everything past build() has to be able to fail without leaking the browser: the
+       fixture only learns about the driver from the value returned here, so anything
+       thrown before that leaves nothing holding a handle on geckodriver or firefox, and
+       they survive the rest of the run. installAddon is the realistic one -- it rejects
+       when build-firefox/ is missing. */
+    try {
+        //The w3c default is 30s, which outlives the spec that would have reported it.
+        await driver.manage().setTimeouts({ script: 20000 });
+        //Headless lays the chrome out too, but only into the window it was given. The
+        //toolbar button needs one wide enough to have a navigation bar to sit in.
+        await driver.manage().window().setRect({ width: 1280, height: 900 });
 
-    const installedId = await driver.installAddon(FIREFOX_BUILD_DIR, true);
+        const installedId = await driver.installAddon(FIREFOX_BUILD_DIR, true);
 
-    if (installedId !== ADDON_ID) {
-        await driver.quit();
-        throw new Error("Expected the add-on to install as " + ADDON_ID + ", got " + installedId);
+        if (installedId !== ADDON_ID) {
+            throw new Error("Expected the add-on to install as " + ADDON_ID + ", got " + installedId);
+        }
+
+        return driver;
+    } catch (error) {
+        //Nothing useful to say if the teardown fails too, and it must not replace the
+        //failure the caller is about to see.
+        await driver.quit().catch(() => {});
+        throw error;
     }
-
-    return driver;
 }
 
 /*
