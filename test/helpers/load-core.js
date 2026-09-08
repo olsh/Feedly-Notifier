@@ -8,6 +8,23 @@ import { createBrowserMock } from "./browser-mock.js";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const scriptsDir = path.join(projectRoot, "src", "scripts");
+const manifestPath = path.join(projectRoot, "src", "manifest.json");
+
+/**
+ * The manifest as the build resolves it for a target.
+ *
+ * manifest.json carries plain `//` comments around the directives -- browsers strip
+ * them when parsing, `JSON.parse` will not -- so whole-line comments are blanked
+ * first. A trailing comment after a value would still throw here rather than be
+ * tolerated, which is deliberate: the shipped file has to stay parseable by this rule.
+ */
+function readManifest(targetBrowser) {
+    const resolved = preprocessPreservingLines(readFileSync(manifestPath, "utf8"), targetBrowser);
+
+    return JSON.parse(
+        resolved.split("\n").map(line => (/^\s*\/\//.test(line) ? "" : line)).join("\n")
+    );
+}
 
 /**
  * Compiling core.js is the only expensive part of loading, so scripts are
@@ -44,6 +61,30 @@ const EXPOSE_LEXICALS = new Script( // NOSONAR - fixed literal, no dynamic input
     "globalThis.FeedlyApiClient = FeedlyApiClient;",
     { filename: "expose-lexicals.js" }
 );
+
+/**
+ * Runs background dependencies into `ctx`, in order, then republishes the lexical
+ * bindings they declared.
+ *
+ * The vendor polyfill is skipped: it is what provides `browser` in the real thing
+ * and the mock already does -- and it is not in src/scripts to load anyway, the
+ * Gruntfile copies it out of node_modules.
+ */
+function runBackgroundScripts(ctx, names, targetBrowser) {
+    // EXPOSE_LEXICALS would throw on FeedlyApiClient if nothing had run.
+    if (names.length === 0) {
+        return;
+    }
+
+    for (const name of names) {
+        if (name.includes("browser-polyfill")) {
+            continue;
+        }
+        compileScript(path.basename(name), targetBrowser).runInContext(ctx);
+    }
+
+    EXPOSE_LEXICALS.runInContext(ctx);
+}
 
 function createSandbox(browser, options) {
     return {
@@ -116,11 +157,15 @@ function loadCore(options = {}) {
 }
 
 /**
- * Loads the MV3 service worker entry point on top of the core scripts.
+ * Loads the MV3 background entry point on top of the core scripts, the way the
+ * target browser does.
  *
- * background.js pulls its dependencies in with `importScripts`, which exists
- * only in a worker, so the loader supplies it and ignores the vendor polyfill
- * (the browser mock already stands in for it).
+ * On chromium background.js is a service worker and pulls its dependencies in with
+ * `importScripts`, which exists only in a worker, so the loader supplies it. On
+ * firefox it is an event page with no `importScripts` at all, and the browser loads
+ * the dependencies listed in the manifest's `background.scripts` beforehand -- so the
+ * loader follows that list instead. Either way the vendor polyfill is ignored, the
+ * browser mock already stands in for it.
  *
  * Loading has side effects by design: `ensureInitialized()` runs eagerly, so
  * options are read and the schedule started before this returns.
@@ -133,18 +178,32 @@ function loadBackground(options = {}) {
     const browser = options.browser || createBrowserMock(options);
 
     const sandbox = createSandbox(browser, options);
-    sandbox.importScripts = (...names) => {
-        for (const name of names) {
-            // The polyfill is what provides `browser`; the mock already does.
-            if (name.includes("browser-polyfill")) {
-                continue;
-            }
-            compileScript(path.basename(name), targetBrowser).runInContext(ctx);
-        }
-        EXPOSE_LEXICALS.runInContext(ctx);
-    };
+    // The worker global background.js calls itself. Only the chromium branch of that
+    // call survives preprocessing, so on firefox this is never reached.
+    sandbox.importScripts = (...names) => runBackgroundScripts(ctx, names, targetBrowser);
 
     const ctx = createContext(sandbox);
+
+    /*
+     * Read the list rather than restating it: a file added to background.scripts is
+     * then loaded here too, and one added only here fails the drift check in
+     * test/preprocess.test.js. background.js is the last entry and is run below the
+     * same way for every target, so it is dropped. The chromium manifest has no such
+     * key, which leaves this a no-op there.
+     *
+     * A null target means raw source, where every branch survives: both `background`
+     * keys resolve and the importScripts call is left intact, so following the list
+     * as well would load the core scripts twice. Leave that case to importScripts.
+     */
+    const declaredScripts = targetBrowser
+        ? readManifest(targetBrowser).background.scripts || []
+        : [];
+    runBackgroundScripts(
+        ctx,
+        declaredScripts.filter(name => path.basename(name) !== "background.js"),
+        targetBrowser
+    );
+
     compileScript("background.js", targetBrowser).runInContext(ctx);
 
     const listeners = browser._events["runtime.onMessage"];
@@ -182,4 +241,4 @@ function loadApiClient(options = {}) {
     return { ctx, browser, FeedlyApiClient: ctx.FeedlyApiClient };
 }
 
-export { loadCore, loadBackground, loadApiClient, projectRoot, scriptsDir };
+export { loadCore, loadBackground, loadApiClient, readManifest, projectRoot, scriptsDir };

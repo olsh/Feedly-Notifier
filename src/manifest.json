@@ -55,9 +55,29 @@
     },
     // @endif
 
+    // @if BROWSER!='firefox'
     "background": {
         "service_worker": "scripts/background.js"
     },
+    // @endif
+    // @if BROWSER='firefox'
+    // An event page rather than a worker: firefox has never supported extension
+    // service workers. The list is what background.js pulls in with importScripts
+    // on chromium, plus itself, and the order is load-bearing -- core.js builds a
+    // FeedlyApiClient while loading, and background.js calls into core.js while it
+    // is still evaluating. Declaring service_worker here as well is the documented
+    // cross-browser shape, but chrome refuses to load an MV3 extension carrying
+    // background.scripts until 121 and minimum_chrome_version below is 116.
+    // test/preprocess.test.js pins this list against the importScripts call.
+    "background": {
+        "scripts": [
+            "scripts/browser-polyfill.min.js",
+            "scripts/feedly.api.js",
+            "scripts/core.js",
+            "scripts/background.js"
+        ]
+    },
+    // @endif
 
     "icons": {
         "16": "/images/icon16.png",
@@ -78,10 +98,22 @@
     "minimum_chrome_version": "116",
     // @endif
     // @if BROWSER='firefox'
-    "applications": {
+    "browser_specific_settings": {
         "gecko": {
-            "strict_min_version": "115.0",
-            "id": "jid1-BOjn8b0IM7kH2w@jetpack"
+            "id": "jid1-BOjn8b0IM7kH2w@jetpack",
+            // 128 is the first release that understands optional_host_permissions,
+            // and the first ESR where the manifest host permissions are granted at
+            // install rather than left for the user to find.
+            "strict_min_version": "128.0",
+            // Nothing is collected or transmitted anywhere but the user's own feedly
+            // account, and addons.mozilla.org requires saying so explicitly. Firefox
+            // itself only reads this from 140, which addons-linter reports as a
+            // min-version warning -- deliberately left alone rather than raising the
+            // floor another twelve releases: the key is for the AMO review pipeline,
+            // and 128 through 139 ignoring an unknown key costs nothing.
+            "data_collection_permissions": {
+                "required": ["none"]
+            }
         }
     },
     // @endif
