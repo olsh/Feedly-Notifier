@@ -13,7 +13,9 @@ const POPUP_EXPORTS = [
     "environment",
     "bg",
     "popupGlobal",
-    "renderFromCache"
+    "renderFromCache",
+    "markAsRead",
+    "openFeedlyTab"
 ];
 
 async function loadPopup(overrides = {}) {
@@ -259,5 +261,105 @@ describe("feedsUpdated broadcast", () => {
         popup.renderFromCache();
 
         expect(sent()).toEqual([{ type: "getSavedFeeds", forceUpdate: false }]);
+    });
+});
+
+/**
+ * The popup is torn down by window.close(), and a request that has not reached the worker
+ * yet goes with it -- the batch is then never marked read on the server and the articles
+ * come back on the next update (issue #393). These pin the ordering rather than the end
+ * state: the assertions are about when close() happens relative to the send, so they fail
+ * on the old code even though it, too, eventually calls sendMessage.
+ */
+describe("closing the popup", () => {
+    let popup;
+    let browser;
+    /** close() and every send, in the order they happened. */
+    let events;
+    /** Releases the send the current test parked. */
+    let release;
+
+    /** Parks sends of `type` until release() so the pending window is observable. */
+    function parkSends(type) {
+        const original = browser.runtime.sendMessage;
+        browser.runtime.sendMessage = async (message) => {
+            events.push("send:" + message.type);
+            if (message.type === type) {
+                await new Promise(resolve => {
+                    release = resolve;
+                });
+            }
+            return original(message);
+        };
+    }
+
+    function seedFeed(...ids) {
+        $("#feed").html(ids.map(id => `<div class="item" data-id="${id}"></div>`).join(""));
+    }
+
+    beforeEach(async () => {
+        ({ page: popup, browser } = await loadPopup());
+        events = [];
+        release = undefined;
+        // The real close() would tear down the window the rest of the file runs in.
+        window.close = () => events.push("close");
+    });
+
+    it("hands the batch to the worker before closing", async () => {
+        popup.options.closePopupWhenLastFeedIsRead = true;
+        seedFeed("a");
+        parkSends("markAsRead");
+
+        const marking = popup.markAsRead(["a"]);
+
+        expect(events).toEqual(["send:markAsRead"]);
+        release();
+        await marking;
+        expect(events).toEqual(["send:markAsRead", "close"]);
+        expect(browser._calls.messagesSent).toEqual([{ type: "markAsRead", feedIds: ["a"] }]);
+    });
+
+    // Re-rendering a closing document is pointless, and getFeeds would cost a request.
+    it("does not re-render the feeds it is closing over", async () => {
+        popup.options.closePopupWhenLastFeedIsRead = true;
+        seedFeed("a");
+
+        await popup.markAsRead(["a"]);
+
+        expect(events).toEqual(["close"]);
+        expect(browser._calls.messagesSent.map(message => message.type)).toEqual(["markAsRead"]);
+    });
+
+    it("re-renders instead of closing when the option is off", async () => {
+        popup.options.closePopupWhenLastFeedIsRead = false;
+        seedFeed("a");
+
+        await popup.markAsRead(["a"]);
+
+        expect(events).toEqual([]);
+        expect(browser._calls.messagesSent.map(message => message.type)).toEqual(["markAsRead", "getFeeds"]);
+    });
+
+    it("stays open while unread articles remain", async () => {
+        popup.options.closePopupWhenLastFeedIsRead = true;
+        seedFeed("a", "b");
+
+        await popup.markAsRead(["a"]);
+
+        expect(events).toEqual([]);
+        expect(browser._calls.messagesSent.map(message => message.type)).toEqual(["markAsRead"]);
+    });
+
+    /* Same shape, same hazard: the worker opens the tab, and the popup closes on top of
+       the request that asks it to. */
+    it("hands the feedly tab request over before closing", async () => {
+        parkSends("openFeedlyTab");
+
+        const opening = popup.openFeedlyTab();
+
+        expect(events).toEqual(["send:openFeedlyTab"]);
+        release();
+        await opening;
+        expect(events).toEqual(["send:openFeedlyTab", "close"]);
     });
 });

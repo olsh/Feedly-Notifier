@@ -25,6 +25,7 @@ class FeedlyMockServer {
     /** Restores the default payloads and clears recorded traffic. */
     reset() {
         this.requests = [];
+        this.tunnels = [];
         this.failures = new Map();
         this.userId = "e2e-user";
         this.accessToken = "e2e-access-token";
@@ -79,9 +80,31 @@ class FeedlyMockServer {
 
     async start() {
         this.server = http.createServer((request, response) => this.handle(request, response));
+        this.server.on("connect", (request, socket) => this.refuseTunnel(request, socket));
         await new Promise(resolve => this.server.listen(0, "127.0.0.1", resolve));
         this.port = this.server.address().port;
         return this.port;
+    }
+
+    /**
+     * Refuses an https CONNECT, and records that it was attempted.
+     *
+     * Firefox reaches for remote settings and content signatures over https while it
+     * starts and again while it shuts down, and the manual proxy the firefox suite uses
+     * (e2e/fixtures/firefox-driver.js) routes those here along with everything else. An
+     * http server with no connect listener drops the socket without answering, which
+     * firefox counts as network activity still in flight -- so its shutdown waits on
+     * them, and driver.quit() costs ~18s per session on windows instead of ~0.4s.
+     *
+     * Answering makes them fail fast without loosening hermeticity: nothing is tunnelled
+     * anywhere, the connection is refused. The attempts are kept out of `requests`,
+     * which specs count and read authorization headers off, and land in `tunnels`.
+     */
+    refuseTunnel(request, socket) {
+        this.tunnels.push(request.url);
+        //The peer resets the socket as it goes; there is nothing to do about it.
+        socket.on("error", () => {});
+        socket.end("HTTP/1.1 502 Bad Gateway\r\n\r\n");
     }
 
     async stop() {
