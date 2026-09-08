@@ -105,12 +105,19 @@
             // and the first ESR where the manifest host permissions are granted at
             // install rather than left for the user to find.
             "strict_min_version": "128.0",
-            // Nothing is collected or transmitted anywhere but the user's own feedly
-            // account, and addons.mozilla.org requires saying so explicitly. Firefox
-            // itself only reads this from 140, which addons-linter reports as a
-            // min-version warning -- deliberately left alone rather than raising the
-            // floor another twelve releases: the key is for the AMO review pipeline,
-            // and 128 through 139 ignoring an unknown key costs nothing.
+            // "none" rather than authenticationInfo, which an automated reviewer has
+            // already argued for once. What leaves the machine is the OAuth token
+            // feedly itself issued, going back to feedly, plus the entry ids of the
+            // articles the user acts on -- the account the user deliberately connected
+            // doing its own job. Nothing is gathered and handed to the developer or to
+            // any third party, and there is no server of ours to hand it to. Revisit
+            // this if the extension ever talks to a host other than feedly.
+            //
+            // Firefox itself only reads this key from 140, which addons-linter reports
+            // as a min-version warning. Left alone rather than raising the floor
+            // another twelve releases: the key is for the AMO review pipeline, and
+            // nothing is being consented to, so 128 through 139 ignoring it costs
+            // nothing.
             "data_collection_permissions": {
                 "required": ["none"]
             }
