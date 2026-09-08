@@ -449,7 +449,7 @@ function iconOpensSidebar() {
     }
 
     try {
-        return localStorage.getItem(ICON_OPENS_SIDEBAR_KEY) === "1";
+        return false; //DELIBERATE REGRESSION: pretend the mirror was never written
     } catch {
         return false;
     }
