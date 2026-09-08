@@ -1,6 +1,7 @@
 .idea
 node_modules
 build
+build-firefox
 bower_components
 *.orig
 keys.json

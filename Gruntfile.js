@@ -1,6 +1,13 @@
 module.exports = function (grunt) {
+    //Every path below is derived from pkg.buildPath, so overriding it here is enough to
+    //put a whole build somewhere else. The end-to-end suite needs the chromium and the
+    //firefox build side by side -- their manifests differ, so one directory cannot hold
+    //both -- and nothing else passes the flag.
+    const pkg = grunt.file.readJSON("package.json");
+    pkg.buildPath = grunt.option("buildPath") || pkg.buildPath;
+
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
+        pkg: pkg,
         copy: {
             main: {
                 files: [

@@ -9,6 +9,7 @@ module.exports = [
         ignores: [
             "node_modules/**",
             "build/**",
+            "build-firefox/**",
             "test-results/**",
             "playwright-report/**",
             "coverage/**",
