@@ -9,7 +9,7 @@
     "addons-linter": "^10.10.0",
     "eslint": "^10.9.1",
     "eslint-plugin-jquery": "^1.5.1",
-    "globals": "^17.11.0",
+    "globals": "^17.12.0",
     "grunt": "^1.6.3",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
