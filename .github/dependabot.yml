@@ -35,6 +35,16 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    # google-github-actions/auth handles CHROME_SERVICE_ACCOUNT_KEY and is a SHA
+    # pin, so a minor bump moving that SHA auto-merges: it waits out the same
+    # seven days as npm. codeql-action is excluded because the cooldown filter
+    # only inspects the newest release, so an action shipping faster than the
+    # window stops updating altogether (dependabot-core#13691, #14579) -- and
+    # its releases are a median of about five days apart. It keeps the
+    # three-day default, which its cadence clears.
+    cooldown:
+      default-days: 7
+      exclude: ["github/codeql-action*"]
     groups:
       actions:
         update-types: ["minor", "patch"]
