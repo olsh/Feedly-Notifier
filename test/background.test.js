@@ -44,6 +44,33 @@ describe("background message router", () => {
         expect(result.options.maxNumberOfFeeds).toBe(20);
     });
 
+    /* appGlobal.options carries updateInterval, popupWidth and expandedPopupWidth as accessor
+       properties. runtime.sendMessage clones the payload, and firefox clones through an Xray
+       wrapper that shows own data properties only, so handing out appGlobal.options itself
+       dropped all three -- the popup got _popupWidth but not popupWidth, and applied no width
+       at all. Both routes have to hand over resolved values. */
+    it.each(["getState", "getOptions"])("resolves the computed options for %s", async (type) => {
+        const { options } = await onMessage({ type });
+
+        for (const name of ["updateInterval", "popupWidth", "expandedPopupWidth"]) {
+            const descriptor = Object.getOwnPropertyDescriptor(options, name);
+
+            expect(descriptor).toBeDefined();
+            expect(descriptor.get).toBeUndefined();
+            expect(typeof descriptor.value).toBe("number");
+        }
+    });
+
+    it("clamps the popup widths it hands out", async () => {
+        appGlobal.options.popupWidth = 100;
+        appGlobal.options.expandedPopupWidth = 5000;
+
+        const { options } = await onMessage({ type: "getState" });
+
+        expect(options.popupWidth).toBe(380);
+        expect(options.expandedPopupWidth).toBe(800);
+    });
+
     it("rejects an unknown message type", async () => {
         await expect(onMessage({ type: "nonsense" })).resolves.toEqual({
             error: "Unknown message type"

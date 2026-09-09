@@ -2,6 +2,10 @@ const { test, expect } = require("./fixtures/extension");
 const { item, SUBSCRIPTIONS, GLOBAL_ALL } = require("./fixtures/feed-items");
 
 test.describe("popup feed rendering", () => {
+    /* Long enough that a popup sizing itself to its content is unmistakably wider than one
+       held at the configured width. */
+    const LONG_TITLE = "An article headline long enough that an unpinned popup would stretch well past the width the user configured";
+
     test.beforeEach(async ({ mockApi }) => {
         mockApi.subscriptions = SUBSCRIPTIONS;
     });
@@ -115,6 +119,24 @@ test.describe("popup feed rendering", () => {
             const gap = boxes[i].x - (boxes[i - 1].x + boxes[i - 1].width);
             expect(gap).toBeGreaterThanOrEqual(6);
         }
+    });
+
+    /* Same pin as the firefox suite asserts, for the same reason: setPopupWidth() writing a width
+       onto #feed is all that keeps the shrink-wrapped body off the longest article title. */
+    test("pins the popup to the configured width", async ({ mockApi, signIn, popupPage }) => {
+        mockApi.setStream(GLOBAL_ALL, [item("a", { title: LONG_TITLE })]);
+        await signIn({ popupWidth: 420 });
+
+        const page = await popupPage();
+        await expect(page.locator("#feed .item")).toHaveCount(1);
+
+        const measured = await page.evaluate(() => ({
+            feed: document.getElementById("feed").style.width,
+            body: Math.round(document.body.getBoundingClientRect().width)
+        }));
+
+        expect(measured.feed).toBe("420px");
+        expect(measured.body).toBeLessThan(500);
     });
 
     test("renders category chips when the option is on", async ({ mockApi, signIn, popupPage }) => {

@@ -39,6 +39,18 @@ async function restoreFeedTabId() {
 // Kick off initialization eagerly on worker boot
 ensureInitialized();
 
+/* A plain snapshot of the options for a UI page.
+
+   updateInterval, popupWidth and expandedPopupWidth are accessor properties on
+   appGlobal.options, and runtime.sendMessage clones whatever it is handed. Firefox clones
+   through an Xray wrapper, which shows own data properties only, so the getters were dropped
+   on the way out and the popup read the two widths back as undefined -- whereupon jQuery took
+   .width(undefined) for a getter and silently left the popup to shrink-wrap its longest
+   article title. Spreading resolves them here, in the realm that still has them. */
+function serializeOptions() {
+    return { ...appGlobal.options };
+}
+
 // Route messages from UI pages to background functions
 browser.runtime.onMessage.addListener(async (message, sender) => {
     try {
@@ -47,12 +59,12 @@ browser.runtime.onMessage.addListener(async (message, sender) => {
         switch (message && message.type) {
             case "getState":
                 return {
-                    options: appGlobal.options,
+                    options: serializeOptions(),
                     environment: appGlobal.environment,
                     isLoggedIn: appGlobal.isLoggedIn || false
                 };
             case "getOptions":
-                return { options: appGlobal.options };
+                return { options: serializeOptions() };
             case "getFeeds":
                 return await getFeeds(Boolean(message.forceUpdate));
             case "getSavedFeeds":

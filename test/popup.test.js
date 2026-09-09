@@ -15,7 +15,8 @@ const POPUP_EXPORTS = [
     "popupGlobal",
     "renderFromCache",
     "markAsRead",
-    "openFeedlyTab"
+    "openFeedlyTab",
+    "setPopupWidth"
 ];
 
 async function loadPopup(overrides = {}) {
@@ -361,5 +362,66 @@ describe("closing the popup", () => {
         release();
         await opening;
         expect(events).toEqual(["send:openFeedlyTab", "close"]);
+    });
+});
+
+/* The popup has no width of its own: #popup-body shrink-wraps, and setPopupWidth is the only
+   thing that pins #feed. When it writes nothing the popup sizes itself to its longest article
+   title instead, which is what a firefox user saw as a filled popup twice the width of an empty
+   one. jQuery is complicit -- .width(undefined) is its getter and .width(NaN) is dropped, so a
+   missing option failed silently. */
+describe("setPopupWidth", () => {
+    let popup;
+    let $;
+
+    const widths = () => ["#feed", "#feed-saved", "#feed-empty", "#loading"]
+        .map(selector => $(selector)[0].style.width);
+
+    beforeEach(async () => {
+        ({ page: popup, $ } = await loadPopup());
+    });
+
+    it("applies the configured width to every feed container", () => {
+        popup.options.popupWidth = 500;
+
+        popup.setPopupWidth(false);
+
+        expect(widths()).toEqual(["500px", "500px", "500px", "500px"]);
+    });
+
+    it("applies the expanded width once an article is open", () => {
+        popup.options.popupWidth = 500;
+        popup.options.expandedPopupWidth = 700;
+
+        popup.setPopupWidth(true);
+
+        expect(widths()).toEqual(["700px", "700px", "700px", "700px"]);
+    });
+
+    /* getState used to hand over appGlobal.options itself, whose widths are accessor properties;
+       the firefox clone dropped them and the popup got undefined. Fixed at the source in
+       background.js, but a width has to be written whatever arrives here. */
+    it.each([
+        ["undefined", undefined],
+        ["NaN", Number("nonsense")],
+        ["an empty string", ""],
+        ["zero", 0]
+    ])("falls back to the minimum when the option is %s", (label, value) => {
+        popup.options.popupWidth = value;
+
+        popup.setPopupWidth(false);
+
+        expect(widths()).toEqual(["380px", "380px", "380px", "380px"]);
+    });
+
+    /* The sidebar and the side panel are sized by the browser, and applySidebarLayout() has
+       already swapped the fixed widths for percentages. */
+    it("leaves the sidebar to size itself", () => {
+        popup.popupGlobal.isSidebar = true;
+        popup.options.popupWidth = 500;
+
+        popup.setPopupWidth(false);
+
+        expect(widths()).toEqual(["", "", "", ""]);
     });
 });

@@ -12,6 +12,10 @@ const { item, SUBSCRIPTIONS, GLOBAL_ALL } = require("../fixtures/feed-items");
  * makes this the one place it can be tested for real.
  */
 test.describe("firefox popup", () => {
+    /* Long enough that a popup sizing itself to its content is unmistakably wider than one
+       held at the configured width. */
+    const LONG_TITLE = "An article headline long enough that an unpinned popup would stretch well past the width the user configured";
+
     test.beforeEach(async ({ mockApi }) => {
         mockApi.subscriptions = SUBSCRIPTIONS;
     });
@@ -62,6 +66,32 @@ test.describe("firefox popup", () => {
             expect(await page.count("#feed .item")).toBe(1);
         }).toPass(RETRY);
         expect(await layout(page)).toEqual({ body: "", content: "" });
+    });
+
+    /* The width that setPopupWidth() pins onto #feed. #popup-body shrink-wraps, so that pin is
+       the only thing between the popup and the width of its longest article title -- and firefox
+       is where it came undone. getState used to hand the popup appGlobal.options itself, whose
+       popupWidth is an accessor property, and the clone behind runtime.sendMessage shows own data
+       properties only. The popup read undefined, jQuery took .width(undefined) for a getter and
+       wrote nothing, and a filled popup grew to roughly twice the width of an empty one. */
+    test("pins the popup to the configured width", async ({ mockApi, signIn, openExtensionPage }) => {
+        mockApi.setStream(GLOBAL_ALL, [item("a", { title: LONG_TITLE })]);
+        await signIn({ popupWidth: 420 });
+
+        const page = await openExtensionPage("popup.html");
+
+        await expect(async () => {
+            expect(await page.count("#feed .item")).toBe(1);
+        }).toPass(RETRY);
+
+        const measured = await page.evaluate(() => ({
+            feed: document.getElementById("feed").style.width,
+            body: Math.round(document.body.getBoundingClientRect().width)
+        }));
+
+        expect(measured.feed).toBe("420px");
+        // Unpinned, the shrink-wrapped body follows the title instead and runs far past this.
+        expect(measured.body).toBeLessThan(500);
     });
 
     test("takes the sidebar layout with the panel marker", async ({ mockApi, signIn, openExtensionPage }) => {
