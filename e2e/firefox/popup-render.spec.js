@@ -30,6 +30,19 @@ test.describe("firefox popup", () => {
         }));
     }
 
+    /* Opens one of the two documents and waits for it to have rendered. Every step here crosses
+       geckodriver rather than a devtools socket, and the event page answers slower than a service
+       worker, so the render is polled for rather than checked once. */
+    async function openRendered(openExtensionPage, url, expected = 1) {
+        const page = await openExtensionPage(url);
+
+        await expect(async () => {
+            expect(await page.count("#feed .item")).toBe(expected);
+        }).toPass(RETRY);
+
+        return page;
+    }
+
     test("shows the login prompt when signed out", async ({ mockApi, openExtensionPage }) => {
         mockApi.setStream(GLOBAL_ALL, []);
 
@@ -45,11 +58,7 @@ test.describe("firefox popup", () => {
         mockApi.setStream(GLOBAL_ALL, [item("a"), item("b"), item("c")]);
         await signIn();
 
-        const page = await openExtensionPage("popup.html");
-
-        await expect(async () => {
-            expect(await page.count("#feed .item")).toBe(3);
-        }).toPass(RETRY);
+        const page = await openRendered(openExtensionPage, "popup.html", 3);
 
         const titles = await page.evaluate(() =>
             [...document.querySelectorAll("#feed .title")].map(node => node.textContent.trim()));
@@ -60,11 +69,8 @@ test.describe("firefox popup", () => {
         mockApi.setStream(GLOBAL_ALL, [item("a")]);
         await signIn();
 
-        const page = await openExtensionPage("popup.html");
+        const page = await openRendered(openExtensionPage, "popup.html");
 
-        await expect(async () => {
-            expect(await page.count("#feed .item")).toBe(1);
-        }).toPass(RETRY);
         expect(await layout(page)).toEqual({ body: "", content: "" });
     });
 
@@ -78,11 +84,7 @@ test.describe("firefox popup", () => {
         mockApi.setStream(GLOBAL_ALL, [item("a", { title: LONG_TITLE })]);
         await signIn({ popupWidth: 420 });
 
-        const page = await openExtensionPage("popup.html");
-
-        await expect(async () => {
-            expect(await page.count("#feed .item")).toBe(1);
-        }).toPass(RETRY);
+        const page = await openRendered(openExtensionPage, "popup.html");
 
         const measured = await page.evaluate(() => ({
             feed: document.getElementById("feed").style.width,
@@ -98,11 +100,8 @@ test.describe("firefox popup", () => {
         mockApi.setStream(GLOBAL_ALL, [item("a")]);
         await signIn();
 
-        const page = await openExtensionPage("popup.html?panel=1");
+        const page = await openRendered(openExtensionPage, "popup.html?panel=1");
 
-        await expect(async () => {
-            expect(await page.count("#feed .item")).toBe(1);
-        }).toPass(RETRY);
         // The browser sizes the sidebar, so the popup's fixed width has to give way to it.
         expect(await layout(page)).toEqual({ body: "100%", content: "100%" });
     });
@@ -116,11 +115,7 @@ test.describe("firefox popup", () => {
         await signIn();
 
         const panel = await openExtensionPage("popup.html?panel=1");
-        const popup = await openExtensionPage("popup.html");
-
-        await expect(async () => {
-            expect(await popup.count("#feed .item")).toBe(1);
-        }).toPass(RETRY);
+        const popup = await openRendered(openExtensionPage, "popup.html");
 
         expect(await panel.evaluate(() => document.body.style.width)).toBe("100%");
         expect(await popup.evaluate(() => document.body.style.width)).toBe("");
