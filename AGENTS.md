@@ -80,7 +80,7 @@ The line between the two is narrower than "is it sensitive": a value is a variab
 
 ## Commit & Pull Request Guidelines
 
-Recent history uses short, imperative subjects such as `Sanitize feed content in all browsers`; dependency updates use `Bump <package> from <old> to <new> (#123)`. Keep commits focused and avoid signatures, attribution footers, or generated-by notices. Pull requests should explain the user-visible change, link relevant issues, list browsers manually tested, and include screenshots for UI changes. Confirm lint, the unit suite, and a clean browser-specific build before requesting review.
+Recent history uses short, imperative subjects such as `Sanitize feed content in all browsers`; dependency updates use `Bump <package> from <old> to <new> (#123)`, or `Bump the <group> group with <n> updates (#123)` where Dependabot batched several into one pull request. Keep commits focused and avoid signatures, attribution footers, or generated-by notices. Pull requests should explain the user-visible change, link relevant issues, list browsers manually tested, and include screenshots for UI changes. Confirm lint, the unit suite, and a clean browser-specific build before requesting review.
 
 ## Security & Configuration
 

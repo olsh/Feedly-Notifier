@@ -3,9 +3,38 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    # Version updates already wait out a 3-day cooldown by default; 7 buys a
+    # wider window for a compromised release to be yanked before it
+    # auto-merges unattended and ships to the stores. Security updates ignore
+    # cooldown entirely, so real CVE fixes are not delayed by this.
+    cooldown:
+      default-days: 7
+    groups:
+      # minor and patch only, so a group can never contain a major: the
+      # `update-type` gate in automerge.yml reports the highest bump in the
+      # PR, and majors stay ungrouped and wait for a human, as they do now.
+      #
+      # Runtime and tooling stay apart because a production bump changes what
+      # reaches the stores, and a twelve-package grouped commit is a bad thing
+      # to bisect when the extension misbehaves.
+      runtime:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+      dev-tooling:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
 
+  # Only the pins that name an exact version see minor and patch releases at
+  # all: a `@v7`-style tag moves on its own and surfaces here only when the
+  # major changes. So this group is mostly codeql-action and the two SHA pins.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+      day: "monday"
+    groups:
+      actions:
+        update-types: ["minor", "patch"]
