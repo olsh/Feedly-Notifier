@@ -12,6 +12,8 @@ const bg = {
 };
 
 let options = {};
+//The lower bound core.js clamps popupWidth and expandedPopupWidth to.
+const minPopupWidth = 380;
 let environment = { os: "" };
 
 /* The layout for the page rendered as a panel rather than as the toolbar popup. Chromium's
@@ -572,9 +574,15 @@ function setLastVisibleItems() {
 
 function setPopupWidth(expanded) {
     if (! popupGlobal.isSidebar) {
-        const width = expanded
+        const configured = expanded
             ? options.expandedPopupWidth
             : options.popupWidth;
+
+        //jQuery reads .width(undefined) as a getter and drops a NaN, either of which would set
+        //no width at all and leave the popup to shrink-wrap its longest article title. Falling
+        //back to the same floor core.js clamps to keeps that from being silent.
+        const requested = Number(configured);
+        const width = Number.isFinite(requested) && requested > 0 ? requested : minPopupWidth;
 
         $("#feed, #feed-saved, #feed-empty, #loading").width(width);
     }
