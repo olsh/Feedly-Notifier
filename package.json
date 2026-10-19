@@ -4,9 +4,9 @@
   "devDependencies": {
     "@eslint/compat": "^2.1.1",
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.0",
     "@vitest/coverage-v8": "^5.0.3",
-    "addons-linter": "^10.13.0",
+    "addons-linter": "^10.14.0",
     "eslint": "^10.12.0",
     "eslint-plugin-jquery": "^1.5.1",
     "globals": "^17.13.0",
@@ -18,7 +18,7 @@
     "grunt-zip": "^1.0.0",
     "jsdom": "^30.1.2",
     "preprocess": "^3.2.0",
-    "selenium-webdriver": "^4.50.0",
+    "selenium-webdriver": "^4.51.0",
     "vitest": "^5.0.0",
     "web-ext": "^10.7.0"
   },
