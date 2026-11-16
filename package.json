@@ -37,7 +37,7 @@
     "dompurify": "^3.4.17",
     "jquery": "^4.0.0",
     "mustache": "^4.2.0",
-    "timeago.js": "^4.0.1",
+    "timeago.js": "^4.3.0",
     "webextension-polyfill": "^0.12.0"
   },
   "scripts": {
